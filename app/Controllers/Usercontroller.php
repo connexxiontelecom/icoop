@@ -1,13 +1,18 @@
 <?php 
 namespace App\Controllers;
-use App\Models\UserModel; 
+use App\Models\UserModel;
+use CodeIgniter\RESTful\ResourceController;
+
 
 class Usercontroller extends BaseController
 {
     
 	public function index()
 	{
-		return view('layouts/master');
+        $this->session = session();
+        $username = $this->session->user_username;
+	    $this->authenticate_user($username, 'layouts/master');
+
 	}
 
     
@@ -52,6 +57,7 @@ class Usercontroller extends BaseController
                         $ses_data = [
                             'user_id'=> $data['user_id'],
                             'user_email'=>$data['email'],
+                            'user_username' => $data['email'],
                             'user_first_name'=>$data['first_name']
                         ];
                         $session->set($ses_data);
@@ -121,6 +127,9 @@ class Usercontroller extends BaseController
 
 
     public function dashboard(){
+
         return view('pages/dashboard');
     }
+
+
 }

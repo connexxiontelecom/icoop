@@ -8,6 +8,7 @@ Policy Config
 
 <?= $this->endSection() ?>
 
+
 <?= $this->section('content') ?>
 
     <div class="card">
