@@ -2,13 +2,12 @@
 namespace App\Controllers;
 use App\Models\StateModel; 
 use App\Models\DepartmentModel;
-use App\Controllers\Usercontroller;
+
 
 class Housekeepingcontroller extends BaseController
 {
     public function __construct(){
 
-        $this->user = new Usercontroller();
         $this->session = session();
     }
 
