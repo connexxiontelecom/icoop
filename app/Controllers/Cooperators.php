@@ -20,7 +20,7 @@ class Cooperators extends BaseController
             $method = $this->request->getMethod();
                     if($method == 'post'):
 
-
+                        print_r($_POST);
 
                      else:
 

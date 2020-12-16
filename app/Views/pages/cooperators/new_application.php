@@ -13,183 +13,394 @@
 
 <?= $this->section('extra-styles') ?>
     <link rel="stylesheet" type="text/css" href="/assets/css/datatable.min.css">
+<link rel="stylesheet" type="text/css" href="/assets/third-party/jquery.steps/css/jquery.steps.css">
+<style>
+    .input-custom {
+        margin-left: -10%;
+
+    }
+    .label-custom{
+        text-align: right;
+        margin-right: 10%;
+    }
+</style>
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 
-<div class="card">
-    <div class="card-header">
-        <h5>Form Basic Wizard</h5>
-        <span>Add class of <code>.form-control</code> with <code>&lt;input&gt;</code> tag</span>
 
-    </div>
-    <div class="card-block">
-        <div class="row">
-            <div class="col-md-12">
-                <div id="wizard1">
-                    <section>
-                        <form class="wizard-form" id="basic-forms" action="#">
-                            <h3> Registration </h3>
-                            <fieldset>
-                                <div class="form-group row">
-                                    <div class="col-sm-12">
-                                        <label for="userName-2" class="block">User name *</label>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <input id="userName-21" name="userName" type="text" class=" form-control">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-12">
-                                        <label for="email-2-1" class="block">Email *</label>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <input id="email-2-1" name="email" type="email" class=" form-control">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-12">
-                                        <label for="password-2" class="block">Password *</label>
-                                    </div>
-                                    <div class="col-sm-8 col-lg-10">
-                                        <input id="password-21" name="password" type="password" class="form-control ">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-12">
-                                        <label for="confirm-2" class="block">Confirm Password *</label>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <input id="confirm-21" name="confirm" type="password" class="form-control ">
-                                    </div>
-                                </div>
-                            </fieldset>
-                            <h3> General information </h3>
-                            <fieldset>
-                                <div class="form-group row">
-                                    <div class="col-sm-12">
-                                        <label for="name-2" class="block">First name *</label>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <input id="name-21" name="name" type="text" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-12">
-                                        <label for="surname-2" class="block">Last name *</label>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <input id="surname-21" name="surname" type="text" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-12">
-                                        <label for="phone-2" class="block">Phone #</label>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <input id="phone-21" name="phone" type="number" class="form-control phone">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-12">
-                                        <label for="date" class="block">Date Of Birth</label>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <input id="date1" name="Date Of Birth" type="text" class="form-control date-control">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-12">
-                                        Select Country</div>
-                                    <div class="col-sm-12">
-                                        <select class="form-control required">
-                                            <option>Select State</option>
-                                            <option>Gujarat</option>
-                                            <option>Kerala</option>
-                                            <option>Manipur</option>
-                                            <option>Tripura</option>
-                                            <option>Sikkim</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </fieldset>
-                            <h3> Education </h3>
-                            <fieldset>
-                                <div class="form-group row">
-                                    <div class="col-sm-12">
-                                        <label for="University-2" class="block">University</label>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <input id="University-21" name="University" type="text" class="form-control required">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-12">
-                                        <label for="Country-2" class="block">Country</label>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <input id="Country-21" name="Country" type="text" class="form-control required">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-12">
-                                        <label for="Degreelevel-2" class="block">Degree level #</label>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <input id="Degreelevel-21" name="Degree level" type="text" class="form-control required phone">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-12">
-                                        <label for="datejoin" class="block">Date Join</label>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <input id="datejoin1" name="Date Of Birth" type="text" class="form-control required">
-                                    </div>
-                                </div>
-                            </fieldset>
-                            <h3> Work experience </h3>
-                            <fieldset>
-                                <div class="form-group row">
-                                    <div class="col-sm-12">
-                                        <label for="Company-2" class="block">Company:</label>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <input id="Company-21" name="Company:" type="text" class="form-control required">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-12">
-                                        <label for="CountryW-2" class="block">Country</label>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <input id="CountryW-21" name="Country" type="text" class="form-control required">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-12">
-                                        <label for="Position-2" class="block">Position</label>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <input id="Position-21" name="Position" type="text" class="form-control required">
-                                    </div>
-                                </div>
-                            </fieldset>
-                        </form>
-                    </section>
+<form class="wizard-form" id="basic-forms" method="post" action="">
+<div id="example-basic">
+
+    <h5>Personal Details</h5>
+    <section>
+        <fieldset>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label label-custom" >Staff ID:</label>
+                        <div class="col-sm-8 input-custom" >
+                            <input type="text" name="application_staff_id" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label label-custom">First Name:</label>
+                        <div class="col-sm-8 input-custom" >
+                            <input type="text" name="application_first_name" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label label-custom">Other Name:</label>
+                        <div class="col-sm-8 input-custom">
+                            <input type="text" name="application_other_name" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label label-custom">Location:</label>
+                        <div class="col-sm-8 input-custom">
+                            <select name="application_location_id"  class="form-control">
+                                <option value="1">-- L --</option>
+
+
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label label-custom">Date of Birth:</label>
+                        <div class="col-sm-8 input-custom">
+                            <input type="date" name="application_payroll_group" class="form-control">
+                        </div>
+                    </div>
                 </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label label-custom" >Gender:</label>
+                        <div class="col-sm-8 input-custom"  >
+                            <select name="application_gender"  class="form-control">
+                                <option value="">-- Gender --</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label label-custom">Last Name:</label>
+                        <div class="col-sm-8 input-custom" >
+                            <input type="text" name="application_last_name" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label label-custom">Department:</label>
+                        <div class="col-sm-8 input-custom">
+                            <select name="application_department_id"  class="form-control">
+                                <option value="1">-- Department --</option>
+
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label label-custom">Payroll Group:</label>
+                        <div class="col-sm-8 input-custom">
+                            <select name="application_payroll_group_id"  class="form-control">
+                                <option value="1">-- PG --</option>
+
+
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label label-custom">Email:</label>
+                        <div class="col-sm-8 input-custom">
+                            <input type="email" name="application_email" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
             </div>
-        </div>
-    </div>
+
+
+        </fieldset>
+    </section>
+    <h5>Contact Details</h5>
+    <section>
+        <fieldset>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label label-custom">Address:</label>
+                        <div class="col-sm-8 input-custom" >
+                            <textarea rows="5" cols="5" class="form-control" name="application_address" placeholder="Address"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label label-custom">State:</label>
+                        <div class="col-sm-8 input-custom">
+                            <select name="application_location_id"  class="form-control">
+                                <option value="1">-- L --</option>
+
+
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label label-custom">City:</label>
+                        <div class="col-sm-8 input-custom" >
+                            <textarea rows="5" cols="5" class="form-control" name="application_city" placeholder="City"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label label-custom">Telephone:</label>
+                        <div class="col-sm-8 input-custom">
+                            <input type="text" name="application_telephone" class="form-control">
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </fieldset>
+    </section>
+    <h5>Next of Kin</h5>
+    <section>
+        <fieldset>
+            <div class="row">
+                <div class="col-sm-6">
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label label-custom">Full name:</label>
+                        <div class="col-sm-8 input-custom">
+                            <input type="text" name="application_kin_fullname" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label label-custom">Address:</label>
+                        <div class="col-sm-8 input-custom" >
+                            <textarea rows="5" cols="5" class="form-control" name="application_kin_address" placeholder="Address"></textarea>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label label-custom">Email:</label>
+                        <div class="col-sm-8 input-custom">
+                            <input type="text" name="application_kin_email" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label label-custom">Telephone:</label>
+                        <div class="col-sm-8 input-custom">
+                            <input type="text" name="application_kin_phone" class="form-control">
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label label-custom">Relationship:</label>
+                        <div class="col-sm-8 input-custom">
+                            <select name="application_kin_state"  class="form-control">
+                                <option value="1">-- L --</option>
+
+
+                            </select>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </fieldset>
+    </section>
+
+    <h5>Bank Details</h5>
+    <section>
+        <fieldset>
+            <div class="row">
+                <div class="col-sm-6">
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label label-custom">Bank:</label>
+                        <div class="col-sm-8 input-custom">
+                            <select name="application_bank_id"  class="form-control">
+                                <option value="1">-- L --</option>
+
+
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label label-custom">Bank Branch:</label>
+                        <div class="col-sm-8 input-custom">
+                            <input type="text" name="application_bank_branch" class="form-control">
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label label-custom">Account Number:</label>
+                        <div class="col-sm-8 input-custom">
+                            <input type="text" name="application_account_number" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label label-custom">Sort Code:</label>
+                        <div class="col-sm-8 input-custom">
+                            <input type="text" name="application_sort_code" class="form-control">
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+
+            </div>
+
+
+        </fieldset>
+    </section>
+
+    <h5>Min Savings</h5>
+    <section>
+        <fieldset>
+            <div class="row">
+                <div class="col-sm-6">
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label label-custom">Savings:</label>
+                        <div class="col-sm-8 input-custom">
+                            <input type="text" name="application_savings" class="form-control">
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label label-custom">Account Number:</label>
+                        <div class="col-sm-8 input-custom">
+                            <input type="text" name="application_account_number" class="form-control">
+                        </div>
+                    </div>
+
+
+
+
+
+
+                </div>
+
+            </div>
+
+
+        </fieldset>
+    </section>
+
+    <h5>Preview</h5>
+    <section>
+        <fieldset>
+            <div class="row">
+                <div class="col-sm-6">
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label label-custom">Savings:</label>
+                        <div class="col-sm-8 input-custom">
+                            <input type="text" name="application_savings" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label label-custom"></label>
+                        <div class="col-sm-8 input-custom">
+                            <button type="submit" class="btn btn-success waves-effect waves-light">Submit Application</button>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+
+            </div>
+
+
+        </fieldset>
+    </section>
+
 </div>
+
+
+</form>
+
+
 
 <?= $this->endSection() ?>
 
 <?= $this->section('extra-scripts') ?>
     <script src="/assets/js/datatable.min.js"></script>
+<script src="/assets/third-party/jquery.cookie/js/jquery.cookie.js"></script>
+<script src="/assets/third-party/jquery.steps/js/jquery.steps.js"></script>
+<script src="/assets/third-party/jquery-validation/js/jquery.validate.js"></script>
     <script>
         $(document).ready(function(){
             $('.simpletable').DataTable();
+
+
+
+            $("#wizard").steps({
+                headerTag: "h5",
+                bodyTag: "fieldset",
+                transitionEffect: "slideLeft",
+                autoFocus: true
+            });
+
+
+
+            $("#example-basic").steps({
+                headerTag: "h5",
+                bodyTag: "section",
+                transitionEffect: "slideLeft",
+                autoFocus: true
+            });
+
+
+
+
 
             $('.error-wrapper').hide();
             addNewDepartmentForm.onsubmit = async (e) => {
