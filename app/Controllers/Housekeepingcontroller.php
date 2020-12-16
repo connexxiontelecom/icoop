@@ -1,17 +1,24 @@
 <?php 
 namespace App\Controllers;
 use App\Models\StateModel; 
-use App\Models\DepartmentModel; 
+use App\Models\DepartmentModel;
+
 
 class Housekeepingcontroller extends BaseController
 {
-    
+    public function __construct(){
+
+        $this->session = session();
+    }
+
 	public function states()
 	{
         $data = [];
-        $states = new StateModel;
+        $states = new StateModel();
         $data['states'] = $states->findAll();
-		return view('pages/house-keeping/states', $data);
+        $username = $this->session->user_username;
+        $this->authenticate_user($username, 'pages/house-keeping/states', $data);
+		//return view('pages/house-keeping/states', $data);
 	}
 
 
@@ -49,7 +56,9 @@ class Housekeepingcontroller extends BaseController
         $data = [];
         $departments = new DepartmentModel;
         $data['departments'] = $departments->findAll();
-        return view('pages/house-keeping/departments',$data);
+        $username = $this->session->user_username;
+        $this->authenticate_user($username, 'pages/house-keeping/departments', $data);
+
     }
 
 

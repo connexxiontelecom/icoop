@@ -15,8 +15,9 @@ namespace App\Controllers;
  */
 
 use CodeIgniter\Controller;
+use CodeIgniter\RESTful\ResourceController;
 
-class BaseController extends Controller
+class BaseController extends ResourceController
 {
 
 	/**
@@ -41,6 +42,23 @@ class BaseController extends Controller
 		//--------------------------------------------------------------------
 		// E.g.:
 		// $this->session = \Config\Services::session();
+
+        $this->security = \Config\Services::security();
 	}
+
+    public function authenticate_user($username, $page, $data = null){
+
+        //$this->response->redirect('login');
+            if(isset($username)):
+
+                 echo view($page, $data);
+
+            else:
+
+                 $this->response->redirect('login');
+
+            endif;
+
+    }
 
 }
