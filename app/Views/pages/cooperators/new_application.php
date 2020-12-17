@@ -122,7 +122,9 @@
                                         <label class="input-group-text" for="inputGroupSelect01">Payroll Group:</label>
                                     </div>
                                     <select class="custom-select" name="application_payroll_group_id" id="application_payroll_group_id" onkeyup="preview_form('application_payroll_group_id')">
-                                        <option value="1">-- PG --</option>
+                                        <?php foreach ($pgs as $pg): ?>
+                                            <option value="<?=$pg['pg_id'] ?>"> <?=$pg['pg_name']; ?></option>
+                                        <?php endforeach; ?>
                                     </select>
                                 </div>
 
@@ -274,7 +276,11 @@
                                         <label class="input-group-text" for="inputGroupSelect01">Bank:</label>
                                     </div>
                                     <select class="custom-select" name="application_bank_id" onchange="preview_form('application_bank_id')" id="application_bank_id">
-                                        <option value="1"> Gt </option>
+                                        <select class="custom-select"   id="application_bank_ida">
+                                            <?php foreach ($banks as $bank): ?>
+                                                <option value="<?=$bank['bank_id'] ?>"> <?=$bank['bank_name']; ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
                                     </select>
                                 </div>
 
@@ -456,7 +462,11 @@
                                                        <label class="input-group-text" for="inputGroupSelect01">Payroll Group:</label>
                                                    </div>
                                                    <select class="custom-select"  id="application_payroll_group_ida">
-                                                       <option value="1">-- PG --</option>
+                                                       <select class="custom-select"   id="application_bank_ida">
+                                                           <?php foreach ($pgs as $pg): ?>
+                                                               <option value="<?=$pg['pg_id'] ?>"> <?=$pg['pg_name']; ?></option>
+                                                           <?php endforeach; ?>
+                                                       </select>
                                                    </select>
                                                </div>
 
@@ -595,7 +605,9 @@
                                                            <label class="input-group-text" for="inputGroupSelect01">Bank:</label>
                                                        </div>
                                                        <select class="custom-select"   id="application_bank_ida">
-                                                           <option value="1"> Gt</option>
+                                                           <?php foreach ($banks as $bank): ?>
+                                                           <option value="<?=$bank['bank_id'] ?>"> <?=$bank['bank_name']; ?></option>
+                                                           <?php endforeach; ?>
                                                        </select>
                                                    </div>
 
@@ -728,57 +740,5 @@
             document.getElementById(new_element_id).disabled = true;
         }
 
-
-        $(document).ready(function(){
-
-
-
-
-            $("#preview").click(function(){
-
-                // show Modal
-                $('#preview-modal').modal('show');
-            });
-            $('.simpletable').DataTable();
-
-            $('.error-wrapper').hide();
-            addNewDepartmentForm.onsubmit = async (e) => {
-                e.preventDefault();
-
-                axios.post('/add-new-department',new FormData(addNewDepartmentForm))
-                    .then(response=>{
-                        Toastify({
-                            text: "Success! New department saved.",
-                            duration: 3000,
-                            newWindow: true,
-                            close: true,
-                            gravity: "top",
-                            position: 'right',
-                            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-                            stopOnFocus: true,
-                            onClick: function(){}
-                        }).showToast();
-                        $("#departmentTable").load(location.href + " #departmentTable");
-                        $('#department_name').val('');
-                    })
-                    .catch(error=>{
-                        //$('#validation-errors').html('');
-                        $.each(error.response.data.errors, function(key, value){
-                            Toastify({
-                                text: 'Error',
-                                duration: 3000,
-                                newWindow: true,
-                                close: true,
-                                gravity: "top",
-                                position: 'right',
-                                backgroundColor: "linear-gradient(to right, #FF0000, #FE0000)",
-                                stopOnFocus: true,
-                                onClick: function(){}
-                            }).showToast();
-                            //$('#validation-errors').append("<li><i class='ti-hand-point-right text-danger mr-2'></i><small class='text-danger'>"+value+"</small></li>");
-                        });
-                    });
-            };
-        });
     </script>
 <?= $this->endSection() ?>
