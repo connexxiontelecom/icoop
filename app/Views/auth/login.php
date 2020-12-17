@@ -1,214 +1,118 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-    <title>Login</title>
-    <!-- HTML5 Shim and Respond.js IE10 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 10]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-      <![endif]-->
-      <!-- Meta -->
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>ICOOP | Login</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Qubes Bootstrap 4x admin is super flexible, powerful, clean &amp; modern responsive admin dashboard with unlimited possibilities.">
+    <meta name="author" content="GetBootstrap, design by: puffintheme.com">
 
-      <meta name="keywords" content="bootstrap, bootstrap admin template, admin theme, admin dashboard, dashboard template, admin template, responsive" />
-      <meta name="author" content="Codedthemes" />
-      <!-- Favicon icon -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <!-- VENDOR CSS -->
+    <link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/vendor/animate-css/vivify.min.css">
 
-      <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
-      <!-- Google font-->
-      <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet">
-      <!-- Required Fremwork -->
-      <link rel="stylesheet" type="text/css" href="assets/css/bootstrap/css/bootstrap.min.css">
-      <!-- waves.css -->
-      <link rel="stylesheet" href="assets/pages/waves/css/waves.min.css" type="text/css" media="all">
-      <!-- themify-icons line icon -->
-      <link rel="stylesheet" type="text/css" href="assets/icon/themify-icons/themify-icons.css">
-      <!-- ico font -->
-      <link rel="stylesheet" type="text/css" href="assets/icon/icofont/css/icofont.css">
-      <!-- Font Awesome -->
-      <link rel="stylesheet" type="text/css" href="assets/icon/font-awesome/css/font-awesome.min.css">
-      <!-- Style.css -->
-      <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-  </head>
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="assets/css/site.min.css">
 
-  <body themebg-pattern="theme1">
-  <!-- Pre-loader start -->
-  <div class="theme-loader">
-      <div class="loader-track">
-          <div class="preloader-wrapper">
-              <div class="spinner-layer spinner-blue">
-                  <div class="circle-clipper left">
-                      <div class="circle"></div>
-                  </div>
-                  <div class="gap-patch">
-                      <div class="circle"></div>
-                  </div>
-                  <div class="circle-clipper right">
-                      <div class="circle"></div>
-                  </div>
-              </div>
-              <div class="spinner-layer spinner-red">
-                  <div class="circle-clipper left">
-                      <div class="circle"></div>
-                  </div>
-                  <div class="gap-patch">
-                      <div class="circle"></div>
-                  </div>
-                  <div class="circle-clipper right">
-                      <div class="circle"></div>
-                  </div>
-              </div>
+</head>
 
-              <div class="spinner-layer spinner-yellow">
-                  <div class="circle-clipper left">
-                      <div class="circle"></div>
-                  </div>
-                  <div class="gap-patch">
-                      <div class="circle"></div>
-                  </div>
-                  <div class="circle-clipper right">
-                      <div class="circle"></div>
-                  </div>
-              </div>
-
-              <div class="spinner-layer spinner-green">
-                  <div class="circle-clipper left">
-                      <div class="circle"></div>
-                  </div>
-                  <div class="gap-patch">
-                      <div class="circle"></div>
-                  </div>
-                  <div class="circle-clipper right">
-                      <div class="circle"></div>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
-  <!-- Pre-loader end -->
-
-    <section class="login-block">
-        <!-- Container-fluid starts -->
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <!-- Authentication card start -->
-
-                        <form class="md-float-material form-material" method="post" action="/login">
-                            <div class="text-center">
-                                <img src="assets/images/logo.png" width="167" height="33" alt="logo.png">
-                            </div>
-                            <div class="auth-box card">
-                                <div class="card-block">
-                                    <div class="row m-b-20">
-                                        <div class="col-md-12">
-                                            <h3 class="text-center">Login</h3>
-                                            <?php if(isset($validation)) : ?>
-                                                <div class="text-danger">
-                                                    <?= $validation->listErrors() ?>
-                                                </div>
-                                            <?php endif ?>
-                                        </div>
-                                    </div>
-                                    <div class="form-group form-primary">
-                                        <input type="text" name="email" value="<?= set_value('email') ?>" class="form-control">
-                                        <span class="form-bar"></span>
-                                        <label class="float-label">Your Email Address</label>
-                                    </div>
-                                    <div class="form-group form-primary">
-                                        <input type="password" name="password" class="form-control" >
-                                        <span class="form-bar"></span>
-                                        <label class="float-label">Password</label>
-                                    </div>
-                                    <div class="row m-t-25 text-left">
-                                        <div class="col-12">
-                                            <div class="checkbox-fade fade-in-primary d-">
-                                                <label>
-                                                    <input type="checkbox" value="">
-                                                    <span class="cr"><i class="cr-icon icofont icofont-ui-check txt-primary"></i></span>
-                                                    <span class="text-inverse">Remember me</span>
-                                                </label>
-                                            </div>
-                                            <div class="forgot-phone text-right f-right">
-                                                <a href="auth-reset-password.html" class="text-right f-w-600"> Forgot Password?</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row m-t-30">
-                                        <div class="col-md-12">
-                                            <button type="submit" class="btn btn-primary btn-md btn-block waves-effect waves-light text-center m-b-20">Sign in</button>
-                                        </div>
-                                    </div>
-                                    <hr/>
-                                </div>
-                            </div>
-                        </form>
-                        <!-- end of form -->
-                </div>
-                <!-- end of col-sm-12 -->
-            </div>
-            <!-- end of row -->
-        </div>
-        <!-- end of container-fluid -->
-    </section>
-    <!-- Warning Section Starts -->
-    <!-- Older IE warning message -->
-    <!--[if lt IE 10]>
-<div class="ie-warning">
-    <h1>Warning!!</h1>
-    <p>You are using an outdated version of Internet Explorer, please upgrade <br/>to any of the following web browsers to access this website.</p>
-    <div class="iew-container">
-        <ul class="iew-download">
-            <li>
-                <a href="http://www.google.com/chrome/">
-                    <img src="assets/images/browser/chrome.png" alt="Chrome">
-                    <div>Chrome</div>
-                </a>
-            </li>
-            <li>
-                <a href="https://www.mozilla.org/en-US/firefox/new/">
-                    <img src="assets/images/browser/firefox.png" alt="Firefox">
-                    <div>Firefox</div>
-                </a>
-            </li>
-            <li>
-                <a href="http://www.opera.com">
-                    <img src="assets/images/browser/opera.png" alt="Opera">
-                    <div>Opera</div>
-                </a>
-            </li>
-            <li>
-                <a href="https://www.apple.com/safari/">
-                    <img src="assets/images/browser/safari.png" alt="Safari">
-                    <div>Safari</div>
-                </a>
-            </li>
-            <li>
-                <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">
-                    <img src="assets/images/browser/ie.png" alt="">
-                    <div>IE (9 & above)</div>
-                </a>
-            </li>
-        </ul>
+<body class="theme-blue">
+<!-- Page Loader -->
+<div class="page-loader-wrapper">
+    <div class="loader">
+        <div class="m-t-30"><i class="fa fa-cube font-25"></i></div>
+        <p>Please wait...</p>
     </div>
-    <p>Sorry for the inconvenience!</p>
 </div>
-<![endif]-->
-<!-- Warning Section Ends -->
-<!-- Required Jquery -->
-<script type="text/javascript" src="assets/js/jquery/jquery.min.js "></script>
-<script type="text/javascript" src="assets/js/jquery-ui/jquery-ui.min.js "></script>
-<script type="text/javascript" src="assets/js/popper.js/popper.min.js"></script>
-<script type="text/javascript" src="assets/js/bootstrap/js/bootstrap.min.js "></script>
-<!-- waves js -->
-<script src="assets/pages/waves/js/waves.min.js"></script>
-<!-- jquery slimscroll js -->
-<script type="text/javascript" src="assets/js/jquery-slimscroll/jquery.slimscroll.js"></script>
-<script type="text/javascript" src="assets/js/common-pages.js"></script>
-</body>
+<!-- Overlay For Sidebars -->
 
+<div class="auth-main">
+    <div class="auth_div">
+        <div class="card">
+            <div class="auth_brand">
+                <a class="navbar-brand" href="javascript:void(0);"><i class="fa fa-cube font-25"></i> iCoop</a>
+            </div>
+            <div class="body">
+                <p class="lead">Login to your account</p>
+
+                <?php if(isset($validation)) : ?>
+                    <div class="text-danger">
+                        <?= $validation->listErrors() ?>
+                    </div>
+                <?php endif ?>
+
+                <form class="form-auth-small m-t-20" method="post" action=" ">
+                    <div class="form-group">
+                        <label for="signin-email" class="control-label sr-only">Email</label>
+                        <input type="email" name="email" value="<?= set_value('email') ?>"  class="form-control round" id="signin-email" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <label for="signin-password" class="control-label sr-only">Password</label>
+                        <input type="password" name="password" class="form-control round" id="signin-password" value="thisisthepassword" placeholder="Password">
+                    </div>
+                    <div class="form-group clearfix">
+                        <label class="fancy-checkbox element-left">
+                            <input type="checkbox">
+                            <span>Remember me</span>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-round btn-block">LOGIN</button>
+                    <div class="bottom">
+                        <span class="helper-text m-b-10"><i class="fa fa-lock"></i> <a href="#">Forgot password?</a></span>
+                        <span>Don't have an account? <a href="#">Register</a></span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="auth_right">
+        <div id="slider2" class="carousel slide" data-ride="carousel" data-interval="3000">
+            <ol class="carousel-indicators">
+                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+            </ol>
+            <div class="carousel-inner pb-5">
+                <div class="carousel-item active">
+                    <img src="assets/images/login-slide1.png" class="img-fluid" alt="login page" />
+                    <div class="px-4">
+                        <h2>Highly Customizable</h2>
+                        <p>Cooperative Automation to Suit your Needs</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="assets/images/login-slide2.png" class="img-fluid" alt="login page" />
+                    <div class="px-4">
+                        <h2>100% Secure</h2>
+                        <p>Deployed with best Technology and Practices</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="assets/images/login-slide2.png" class="img-fluid" alt="login page" />
+                    <div class="px-4">
+                        <h2>Saving Time</h2>
+                        <p>Save as much time as you can.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- END WRAPPER -->
+
+<!-- Latest jQuery -->
+<script src="assets/vendor/jquery/jquery-3.3.1.min.js"></script>
+
+<!-- Bootstrap 4x JS  -->
+<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script src="assets/bundles/vendorscripts.bundle.js"></script>
+<script src="assets/js/common.js"></script>
+</body>
 </html>
+
