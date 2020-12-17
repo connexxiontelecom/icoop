@@ -22,6 +22,9 @@ $(function () {
         },
         onStepChanged: function (event, currentIndex, priorIndex) {
             setButtonWavesEffect(event);
+        },
+        onFinished: function (event, currentIndex) {
+            $("form").submit();
         }
     });
 
