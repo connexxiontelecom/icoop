@@ -22,4 +22,6 @@ class Applications extends \CodeIgniter\Model
         'application_approved_date', 'application_discarded_by', 'application_discarded_date', 'application_discarded_reason', 'application_status'
 
     ];
+
+
 }
