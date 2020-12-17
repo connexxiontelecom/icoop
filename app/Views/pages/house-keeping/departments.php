@@ -12,63 +12,103 @@ Departments
 <?= $this->endSection() ?>
 
 <?= $this->section('extra-styles') ?>
-<link rel="stylesheet" type="text/css" href="/assets/css/datatable.min.css"> 
+<style>
+    td.details-control {
+        background: url('assets/images/details_open.png') no-repeat center center;
+        cursor: pointer;
+    }
+    tr.shown td.details-control {
+        background: url('assets/images/details_close.png') no-repeat center center;
+    }
+</style>
+
+
+<link rel="stylesheet" href="assets/vendor/jquery-datatable/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="assets/vendor/jquery-datatable/fixedeader/dataTables.fixedcolumns.bootstrap4.min.css">
+<link rel="stylesheet" href="assets/vendor/jquery-datatable/fixedeader/dataTables.fixedheader.bootstrap4.min.css">
+<link rel="stylesheet" href="assets/vendor/sweetalert/sweetalert.css"/>
+<link rel="stylesheet" href="assets/css/toastify.min.css"/>
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 
-    <div class="card">
-        <div class="card-block">
-            <div class="row ">
-             <div class="col-md-3 col-sm-3 col-lg-3">
-                <h5 class="sub-title">Add New Department</h5>
-                <form id="addNewDepartmentForm">
-                    <div class="form-group">
-                        <label for="">Department Name</label>
-                        <input type="text" placeholder="Enter Department Name" id="department_name" name="department_name" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <div class="btn-group">
-                            <a href="" class="btn btn-mini btn-danger"><i class="ti-close mr-2"></i>Cancel</a>
-                            <button class="btn btn-mini btn-primary" type="submit"><i class="ti-check mr-2"></i> Submit</button>
+    <div class="row clearfix">
+        <div class="col-lg-3">
+            <div class="card">
+                <div class="header">
+                    <h2> New Department</h2>
+
+                </div>
+                <div class="body">
+                    <form id="addNewDepartmentForm">
+                        <div class="form-group">
+                            <label for="">Department Name</label>
+                            <input type="text" placeholder="Enter Department Name" id="department_name" name="department_name" class="form-control">
                         </div>
-                    </div>
-                </form>
-            </div>
-            <div class="col-md-9 col-sm-9 col-lg-9">
-                <h5 class="sub-title">All Departments</h5>
-                <div class="dt-responsive table-responsive">
-                    <table  class="table table-striped table-bordered nowrap simpletable" id="departmentTable">
-                        <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Department Name</th>
-                            <th>Date</th>
-                            <th>Action</th>
-                        </tr>
-                        </thead>
-                      
-                        <tbody>
-                        <?php $i = 1; foreach($departments as $department) : ?>
-                            <tr>
-                                <td><?= $i++ ?> </td>
-                                <td><?= $department['department_name'] ?></td>
-                                <td><?= date('d M, Y', strtotime($department['created_at'])) ?></td>
-                                <td> No Action </td>
-                            </tr>
-                        <?php endforeach ?>
-                        </tfoot>
-                    </table>
+                        <div class="form-group">
+                            <div class="btn-group">
+                                <a href="" class="btn btn-mini btn-danger"><i class="ti-close mr-2"></i>Cancel</a>
+                                <button class="btn btn-mini btn-primary" type="submit"><i class="ti-check mr-2"></i> Submit</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
+        </div>
+        <div class="col-lg-9">
+            <div class="card">
+                <div class="header">
+                    <h2>Departments</h2>
+
+                </div>
+                <div class="body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover dataTable js-exportable simpletable" id="departmentTable">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Department Name</th>
+                                <th>Date</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <?php $i = 1; foreach($departments as $department) : ?>
+                                <tr>
+                                    <td><?= $i++ ?> </td>
+                                    <td><?= $department['department_name'] ?></td>
+                                    <td><?= date('d M, Y', strtotime($department['created_at'])) ?></td>
+                                    <td> No Action </td>
+                                </tr>
+                            <?php endforeach ?>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
+
 <?= $this->endSection() ?>
 
 <?= $this->section('extra-scripts') ?>
-    <script src="/assets/js/datatable.min.js"></script>
+
+
+<script src="assets/bundles/vendorscripts.bundle.js"></script>
+
+<script src="assets/bundles/datatablescripts.bundle.js"></script>
+<script src="assets/vendor/jquery-datatable/buttons/dataTables.buttons.min.js"></script>
+<script src="assets/vendor/jquery-datatable/buttons/buttons.bootstrap4.min.js"></script>
+<script src="assets/vendor/jquery-datatable/buttons/buttons.colVis.min.js"></script>
+<script src="assets/vendor/jquery-datatable/buttons/buttons.html5.min.js"></script>
+<script src="assets/vendor/jquery-datatable/buttons/buttons.print.min.js"></script>
+<script src="assets/vendor/sweetalert/sweetalert.min.js"></script><!-- SweetAlert Plugin Js -->
+<script src="assets/js/common.js"></script>
+<script src="assets/js/pages/tables/jquery-datatable.js"></script>
+<script src="assets/js/axios.min.js"></script>
+<script src="assets/js/toastify.min.js"></script>
     <script>
         $(document).ready(function(){
             $('.simpletable').DataTable();
