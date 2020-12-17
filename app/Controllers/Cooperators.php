@@ -2,6 +2,7 @@
 
 
 namespace App\Controllers;
+use App\Models\Applications;
 use App\Models\StateModel;
 use App\Models\DepartmentModel;
 
@@ -11,6 +12,7 @@ class Cooperators extends BaseController
 
              $this->state = new StateModel();
              $this->department = new DepartmentModel();
+             $this->application = new Applications();
              $this->session = session();
 
         }
@@ -20,7 +22,25 @@ class Cooperators extends BaseController
             $method = $this->request->getMethod();
                     if($method == 'post'):
 
-                        print_r($_POST);
+                        $v = $this->application->save($_POST);
+
+                            if($v):
+
+                                $data = array(
+                                    'msg' => 'Application Successful',
+                                    'type' => 'success',
+                                    'location' => site_url('new_application')
+
+                                );
+
+                                return view('pages/sweet-alert', $data);
+
+                            else:
+
+
+                            endif;
+
+
 
                      else:
 
