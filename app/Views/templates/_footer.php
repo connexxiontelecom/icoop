@@ -1,29 +1,19 @@
-    <!-- Required Jquery -->
-    <script type="text/javascript" src="assets/js/jquery/jquery.min.js "></script>
-    <script type="text/javascript" src="assets/js/jquery-ui/jquery-ui.min.js "></script>
-    <script type="text/javascript" src="assets/js/popper.js/popper.min.js"></script>
-    <script type="text/javascript" src="assets/js/bootstrap/js/bootstrap.min.js "></script>
-    <!-- waves js -->
-    <script src="assets/pages/waves/js/waves.min.js"></script>
-    <!-- jquery slimscroll js -->
-    <script type="text/javascript" src="assets/js/jquery-slimscroll/jquery.slimscroll.js"></script>
+<!-- Javascript -->
+<!-- Latest jQuery -->
+<script src="assets/vendor/jquery/jquery-3.3.1.min.js"></script>
 
-    <script src="assets/third-party/chartist/js/chartist.js"></script>
-    <script src="assets/third-party/morris.js/js/morris.js"></script>
-    <script src="assets/third-party/raphael/js/raphael.min.js"></script>
-    <script src="assets/third-party/chartlist/chartlist-custom.js"></script>
-    <script src="assets/js/morris-custom-chart.js"></script>
+<!-- Bootstrap 4x JS  -->
+<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- slimscroll js -->
-    <script src="assets/js/jquery.mCustomScrollbar.concat.min.js "></script>
+<script src="assets/bundles/vendorscripts.bundle.js"></script>
 
-    <!-- menu js -->
-    <script src="assets/js/pcoded.min.js"></script>
-    <script src="assets/js/vertical/vertical-layout.min.js "></script>
+<script src="assets/bundles/c3.bundle.js"></script>
+<script src="assets/bundles/flotscripts.bundle.js"></script><!-- flot charts Plugin Js -->
+<script src="assets/bundles/knob.bundle.js"></script>
 
-    <script type="text/javascript" src="assets/js/script.js "></script>
-    <script type="text/javascript" src="assets/js/axios.min.js "></script>
-    <script type="text/javascript" src="assets/js/toastify.min.js "></script>
+<!-- Project Common JS -->
+<script src="assets/js/common.js"></script>
+<script src="assets/js/index.js"></script>
 
     <?= $this->renderSection('extra-scripts') ?>
 </body>

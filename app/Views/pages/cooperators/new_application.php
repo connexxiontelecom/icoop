@@ -38,8 +38,8 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label label-custom" >Staff ID:</label>
-                        <div class="col-sm-8 input-custom" >
+                        <label class="col-sm-4 col-form-label" >Staff ID:</label>
+                        <div class="col-sm-8" >
                             <input type="text" name="application_staff_id" class="form-control">
                         </div>
                     </div>
