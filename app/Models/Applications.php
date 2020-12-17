@@ -23,5 +23,15 @@ class Applications extends \CodeIgniter\Model
 
     ];
 
+    public function get_pending_verification(){
+        $builder = $this->db->table('applications');
+        $builder->join('locations', 'locations.location_id = applications.application_location_id');
+        $builder->join('departments', 'departments.department_id = applications.application_department_id');
+        $builder->join('payroll_groups', 'payroll_groups.pg_id = applications.application_payroll_group_id');
+        $builder->join('states', 'state.state_id = applications.application_state_id');
+        $builder->join('banks', 'banks.bank_id = applications.application_bank_id');
+        return $builder->get()->getResultObject();
+    }
+
 
 }
