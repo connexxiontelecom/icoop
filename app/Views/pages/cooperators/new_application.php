@@ -111,7 +111,9 @@
                                         <label class="input-group-text" for="inputGroupSelect01">Department:</label>
                                     </div>
                                     <select class="custom-select" name="application_department_id" id="application_department" onkeyup="preview_form('application_department')">
-                                        <option value="1">-- Department --</option>
+                                        <?php foreach($departments as $department): ?>
+                                            <option value="<?=$department['department_id']; ?>"><?=$department['department_name']; ?></option>
+                                        <?php endforeach; ?>
                                     </select>
                                 </div>
 
@@ -164,7 +166,9 @@
                                         <label class="input-group-text" for="inputGroupSelect01">State:</label>
                                     </div>
                                     <select class="custom-select" name="application_state_id" onchange="preview_form('application_state_id')" id="application_state_id">
-                                        <option value="1">-- L --</option>
+                                        <?php foreach($states as $state): ?>
+                                            <option value="<?=$state['state_id']; ?>"><?=$state['state_name'] ?></option>
+                                        <?php endforeach; ?>
                                     </select>
                                 </div>
                                 <div class="input-group input-group-sm mb-3">
@@ -270,7 +274,7 @@
                                         <label class="input-group-text" for="inputGroupSelect01">Bank:</label>
                                     </div>
                                     <select class="custom-select" name="application_bank_id" onchange="preview_form('application_bank_id')" id="application_bank_id">
-                                        <option value="1">-- L --</option>
+                                        <option value="1"> Gt </option>
                                     </select>
                                 </div>
 
@@ -358,28 +362,324 @@
                 <h2>Preview</h2>
                 <section style="background-color: white">
 
-                    <div  style="margin-top: 10%">
+
                         <div class="body">
                            <div class="row">
-                               <div class="col-sm-3">
+                               <div class="col-sm-12">
+
+                                       <b><p>Personal Details:</p> </b> <br>
+                                       <div class="row">
+                                           <div class="col-sm-6">
+
+                                               <div class="input-group input-group-sm mb-3">
+                                                   <div class="input-group-prepend">
+                                                       <span class="input-group-text" id="inputGroup-sizing-sm">Staff ID:</span>
+                                                   </div>
+                                                   <input type="text"   id="application_staff_ida" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                               </div>
+
+                                               <div class="input-group input-group-sm mb-3">
+                                                   <div class="input-group-prepend">
+                                                       <span class="input-group-text" id="inputGroup-sizing-sm">First Name:</span>
+                                                   </div>
+                                                   <input type="text"   id="application_first_namea" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                               </div>
+                                               <div class="input-group input-group-sm mb-3">
+                                                   <div class="input-group-prepend">
+                                                       <span class="input-group-text" id="inputGroup-sizing-sm">Last Name:</span>
+                                                   </div>
+                                                   <input type="text"  id="application_last_namea" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                               </div>
+
+                                               <div class="input-group input-group-sm mb-3">
+                                                   <div class="input-group-prepend">
+                                                       <span class="input-group-text" id="inputGroup-sizing-sm">Other Name:</span>
+                                                   </div>
+                                                   <input type="text"   id="application_other_namea" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                               </div>
+
+                                               <div class="input-group input-group-sm mb-3">
+                                                   <div class="input-group-prepend">
+                                                       <span class="input-group-text" id="inputGroup-sizing-sm">E-Mail:</span>
+                                                   </div>
+                                                   <input type="email"  id="application_emaila" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                               </div>
+
+
+
+                                               <div class="input-group input-group-sm mb-3">
+                                                   <div class="input-group-prepend">
+                                                       <span class="input-group-text" id="inputGroup-sizing-sm">Date of Birth:</span>
+                                                   </div>
+                                                   <input type="date"  id="application_doba" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                               </div>
+
+
+                                           </div>
+
+                                           <div class="col-sm-6">
+                                               <div class="input-group mb-3">
+                                                   <div class="input-group-prepend">
+                                                       <label class="input-group-text" for="inputGroupSelect01">Gender:</label>
+                                                   </div>
+                                                   <select class="custom-select"  id="application_gendera">
+                                                       <option value="">-- Gender --</option>
+                                                       <option value="male">Male</option>
+                                                       <option value="female">Female</option>
+                                                   </select>
+                                               </div>
+
+
+                                               <div class="input-group mb-3">
+                                                   <div class="input-group-prepend">
+                                                       <label class="input-group-text" for="inputGroupSelect01">Location:</label>
+                                                   </div>
+                                                   <select class="custom-select"  id="application_location_ida">
+                                                       <option value="1">-- L --</option>
+                                                   </select>
+                                               </div>
+
+
+                                               <div class="input-group mb-3">
+                                                   <div class="input-group-prepend">
+                                                       <label class="input-group-text" for="inputGroupSelect01">Department:</label>
+                                                   </div>
+                                                   <select class="custom-select"  id="application_departmenta">
+                                                       <?php foreach($departments as $department): ?>
+                                                           <option value="<?=$department['department_id']; ?>"><?=$department['department_name']; ?></option>
+                                                       <?php endforeach; ?>
+                                                   </select>
+                                               </div>
+
+                                               <div class="input-group mb-3">
+                                                   <div class="input-group-prepend">
+                                                       <label class="input-group-text" for="inputGroupSelect01">Payroll Group:</label>
+                                                   </div>
+                                                   <select class="custom-select"  id="application_payroll_group_ida">
+                                                       <option value="1">-- PG --</option>
+                                                   </select>
+                                               </div>
+
+
+
+
+
+                                           </div>
+
+                                       </div>
+                                       <br>  <b> <p>Contact Details:</p> </b>
+                                       <fieldset>
+                                           <div class="row">
+                                               <div class="col-sm-6">
+
+                                                   <div class="input-group">
+                                                       <div class="input-group-prepend">
+                                                           <span class="input-group-text">Address:</span>
+                                                       </div>
+                                                       <textarea rows="6" cols="5"   class="form-control" id="application_addressa" aria-label="Address"></textarea>
+                                                   </div>
+
+
+
+
+
+
+                                               </div>
+
+                                               <div class="col-sm-6">
+
+                                                   <div class="input-group mb-3">
+                                                       <div class="input-group-prepend">
+                                                           <label class="input-group-text" for="inputGroupSelect01">State:</label>
+                                                       </div>
+                                                       <select class="custom-select"  id="application_state_ida">
+                                                           <?php foreach($states as $state): ?>
+                                                               <option value="<?=$state['state_id']; ?>"><?=$state['state_name'] ?></option>
+                                                           <?php endforeach; ?>
+                                                       </select>
+                                                   </div>
+                                                   <div class="input-group input-group-sm mb-3">
+                                                       <div class="input-group-prepend">
+                                                           <span class="input-group-text" id="inputGroup-sizing-sm">City:</span>
+                                                       </div>
+                                                       <input type="text"  class="form-control" id="application_citya" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                                   </div>
+
+                                                   <div class="input-group input-group-sm mb-3">
+                                                       <div class="input-group-prepend">
+                                                           <span class="input-group-text" id="inputGroup-sizing-sm">Telephone:</span>
+                                                       </div>
+                                                       <input type="text"  class="form-control" id="application_telephonea" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                                   </div>
+
+
+
+                                               </div>
+
+                                           </div>
+
+
+                                       </fieldset>
+                                       <br> <b> <p>Next of Kin:</p> </b> <br>
+                                       <fieldset>
+                                           <div class="row">
+                                               <div class="col-sm-6">
+
+                                                   <div class="input-group input-group-sm mb-3">
+                                                       <div class="input-group-prepend">
+                                                           <span class="input-group-text" id="inputGroup-sizing-sm">Full Name:</span>
+                                                       </div>
+                                                       <input type="text"  id="application_kin_fullnamea" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                                   </div>
+
+                                                   <div class="input-group input-group-sm mb-3">
+                                                       <div class="input-group-prepend">
+                                                           <span class="input-group-text" id="inputGroup-sizing-sm">Email:</span>
+                                                       </div>
+                                                       <input type="email"  id="application_kin_emaila" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                                   </div>
+
+                                                   <div class="input-group input-group-sm mb-3">
+                                                       <div class="input-group-prepend">
+                                                           <span class="input-group-text" id="inputGroup-sizing-sm">Telephone:</span>
+                                                       </div>
+                                                       <input type="text"  id="application_kin_phonea" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                                   </div>
+
+
+                                                   <div class="input-group mb-3">
+                                                       <div class="input-group-prepend">
+                                                           <label class="input-group-text" for="inputGroupSelect01">Relationship:</label>
+                                                       </div>
+                                                       <select class="custom-select"  id="application_kin_relationshipa">
+                                                           <option value="1">-- L --</option>
+                                                       </select>
+                                                   </div>
+
+
+
+
+
+
+
+
+                                               </div>
+
+                                               <div class="col-sm-6">
+
+                                                   <div class="input-group">
+                                                       <div class="input-group-prepend">
+                                                           <span class="input-group-text">Address:</span>
+                                                       </div>
+                                                       <textarea rows="7" cols="5" id="application_kin_addressa"  class="form-control" aria-label="Address"></textarea>
+                                                   </div>
+
+
+
+
+
+
+                                               </div>
+
+                                           </div>
+
+
+                                       </fieldset>
+                                       <br>  <b> <p>Bank Details:</p> </b> <br>
+                                       <fieldset>
+                                           <div class="row">
+                                               <div class="col-sm-6">
+
+                                                   <div class="input-group mb-3">
+                                                       <div class="input-group-prepend">
+                                                           <label class="input-group-text" for="inputGroupSelect01">Bank:</label>
+                                                       </div>
+                                                       <select class="custom-select"   id="application_bank_ida">
+                                                           <option value="1"> Gt</option>
+                                                       </select>
+                                                   </div>
+
+                                                   <div class="input-group input-group-sm mb-3">
+                                                       <div class="input-group-prepend">
+                                                           <span class="input-group-text" id="inputGroup-sizing-sm">Bank Branch:</span>
+                                                       </div>
+                                                       <input type="text"  id="application_bank_brancha" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                                   </div>
+                                               </div>
+
+                                               <div class="col-sm-6">
+
+                                                   <div class="input-group input-group-sm mb-4">
+                                                       <div class="input-group-prepend">
+                                                           <span class="input-group-text" id="inputGroup-sizing-sm">Account Number:</span>
+                                                       </div>
+                                                       <input type="text"  id="application_account_numbera" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                                   </div>
+
+                                                   <div class="input-group input-group-sm mb-4">
+                                                       <div class="input-group-prepend">
+                                                           <span class="input-group-text" id="inputGroup-sizing-sm">Sort Code:</span>
+                                                       </div>
+                                                       <input type="text"  id="application_sort_codea" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                                   </div>
+
+
+
+
+
+
+
+
+
+                                               </div>
+
+                                           </div>
+
+
+                                       </fieldset>
+                                       <br> <b> <p>Minimum Savings:</p> </b> <br>
+                                       <fieldset>
+                                           <div class="row">
+                                               <div class="col-sm-6">
+
+                                                   <div class="form-group row">
+                                                       <label class="col-sm-4 col-form-label label-custom">Savings:</label>
+                                                       <div class="col-sm-8 input-custom">
+                                                           <input type="text"  id="application_savingsa" class="form-control">
+                                                       </div>
+                                                   </div>
+
+
+                                               </div>
+
+                                               <div class="col-sm-6">
+                                                   <div class="form-group row">
+                                                       <label class="col-sm-4 col-form-label label-custom">Account Number:</label>
+                                                       <div class="col-sm-8 input-custom">
+                                                           <input type="text"  id="application_account_numbera" class="form-control">
+                                                       </div>
+                                                   </div>
+
+
+
+
+
+
+                                               </div>
+
+                                           </div>
+
+
+                                       </fieldset>
+
 
                                </div>
 
-                                <div class="col-sm-3">
-                                    <button class="btn btn-primary btn-block" id="preview" type="button">Preview</button></td>
-                                </div>
-                               <div class="col-sm-3">
-                                   <button class="btn btn-primary btn-block" type="submit">Submit</button></td>
-                               </div>
 
-
-                               <div class="col-sm-3">
-
-                               </div>
 
                            </div>
                         </div>
-                    </div>
+
 
                 </section>
             </div>
@@ -398,308 +698,7 @@
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <b><p>Personal Details:</p> </b> <br>
-                <div class="row">
-                    <div class="col-sm-6">
 
-                        <div class="input-group input-group-sm mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroup-sizing-sm">Staff ID:</span>
-                            </div>
-                            <input type="text"  name="application_staff_id" id="application_staff_ida" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                        </div>
-
-                        <div class="input-group input-group-sm mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroup-sizing-sm">First Name:</span>
-                            </div>
-                            <input type="text"  name="application_first_name" id="application_first_namea" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                        </div>
-                        <div class="input-group input-group-sm mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroup-sizing-sm">Last Name:</span>
-                            </div>
-                            <input type="text" name="application_last_name" id="application_last_namea" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                        </div>
-
-                        <div class="input-group input-group-sm mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroup-sizing-sm">Other Name:</span>
-                            </div>
-                            <input type="text"  name="application_other_name" id="application_other_namea" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                        </div>
-
-                        <div class="input-group input-group-sm mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroup-sizing-sm">E-Mail:</span>
-                            </div>
-                            <input type="email" name="application_email" id="application_emaila" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                        </div>
-
-
-
-                        <div class="input-group input-group-sm mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroup-sizing-sm">Date of Birth:</span>
-                            </div>
-                            <input type="date" name="application_dob" id="application_doba" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                        </div>
-
-
-                    </div>
-
-                    <div class="col-sm-6">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <label class="input-group-text" for="inputGroupSelect01">Gender:</label>
-                            </div>
-                            <select class="custom-select" name="application_gender" id="application_gendera">
-                                <option value="">-- Gender --</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                            </select>
-                        </div>
-
-
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <label class="input-group-text" for="inputGroupSelect01">Location:</label>
-                            </div>
-                            <select class="custom-select" name="application_location_id" id="application_location_ida">
-                                <option value="1">-- L --</option>
-                            </select>
-                        </div>
-
-
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <label class="input-group-text" for="inputGroupSelect01">Department:</label>
-                            </div>
-                            <select class="custom-select" name="application_department_id" id="application_departmenta">
-                                <option value="1">-- Department --</option>
-                            </select>
-                        </div>
-
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <label class="input-group-text" for="inputGroupSelect01">Payroll Group:</label>
-                            </div>
-                            <select class="custom-select" name="application_payroll_group_id" id="application_payroll_group_ida">
-                                <option value="1">-- PG --</option>
-                            </select>
-                        </div>
-
-
-
-
-
-                    </div>
-
-                </div>
-                <br>  <b> <p>Contact Details:</p> </b>
-                <fieldset>
-                    <div class="row">
-                        <div class="col-sm-6">
-
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">Address:</span>
-                                </div>
-                                <textarea rows="6" cols="5"  name="application_address" class="form-control" id="application_addressa" aria-label="Address"></textarea>
-                            </div>
-
-
-
-
-
-
-                        </div>
-
-                        <div class="col-sm-6">
-
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <label class="input-group-text" for="inputGroupSelect01">State:</label>
-                                </div>
-                                <select class="custom-select" name="application_state_id" id="application_state_ida">
-                                    <option value="1">-- L --</option>
-                                </select>
-                            </div>
-                            <div class="input-group input-group-sm mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="inputGroup-sizing-sm">City:</span>
-                                </div>
-                                <input type="text" name="application_city" class="form-control" id="application_citya" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                            </div>
-
-                            <div class="input-group input-group-sm mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="inputGroup-sizing-sm">Telephone:</span>
-                                </div>
-                                <input type="text" name="application_telephone" class="form-control" id="application_telephonea" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                            </div>
-
-
-
-                        </div>
-
-                    </div>
-
-
-                </fieldset>
-                <br> <b> <p>Next of Kin:</p> </b> <br>
-                <fieldset>
-                    <div class="row">
-                        <div class="col-sm-6">
-
-                            <div class="input-group input-group-sm mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="inputGroup-sizing-sm">Full Name:</span>
-                                </div>
-                                <input type="text" name="application_kin_fullname" id="application_kin_fullnamea" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                            </div>
-
-                            <div class="input-group input-group-sm mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="inputGroup-sizing-sm">Email:</span>
-                                </div>
-                                <input type="email" name="application_kin_email" id="application_kin_emaila" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                            </div>
-
-                            <div class="input-group input-group-sm mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="inputGroup-sizing-sm">Telephone:</span>
-                                </div>
-                                <input type="text" name="application_kin_phone" id="application_kin_phonea" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                            </div>
-
-
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <label class="input-group-text" for="inputGroupSelect01">Relationship:</label>
-                                </div>
-                                <select class="custom-select" name="application_kin_relationship"  id="application_kin_relationshipa">
-                                    <option value="1">-- L --</option>
-                                </select>
-                            </div>
-
-
-
-
-
-
-
-
-                        </div>
-
-                        <div class="col-sm-6">
-
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">Address:</span>
-                                </div>
-                                <textarea rows="7" cols="5" id="application_kin_addressa" name="application_kin_address" class="form-control" aria-label="Address"></textarea>
-                            </div>
-
-
-
-
-
-
-                        </div>
-
-                    </div>
-
-
-                </fieldset>
-                <br>  <b> <p>Bank Details:</p> </b> <br>
-                <fieldset>
-                    <div class="row">
-                        <div class="col-sm-6">
-
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <label class="input-group-text" for="inputGroupSelect01">Bank:</label>
-                                </div>
-                                <select class="custom-select" name="application_bank_id"  id="application_bank_ida">
-                                    <option value="1">-- L --</option>
-                                </select>
-                            </div>
-
-                            <div class="input-group input-group-sm mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="inputGroup-sizing-sm">Bank Branch:</span>
-                                </div>
-                                <input type="text" name="application_bank_branch" id="application_bank_brancha" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                            </div>
-                        </div>
-
-                        <div class="col-sm-6">
-
-                            <div class="input-group input-group-sm mb-4">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="inputGroup-sizing-sm">Account Number:</span>
-                                </div>
-                                <input type="text" name="application_account_number" id="application_account_numbera" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                            </div>
-
-                            <div class="input-group input-group-sm mb-4">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="inputGroup-sizing-sm">Sort Code:</span>
-                                </div>
-                                <input type="text" name="application_sort_code" id="application_sort_codea" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-                            </div>
-
-
-
-
-
-
-
-
-
-                        </div>
-
-                    </div>
-
-
-                </fieldset>
-                <br> <b> <p>Minimum Savings:</p> </b> <br>
-                <fieldset>
-                    <div class="row">
-                        <div class="col-sm-6">
-
-                            <div class="form-group row">
-                                <label class="col-sm-4 col-form-label label-custom">Savings:</label>
-                                <div class="col-sm-8 input-custom">
-                                    <input type="text" name="application_savings" id="application_savingsa" class="form-control">
-                                </div>
-                            </div>
-
-
-                        </div>
-
-                        <div class="col-sm-6">
-                            <div class="form-group row">
-                                <label class="col-sm-4 col-form-label label-custom">Account Number:</label>
-                                <div class="col-sm-8 input-custom">
-                                    <input type="text" name="application_account_number" id="application_account_numbera" class="form-control">
-                                </div>
-                            </div>
-
-
-
-
-
-
-                        </div>
-
-                    </div>
-
-
-                </fieldset>
-            </div>
         </div>
     </div>
 </div>
@@ -731,6 +730,8 @@
 
 
         $(document).ready(function(){
+
+
 
 
             $("#preview").click(function(){
