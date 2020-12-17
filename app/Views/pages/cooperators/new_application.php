@@ -15,6 +15,8 @@
 
 <link rel="stylesheet" href="assets/vendor/jquery-steps/jquery.steps.css">
 <link rel="stylesheet" href="assets/vendor/dropify/css/dropify.min.css">
+<link rel="stylesheet" href="assets/third-party/previewForm/previewForm.css">
+
 
 <?= $this->endSection() ?>
 
@@ -39,34 +41,34 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-sm">Staff ID:</span>
                                     </div>
-                                    <input type="text"  name="application_staff_id" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                    <input type="text"  name="application_staff_id" id="application_staff_id" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                                 </div>
 
                                 <div class="input-group input-group-sm mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-sm">First Name:</span>
                                     </div>
-                                    <input type="text"  name="application_first_name" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                    <input type="text"  name="application_first_name" id="application_first_name" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                                 </div>
                                 <div class="input-group input-group-sm mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-sm">Last Name:</span>
                                     </div>
-                                    <input type="text" name="application_last_name" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                    <input type="text" name="application_last_name" id="application_last_name" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                                 </div>
 
                                 <div class="input-group input-group-sm mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-sm">Other Name:</span>
                                     </div>
-                                    <input type="text"  name="application_other_name" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                    <input type="text"  name="application_other_name" id="application_other_name" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                                 </div>
 
                                 <div class="input-group input-group-sm mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-sm">E-Mail:</span>
                                     </div>
-                                    <input type="email" name="application_email" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                    <input type="email" name="application_email" id="application_email" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                                 </div>
 
 
@@ -75,7 +77,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-sm">Date of Birth:</span>
                                     </div>
-                                    <input type="date" name="application_payroll_group" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                    <input type="date" name="application_dob" id="application_dob" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                                 </div>
 
 
@@ -86,7 +88,7 @@
                                     <div class="input-group-prepend">
                                         <label class="input-group-text" for="inputGroupSelect01">Gender:</label>
                                     </div>
-                                    <select class="custom-select" name="application_gender" id="inputGroupSelect01">
+                                    <select class="custom-select" name="application_gender" id="application_gender">
                                         <option value="">-- Gender --</option>
                                         <option value="male">Male</option>
                                         <option value="female">Female</option>
@@ -98,7 +100,7 @@
                                     <div class="input-group-prepend">
                                         <label class="input-group-text" for="inputGroupSelect01">Location:</label>
                                     </div>
-                                    <select class="custom-select" name="application_location_id" id="inputGroupSelect01">
+                                    <select class="custom-select" name="application_location_id" id="application_location_id">
                                         <option value="1">-- L --</option>
                                     </select>
                                 </div>
@@ -108,7 +110,7 @@
                                     <div class="input-group-prepend">
                                         <label class="input-group-text" for="inputGroupSelect01">Department:</label>
                                     </div>
-                                    <select class="custom-select" name="application_department_id" id="inputGroupSelect01">
+                                    <select class="custom-select" name="application_department_id" id="application_departmenta">
                                         <option value="1">-- Department --</option>
                                     </select>
                                 </div>
@@ -117,7 +119,7 @@
                                     <div class="input-group-prepend">
                                         <label class="input-group-text" for="inputGroupSelect01">Payroll Group:</label>
                                     </div>
-                                    <select class="custom-select" name="application_payroll_group_id" id="inputGroupSelect01">
+                                    <select class="custom-select" name="application_payroll_group_id" id="application_payroll_group_ida">
                                         <option value="1">-- PG --</option>
                                     </select>
                                 </div>
@@ -145,7 +147,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">Address:</span>
                                     </div>
-                                    <textarea rows="6" cols="5"  name="application_address" class="form-control" aria-label="Address"></textarea>
+                                    <textarea rows="6" cols="5"  name="application_address" class="form-control" id="application_address" aria-label="Address"></textarea>
                                 </div>
 
 
@@ -161,7 +163,7 @@
                                     <div class="input-group-prepend">
                                         <label class="input-group-text" for="inputGroupSelect01">State:</label>
                                     </div>
-                                    <select class="custom-select" name="application_state_id" id="inputGroupSelect01">
+                                    <select class="custom-select" name="application_state_id" id="application_state_id">
                                         <option value="1">-- L --</option>
                                     </select>
                                 </div>
@@ -169,14 +171,14 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-sm">City:</span>
                                     </div>
-                                    <input type="text" name="application_city" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                    <input type="text" name="application_city" class="form-control" id="application_city" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                                 </div>
 
                                 <div class="input-group input-group-sm mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-sm">Telephone:</span>
                                     </div>
-                                    <input type="text" name="application_telephone" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                    <input type="text" name="application_telephone" class="form-control" id="application_telephone" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                                 </div>
 
 
@@ -198,21 +200,21 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-sm">Full Name:</span>
                                     </div>
-                                    <input type="text" name="application_kin_fullname" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                    <input type="text" name="application_kin_fullname" id="application_kin_fullname" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                                 </div>
 
                                 <div class="input-group input-group-sm mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-sm">Email:</span>
                                     </div>
-                                    <input type="email" name="application_kin_email" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                    <input type="email" name="application_kin_email" id="application_kin_email" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                                 </div>
 
                                 <div class="input-group input-group-sm mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-sm">Telephone:</span>
                                     </div>
-                                    <input type="text" name="application_kin_phone" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                    <input type="text" name="application_kin_phone" id="application_kin_phone" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                                 </div>
 
 
@@ -220,7 +222,7 @@
                                     <div class="input-group-prepend">
                                         <label class="input-group-text" for="inputGroupSelect01">Relationship:</label>
                                     </div>
-                                    <select class="custom-select" name="application_kin_relationship"  id="inputGroupSelect01">
+                                    <select class="custom-select" name="application_kin_relationship"  id="application_kin_relationship">
                                         <option value="1">-- L --</option>
                                     </select>
                                 </div>
@@ -240,7 +242,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">Address:</span>
                                     </div>
-                                    <textarea rows="7" cols="5"  name="application_kin_address" class="form-control" aria-label="Address"></textarea>
+                                    <textarea rows="7" cols="5" id="application_kin_address" name="application_kin_address" class="form-control" aria-label="Address"></textarea>
                                 </div>
 
 
@@ -267,7 +269,7 @@
                                     <div class="input-group-prepend">
                                         <label class="input-group-text" for="inputGroupSelect01">Bank:</label>
                                     </div>
-                                    <select class="custom-select" name="application_bank_id"  id="inputGroupSelect01">
+                                    <select class="custom-select" name="application_bank_id"  id="application_bank_id">
                                         <option value="1">-- L --</option>
                                     </select>
                                 </div>
@@ -276,7 +278,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-sm">Bank Branch:</span>
                                     </div>
-                                    <input type="text" name="application_bank_branch" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                    <input type="text" name="application_bank_branch" id="application_bank_branch" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                                 </div>
                             </div>
 
@@ -286,14 +288,14 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-sm">Account Number:</span>
                                     </div>
-                                    <input type="text" name="application_account_number" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                    <input type="text" name="application_account_number" id="application_account_number" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                                 </div>
 
                                 <div class="input-group input-group-sm mb-4">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-sm">Sort Code:</span>
                                     </div>
-                                    <input type="text" name="application_sort_code" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                    <input type="text" name="application_sort_code" id="application_sort_code" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                                 </div>
 
 
@@ -321,7 +323,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-4 col-form-label label-custom">Savings:</label>
                                     <div class="col-sm-8 input-custom">
-                                        <input type="text" name="application_savings" class="form-control">
+                                        <input type="text" name="application_savings" id="application_savings" class="form-control">
                                     </div>
                                 </div>
 
@@ -332,7 +334,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-4 col-form-label label-custom">Account Number:</label>
                                     <div class="col-sm-8 input-custom">
-                                        <input type="text" name="application_account_number" class="form-control">
+                                        <input type="text" name="application_account_number" id="application_account_number" class="form-control">
                                     </div>
                                 </div>
 
@@ -364,7 +366,7 @@
                                </div>
 
                                 <div class="col-sm-3">
-                                    <button class="btn btn-primary btn-block" type="button">Preview</button></td>
+                                    <button class="btn btn-primary btn-block" id="preview" type="button">Preview</button></td>
                                 </div>
                                <div class="col-sm-3">
                                    <button class="btn btn-primary btn-block" type="submit">Submit</button></td>
@@ -387,6 +389,320 @@
 </div>
 
 
+<div class="modal fade bd-example-modal-lg" id="preview-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title h4" id="myLargeModalLabel"><b> Preview Before Submitting </b></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <b><p>Personal Details:</p> </b> <br>
+                <div class="row">
+                    <div class="col-sm-6">
+
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Staff ID:</span>
+                            </div>
+                            <input type="text"  name="application_staff_id" id="application_staff_id" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                        </div>
+
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">First Name:</span>
+                            </div>
+                            <input type="text"  name="application_first_name" id="application_first_name" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Last Name:</span>
+                            </div>
+                            <input type="text" name="application_last_name" id="application_last_name" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                        </div>
+
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Other Name:</span>
+                            </div>
+                            <input type="text"  name="application_other_name" id="application_other_name" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                        </div>
+
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">E-Mail:</span>
+                            </div>
+                            <input type="email" name="application_email" id="application_email" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                        </div>
+
+
+
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Date of Birth:</span>
+                            </div>
+                            <input type="date" name="application_dob" id="application_dob" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="inputGroupSelect01">Gender:</label>
+                            </div>
+                            <select class="custom-select" name="application_gender" id="application_gender">
+                                <option value="">-- Gender --</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="inputGroupSelect01">Location:</label>
+                            </div>
+                            <select class="custom-select" name="application_location_id" id="application_location_id">
+                                <option value="1">-- L --</option>
+                            </select>
+                        </div>
+
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="inputGroupSelect01">Department:</label>
+                            </div>
+                            <select class="custom-select" name="application_department_id" id="application_department">
+                                <option value="1">-- Department --</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="inputGroupSelect01">Payroll Group:</label>
+                            </div>
+                            <select class="custom-select" name="application_payroll_group_id" id="application_payroll_group_id">
+                                <option value="1">-- PG --</option>
+                            </select>
+                        </div>
+
+
+
+
+
+                    </div>
+
+                </div>
+                <br>  <b> <p>Contact Details:</p> </b>
+                <fieldset>
+                    <div class="row">
+                        <div class="col-sm-6">
+
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Address:</span>
+                                </div>
+                                <textarea rows="6" cols="5"  name="application_address" class="form-control" id="application_address" aria-label="Address"></textarea>
+                            </div>
+
+
+
+
+
+
+                        </div>
+
+                        <div class="col-sm-6">
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text" for="inputGroupSelect01">State:</label>
+                                </div>
+                                <select class="custom-select" name="application_state_id" id="application_state_id">
+                                    <option value="1">-- L --</option>
+                                </select>
+                            </div>
+                            <div class="input-group input-group-sm mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-sm">City:</span>
+                                </div>
+                                <input type="text" name="application_city" class="form-control" id="application_city" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                            </div>
+
+                            <div class="input-group input-group-sm mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-sm">Telephone:</span>
+                                </div>
+                                <input type="text" name="application_telephone" class="form-control" id="application_telephone" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                            </div>
+
+
+
+                        </div>
+
+                    </div>
+
+
+                </fieldset>
+                <br> <b> <p>Next of Kin:</p> </b> <br>
+                <fieldset>
+                    <div class="row">
+                        <div class="col-sm-6">
+
+                            <div class="input-group input-group-sm mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-sm">Full Name:</span>
+                                </div>
+                                <input type="text" name="application_kin_fullname" id="application_kin_fullname" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                            </div>
+
+                            <div class="input-group input-group-sm mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-sm">Email:</span>
+                                </div>
+                                <input type="email" name="application_kin_email" id="application_kin_email" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                            </div>
+
+                            <div class="input-group input-group-sm mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-sm">Telephone:</span>
+                                </div>
+                                <input type="text" name="application_kin_phone" id="application_kin_phone" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                            </div>
+
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text" for="inputGroupSelect01">Relationship:</label>
+                                </div>
+                                <select class="custom-select" name="application_kin_relationship"  id="application_kin_relationship">
+                                    <option value="1">-- L --</option>
+                                </select>
+                            </div>
+
+
+
+
+
+
+
+
+                        </div>
+
+                        <div class="col-sm-6">
+
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Address:</span>
+                                </div>
+                                <textarea rows="7" cols="5" id="application_kin_address" name="application_kin_address" class="form-control" aria-label="Address"></textarea>
+                            </div>
+
+
+
+
+
+
+                        </div>
+
+                    </div>
+
+
+                </fieldset>
+                <br>  <b> <p>Bank Details:</p> </b> <br>
+                <fieldset>
+                    <div class="row">
+                        <div class="col-sm-6">
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text" for="inputGroupSelect01">Bank:</label>
+                                </div>
+                                <select class="custom-select" name="application_bank_id"  id="application_bank_id">
+                                    <option value="1">-- L --</option>
+                                </select>
+                            </div>
+
+                            <div class="input-group input-group-sm mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-sm">Bank Branch:</span>
+                                </div>
+                                <input type="text" name="application_bank_branch" id="application_bank_branch" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+
+                            <div class="input-group input-group-sm mb-4">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-sm">Account Number:</span>
+                                </div>
+                                <input type="text" name="application_account_number" id="application_account_number" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                            </div>
+
+                            <div class="input-group input-group-sm mb-4">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-sm">Sort Code:</span>
+                                </div>
+                                <input type="text" name="application_sort_code" id="application_sort_code" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                            </div>
+
+
+
+
+
+
+
+
+
+                        </div>
+
+                    </div>
+
+
+                </fieldset>
+                <br> <b> <p>Minimum Savings:</p> </b> <br>
+                <fieldset>
+                    <div class="row">
+                        <div class="col-sm-6">
+
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label label-custom">Savings:</label>
+                                <div class="col-sm-8 input-custom">
+                                    <input type="text" name="application_savings" id="application_savings" class="form-control">
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label label-custom">Account Number:</label>
+                                <div class="col-sm-8 input-custom">
+                                    <input type="text" name="application_account_number" id="application_account_number" class="form-control">
+                                </div>
+                            </div>
+
+
+
+
+
+
+                        </div>
+
+                    </div>
+
+
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
@@ -403,8 +719,14 @@
 <script src="assets/vendor/dropify/js/dropify.js"></script>
 <script src="assets/js/common.js"></script>
 <script src="assets/js/pages/forms/dropify.js"></script>
+<script src="assets/third-party/previewForm/previewForm.js"></script>
     <script>
         $(document).ready(function(){
+            $("#preview").click(function(){
+
+                // show Modal
+                $('#preview-modal').modal('show');
+            });
             $('.simpletable').DataTable();
 
             $('.error-wrapper').hide();
