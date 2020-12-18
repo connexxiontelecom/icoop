@@ -1,14 +1,14 @@
 <?= $this->extend('layouts/master') ?>
 
 <?= $this->section('title') ?>
-Verify Applications
+Approve Applications
 <?= $this->endSection() ?>
 
 <?= $this->section('current_page') ?>
-Verify Applications
+Approve Applications
 <?= $this->endSection() ?>
 <?= $this->section('page_crumb') ?>
-Verify Applications
+Approve Applications
 <?= $this->endSection() ?>
 
 <?= $this->section('extra-styles') ?>
@@ -25,7 +25,7 @@ Verify Applications
     <div class="col-lg-12">
         <div class="card">
             <div class="header">
-                <h2>Verify Applications</h2>
+                <h2>Approve Applications</h2>
 
             </div>
             <div class="body">
@@ -39,24 +39,26 @@ Verify Applications
                             <th>Department</th>
                             <th>Location</th>
                             <th>Date Applied</th>
+                            <th>Date Verified</th>
                             <th>Action</th>
                         </tr>
                         </thead>
 
                         <tbody>
                         <?php $sn = 1; foreach ($applications as $application): ?>
-                        <tr>
+                            <tr>
 
-                            <td><?=$sn; ?></td>
-                            <td><?=$application->application_staff_id; ?></td>
-                            <td><?=$application->application_first_name.' '.$application->application_last_name; ?></td>
-                            <td><?=$application->department_name; ?></td>
-                            <td><?=$application->location_name; ?></td>
-                            <td><?=$application->application_date; ?></td>
-                            <td> <button onclick="location.href='<?php echo site_url('verify_application')."/".$application->application_id;?>'" type="button" class="btn btn-icon icon-left btn-primary"><i class="fa fa-eye"></i></button>
-                            </td>
-                        </tr>
-                       <?php $sn++; endforeach; ?>
+                                <td><?=$sn; ?></td>
+                                <td><?=$application->application_staff_id; ?></td>
+                                <td><?=$application->application_first_name.' '.$application->application_last_name; ?></td>
+                                <td><?=$application->department_name; ?></td>
+                                <td><?=$application->location_name; ?></td>
+                                <td><?=$application->application_date; ?></td>
+                                <td><?=$application->application_verify_date; ?></td>
+                                <td> <button onclick="location.href='<?php echo site_url('approve_application')."/".$application->application_id;?>'" type="button" class="btn btn-icon icon-left btn-primary"><i class="fa fa-eye"></i></button>
+                                </td>
+                            </tr>
+                            <?php $sn++; endforeach; ?>
                         </tbody>
                     </table>
                 </div>
@@ -130,3 +132,4 @@ Verify Applications
     });
 </script>
 <?= $this->endSection() ?>
+

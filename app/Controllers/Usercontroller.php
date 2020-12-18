@@ -58,7 +58,8 @@ class Usercontroller extends BaseController
                             'user_id'=> $data['user_id'],
                             'user_email'=>$data['email'],
                             'user_username' => $data['email'],
-                            'user_first_name'=>$data['first_name']
+                            'user_first_name'=>$data['first_name'],
+                            'user_last_name' => $data['last_name']
                         ];
                         $session->set($ses_data);
                         return redirect()->to('/dashboard');

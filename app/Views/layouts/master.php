@@ -225,8 +225,8 @@
                                     <a href="#" class="has-arrow"><i class="icon-lock"></i><span>Cooperators</span></a>
                                     <ul>
                                         <li><a href="<?=site_url('new_application') ?>">New Application</a></li>
-                                        <li><a href="<?=site_url('state') ?>">Bank</a></li>
-                                        <li><a href="<?=site_url('departments') ?>">Departments</a></li>
+                                        <li><a href="<?=site_url('verify_application') ?>">Verify Applications</a></li>
+                                        <li><a href="<?=site_url('approve_application') ?>">Approve Applications</a></li>
                                         <li><a href="<?=site_url('state') ?>">Location</a></li>
                                         <li><a href="#">Coop</a></li>
                                     </ul>
