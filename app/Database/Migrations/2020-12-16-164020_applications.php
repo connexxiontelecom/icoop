@@ -2,7 +2,7 @@
 
 use CodeIgniter\Database\Migration;
 
-class Applications extends Migration
+class Applicationsd extends Migration
 {
 	public function up()
 	{

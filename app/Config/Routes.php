@@ -47,6 +47,11 @@ $routes->get('/dashboard', 'Usercontroller::dashboard');
 #House keeping routes
 $routes->get('/states', 'Housekeepingcontroller::states');
 $routes->post('/add-new-state', 'Housekeepingcontroller::addNewState');
+$routes->get('/locations', 'Housekeepingcontroller::locations');
+$routes->post('/add-new-location', 'Housekeepingcontroller::addNewLocation');
+$routes->post('/edit-location', 'Housekeepingcontroller::editLocation');
+$routes->get('/banks', 'Housekeepingcontroller::banks');
+$routes->post('/add-new-bank', 'Housekeepingcontroller::addNewBank');
 $routes->get('/departments', 'Housekeepingcontroller::departments');
 $routes->post('/add-new-department', 'Housekeepingcontroller::addNewDepartment');
 
