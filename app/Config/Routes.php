@@ -60,6 +60,9 @@ $routes->post('new_application', 'Cooperators::new_application');
 $routes->get('verify_application', 'Cooperators::verify_application');
 $routes->get('verify_application/(:num)', 'Cooperators::verify_application_/$1');
 $routes->post('verify_application/(:num)', 'Cooperators::verify_application_/$1');
+$routes->get('approve_application', 'Cooperators::approve_application');
+$routes->get('approve_application/(:num)', 'Cooperators::approve_application_/$1');
+$routes->post('approve_application/(:num)', 'Cooperators::approve_application_/$1');
 
 /**
  * --------------------------------------------------------------------
