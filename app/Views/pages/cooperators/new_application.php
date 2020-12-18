@@ -126,7 +126,7 @@
                                             <label class="input-group-text" for="inputGroupSelect01">Payroll Group:</label>
                                         </div>
                                         <select class="custom-select" required name="application_payroll_group_id" id="application_payroll_group_id" onkeyup="preview_form('application_payroll_group_id')">
-                                            <option value="1">Test</option>
+
                                             <?php foreach ($pgs as $pg): ?>
                                                 <option value="<?=$pg['pg_id'] ?>"> <?=$pg['pg_name']; ?></option>
                                             <?php endforeach; ?>
@@ -463,11 +463,11 @@
                                                         <label class="input-group-text" for="inputGroupSelect01">Payroll Group:</label>
                                                     </div>
                                                     <select class="custom-select"  id="application_payroll_group_ida">
-                                                        <select class="custom-select"   id="application_bank_ida">
+
                                                             <?php foreach ($pgs as $pg): ?>
                                                                 <option disabled value="<?=$pg['pg_id'] ?>"> <?=$pg['pg_name']; ?></option>
                                                             <?php endforeach; ?>
-                                                        </select>
+
                                                     </select>
                                                 </div>
 

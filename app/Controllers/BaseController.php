@@ -27,7 +27,7 @@ class BaseController extends ResourceController
 	 *
 	 * @var array
 	 */
-	protected $helpers = ['form'];
+	protected $helpers = ['form', 'url'];
 
 	/**
 	 * Constructor.
