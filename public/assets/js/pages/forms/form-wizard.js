@@ -39,6 +39,12 @@ $(function () {
         },
         onStepChanged: function (event, currentIndex, priorIndex) {
             setButtonWavesEffect(event);
+        },
+
+        onFinished: function (event, currentIndex) {
+            // form.validate().settings.ignore = ':disabled';
+            // return form.valid();
+            $("form").submit();
         }
     });
 
@@ -67,7 +73,8 @@ $(function () {
             return form.valid();
         },
         onFinished: function (event, currentIndex) {
-            swal("Good job!", "Submitted!", "success");
+            // swal("Good job!", "Submitted!", "success");
+            $("form").submit();
         }
     });
 
