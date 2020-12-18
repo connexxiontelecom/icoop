@@ -235,35 +235,127 @@ class Cooperators extends BaseController
 
         public function verify_application_($application_id){
 
-           $application =  $this->application->get_application( $application_id);
+           $method = $this->request->getMethod();
 
-               if(!empty($application)):
+            if($method == 'post'):
 
-                   if($application->application_status == 0):
+                $application_status = $this->request->getVar('application_status');
+                $application_verify_comment = $this->request->getVar('application_verify_comment');
+                $application_discarded_reason = $this->request->getVar('application_discarded_reason');
 
-                      $data['application'] = $application;
-                       $data['states'] = $this->state->findAll();
-                       $data['departments'] = $this->department->findAll();
-                       $data['banks'] = $this->bank->findAll();
-                       $data['pgs'] = $this->pg->findAll();
+            if($application_status == 1):
 
-                       $username = $this->session->user_username;
+                $data = [
+                    'application_id' => $application_id,
+                    'application_status' => $application_status,
+                    'application_verify_comment'    => $application_verify_comment,
+                    'application_verify_by' => $this->session->user_first_name." ".$this->session->user_last_name,
+                    'application_verify_date' => date('Y-m-d')
+                ];
 
-                       $this->authenticate_user($username, 'pages/cooperators/verify_application_', $data);
+                $query = $this->application->save($data);
 
-                   else:
+                //$query = 1;
+
+                if($query == true):
+
+                    $data = array(
+                        'msg' => 'Application Verified',
+                        'type' => 'success',
+                        'location' => site_url('verify_application')
+
+                    );
+
+                    return view('pages/sweet-alert', $data);
+
+                else:
+                    $data = array(
+                        'msg' => 'An Error Occurred',
+                        'type' => 'error',
+                        'location' => site_url('verify_application')
+
+                    );
+
+                    return view('pages/sweet-alert', $data);
+
+                endif;
+
+              elseif($application_status == 3):
+
+                  $data = [
+                      'application_id' => $application_id,
+                      'application_status' => $application_status,
+                      'application_discard_reason'    => $application_discarded_reason,
+                      'application_discarded_by' => $this->session->user_first_name." ".$this->session->user_last_name,
+                      'application_discarded_date' => date('Y-m-d')
+                  ];
+
+                  $query = $this->application->update($application_id, $data);
+
+                  //$query = 1;
+
+                  if($query == true):
+
+                      $data = array(
+                          'msg' => 'Application Discarded',
+                          'type' => 'success',
+                          'location' => site_url('verify_application')
+
+                      );
+
+                      return view('pages/sweet-alert', $data);
+
+                  else:
+                      $data = array(
+                          'msg' => 'An Error Occurred',
+                          'type' => 'error',
+                          'location' => site_url('verify_application')
+
+                      );
+
+                      return view('pages/sweet-alert', $data);
+
+                  endif;
+
+            endif;
 
 
 
-                   endif;
 
-                 else:
+            else:
+
+                   $application =  $this->application->get_application( $application_id);
+
+                       if(!empty($application)):
+
+                           if($application->application_status == 0):
+
+                              $data['application'] = $application;
+                               $data['states'] = $this->state->findAll();
+                               $data['departments'] = $this->department->findAll();
+                               $data['banks'] = $this->bank->findAll();
+                               $data['pgs'] = $this->pg->findAll();
+
+                               $username = $this->session->user_username;
+
+                               $this->authenticate_user($username, 'pages/cooperators/verify_application_', $data);
+
+                           else:
 
 
 
-                 endif;
+                           endif;
+
+                         else:
+
+
+
+                         endif;
+            endif;
 
          }
+
+
 
         public function test_sweet(){
 

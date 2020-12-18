@@ -7,6 +7,7 @@ namespace App\Models;
 class Applications extends \CodeIgniter\Model
 {
     protected $table = 'applications';
+    protected $primaryKey = 'application_id';
 
     protected $allowedFields = [
         'application_id',  'application_staff_id', 'application_first_name', 'application_last_name', 'application_other_name',
