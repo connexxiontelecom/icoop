@@ -58,6 +58,7 @@ $routes->get('/policy-config', 'Policyconfigcontroller::index');
 $routes->get('new_application', 'Cooperators::new_application');
 $routes->post('new_application', 'Cooperators::new_application');
 $routes->get('verify_application', 'Cooperators::verify_application');
+$routes->get('verify_application/(:num)', 'Cooperators::verify_application_/$1');
 
 /**
  * --------------------------------------------------------------------

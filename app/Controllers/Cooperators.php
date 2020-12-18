@@ -225,18 +225,45 @@ class Cooperators extends BaseController
 
         public function verify_application(){
 
-            $data['states'] = $this->state->findAll();
-            $data['departments'] = $this->department->findAll();
-            $data['banks'] = 'banks';
+           $data['applications'] = $this->application->get_pending_verification();
+
             $username = $this->session->user_username;
-            $this->authenticate_user($username, 'pages/cooperators/verify_application', $data);
+           // print_r($data['applications']);
+           $this->authenticate_user($username, 'pages/cooperators/verify_application', $data);
 
         }
 
         public function verify_application_($application_id){
 
+           $application =  $this->application->get_application( $application_id);
 
-        }
+               if(!empty($application)):
+
+                   if($application->application_status == 0):
+
+                      $data['application'] = $application;
+                       $data['states'] = $this->state->findAll();
+                       $data['departments'] = $this->department->findAll();
+                       $data['banks'] = $this->bank->findAll();
+                       $data['pgs'] = $this->pg->findAll();
+
+                       $username = $this->session->user_username;
+
+                       $this->authenticate_user($username, 'pages/cooperators/verify_application_', $data);
+
+                   else:
+
+
+
+                   endif;
+
+                 else:
+
+
+
+                 endif;
+
+         }
 
         public function test_sweet(){
 

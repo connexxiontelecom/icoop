@@ -1,21 +1,21 @@
 <?= $this->extend('layouts/master') ?>
 
 <?= $this->section('title') ?>
-    New Application
+Verify Application
 <?= $this->endSection() ?>
 
 <?= $this->section('current_page') ?>
-   New Application
+Verify Application
 <?= $this->endSection() ?>
 <?= $this->section('page_crumb') ?>
-   New Application
+Verify Application
 <?= $this->endSection() ?>
 
 <?= $this->section('extra-styles') ?>
 
 <link rel="stylesheet" href="assets/vendor/jquery-steps/jquery.steps.css">
 <link rel="stylesheet" href="assets/vendor/dropify/css/dropify.min.css">
-<link rel="stylesheet" href="assets/third-party/previewForm/previewForm.css">
+
 
 
 <?= $this->endSection() ?>
@@ -28,13 +28,13 @@
     <div class="col-lg-12 col-md-12 col-sm-12" style="background-color: white">
         <div class="card" >
             <div class="header">
-                <h2>Cooperators - New Application</h2>
+                <h2>Cooperators - Verify Application</h2>
 
             </div>
-            <div class="body wizard_validation" style="background-color: white">
+            <div class="body " style="background-color: white">
 
                 <div>
-                    <form id="wizard_horizontal" action="" method="post">
+
                         <h2>Personal Details</h2>
                         <section style="background-color: white">
 
@@ -45,20 +45,20 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-sm">Staff ID:</span>
                                         </div>
-                                        <input type="text" required  name="application_staff_id" id="application_staff_id" onkeyup="preview_form('application_staff_id')" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                        <input type="text"  disabled readonly value="<?=$application->application_staff_id; ?>" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                                     </div>
 
                                     <div class="input-group input-group-sm mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-sm">First Name:</span>
                                         </div>
-                                        <input type="text" required  name="application_first_name" id="application_first_name" onkeyup="preview_form('application_first_name')" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                        <input type="text" required disabled readonly value="<?=$application->application_first_name; ?>" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                                     </div>
                                     <div class="input-group input-group-sm mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="inputGroup-sizing-sm">Last Name:</span>
                                         </div>
-                                        <input type="text" required name="application_last_name" id="application_last_name" onkeyup="preview_form('application_last_name')" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                        <input type="text" required disabled readonly value="<?=$application->application_last_name; ?>" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                                     </div>
 
                                     <div class="input-group input-group-sm mb-3">
@@ -126,7 +126,7 @@
                                             <label class="input-group-text" for="inputGroupSelect01">Payroll Group:</label>
                                         </div>
                                         <select class="custom-select" required name="application_payroll_group_id" id="application_payroll_group_id" onkeyup="preview_form('application_payroll_group_id')">
-
+                                            <option value="1">Test</option>
                                             <?php foreach ($pgs as $pg): ?>
                                                 <option value="<?=$pg['pg_id'] ?>"> <?=$pg['pg_name']; ?></option>
                                             <?php endforeach; ?>
@@ -282,10 +282,10 @@
                                             </div>
                                             <select class="custom-select" name="application_bank_id" onchange="preview_form('application_bank_id')" id="application_bank_id">
 
-                                                    <option value="1">GT</option>
-                                                    <?php foreach ($banks as $bank): ?>
-                                                        <option value="<?=$bank['bank_id'] ?>"> <?=$bank['bank_name']; ?></option>
-                                                    <?php endforeach; ?>
+                                                <option value="1">GT</option>
+                                                <?php foreach ($banks as $bank): ?>
+                                                    <option value="<?=$bank['bank_id'] ?>"> <?=$bank['bank_name']; ?></option>
+                                                <?php endforeach; ?>
 
                                             </select>
                                         </div>
@@ -463,11 +463,11 @@
                                                         <label class="input-group-text" for="inputGroupSelect01">Payroll Group:</label>
                                                     </div>
                                                     <select class="custom-select"  id="application_payroll_group_ida">
-
+                                                        <select class="custom-select"   id="application_bank_ida">
                                                             <?php foreach ($pgs as $pg): ?>
                                                                 <option disabled value="<?=$pg['pg_id'] ?>"> <?=$pg['pg_name']; ?></option>
                                                             <?php endforeach; ?>
-
+                                                        </select>
                                                     </select>
                                                 </div>
 
@@ -718,15 +718,15 @@
 <script src="assets/vendor/dropify/js/dropify.js"></script>
 <script src="assets/js/common.js"></script>
 <script src="assets/js/pages/forms/dropify.js"></script>
-<script src="assets/third-party/previewForm/previewForm.js"></script>
-    <script>
-        function preview_form (element_id){
 
-            let new_element_id = element_id+'a';
+<script>
+    function preview_form (element_id){
 
-            document.getElementById(new_element_id).value = document.getElementById(element_id).value
-            document.getElementById(new_element_id).disabled = true;
-        }
+        let new_element_id = element_id+'a';
 
-    </script>
+        document.getElementById(new_element_id).value = document.getElementById(element_id).value
+        document.getElementById(new_element_id).disabled = true;
+    }
+
+</script>
 <?= $this->endSection() ?>
