@@ -26,23 +26,186 @@ class Cooperators extends BaseController
             $method = $this->request->getMethod();
                     if($method == 'post'):
 
-                        $v = $this->application->save($_POST);
+                        $this->validator->setRules( [
+                            'application_staff_id'=>[
+                                'rules'=>'required',
+                                'errors'=>[
+                                    'required'=>'Enter a staff ID'
+                                ]
+                            ],
 
-                            if($v):
+                            'application_first_name'=>[
+                                'rules'=>'required',
+                                'errors'=>[
+                                    'required'=>'Enter a first name'
+                                ]
+                            ],
 
+                            'application_last_name'=>[
+                                'rules'=>'required',
+                                'errors'=>[
+                                    'required'=>'Enter a last name'
+                                ]
+                            ],
+
+                            'application_email'=>[
+                                'rules'=>'required',
+                                'errors'=>[
+                                    'required'=>'Enter an email'
+                                ]
+                            ],
+
+                            'application_dob'=>[
+                                'rules'=>'required',
+                                'errors'=>[
+                                    'required'=>'Enter a Date of Birth'
+                                ]
+                            ],
+
+                            'application_gender'=>[
+                                'rules'=>'required',
+                                'errors'=>[
+                                    'required'=>'Select a gender'
+                                ]
+                            ],
+
+                            'application_location_id'=>[
+                                'rules'=>'required',
+                                'errors'=>[
+                                    'required'=>'Select a location'
+                                ]
+                            ],
+
+                            'application_department_id'=>[
+                                'rules'=>'required',
+                                'errors'=>[
+                                    'required'=>'Select a department'
+                                ]
+                            ],
+
+                            'application_payroll_group_id'=>[
+                                'rules'=>'required',
+                                'errors'=>[
+                                    'required'=>'Select a Payroll Group'
+                                ]
+                            ],
+
+                            'application_address'=>[
+                                'rules'=>'required',
+                                'errors'=>[
+                                    'required'=>'Enter an address'
+                                ]
+                            ],
+
+                            'application_state_id'=>[
+                                'rules'=>'required',
+                                'errors'=>[
+                                    'required'=>'Select a state'
+                                ]
+                            ],
+
+                            'application_city'=>[
+                                'rules'=>'required',
+                                'errors'=>[
+                                    'required'=>'Enter a city'
+                                ]
+                            ],
+
+                            'application_telephone'=>[
+                                'rules'=>'required',
+                                'errors'=>[
+                                    'required'=>'Enter a Phone Number'
+                                ]
+                            ],
+
+                            'application_bank_id'=>[
+                                'rules'=>'required',
+                                'errors'=>[
+                                    'required'=>'Select a bank'
+                                ]
+                            ],
+
+                            'application_bank_branch'=>[
+                                'rules'=>'required',
+                                'errors'=>[
+                                    'required'=>'Enter Bank Branch'
+                                ]
+                            ],
+
+                            'application_account_number'=>[
+                                'rules'=>'required',
+                                'errors'=>[
+                                    'required'=>'Enter account number'
+                                ]
+                            ],
+
+                            'application_savings'=>[
+                                'rules'=>'required',
+                                'errors'=>[
+                                    'required'=>'Enter a savings'
+                                ]
+                            ],
+
+                        ]);
+
+                        if ($this->validator->withRequest($this->request)->run()):
+
+                            $check_staff_id = $this->application->where('application_staff_id', $_POST['application_staff_id'])
+                                ->findAll();
+
+                            $check_telephone = $this->application->where('application_telephone', $_POST['application_telephone'])
+                                ->findAll();
+
+                            $check_email = $this->application->where('application_email', $_POST['application_email'])
+                                ->findAll();
+
+                            if($check_email || $check_telephone || $check_staff_id):
                                 $data = array(
-                                    'msg' => 'Application Successful',
-                                    'type' => 'success',
+                                    'msg' => 'Email, Staff ID, or Phone Number Already Exists',
+                                    'type' => 'error',
                                     'location' => site_url('new_application')
 
                                 );
 
-                                return view('pages/sweet-alert', $data);
+                                echo view('pages/sweet-alert', $data);
 
                             else:
 
 
-                            endif;
+                                $v = $this->application->save($_POST);
+
+                                    if($v):
+
+                                        $data = array(
+                                            'msg' => 'Application Successful',
+                                            'type' => 'success',
+                                            'location' => site_url('new_application')
+
+                                        );
+
+                                        return view('pages/sweet-alert', $data);
+
+                                    else:
+
+
+                                    endif;
+                             endif;
+
+                        else:
+                            $arr = $this->validator->getErrors();
+
+                            $data = array(
+                                'msg' => implode(", ", $arr),
+                                'type' => 'error',
+                                'location' => site_url('new_application')
+
+                            );
+
+                            echo view('pages/sweet-alert', $data);
+
+                        //print_r($this->validator->getErrors());
+
+                        endif;
 
 
 
@@ -72,6 +235,19 @@ class Cooperators extends BaseController
 
         public function verify_application_($application_id){
 
+
+        }
+
+        public function test_sweet(){
+
+            $data = array(
+                'msg' => 'Application Successful',
+                'type' => 'success',
+                'location' => site_url('new_application')
+
+            );
+
+            return view('pages/sweet-alert', $data);
 
         }
 

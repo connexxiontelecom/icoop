@@ -27,7 +27,7 @@ class BaseController extends ResourceController
 	 *
 	 * @var array
 	 */
-	protected $helpers = [];
+	protected $helpers = ['form'];
 
 	/**
 	 * Constructor.
@@ -42,8 +42,10 @@ class BaseController extends ResourceController
 		//--------------------------------------------------------------------
 		// E.g.:
 		// $this->session = \Config\Services::session();
+//        helper(['form']);
 
         $this->security = \Config\Services::security();
+        $this->validator = \Config\Services::validation();
 	}
 
     public function authenticate_user($username, $page, $data = null){
