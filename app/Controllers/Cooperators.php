@@ -171,7 +171,8 @@ class Cooperators extends BaseController
 
                             else:
 
-
+//                                print_r($_POST);
+//
                                 $v = $this->application->save($_POST);
 
                                     if($v):
@@ -342,13 +343,13 @@ class Cooperators extends BaseController
 
                            else:
 
-
+                               return redirect('error_404');
 
                            endif;
 
                          else:
 
-
+                             return redirect('error_404');
 
                          endif;
             endif;
@@ -385,7 +386,9 @@ class Cooperators extends BaseController
                          'application_approved_date' => date('Y-m-d')
                      ];
 
-                     $query = $this->application->save($data);
+                 //print_r($data);
+
+                    $query = $this->application->save($data);
 
                      //$query = 1;
 
@@ -422,7 +425,9 @@ class Cooperators extends BaseController
                          'application_discarded_date' => date('Y-m-d')
                      ];
 
-                     $query = $this->application->update($application_id, $data);
+                 //print_r($data);
+
+                    $query = $this->application->update($application_id, $data);
 
                      //$query = 1;
 
@@ -473,14 +478,14 @@ class Cooperators extends BaseController
                          $this->authenticate_user($username, 'pages/cooperators/approve_application_', $data);
 
                      else:
-
+                         return redirect('error_404');
 
 
                      endif;
 
                  else:
 
-
+                     return redirect('error_404');
 
                  endif;
              endif;

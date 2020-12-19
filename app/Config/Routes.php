@@ -32,6 +32,9 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 $routes->get('/', 'Usercontroller::index');
 
+#Error
+$routes->get('error_404', 'Usercontroller::error_404');
+
 
 #Auth routes
 $routes->get('/login', 'Usercontroller::showLoginForm');
