@@ -344,7 +344,7 @@ Verify Application
                                     <br>
 
                                     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#discardModal">Discard</button>
-                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#verifyModal">Verify</button>
+                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#verifyModal">Approve</button>
 
 
 
