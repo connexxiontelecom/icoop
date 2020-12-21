@@ -42,6 +42,7 @@ $routes->post('/login', 'Usercontroller::login');
 $routes->get('/register', 'Usercontroller::showRegistrationForm');
 $routes->post('/register', 'Usercontroller::register');
 $routes->get('/logout', 'Usercontroller::logout');
+$routes->get('(:any)/login', 'Usercontroller::showLoginForm');
 
 #user routes
 $routes->get('/dashboard', 'Usercontroller::dashboard');
