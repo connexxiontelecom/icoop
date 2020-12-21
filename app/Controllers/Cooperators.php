@@ -390,6 +390,51 @@ class Cooperators extends BaseController
 
                     $query = $this->application->save($data);
 
+                    $application = $this->application->where('application_id', $application_id);
+
+                    $cooperator_array = array(
+
+                        'cooperator_application_id' => $application->application_id,
+                        'cooperator_staff_id' => $application->application_staff_id,
+                        'cooperator_last_name' => $application->application_last_name,
+                        'cooperator_other_name' => $application->applicaton_other_name,
+                        'cooperator_gender' => $application->application_gender,
+                        'cooperator_department_id' => $application->application_department_id,
+                        'cooperator_location_id' => $application->application_location_id,
+                        'cooperator_payroll_group_id' => $application->application_payroll_group_id,
+                        'cooperator_dob' => $application->application_dob,
+                        'cooperator_email' => $application->application_email,
+                        'cooperator_address' => $application->application_address,
+                        'cooperator_city' => $application->application_city,
+                        'cooperator_state_id' => $application->application_state_id,
+                        'cooperator_telephone' => $application->application_telephone,
+                        'cooperator_kin_fullname' => $application->application_kin_fullname,
+                        'cooperator_kin_address' => $application->application_kin_address,
+                        'cooperator_kin_email' => $application->application_kin_email,
+                        'cooperator_kin_phone' => $application->application_kin_phone,
+                        'cooperator_kin_relationship' => $application->application_kin_relationship,
+                        'cooperator_bank_id' => $application->application_bank_id,
+                        'cooperator_account_number' => $application->application_account_number,
+                        'cooperator_bank_branch' => $application->application_bank_branch,
+                        'cooperator_sort_code' => $application->application_sort_code,
+                        'cooperator_date' => $application->application_date,
+                        'cooperator_savings' => $application->application_savings,
+                        'cooperator_verify_by' => $application->application_verify_by,
+                        'cooperator_verify_date' => $application->application_verify_date,
+                        'cooperator_verify_comment' => $application->application_verify_comment,
+                        'cooperator_approved_by' => $application->application_approved_by,
+                        'cooperator_approved_date' => $application->application_approved_date,
+                        'cooperator_approved_comment' => $application->application_approved_comment,
+                        'cooperator_discarded_by' => $application->application_discarded_by,
+                        'cooperator_discarded_date' => $application->application_discared_date,
+                        'cooperator_discarded_reason' => $application->application_discarded_reason,
+                        'cooperator_status' => $application->application_status
+
+
+                    );
+
+
+
                      //$query = 1;
 
                      if($query == true):
