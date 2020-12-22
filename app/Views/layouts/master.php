@@ -220,7 +220,7 @@
                                         <li><a href="#">Coop</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="<?=site_url('policy_config') ?>"><i class="icon-calendar"></i><span>Policy Config</span></a></li>
+                                <li><a href="<?=site_url('policy-config') ?>"><i class="icon-calendar"></i><span>Policy Config</span></a></li>
                                 <li>
                                     <a href="#" class="has-arrow"><i class="icon-lock"></i><span>Cooperators</span></a>
                                     <ul>

@@ -129,6 +129,7 @@
                                         <span class="form-bar"></span>
                                         <label class="float-label">Password</label>
                                     </div>
+                                    <?= csrf_field() ?>
                                     <div class="form-group form-primary">
                                         <input type="password" name="password_confirmation" class="form-control" >
                                         <span class="form-bar"></span>

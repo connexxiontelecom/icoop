@@ -45,6 +45,7 @@ Departments
                             <label for="">Department Name</label>
                             <input type="text" placeholder="Enter Department Name" id="department_name" name="department_name" class="form-control">
                         </div>
+                        <?= csrf_field() ?>
                         <div class="form-group">
                             <div class="btn-group">
                                 <a href="" class="btn btn-mini btn-danger"><i class="ti-close mr-2"></i>Cancel</a>

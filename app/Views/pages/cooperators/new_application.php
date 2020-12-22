@@ -581,6 +581,7 @@
 
                         </div>
                     </fieldset>
+                    <?= csrf_field() ?>
                 </form>
             </div>
         </div>
