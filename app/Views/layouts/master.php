@@ -209,7 +209,16 @@
                             <ul class="metismenu">
                                 <li class="active"><a href="<?=site_url('dashboard'); ?>"><i class="icon-speedometer"></i><span>Dashboard</span></a></li>
                                 <li class="header">Menu</li>
-                                <li><a href="<?= site_url('control_panel'); ?>"><i class="icon-paper-plane"></i><span>Control Panel</span></a></li>
+                                <li>
+                                    <a href="#" class="has-arrow"><i class="icon-lock"></i><span>Control Panel</span></a>
+                                    <ul>
+                                        <li><a href="<?=site_url('contribution_type') ?>">Contribution Type</a></li>
+
+                                    </ul>
+
+                                </li>
+
+
                                 <li>
                                     <a href="#" class="has-arrow"><i class="icon-lock"></i><span>House Keeping</span></a>
                                     <ul>
@@ -220,7 +229,7 @@
                                         <li><a href="#">Coop</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="<?=site_url('policy_config') ?>"><i class="icon-calendar"></i><span>Policy Config</span></a></li>
+                                <li><a href="<?=site_url('policy-config') ?>"><i class="icon-calendar"></i><span>Policy Config</span></a></li>
                                 <li>
                                     <a href="#" class="has-arrow"><i class="icon-lock"></i><span>Cooperators</span></a>
                                     <ul>
