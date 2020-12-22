@@ -57,6 +57,10 @@ $routes->post('/add-new-department', 'Housekeepingcontroller::addNewDepartment')
 #Policy config routes
 $routes->get('/policy-config', 'Policyconfigcontroller::index');
 
+#control panel
+$routes->get('contribution_type', 'ContributionType::contribution_type');
+$routes->post('contribution_type', 'ContributionType::contribution_type');
+
 
 #cooperators routes
 $routes->get('new_application', 'Cooperators::new_application');
