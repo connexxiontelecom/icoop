@@ -69,6 +69,14 @@ class ContributionType extends BaseController
 
                                 else:
 
+                                    $data = array(
+                                        'msg' => 'An error Occurred',
+                                        'type' => 'error',
+                                        'location' => site_url('contribution_type')
+
+                                    );
+
+                                    return view('pages/sweet-alert', $data);
 
                                 endif;
                             endif;
@@ -147,7 +155,14 @@ class ContributionType extends BaseController
 
                          else:
 
+                             $data = array(
+                                 'msg' => 'An Error Occurred',
+                                 'type' => 'error',
+                                 'location' => site_url('contribution_type')
 
+                             );
+
+                             return view('pages/sweet-alert', $data);
                          endif;
                      endif;
 
@@ -190,7 +205,14 @@ class ContributionType extends BaseController
 
                         else:
 
+                            $data = array(
+                                'msg' => 'An error occured',
+                                'type' => 'error',
+                                'location' => site_url('contribution_type')
 
+                            );
+
+                            return view('pages/sweet-alert', $data);
                         endif;
 
             endif;
