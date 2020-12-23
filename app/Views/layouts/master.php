@@ -209,7 +209,20 @@
                             <ul class="metismenu">
                                 <li class="active"><a href="<?=site_url('dashboard'); ?>"><i class="icon-speedometer"></i><span>Dashboard</span></a></li>
                                 <li class="header">Menu</li>
+<<<<<<< HEAD
                                 <li><a href="<?= site_url('control-panel'); ?>"><i class="icon-paper-plane"></i><span>Control Panel</span></a></li>
+=======
+                                <li>
+                                    <a href="#" class="has-arrow"><i class="icon-lock"></i><span>Control Panel</span></a>
+                                    <ul>
+                                        <li><a href="<?=site_url('contribution_type') ?>">Contribution Type</a></li>
+
+                                    </ul>
+
+                                </li>
+
+
+>>>>>>> ce8cd264a07fb5913f5b382cd66688754b2b0202
                                 <li>
                                     <a href="#" class="has-arrow"><i class="icon-lock"></i><span>House Keeping</span></a>
                                     <ul>

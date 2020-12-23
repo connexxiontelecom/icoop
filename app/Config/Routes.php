@@ -32,6 +32,9 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 $routes->get('/', 'Usercontroller::index');
 
+#Error
+$routes->get('error_404', 'Usercontroller::error_404');
+
 
 #Auth routes
 $routes->get('/login', 'Usercontroller::showLoginForm');
@@ -39,6 +42,7 @@ $routes->post('/login', 'Usercontroller::login');
 $routes->get('/register', 'Usercontroller::showRegistrationForm');
 $routes->post('/register', 'Usercontroller::register');
 $routes->get('/logout', 'Usercontroller::logout');
+$routes->get('(:any)/login', 'Usercontroller::showLoginForm');
 
 #user routes
 $routes->get('/dashboard', 'Usercontroller::dashboard');
@@ -57,6 +61,10 @@ $routes->post('/add-new-department', 'Housekeepingcontroller::addNewDepartment')
 
 #Policy config routes
 $routes->get('/policy-config', 'Policyconfigcontroller::index');
+
+#control panel
+$routes->get('contribution_type', 'ContributionType::contribution_type');
+$routes->post('contribution_type', 'ContributionType::contribution_type');
 
 
 #cooperators routes

@@ -47,6 +47,7 @@ States
                         <label for="">State Name</label>
                         <input type="text" placeholder="Enter State Name" id="state_name" name="state_name" class="form-control">
                     </div>
+                    <?= csrf_field() ?>
                     <div class="form-group">
                         <div class="btn-group">
                             <a href="" class="btn btn-mini btn-danger"><i class="ti-close mr-2"></i>Cancel</a>

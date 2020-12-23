@@ -37,39 +37,16 @@
                 <a class="navbar-brand" href="javascript:void(0);"><i class="fa fa-cube font-25"></i> iCoop</a>
             </div>
             <div class="body">
-                <p class="lead">Login to your account</p>
-
-                <?php if(isset($validation)) : ?>
-                    <div class="text-danger">
-                        <?= $validation->listErrors() ?>
-                    </div>
-                <?php endif ?>
-
-                <form class="form-auth-small m-t-20" method="post" action=" ">
-                    <div class="form-group">
-                        <label for="signin-email" class="control-label sr-only">Email</label>
-                        <input type="email" name="email" value="<?= set_value('email') ?>"  class="form-control round" id="signin-email" placeholder="Email">
-                    </div>
-                    <div class="form-group">
-                        <label for="signin-password" class="control-label sr-only">Password</label>
-                        <input type="password" name="password" class="form-control round" id="signin-password"  placeholder="Password">
-                    </div>
-                    <?= csrf_field() ?>
-                    <div class="form-group clearfix">
-                        <label class="fancy-checkbox element-left">
-                            <input type="checkbox">
-                            <span>Remember me</span>
-                        </label>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-round btn-block">LOGIN</button>
-                    <div class="bottom">
-                        <span class="helper-text m-b-10"><i class="fa fa-lock"></i> <a href="#">Forgot password?</a></span>
-                        <span>Don't have an account? <a href="#">Register</a></span>
-                    </div>
-                </form>
+                <p class="lead mb-3"><span class="number left">404 </span><span class="text">Oops! <br/>Page Not Found</span></p>
+                <p>The page you were looking for could not be found, please <a href="javascript:void(0);">contact us</a> to report this issue.</p>
+                <div class="margin-top-30">
+                    <a href="javascript:history.go(-1)" class="btn btn-round btn-default btn-block"><i class="fa fa-arrow-left"></i> <span>Go Back</span></a>
+                    <a href="<?=site_url(); ?>" class="btn btn-round btn-primary btn-block"><i class="fa fa-home"></i> <span>Home</span></a>
+                </div>
             </div>
         </div>
     </div>
+
     <div class="auth_right">
         <div id="slider2" class="carousel slide" data-ride="carousel" data-interval="3000">
             <ol class="carousel-indicators">

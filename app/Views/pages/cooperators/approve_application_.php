@@ -344,7 +344,7 @@ Verify Application
                                     <br>
 
                                     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#discardModal">Discard</button>
-                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#verifyModal">Verify</button>
+                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#verifyModal">Approve</button>
 
 
 
@@ -380,8 +380,8 @@ Verify Application
                                                             <label>Comments:</label>
                                                             <textarea class="form-control" name="application_approved_comment" rows="5" cols="30"></textarea>
                                                         </div>
-                                                        <input type="hidden" name="application_status" value="1">
-
+                                                        <input type="hidden" name="application_status" value="2">
+                                                        <?= csrf_field() ?>
                                                         <div class="form-group">
                                                             <button type="submit" class="btn btn-info btn-block">Approve</button>
                                                         </div>
@@ -418,7 +418,7 @@ Verify Application
                                                         </div>
 
                                                         <input type="hidden" name="application_status" value="3">
-
+                                                        <?= csrf_field() ?>
                                                         <div class="form-group">
                                                             <button type="submit" class="btn btn-info btn-block">Discard</button>
                                                         </div>

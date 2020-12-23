@@ -1,17 +1,33 @@
 <?php 
 namespace App\Controllers;
+use App\Models\Applications;
+use App\Models\Banks;
+use App\Models\DepartmentModel;
+use App\Models\PayrollGroups;
+use App\Models\StateModel;
 use App\Models\UserModel;
 use CodeIgniter\RESTful\ResourceController;
 
 
 class Usercontroller extends BaseController
 {
+    public function __construct(){
+
+        $this->state = new StateModel();
+        $this->department = new DepartmentModel();
+        $this->application = new Applications();
+        $this->bank = new Banks();
+        $this->pg = new PayrollGroups();
+        $this->session = session();
+
+    }
     
 	public function index()
 	{
         $this->session = session();
         $username = $this->session->user_username;
-	    $this->authenticate_user($username, 'layouts/master');
+        $data = [];
+	    $this->authenticate_user($username, 'layouts/master', $data);
 
 	}
 
@@ -129,7 +145,17 @@ class Usercontroller extends BaseController
 
     public function dashboard(){
 
-        return view('pages/dashboard');
+        $username = $this->session->user_username;
+        $data = [];
+        $this->authenticate_user($username, 'pages/dashboard', $data);
+
+    }
+
+    public function error_404(){
+
+        $username = $this->session->user_username;
+        $data = [];
+        $this->authenticate_user($username, 'auth/error_404', $data);
     }
 
 
