@@ -66,6 +66,10 @@ $routes->get('/policy-config', 'Policyconfigcontroller::index');
 $routes->get('contribution_type', 'ContributionType::contribution_type');
 $routes->post('contribution_type', 'ContributionType::contribution_type');
 
+#chart of accounts
+$routes->get('/chart-of-accounts', 'ChartOfAccountController::index');
+$routes->get('/add-new-chart-of-account', 'ChartOfAccountController::create');
+
 
 #cooperators routes
 $routes->get('new_application', 'Cooperators::new_application');
