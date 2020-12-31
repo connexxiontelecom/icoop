@@ -13,7 +13,7 @@ Policy Config
 
     <div class="card">
         <div class="card-block">
-            <h5 class="sub-title">Policy Config</h5>
+            <h5 class="sub-title p-3">Policy Config</h5>
             <div class="container">
                 <div class="row m-b-30">
                     <div class="col-lg-12 col-xl-12">
@@ -39,11 +39,12 @@ Policy Config
                         <!-- Tab panes -->
                         <div class="tab-content card-block">
                             <div class="tab-pane active" id="home3" role="tabpanel">
-                                <form action="">
+                                <form action="<?= site_url('update-profile') ?>" method="POST">
+                                <?= csrf_field() ?>
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">Coop Name</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" placeholder="Coop Name">
+                                        <input type="text" name="company_name" class="form-control" placeholder="Coop Name">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -55,19 +56,19 @@ Policy Config
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">Authorized Signatory 1:</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" placeholder="Authorized Signatory 1" name="authorized_signatory_1">
+                                        <input type="text" class="form-control" placeholder="Authorized Signatory 1" name="signature_1">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">Authorized Signatory 2:</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" placeholder="Authorized Signatory 2" name="authorized_signatory_2">
+                                        <input type="text" class="form-control" placeholder="Authorized Signatory 2" name="signature_2">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">Authorized Signatory 3:</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" placeholder="Authorized Signatory 3" name="authorized_signatory_3">
+                                        <input type="text" class="form-control" placeholder="Authorized Signatory 3" name="signature_3">
                                     </div>
                                 </div>
                                 <div class="row form-group d-flex justify-content-center">
@@ -76,7 +77,8 @@ Policy Config
                                 </form>
                             </div>
                             <div class="tab-pane" id="profile3" role="tabpanel">
-                            <form action="">
+                            <form action="<?= site_url('savings-rate') ?>" method="POST">
+                            <?= csrf_field() ?>
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">Minimum saving</label>
                                     <div class="col-sm-10">
@@ -108,7 +110,8 @@ Policy Config
                                 </form>
                             </div>
                             <div class="tab-pane" id="messages3" role="tabpanel">
-                            <form action="">
+                            <form action="<?= site_url('savings-gl-config') ?>" method="POST">
+                            <?= csrf_field() ?>
                                 <table class="table table-stripped">
                                     
                                         <thead>
@@ -123,8 +126,11 @@ Policy Config
                                             <td></td>
                                             <td>
                                                 <div class="form-group">
-                                                    <select name="contribution" class="form-control" id="contribution">
+                                                    <select name="contribution_payroll_cr" class="form-control" id="contribution_payroll_cr">
                                                         <option disabled selected>Select GL</option>
+                                                        <?php foreach($accounts as $account) : ?>
+                                                            <option value="<?= $account['glcode'] ?>"><?= $account['account_name'] ?> - (<?= $account['glcode'] ?>)</option>
+                                                        <?php endforeach; ?>
                                                     </select>
                                                 </div>
                                             </td>
@@ -136,8 +142,11 @@ Policy Config
                                             <td></td>
                                             <td>
                                                 <div class="form-group">
-                                                    <select name="contribution" class="form-control" id="contribution">
+                                                    <select name="contribution_external_cr" class="form-control" id="contribution_external_cr">
                                                         <option disabled selected>Select GL</option>
+                                                        <?php foreach($accounts as $account) : ?>
+                                                            <option value="<?= $account['glcode'] ?>"><?= $account['account_name'] ?> - (<?= $account['glcode'] ?>)</option>
+                                                        <?php endforeach; ?>
                                                     </select>
                                                 </div>
                                             </td>
@@ -149,8 +158,11 @@ Policy Config
                                             
                                             <td>
                                                 <div class="form-group">
-                                                    <select name="contribution" class="form-control" id="contribution">
+                                                    <select name="withdrawal_dr" class="form-control" id="withdrawal_dr">
                                                         <option disabled selected>Select GL</option>
+                                                        <?php foreach($accounts as $account) : ?>
+                                                            <option value="<?= $account['glcode'] ?>"><?= $account['account_name'] ?> - (<?= $account['glcode'] ?>)</option>
+                                                        <?php endforeach; ?>
                                                     </select>
                                                 </div>
                                             </td>
@@ -163,15 +175,21 @@ Policy Config
                                             
                                             <td>
                                                 <div class="form-group">
-                                                    <select name="contribution" class="form-control" id="contribution">
+                                                    <select name="registration_fee_dr" class="form-control" id="registration_fee_dr">
                                                         <option disabled selected>Select GL</option>
+                                                        <?php foreach($accounts as $account) : ?>
+                                                            <option value="<?= $account['glcode'] ?>"><?= $account['account_name'] ?> - (<?= $account['glcode'] ?>)</option>
+                                                        <?php endforeach; ?>
                                                     </select>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="form-group">
-                                                    <select name="contribution" class="form-control" id="contribution">
+                                                    <select name="registration_fee_cr" class="form-control" id="registration_fee_cr" >
                                                         <option disabled selected>Select GL</option>
+                                                        <?php foreach($accounts as $account) : ?>
+                                                            <option value="<?= $account['glcode'] ?>"><?= $account['account_name'] ?> - (<?= $account['glcode'] ?>)</option>
+                                                        <?php endforeach; ?>
                                                     </select>
                                                 </div>
                                             </td>
@@ -183,15 +201,21 @@ Policy Config
                                             
                                             <td>
                                                 <div class="form-group">
-                                                    <select name="contribution" class="form-control" id="contribution">
+                                                    <select name="income_savings_withdrawal_charge_dr" class="form-control" id="income_savings_withdrawal_charge_dr">
                                                         <option disabled selected>Select GL</option>
+                                                        <?php foreach($accounts as $account) : ?>
+                                                            <option value="<?= $account['glcode'] ?>"><?= $account['account_name'] ?> - (<?= $account['glcode'] ?>)</option>
+                                                        <?php endforeach; ?>
                                                     </select>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="form-group">
-                                                    <select name="contribution" class="form-control" id="contribution">
+                                                    <select name="income_savings_withdrawal_charge_cr" class="form-control" id="income_savings_withdrawal_charge_cr">
                                                         <option disabled selected>Select GL</option>
+                                                        <?php foreach($accounts as $account) : ?>
+                                                            <option value="<?= $account['glcode'] ?>"><?= $account['account_name'] ?> - (<?= $account['glcode'] ?>)</option>
+                                                        <?php endforeach; ?>
                                                     </select>
                                                 </div>
                                             </td>

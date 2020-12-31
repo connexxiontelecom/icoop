@@ -61,6 +61,9 @@ $routes->post('/add-new-department', 'Housekeepingcontroller::addNewDepartment')
 
 #Policy config routes
 $routes->get('/policy-config', 'Policyconfigcontroller::index');
+$routes->post('/update-profile', 'Policyconfigcontroller::updateProfile');
+$routes->post('/savings-rate', 'Policyconfigcontroller::savingsRate');
+$routes->post('/savings-gl-config', 'Policyconfigcontroller::savingGlConfig');
 
 #control panel
 $routes->get('contribution_type', 'ContributionType::contribution_type');
