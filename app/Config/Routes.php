@@ -76,6 +76,8 @@ $routes->get('/journal-voucher', 'JournalVoucher::index');
 $routes->get('/new-journal-voucher', 'JournalVoucher::create');
 $routes->post('/new-journal-voucher', 'JournalVoucher::store');
 $routes->get('/view-journal-voucher/(:num)', 'JournalVoucher::view/$1');
+$routes->get('/post-journal-voucher/(:num)', 'JournalVoucher::post/$1');
+$routes->get('/decline-journal-voucher/(:num)', 'JournalVoucher::decline/$1');
 
 
 #cooperators routes

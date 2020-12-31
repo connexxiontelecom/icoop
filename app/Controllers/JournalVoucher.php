@@ -2,12 +2,14 @@
 use CodeIgniter\Controller;
 use App\Models\CoaModel;
 use App\Models\JournalVoucherModel;
+use App\Models\GlModel;
 
 class JournalVoucher extends BaseController
 {
     public function __construct(){
         $this->coa = new CoaModel();
         $this->jv = new JournalVoucherModel();
+        $this->gl = new GlModel();
         $this->session = session();
     }
 	public function index()
@@ -26,9 +28,45 @@ class JournalVoucher extends BaseController
 
     public function view($id){
         $username = $this->session->user_username;
-        $data['accounts'] = $this->coa->findAll();
         $data['entry'] = $this->jv->where('journal_id', $id)->first();
         $this->authenticate_user($username, 'pages/jv/view',$data);
+    }
+    public function post($id){
+        $journal = $this->jv->where('journal_id', $id)->first();
+        if(!empty($journal)){
+            $dateTime = date('Y-m-d H:i:s');
+            $data = [
+                'posted'=>1,
+                'posted_date'=>$dateTime
+            ];
+            $this->jv->update($id, $data);
+
+            $account = $this->coa->where('glcode', $journal['glcode'])->first();
+            $bankGl = [
+                'glcode' => $journal['glcode'],
+                'posted_by' => 1,
+                'narration' => $journal['narration'] ?? '',
+                'dr_amount' => $journal['dr_amount'] > 0 ? $journal['dr_amount'] : 0,
+                'cr_amount' => $journal['cr_amount'] > 0 ? $journal['cr_amount'] : 0,
+                'ref_no' => $journal['ref_no'] ?? '',
+                'bank' => $account['bank'],
+                'ob' => 0,
+                'posted' => 1,
+                'created_at' => $journal['jv_date'],
+            ];
+            $this->gl->save($bankGl);            
+            return $this->response->redirect(site_url('/journal-voucher'));
+        }else{
+            return $this->response->redirect(site_url('/journal-voucher'));
+        }
+    }
+    public function decline($id){
+        $journal = $this->jv->where('journal_id', $id)->first();
+        $data = [
+            'trash'=>1
+        ];
+        $this->jv->update($id, $data);
+        return $this->response->redirect(site_url('/journal-voucher'));
     }
     
     public function store(){

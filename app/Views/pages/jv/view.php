@@ -41,7 +41,6 @@ View Journal Voucher
             <div class="header">
                 <h2>View  Journal Voucher</h2>
             </div>
-            <a href="<?= site_url('/new-journal-voucher') ?>" class="btn btn-sm btn-primary float-right mb-3">Add New Account</a>
             <div class="body">
             <form action="#" method="post">
                     <?= csrf_field() ?>
@@ -71,7 +70,7 @@ View Journal Voucher
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <strong for="">Reference #</strong>
-                                            <p><?= $entry->ref_no ?? '-'?></p>
+                                            <p><?= $entry['ref_no'] ?? '-'?></p>
                                         </div>
                                     </div>
 
@@ -109,10 +108,11 @@ View Journal Voucher
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="col-sm-12">
-                                <div class="btn-group d-flex justify-content-center">
-                                    <a href="{{route('decline-jv', $entry->slug)}}" class="btn btn-mini btn-danger"><i class="ti-close mr-2"></i>Decline Journal Voucher</a>
-                                    <a href="{{route('post-jv', $entry->slug)}}" class="btn btn-primary btn-mini"><i class="ti-check mr-2"> Post Journal Voucher</i></a>
+                            <hr>
+                            <div class="col-sm-12 d-flex justify-content-center">
+                                <div class="btn-group">
+                                    <a href="<?= site_url('decline-journal-voucher/'.$entry['journal_id']) ?>" class="btn btn-mini btn-danger"><i class="ti-close mr-2"></i>Decline Journal Voucher</a>
+                                    <a href="<?= site_url('post-journal-voucher/'.$entry['journal_id']) ?>" class="btn btn-primary btn-mini"><i class="ti-check mr-2"> Post Journal Voucher</i></a>
                                 </div>
                             </div>
                         </div>
