@@ -39,22 +39,96 @@ Chart of Accounts
     <div class="col-lg-12">
         <div class="card">
             <div class="header">
-                <h2>Banks</h2>
-
+                <h2>Chart of Accounts</h2>
             </div>
+            <a href="<?= site_url('/add-new-chart-of-account') ?>" class="btn btn-sm btn-primary float-right mb-3">Add New Account</a>
             <div class="body">
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover dataTable js-exportable simpletable" id="bankTable">
+            <div class="col-xs-12 col-sm-12">
+                    <table id="complex-header" class="table table-bordered nowrap dataTable" role="grid" aria-describedby="complex-header_info" style="width: 100%; margin:0px auto;">
                         <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Bank Name</th>
-                            <th>Sort Code</th>
-                            <th>Action</th>
+                        <tr role="row">
+                            <th class="sorting_asc text-left" tabindex="0" style="width: 50px;">S/No.</th>
+                            <th class="sorting_asc text-left" tabindex="0" style="width: 50px;">ACCOUNT CODE</th>
+                            <th class="sorting_asc text-left" tabindex="0" style="width: 150px;">ACCOUNT NAME</th>
                         </tr>
                         </thead>
                         <tbody>
-                        </tfoot>
+                        <?php
+                            $a = 1;
+                        ?>
+                        <tr role="row" class="odd">
+                            <td class="sorting_1" colspan="3"><strong style="font-size:16px; text-transform:uppercase;">Assets</strong></td>
+                        </tr>
+                        <?php foreach ($charts as $report): ?>
+                            <?php if($report['account_type'] == 1 ) : ?>
+                                    <?php if($report['glcode'] != 1) : ?>
+                                        <tr role="row" class="odd">
+                                            <td class="text-left"><?= $a++ ?></td>
+                                            <td class="sorting_1 text-left"><?= $report['glcode'] ?? '' ?></td>
+                                            <td class="text-left"><?= $report['account_name'] ?? '' ?></td>
+                                        </tr>
+                                    <?php endif ?>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                        <tr role="row" class="odd">
+                            <td class="sorting_1" colspan="3"><strong style="font-size:16px; text-transform:uppercase;">Liability</strong></td>
+                        </tr>
+                        <?php foreach ($charts as $report): ?>
+                            <?php if($report['account_type'] == 2 ) : ?>
+                                    <?php if($report['glcode'] != 2) : ?>
+                                        <tr role="row" class="odd">
+                                            <td class="text-left"><?= $a++ ?></td>
+                                            <td class="sorting_1 text-left"><?= $report['glcode'] ?? '' ?></td>
+                                            <td class="text-left"><?= $report['account_name'] ?? '' ?></td>
+                                        </tr>
+                                    <?php endif ?>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                        
+                        <tr role="row" class="odd">
+                            <td class="sorting_1" colspan="3"><strong style="font-size:16px; text-transform:uppercase;">Equity</strong></td>
+                        </tr>
+                        <?php foreach ($charts as $report): ?>
+                            <?php if($report['account_type'] == 3 ) : ?>
+                                    <?php if($report['glcode'] != 3) : ?>
+                                        <tr role="row" class="odd">
+                                            <td class="text-left"><?= $a++ ?></td>
+                                            <td class="sorting_1 text-left"><?= $report['glcode'] ?? '' ?></td>
+                                            <td class="text-left"><?= $report['account_name'] ?? '' ?></td>
+                                        </tr>
+                                    <?php endif ?>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                        <tr role="row" class="odd">
+                            <td class="sorting_1" colspan="3"><strong style="font-size:16px; text-transform:uppercase;">Revenue</strong></td>
+                        </tr>
+                        <?php foreach ($charts as $report): ?>
+                            <?php if($report['account_type'] == 4 ) : ?>
+                                    <?php if($report['glcode'] != 4) : ?>
+                                        <tr role="row" class="odd">
+                                            <td class="text-left"><?= $a++ ?></td>
+                                            <td class="sorting_1 text-left"><?= $report['glcode'] ?? '' ?></td>
+                                            <td class="text-left"><?= $report['account_name'] ?? '' ?></td>
+                                        </tr>
+                                    <?php endif ?>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                        
+                        <tr role="row" class="odd">
+                            <td class="sorting_1" colspan="3"><strong style="font-size:16px; text-transform:uppercase;">Expenses</strong></td>
+                        </tr>
+                        <?php foreach ($charts as $report): ?>
+                            <?php if($report['account_type'] == 5 ) : ?>
+                                    <?php if($report['glcode'] != 5) : ?>
+                                        <tr role="row" class="odd">
+                                            <td class="text-left"><?= $a++ ?></td>
+                                            <td class="sorting_1 text-left"><?= $report['glcode'] ?? '' ?></td>
+                                            <td class="text-left"><?= $report['account_name'] ?? '' ?></td>
+                                        </tr>
+                                    <?php endif ?>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                        
                     </table>
                 </div>
             </div>

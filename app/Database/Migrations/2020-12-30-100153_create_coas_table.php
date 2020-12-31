@@ -42,6 +42,10 @@ class CreateCoasTable extends Migration
 				 'created_at'=>[
 					 'type'=>'TEXT',
 					 'default'=>'CURRENT_TIMESTAMP'
+				 ],
+				 'note'=>[
+					 'type'=>'TEXT',
+					 'null'=>true
 				 ]
  
  

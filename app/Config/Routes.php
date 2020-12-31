@@ -69,6 +69,8 @@ $routes->post('contribution_type', 'ContributionType::contribution_type');
 #chart of accounts
 $routes->get('/chart-of-accounts', 'ChartOfAccountController::index');
 $routes->get('/add-new-chart-of-account', 'ChartOfAccountController::create');
+$routes->post('/add-new-chart-of-account', 'ChartOfAccountController::saveAccount');
+$routes->get('/get-parent-account', 'ChartOfAccountController::getParentAccount');
 
 
 #cooperators routes

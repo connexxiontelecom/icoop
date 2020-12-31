@@ -4,7 +4,8 @@ use CodeIgniter\Model;
 
 class CoaModel extends Model{
     protected $table = 'coas';
-    protected $allowedFields = ['first_name', 'last_name', 'email', 'password', 'user_type', 'created_at'];
+    protected $allowedFields = ['account_name', 'account_type', 'bank', 'glcode', 'parent_account', 'type', 'created_at'];
+
 }
 
 ?>
