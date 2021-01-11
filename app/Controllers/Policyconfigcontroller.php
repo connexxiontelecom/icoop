@@ -7,6 +7,7 @@ use App\Models\CoaModel;
 class Policyconfigcontroller extends BaseController
 {
 	public function __construct(){
+        $this->session = session();
 		$this->policy = new PolicyConfigModel();
 		$this->coa = new CoaModel();
 	}
@@ -16,7 +17,8 @@ class Policyconfigcontroller extends BaseController
         $data = [];
         //$states = new StateModel;
 		//$data['states'] = $states->findAll();
-		$data['accounts'] = $this->coa->findAll();
+        $data['accounts'] = $this->coa->findAll();
+        $data['profile'] = $this->policy->first();
 		return view('pages/policy-config/index', $data);
 	}
 
@@ -230,6 +232,126 @@ class Policyconfigcontroller extends BaseController
 						'income_savings_withdrawal_charge_cr'=>$this->request->getVar('income_savings_withdrawal_charge_cr')
 					];
 					$this->policy->update($policy['policy_config_id'], $data);
+					return $this->response->redirect(site_url('/policy-config'));
+				}
+				
+            }else{
+                return $this->response->redirect(site_url('/policy-config'));
+            }
+        }
+
+	}
+	public function loanSetup(){
+		helper(['form']);
+        $data = [];
+
+        if($_POST){
+            $rules = [
+                'loan_description'=>[
+                    'rules'=>'required',
+                    'label'=>'Loan description',
+                    'errors'=>[
+                        'required'=>'Loan description required'
+                    ]
+					],
+                'qualification_age'=>[
+                    'rules'=>'required',
+                    'label'=>'Qualification age',
+                    'errors'=>[
+                        'required'=>'Qualification age is required'
+                    ]
+					],
+                'min_credit_limit'=>[
+                    'rules'=>'required',
+                    'label'=>'Minimum credit limit',
+                    'errors'=>[
+                        'required'=>'Minimum credit limit is required'
+                    ]
+					],
+                'max_credit_limit'=>[
+                    'rules'=>'required',
+                    'label'=>'Maximum credit limit',
+                    'errors'=>[
+                        'required'=>'Maximum credit limit is required'
+                    ]
+					],
+                'max_repayment_periods'=>[
+                    'rules'=>'required',
+                    'label'=>'Maximum repayment periods',
+                    'errors'=>[
+                        'required'=>'Maximum repayment periods is required'
+                    ]
+					],
+                'interest_rate'=>[
+                    'rules'=>'required',
+                    'label'=>'Interest Rate',
+                    'errors'=>[
+                        'required'=>'Interest Rate is required'
+                    ]
+					],
+                'interest_method'=>[
+                    'rules'=>'required',
+                    'label'=>'Interest method',
+                    'errors'=>[
+                        'required'=>'Interest method is required'
+                    ]
+					],
+                'loan_gl_account_number'=>[
+                    'rules'=>'required',
+                    'label'=>'Loan GL Account Number',
+                    'errors'=>[
+                        'required'=>'Loan GL Account Number is required'
+                    ]
+					],
+                'loan_unearned_int_gl_account_no'=>[
+                    'rules'=>'required',
+                    'label'=>'Loan Unearned Int. GL Account Number',
+                    'errors'=>[
+                        'required'=>'Loan Unearned Int. GL Account Number is required'
+                    ]
+					],
+                'loan_int_income_gl_account_no'=>[
+                    'rules'=>'required',
+                    'label'=>'Loan Int. Income GL Account Number',
+                    'errors'=>[
+                        'required'=>'Loan Int. Income GL Account Number is required'
+                    ]
+					],
+                'loan_terms'=>[
+                    'rules'=>'required',
+                    'label'=>'Loan Terms',
+                    'errors'=>[
+                        'required'=>'Loan Terms is required'
+                    ]
+					],
+            ];
+            if($this->validate($rules)){
+				$policy = $this->policy->first();
+				if(empty($policy)){
+					$data = [
+						'contribution_payroll_cr'=>$this->request->getVar('contribution_payroll_cr'),
+						'contribution_external_cr'=>$this->request->getVar('contribution_external_cr'),
+						'savings_withdrawal_charge'=>$this->request->getVar('savings_withdrawal_charge'),
+						'withdrawal_dr'=>$this->request->getVar('withdrawal_dr'),
+						'registration_fee_dr'=>$this->request->getVar('registration_fee_dr'),
+						'registration_fee_cr'=>$this->request->getVar('registration_fee_cr'),
+						'income_savings_withdrawal_charge_dr'=>$this->request->getVar('income_savings_withdrawal_charge_dr'),
+						'income_savings_withdrawal_charge_cr'=>$this->request->getVar('income_savings_withdrawal_charge_cr')
+					];
+					$this->policy->save($data);
+					return $this->response->redirect(site_url('/policy-config'));
+				}else{
+					$data = [
+						'contribution_payroll_cr'=>$this->request->getVar('contribution_payroll_cr'),
+						'contribution_external_cr'=>$this->request->getVar('contribution_external_cr'),
+						'savings_withdrawal_charge'=>$this->request->getVar('savings_withdrawal_charge'),
+						'withdrawal_dr'=>$this->request->getVar('withdrawal_dr'),
+						'registration_fee_dr'=>$this->request->getVar('registration_fee_dr'),
+						'registration_fee_cr'=>$this->request->getVar('registration_fee_cr'),
+						'income_savings_withdrawal_charge_dr'=>$this->request->getVar('income_savings_withdrawal_charge_dr'),
+						'income_savings_withdrawal_charge_cr'=>$this->request->getVar('income_savings_withdrawal_charge_cr')
+					];
+					$this->policy->save($data);
 					return $this->response->redirect(site_url('/policy-config'));
 				}
 				
