@@ -7,6 +7,7 @@ use App\Models\CoaModel;
 class Policyconfigcontroller extends BaseController
 {
 	public function __construct(){
+        $this->session = session();
 		$this->policy = new PolicyConfigModel();
 		$this->coa = new CoaModel();
 	}
@@ -16,7 +17,8 @@ class Policyconfigcontroller extends BaseController
         $data = [];
         //$states = new StateModel;
 		//$data['states'] = $states->findAll();
-		$data['accounts'] = $this->coa->findAll();
+        $data['accounts'] = $this->coa->findAll();
+        $data['profile'] = $this->policy->first();
 		return view('pages/policy-config/index', $data);
 	}
 
@@ -349,7 +351,7 @@ class Policyconfigcontroller extends BaseController
 						'income_savings_withdrawal_charge_dr'=>$this->request->getVar('income_savings_withdrawal_charge_dr'),
 						'income_savings_withdrawal_charge_cr'=>$this->request->getVar('income_savings_withdrawal_charge_cr')
 					];
-					$this->policy->update($policy['policy_config_id'], $data);
+					$this->policy->save($data);
 					return $this->response->redirect(site_url('/policy-config'));
 				}
 				
