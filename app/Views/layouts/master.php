@@ -209,6 +209,7 @@
                             <ul class="metismenu">
                                 <li class="active"><a href="<?=site_url('dashboard'); ?>"><i class="icon-speedometer"></i><span>Dashboard</span></a></li>
                                 <li class="header">Menu</li>
+                                <li><a href="<?= site_url('control-panel'); ?>"><i class="icon-paper-plane"></i><span>Control Panel</span></a></li>
                                 <li>
                                     <a href="#" class="has-arrow"><i class="icon-lock"></i><span>Control Panel</span></a>
                                     <ul>
@@ -217,8 +218,6 @@
                                     </ul>
 
                                 </li>
-
-
                                 <li>
                                     <a href="#" class="has-arrow"><i class="icon-lock"></i><span>House Keeping</span></a>
                                     <ul>
@@ -244,8 +243,16 @@
                                 <li><a href="#"><i class="icon-earphones-alt"></i><span>Loans</span></a></li>
                                 <li><a href="#"><i class="icon-list"></i><span>Payables</span></a></li>
                                 <li><a href="#"><i class="icon-list"></i><span>Receivables</span></a></li>
-                                <li><a href="#"><i class="icon-list"></i><span>Financial Accounts</span></a></li>
-
+                                <li>
+                                    <a href="javascript:void(0);" class="has-arrow"><i class="icon-lock"></i><span>Financial Accounts</span></a>
+                                    <ul>
+                                        <li><a href="<?=site_url('chart-of-accounts') ?>">Chart of Accounts</a></li>
+                                        <li><a href="<?=site_url('journal-voucher') ?>">Journal Voucher</a></li>
+                                        <li><a href="<?=site_url('approve_application') ?>">Posting</a></li>
+                                        <li><a href="<?=site_url('state') ?>">Location</a></li>
+                                        <li><a href="#">Coop</a></li>
+                                    </ul>
+                                </li>
 
 
                             </ul>

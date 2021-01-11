@@ -7,5 +7,6 @@ namespace App\Models;
 class Banks extends \CodeIgniter\Model
 {
     protected $table = 'banks';
-    protected $allowedFields = ['bank_id','bank_name'];
+    protected $primaryKey = 'bank_id';
+    protected $allowedFields = ['bank_id','bank_name', 'sort_code'];
 }

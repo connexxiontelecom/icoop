@@ -51,15 +51,36 @@ $routes->get('/dashboard', 'Usercontroller::dashboard');
 #House keeping routes
 $routes->get('/states', 'Housekeepingcontroller::states');
 $routes->post('/add-new-state', 'Housekeepingcontroller::addNewState');
+$routes->get('/locations', 'Housekeepingcontroller::locations');
+$routes->post('/add-new-location', 'Housekeepingcontroller::addNewLocation');
+$routes->post('/edit-location', 'Housekeepingcontroller::editLocation');
+$routes->get('/banks', 'Housekeepingcontroller::banks');
+$routes->post('/add-new-bank', 'Housekeepingcontroller::addNewBank');
 $routes->get('/departments', 'Housekeepingcontroller::departments');
 $routes->post('/add-new-department', 'Housekeepingcontroller::addNewDepartment');
 
 #Policy config routes
 $routes->get('/policy-config', 'Policyconfigcontroller::index');
+$routes->post('/update-profile', 'Policyconfigcontroller::updateProfile');
+$routes->post('/savings-rate', 'Policyconfigcontroller::savingsRate');
+$routes->post('/savings-gl-config', 'Policyconfigcontroller::savingGlConfig');
 
 #control panel
 $routes->get('contribution_type', 'ContributionType::contribution_type');
 $routes->post('contribution_type', 'ContributionType::contribution_type');
+
+#chart of accounts
+$routes->get('/chart-of-accounts', 'ChartOfAccountController::index');
+$routes->get('/add-new-chart-of-account', 'ChartOfAccountController::create');
+$routes->post('/add-new-chart-of-account', 'ChartOfAccountController::saveAccount');
+$routes->get('/get-parent-account', 'ChartOfAccountController::getParentAccount');
+#Journal voucher
+$routes->get('/journal-voucher', 'JournalVoucher::index');
+$routes->get('/new-journal-voucher', 'JournalVoucher::create');
+$routes->post('/new-journal-voucher', 'JournalVoucher::store');
+$routes->get('/view-journal-voucher/(:num)', 'JournalVoucher::view/$1');
+$routes->get('/post-journal-voucher/(:num)', 'JournalVoucher::post/$1');
+$routes->get('/decline-journal-voucher/(:num)', 'JournalVoucher::decline/$1');
 
 
 #cooperators routes
