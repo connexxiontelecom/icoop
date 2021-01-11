@@ -224,7 +224,7 @@
                                         <li><a href="<?=site_url('states') ?>">States</a></li>
                                         <li><a href="#">Bank</a></li>
                                         <li><a href="<?=site_url('departments') ?>">Departments</a></li>
-                                        <li><a href="#">Location</a></li>
+                                        <li><a href="<?= site_url('locations') ?>">Location</a></li>
                                         <li><a href="#">Coop</a></li>
                                     </ul>
                                 </li>

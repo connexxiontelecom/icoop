@@ -64,6 +64,7 @@ $routes->get('/policy-config', 'Policyconfigcontroller::index');
 $routes->post('/update-profile', 'Policyconfigcontroller::updateProfile');
 $routes->post('/savings-rate', 'Policyconfigcontroller::savingsRate');
 $routes->post('/savings-gl-config', 'Policyconfigcontroller::savingGlConfig');
+$routes->post('/loan-setup', 'Policyconfigcontroller::loanSetup');
 
 #control panel
 $routes->get('contribution_type', 'ContributionType::contribution_type');
