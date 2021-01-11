@@ -336,6 +336,28 @@ Policy Config
                                 <div class="row">
                                     <div class="col-md-6 col-lg-6 col-sm-6">
                                         <div class="form-group">
+                                            <label for="">Status</label>
+                                            <select name="status" id="status" class="form-control col-md-4">
+                                                <option selected disabled>Select status</option>
+                                                <option value="1">Active</option>
+                                                <option value="2">Block</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-6">
+                                        <div class="form-group">
+                                            <label for="">Payable</label>
+                                            <select name="status" id="status" class="form-control col-md-4">
+                                                <option selected disabled>Select payable</option>
+                                                <option value="1">Cash</option>
+                                                <option value="2">Vendor</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-6 col-sm-6">
+                                        <div class="form-group">
                                             <label for="">Loan GL Account No.</label>
                                             <select required name="loan_gl_account_number" id="loan_gl_account_number" class="form-control">
                                                 <option disabled selected>Select Loan GL Account No.</option>
