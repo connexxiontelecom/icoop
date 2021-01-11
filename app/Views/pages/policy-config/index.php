@@ -310,6 +310,9 @@ Policy Config
                                             <label for="">Interest Method</label>
                                             <select name="interest_method" required id="interest_method" class="form-control">
                                                 <option disabled selected>Select interest method</option>
+                                                <option value="1">Flat</option>
+                                                <option value="2">Monthly</option>
+                                                <option value="3">Yearly</option>
                                             </select>
                                         </div>
                                     </div>
