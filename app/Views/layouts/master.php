@@ -225,10 +225,19 @@
                                         <li><a href="#">Bank</a></li>
                                         <li><a href="<?=site_url('departments') ?>">Departments</a></li>
                                         <li><a href="<?= site_url('locations') ?>">Location</a></li>
-                                        <li><a href="#">Coop</a></li>
+                                        <li><a href="<?= site_url('coop-banks') ?>">Coop Bank</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="<?=site_url('policy-config') ?>"><i class="icon-calendar"></i><span>Policy Config</span></a></li>
+                                <li>
+                                    <a href="#" class="has-arrow"><i class="icon-calendar"></i><span>Policy Config</span></a>
+                                    <ul>
+                                        <li><a href="<?=site_url('states') ?>">Company Profile</a></li>
+                                        <li><a href="#">Savings Rate</a></li>
+                                        <li><a href="<?=site_url('departments') ?>">Saving GL Congfig.</a></li>
+                                        <li><a href="<?= site_url('/policy-config/loan-setup') ?>">Loan Setup</a></li>
+                                    </ul>
+                                </li>
+                                
                                 <li>
                                     <a href="#" class="has-arrow"><i class="icon-lock"></i><span>Cooperators</span></a>
                                     <ul>

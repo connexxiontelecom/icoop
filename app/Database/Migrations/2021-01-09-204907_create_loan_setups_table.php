@@ -85,6 +85,16 @@ class CreateLoanSetupsTable extends Migration
 					'type'=>'TEXT',
 					'null'=>true
 				],
+				'status'=>[
+					'type'=>'INT',
+					'null'=>true,
+					'default'=>0
+				],
+				'payable'=>[
+					'type'=>'INT',
+					'null'=>true,
+					'default'=>0
+				],
 				'created_at'=>[
 					'type'=>'DATETIME',
 					'null'=>true

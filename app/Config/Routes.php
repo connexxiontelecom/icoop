@@ -58,12 +58,15 @@ $routes->get('/banks', 'Housekeepingcontroller::banks');
 $routes->post('/add-new-bank', 'Housekeepingcontroller::addNewBank');
 $routes->get('/departments', 'Housekeepingcontroller::departments');
 $routes->post('/add-new-department', 'Housekeepingcontroller::addNewDepartment');
+$routes->get('/coop-banks', 'Housekeepingcontroller::coopBanks');
+$routes->post('/coop-bank', 'Housekeepingcontroller::addNewCoopBank');
 
 #Policy config routes
 $routes->get('/policy-config', 'Policyconfigcontroller::index');
 $routes->post('/update-profile', 'Policyconfigcontroller::updateProfile');
 $routes->post('/savings-rate', 'Policyconfigcontroller::savingsRate');
 $routes->post('/savings-gl-config', 'Policyconfigcontroller::savingGlConfig');
+$routes->get('/policy-config/loan-setup', 'Policyconfigcontroller::showLoanSetupForm');
 $routes->post('/loan-setup', 'Policyconfigcontroller::loanSetup');
 
 #control panel

@@ -3,6 +3,7 @@ namespace App\Controllers;
 use App\Models\StateModel; 
 use App\Models\PolicyConfigModel; 
 use App\Models\CoaModel; 
+use App\Models\LoanSetupModel; 
 
 class Policyconfigcontroller extends BaseController
 {
@@ -10,6 +11,7 @@ class Policyconfigcontroller extends BaseController
         $this->session = session();
 		$this->policy = new PolicyConfigModel();
 		$this->coa = new CoaModel();
+		$this->loan = new LoanSetupModel();
 	}
     
 	public function index()
@@ -21,6 +23,7 @@ class Policyconfigcontroller extends BaseController
         $data['profile'] = $this->policy->first();
 		return view('pages/policy-config/index', $data);
 	}
+	
 
 	public function updateProfile(){
 		helper(['form']);
@@ -240,11 +243,19 @@ class Policyconfigcontroller extends BaseController
             }
         }
 
+    }
+    
+    public function showLoanSetupForm()
+	{
+        $data = [];
+        $data['accounts'] = $this->coa->findAll();
+        $data['profile'] = $this->policy->first();
+        $data['loansetups'] = $this->loan->findAll();
+		return view('pages/policy-config/loan-setup', $data);
 	}
 	public function loanSetup(){
 		helper(['form']);
         $data = [];
-
         if($_POST){
             $rules = [
                 'loan_description'=>[
@@ -326,37 +337,32 @@ class Policyconfigcontroller extends BaseController
 					],
             ];
             if($this->validate($rules)){
-				$policy = $this->policy->first();
-				if(empty($policy)){
+				
 					$data = [
-						'contribution_payroll_cr'=>$this->request->getVar('contribution_payroll_cr'),
-						'contribution_external_cr'=>$this->request->getVar('contribution_external_cr'),
-						'savings_withdrawal_charge'=>$this->request->getVar('savings_withdrawal_charge'),
-						'withdrawal_dr'=>$this->request->getVar('withdrawal_dr'),
-						'registration_fee_dr'=>$this->request->getVar('registration_fee_dr'),
-						'registration_fee_cr'=>$this->request->getVar('registration_fee_cr'),
-						'income_savings_withdrawal_charge_dr'=>$this->request->getVar('income_savings_withdrawal_charge_dr'),
-						'income_savings_withdrawal_charge_cr'=>$this->request->getVar('income_savings_withdrawal_charge_cr')
+						'loan_description'=>$this->request->getVar('loan_description'),
+						'age_qualification'=>$this->request->getVar('qualification_age'),
+						'psr'=>$this->request->getVar('psr') ?? 0,
+						'psr_value'=>$this->request->getVar('psr_value') ?? 0,
+						'min_credit_limit'=>$this->request->getVar('min_credit_limit'),
+						'max_credit_limit'=>$this->request->getVar('max_credit_limit'),
+						'max_repayment_periods'=>$this->request->getVar('max_repayment_periods'),
+						'interest_rate'=>$this->request->getVar('interest_rate'),
+						'interest_method'=>$this->request->getVar('interest_method'),
+						'commitment'=>$this->request->getVar('commitment') ?? 0,
+						'commitment_value'=>$this->request->getVar('commitment_value') ?? 0,
+						'loan_gl_account_no'=>$this->request->getVar('loan_gl_account_number'),
+						'loan_unearned_int_gl_account_no'=>$this->request->getVar('loan_unearned_int_gl_account_no'),
+						'loan_int_income_gl_account_no'=>$this->request->getVar('loan_int_income_gl_account_no'),
+						'loan_terms'=>$this->request->getVar('loan_terms'),
+						'status'=>$this->request->getVar('status'),
+						'payable'=>$this->request->getVar('payable')
 					];
-					$this->policy->save($data);
-					return $this->response->redirect(site_url('/policy-config'));
-				}else{
-					$data = [
-						'contribution_payroll_cr'=>$this->request->getVar('contribution_payroll_cr'),
-						'contribution_external_cr'=>$this->request->getVar('contribution_external_cr'),
-						'savings_withdrawal_charge'=>$this->request->getVar('savings_withdrawal_charge'),
-						'withdrawal_dr'=>$this->request->getVar('withdrawal_dr'),
-						'registration_fee_dr'=>$this->request->getVar('registration_fee_dr'),
-						'registration_fee_cr'=>$this->request->getVar('registration_fee_cr'),
-						'income_savings_withdrawal_charge_dr'=>$this->request->getVar('income_savings_withdrawal_charge_dr'),
-						'income_savings_withdrawal_charge_cr'=>$this->request->getVar('income_savings_withdrawal_charge_cr')
-					];
-					$this->policy->save($data);
-					return $this->response->redirect(site_url('/policy-config'));
-				}
+					$this->loan->save($data);
+					return $this->response->redirect(site_url('/policy-config/loan-setup'));
+				
 				
             }else{
-                return $this->response->redirect(site_url('/policy-config'));
+                return $this->response->redirect(site_url('/policy-config/loan-setup'));
             }
         }
 
