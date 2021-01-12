@@ -43,6 +43,15 @@ Coop Banks
                 <div class="body">
                     <form id="addNewCoopBankForm" action="<?= site_url('coop-bank') ?>" method="POST">
                     <?= csrf_field() ?>
+                    <div class="form-group">
+                           <label for="">Bank</label>
+                           <select name="bank" required id="bank" class="form-control js-example-basic-multiple">
+                              <option disabled selected>Select Bank</option>
+                              <?php foreach($banks as $bank) : ?>
+                                <option value="<?= $bank['bank_id']?>"><?= $bank['bank_name'] ?></option>
+                              <?php endforeach ?>
+                           </select>
+                        </div>
                         <div class="form-group">
                             <label for="">Account No.</label>
                             <input type="text" required placeholder="Account No." id="account_no" name="account_no" class="form-control">
@@ -65,15 +74,7 @@ Coop Banks
                               <?php endforeach ?>
                            </select>
                         </div>
-                        <div class="form-group">
-                           <label for="">Bank</label>
-                           <select name="bank" required id="bank" class="form-control js-example-basic-multiple">
-                              <option disabled selected>Select Bank</option>
-                              <?php foreach($banks as $bank) : ?>
-                                <option value="<?= $bank['bank_id']?>"><?= $bank['bank_name'] ?></option>
-                              <?php endforeach ?>
-                           </select>
-                        </div>
+                        
 
                         <?= csrf_field() ?>
                         <div class="form-group">

@@ -87,7 +87,8 @@ class Policyconfigcontroller extends BaseController
             }
         }
 
-	}
+    }
+    
 	public function savingsRate(){
 		helper(['form']);
         $data = [];
@@ -151,7 +152,6 @@ class Policyconfigcontroller extends BaseController
         }
 
 	}
-
 	public function savingGlConfig(){
 		helper(['form']);
         $data = [];
@@ -358,6 +358,121 @@ class Policyconfigcontroller extends BaseController
 						'payable'=>$this->request->getVar('payable')
 					];
 					$this->loan->save($data);
+					return $this->response->redirect(site_url('/policy-config/loan-setup'));
+				
+				
+            }else{
+                return $this->response->redirect(site_url('/policy-config/loan-setup'));
+            }
+        }
+
+	}
+	public function editLoanSetup(){
+		helper(['form']);
+        $data = [];
+        if($_POST){
+            $rules = [
+                'loan_description'=>[
+                    'rules'=>'required',
+                    'label'=>'Loan description',
+                    'errors'=>[
+                        'required'=>'Loan description required'
+                    ]
+					],
+                'qualification_age'=>[
+                    'rules'=>'required',
+                    'label'=>'Qualification age',
+                    'errors'=>[
+                        'required'=>'Qualification age is required'
+                    ]
+					],
+                'min_credit_limit'=>[
+                    'rules'=>'required',
+                    'label'=>'Minimum credit limit',
+                    'errors'=>[
+                        'required'=>'Minimum credit limit is required'
+                    ]
+					],
+                'max_credit_limit'=>[
+                    'rules'=>'required',
+                    'label'=>'Maximum credit limit',
+                    'errors'=>[
+                        'required'=>'Maximum credit limit is required'
+                    ]
+					],
+                'max_repayment_periods'=>[
+                    'rules'=>'required',
+                    'label'=>'Maximum repayment periods',
+                    'errors'=>[
+                        'required'=>'Maximum repayment periods is required'
+                    ]
+					],
+                'interest_rate'=>[
+                    'rules'=>'required',
+                    'label'=>'Interest Rate',
+                    'errors'=>[
+                        'required'=>'Interest Rate is required'
+                    ]
+					],
+                'interest_method'=>[
+                    'rules'=>'required',
+                    'label'=>'Interest method',
+                    'errors'=>[
+                        'required'=>'Interest method is required'
+                    ]
+					],
+                'loan_gl_account_number'=>[
+                    'rules'=>'required',
+                    'label'=>'Loan GL Account Number',
+                    'errors'=>[
+                        'required'=>'Loan GL Account Number is required'
+                    ]
+					],
+                'loan_unearned_int_gl_account_no'=>[
+                    'rules'=>'required',
+                    'label'=>'Loan Unearned Int. GL Account Number',
+                    'errors'=>[
+                        'required'=>'Loan Unearned Int. GL Account Number is required'
+                    ]
+					],
+                'loan_int_income_gl_account_no'=>[
+                    'rules'=>'required',
+                    'label'=>'Loan Int. Income GL Account Number',
+                    'errors'=>[
+                        'required'=>'Loan Int. Income GL Account Number is required'
+                    ]
+					],
+                'loan_terms'=>[
+                    'rules'=>'required',
+                    'label'=>'Loan Terms',
+                    'errors'=>[
+                        'required'=>'Loan Terms is required'
+                    ]
+					],
+            ];
+            if($this->validate($rules)){
+				
+                $loan_setup_id = $this->request->getVar('loan_id');
+					$data = [
+						'loan_description'=>$this->request->getVar('loan_description'),
+						'age_qualification'=>$this->request->getVar('qualification_age'),
+						'psr'=>$this->request->getVar('psr') ?? 0,
+						'psr_value'=>$this->request->getVar('psr_value') ?? 0,
+						'min_credit_limit'=>$this->request->getVar('min_credit_limit'),
+						'max_credit_limit'=>$this->request->getVar('max_credit_limit'),
+						'max_repayment_periods'=>$this->request->getVar('max_repayment_periods'),
+						'interest_rate'=>$this->request->getVar('interest_rate'),
+						'interest_method'=>$this->request->getVar('interest_method'),
+						'commitment'=>$this->request->getVar('commitment') ?? 0,
+						'commitment_value'=>$this->request->getVar('commitment_value') ?? 0,
+						'loan_gl_account_no'=>$this->request->getVar('loan_gl_account_number'),
+						'loan_unearned_int_gl_account_no'=>$this->request->getVar('loan_unearned_int_gl_account_no'),
+						'loan_int_income_gl_account_no'=>$this->request->getVar('loan_int_income_gl_account_no'),
+						'loan_terms'=>$this->request->getVar('loan_terms'),
+						'status'=>$this->request->getVar('status'),
+						'payable'=>$this->request->getVar('payable')
+					];
+					$this->loan->update($loan_setup_id, $data);
 					return $this->response->redirect(site_url('/policy-config/loan-setup'));
 				
 				

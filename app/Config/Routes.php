@@ -68,6 +68,7 @@ $routes->post('/savings-rate', 'Policyconfigcontroller::savingsRate');
 $routes->post('/savings-gl-config', 'Policyconfigcontroller::savingGlConfig');
 $routes->get('/policy-config/loan-setup', 'Policyconfigcontroller::showLoanSetupForm');
 $routes->post('/loan-setup', 'Policyconfigcontroller::loanSetup');
+$routes->post('/edit-loan-setup', 'Policyconfigcontroller::editLoanSetup');
 
 #control panel
 $routes->get('contribution_type', 'ContributionType::contribution_type');
@@ -97,6 +98,8 @@ $routes->get('approve_application', 'Cooperators::approve_application');
 $routes->get('approve_application/(:num)', 'Cooperators::approve_application_/$1');
 $routes->post('approve_application/(:num)', 'Cooperators::approve_application_/$1');
 
+#Loan routes
+$routes->get('/loan/new', 'LoanController::showLoanApplicationForm');
 /**
  * --------------------------------------------------------------------
  * Additional Routing
