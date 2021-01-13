@@ -3,6 +3,12 @@
 <?= $this->section('title') ?>
 Loan Setup  
 <?= $this->endSection() ?>
+<?= $this->section('current_page') ?>
+   Loan Setup
+<?= $this->endSection() ?>
+<?= $this->section('page_crumb') ?>
+    Loan Setup
+<?= $this->endSection() ?>
 
 <?= $this->section('extra-styles') ?>
     <link href="/assets/css/parsley.min.css" rel="stylesheet">

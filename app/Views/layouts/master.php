@@ -245,8 +245,8 @@
                                     <a href="#" class="has-arrow"><i class="icon-wallet"></i><span>Loans</span></a>
                                     <ul>
                                         <li><a href="<?=site_url('/loan/new') ?>">New Loan</a></li>
-                                        <li><a href="#">Verify Loan</a></li>
-                                        <li><a href="<?=site_url('departments') ?>">Approve Loan</a></li>
+                                        <li><a href="<?=site_url('/loan/verify') ?>">Verify Loan</a></li>
+                                        <li><a href="<?=site_url('/loan/approve') ?>">Approve Loan</a></li>
                                     </ul>
                                 </li>
                                 

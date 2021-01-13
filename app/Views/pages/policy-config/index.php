@@ -3,6 +3,12 @@
 <?= $this->section('title') ?>
 Policy Config  
 <?= $this->endSection() ?>
+<?= $this->section('current_page') ?>
+   Policy Config.
+<?= $this->endSection() ?>
+<?= $this->section('page_crumb') ?>
+    Policy Config.
+<?= $this->endSection() ?>
 
 <?= $this->section('extra-styles') ?>
     <link href="/assets/css/parsley.min.css" rel="stylesheet">

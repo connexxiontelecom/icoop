@@ -29,6 +29,10 @@ class CreateLoanApplicationTable extends Migration
 					'type' => 'INT',
 					'null'=>true,
 				],
+				'loan_type' =>[
+					'type' => 'INT',
+					'null'=>true,
+				],
 				'amount' =>[
 					'type' => 'DOUBLE',
 					'null'=>true,
@@ -39,6 +43,10 @@ class CreateLoanApplicationTable extends Migration
 					'null'=>true
 				],
 				'guarantor' =>[
+					'type' => 'INT',
+					'null'=>true
+				],
+				'guarantor_2' =>[
 					'type' => 'INT',
 					'null'=>true
 				],
@@ -74,6 +82,22 @@ class CreateLoanApplicationTable extends Migration
 					],
 				'applied_by' =>[
 						'type' => 'INT',
+						'null'=>true
+					],
+				'verify_comment' =>[
+						'type' => 'TEXT',
+						'null'=>true
+					],
+				'approve_comment' =>[
+						'type' => 'TEXT',
+						'null'=>true
+					],
+				'decline_comment' =>[
+						'type' => 'TEXT',
+						'null'=>true
+					],
+				'unverify_comment' =>[
+						'type' => 'TEXT',
 						'null'=>true
 					],
 

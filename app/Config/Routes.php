@@ -100,6 +100,13 @@ $routes->post('approve_application/(:num)', 'Cooperators::approve_application_/$
 
 #Loan routes
 $routes->get('/loan/new', 'LoanController::showLoanApplicationForm');
+$routes->post('/loan/new', 'LoanController::storeLoanApplication');
+$routes->get('/get-cooperator/(:num)', 'LoanController::getCooperator/$1');
+$routes->get('/loan/verify', 'LoanController::showVerifyApplications');
+$routes->post('/loan/verify', 'LoanController::verifyLoanApplication');
+$routes->get('/get-loan-type/(:num)', 'LoanController::getLoanType/$1');
+$routes->get('/view-loan-application/(:num)', 'LoanController::viewLoanApplication/$1');
+$routes->get('/loan/approve', 'LoanController::showApproveApplications');
 /**
  * --------------------------------------------------------------------
  * Additional Routing
