@@ -107,6 +107,7 @@ $routes->post('/loan/verify', 'LoanController::verifyLoanApplication');
 $routes->get('/get-loan-type/(:num)', 'LoanController::getLoanType/$1');
 $routes->get('/view-loan-application/(:num)', 'LoanController::viewLoanApplication/$1');
 $routes->get('/loan/approve', 'LoanController::showApproveApplications');
+$routes->get('/loan/new-payment-schedule', 'LoanController::showPaymentSchedule');
 /**
  * --------------------------------------------------------------------
  * Additional Routing

@@ -127,6 +127,16 @@ Loan Application Details
                         <label for="">Comment <small>(Optional)</small></label>
                         <textarea name="comment" id="comment" style="resize:none;" placeholder="Type here..." class="form-control"></textarea>
                     </div>
+                    <div class="form-group">
+                        <p><strong>Interest Rate: </strong><?= $setup['interest_rate'] ?>%</p>
+                        <?php if($application['loan_type'] == 1)  : ?> <!-- Flat -->
+                            <p for=""><strong>Interest Amount: </strong>₦<?= number_format(($application['amount']*$setup['interest_rate']/100),2 ) ?></p>
+                        <?php elseif($application['loan_type'] == 2) : ?>
+                            <p for=""><strong>Interest Amount: </strong>₦<?= number_format($application['amount']*($setup['interest_rate']/100) * $application['duration']/12 ) ?></p>
+                        <?php else : ?>
+                            <p for=""><strong>Interest Amount: </strong>₦<?= number_format($application['amount']*($setup['interest_rate']/100) * $application['duration'] ) ?></p>
+                        <?php endif; ?>
+                    </div>
                     <div class="form-group d-flex justify-content-center">
                         <div class="btn-group">
                             <button type="button" class="btn btn-round btn-danger btn-sm" data-dismiss="modal">Cancel</button>

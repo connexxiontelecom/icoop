@@ -48,13 +48,6 @@ class LoanController extends BaseController
                         'required'=>'Staff ID is required'
                     ]
 					],
-                'name'=>[
-                    'rules'=>'required',
-                    'label'=>'Name',
-                    'errors'=>[
-                        'required'=>'Name is required'
-                    ]
-					],
                 'loan_type'=>[
                     'rules'=>'required',
                     'label'=>'Loan type',
@@ -76,14 +69,14 @@ class LoanController extends BaseController
                         'required'=>'Amount is required'
                     ]
 					],
-                'loan_terms'=>[
+                'guarantor_1'=>[
                     'rules'=>'required',
-                    'label'=>'Loan terms',
+                    'label'=>'Guarantor',
                     'errors'=>[
-                        'required'=>'Loan terms is required'
+                        'required'=>'Guarantor is required'
                     ]
 					],
-                'guarantor'=>[
+                'guarantor_2'=>[
                     'rules'=>'required',
                     'label'=>'Guarantor',
                     'errors'=>[
@@ -94,15 +87,21 @@ class LoanController extends BaseController
             if($this->validate($rules)){
 					$data = [
 						'staff_id'=>$this->request->getVar('staff_id'),
+						'guarantor'=>$this->request->getVar('guarantor_1'),
 						'guarantor_2'=>$this->request->getVar('guarantor_2'),
 						'loan_type'=>$this->request->getVar('loan_type'),
 						'duration'=>$this->request->getVar('duration'),
 						'amount'=>str_replace(",","",$this->request->getVar('amount')),
 						//'loan_terms'=>$this->request->getVar('loan_terms'),
-						'guarantor'=>$this->request->getVar('guarantor')
 					];
-					$this->loanapp->save($data);
-					return $this->response->redirect(site_url('/loan/new'));
+                    $this->loanapp->save($data);
+                    $alert = array(
+                        'msg' => 'Success! Loan application done.',
+                        'type' => 'success',
+                        'location' => site_url('/loan/verify')
+
+                    );
+                    return view('pages/sweet-alert', $alert);
 				
             }else{
                 return $this->response->redirect(site_url('/loan/new'));
@@ -139,8 +138,13 @@ class LoanController extends BaseController
                         'verify_comment'=>$this->request->getVar('comment'),
                         'verify'=>1
 					];
-					$this->loanapp->update($this->request->getVar('application_id'), $data);
-					return $this->response->redirect(site_url('/loan/verify'));
+                    $this->loanapp->update($this->request->getVar('application_id'), $data);
+            $alert = array(
+                'msg' => 'Success! Loan application verified.',
+                'type' => 'success',
+                'location' => site_url('/loan/verify')
+            );
+            return view('pages/sweet-alert', $alert);
 				
             }else{
                 return $this->response->redirect(site_url('/loan/verify'));
@@ -177,8 +181,13 @@ class LoanController extends BaseController
                         'verify'=>1
 					];
 					$this->loanapp->update($this->request->getVar('application_id'), $data);
-					return $this->response->redirect(site_url('/loan/verify'));
-				
+            
+                    $alert = array(
+                        'msg' => 'Success! Loan application approved.',
+                        'type' => 'success',
+                        'location' => site_url('/loan/verify')
+                    );
+                    return view('pages/sweet-alert', $alert);
             }else{
                 return $this->response->redirect(site_url('/loan/verify'));
             }
@@ -188,10 +197,23 @@ class LoanController extends BaseController
     public function viewLoanApplication($id){
         $data = [];
         $application = $this->loanapp->where('loan_app_id', $id)->first();
+        $setup = $this->loansetup->where('loan_setup_id', $application['loan_type'])->first();
+
         $data = [
-            'application'=>$application
+            'application'=>$application,
+            'setup'=>$setup
         ];
         $username = $this->session->user_username;
         $this->authenticate_user($username, 'pages/loan/view-loan-application', $data);
+    }
+
+    public function showPaymentSchedule(){
+        $data = [];
+        $loan_apps = $this->loanapp->where('approve',1)->findAll();
+        $data = [
+            'loan_apps'=>$loan_apps
+        ];
+        $username = $this->session->user_username;
+        $this->authenticate_user($username, 'pages/loan/new-payment-schedule', $data); 
     }
 }

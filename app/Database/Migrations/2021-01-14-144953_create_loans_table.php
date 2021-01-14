@@ -2,53 +2,49 @@
 
 use CodeIgniter\Database\Migration;
 
-class CreateCoopBanksTable extends Migration
+class CreateLoansTable extends Migration
 {
 	public function up()
 	{
 		$this->db->disableForeignKeyChecks();
 		$this->forge->addField(
 			[
-				'coop_bank_id' =>[
+				'loan_id' =>[
 					'type' => 'INT',
 					'constraint' => 11,
 					'auto_increment' => true,
 				],
-
-				'bank_id' =>[
+				'staff_id' =>[
 					'type' => 'INT',
 					'null'=>true,
 				],
-
-				'branch' =>[
-					'type' => 'VARCHAR',
-					'null'=>true,
-					'default'=>'No branch',
-					'constraint'=>50
-				],
-				'account_no' =>[
-					'type' => 'TEXT',
+				'loan_app_id' =>[
+					'type' => 'INT',
 					'null'=>true,
 				],
-				'description' =>[
-					'type' => 'TEXT',
+				'amount' =>[
+					'type' => 'DOUBLE',
+					'null'=>true,
+					'default'=>0
+				],
+				'interest' =>[
+					'type' => 'DOUBLE',
 					'null'=>true
 				],
-				'glcode' =>[
-					'type' => 'INT',
+				'interest_rate' =>[
+					'type' => 'DOUBLE',
 					'null'=>true
 				],
 				'created_at'=>[
 					'type'=>'DATETIME',
 					'null'=>true
-				]
-
+				],
 
 
 			]
 		);
-		$this->forge->addKey('coop_bank_id', true);
-		$this->forge->createTable('coop_banks');
+		$this->forge->addKey('loan_id', true);
+		$this->forge->createTable('loans');
 	}
 
 	//--------------------------------------------------------------------

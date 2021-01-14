@@ -46,13 +46,12 @@ Verify
                         
                         <tr>
                             <th>#</th>
-                            <th>Staff Name</th>
+                            <th>Coop ID</th>
+                            <th>Name</th>
+                            <th>Loan Type</th>
                             <th>Amount</th>
                             <th>Duration</th>
-                            <th>Guarantor 1</th>
-                            <th>Guarantor 2</th>
-                            <th>Loan Type</th>
-                            <th>Loan Terms</th>
+                            <th>Application Date</th>
                             <th>Action</th>
                         </tr>
 
@@ -60,13 +59,12 @@ Verify
                             <?php $i = 1; foreach($applications as $app) : ?>
                                 <tr>
                                     <td><?= $i++ ?></td>
+                                    <td><?= $app['staff_id'] ?></td>
                                     <td><?= $app['name'] ?></td>
-                                    <td><?= number_format($app['amount']) ?></td>
-                                    <td><?= number_format($app['duration']) ?> months</td>
-                                    <td><?= $app['guarantor'] ?> </td>
-                                    <td><?= $app['guarantor_2'] ?> </td>
                                     <td><?= $app['loan_type'] ?> </td>
-                                    <td><?= $app['loan_terms'] ?> </td>
+                                    <td>₦<?= number_format($app['amount']) ?></td>
+                                    <td><?= number_format($app['duration']) ?> months</td>
+                                    <td><?= date('d M, Y', strtotime($app['applied_date'])) ?> </td>
                                     <td>
                                         <a href="<?= site_url('/view-loan-application/'.$app['loan_app_id']) ?>" class="btn btn-primary btn-sm">Learn more</a>
                                     </td>
@@ -89,17 +87,20 @@ Verify
 <?= $this->section('extra-scripts') ?>
 <script src="assets/bundles/vendorscripts.bundle.js"></script>
 
+<script src="assets/vendor/sweetalert/sweetalert.min.js"></script><!-- SweetAlert Plugin Js -->
+<script src="assets/js/common.js"></script>
+<script src="assets/js/pages/tables/jquery-datatable.js"></script>
+<script src="assets/js/axios.min.js"></script>
+<script src="assets/js/toastify.min.js"></script>
+
+
 <script src="assets/bundles/datatablescripts.bundle.js"></script>
 <script src="assets/vendor/jquery-datatable/buttons/dataTables.buttons.min.js"></script>
 <script src="assets/vendor/jquery-datatable/buttons/buttons.bootstrap4.min.js"></script>
 <script src="assets/vendor/jquery-datatable/buttons/buttons.colVis.min.js"></script>
 <script src="assets/vendor/jquery-datatable/buttons/buttons.html5.min.js"></script>
 <script src="assets/vendor/jquery-datatable/buttons/buttons.print.min.js"></script>
-<script src="assets/vendor/sweetalert/sweetalert.min.js"></script><!-- SweetAlert Plugin Js -->
-<script src="assets/js/common.js"></script>
-<script src="assets/js/pages/tables/jquery-datatable.js"></script>
-<script src="assets/js/axios.min.js"></script>
-<script src="assets/js/toastify.min.js"></script>
+
     <script>
         $(document).ready(function(){
             $('.simpletable').DataTable();
