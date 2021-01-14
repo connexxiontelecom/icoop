@@ -58,13 +58,17 @@ $routes->get('/banks', 'Housekeepingcontroller::banks');
 $routes->post('/add-new-bank', 'Housekeepingcontroller::addNewBank');
 $routes->get('/departments', 'Housekeepingcontroller::departments');
 $routes->post('/add-new-department', 'Housekeepingcontroller::addNewDepartment');
+$routes->get('/coop-banks', 'Housekeepingcontroller::coopBanks');
+$routes->post('/coop-bank', 'Housekeepingcontroller::addNewCoopBank');
 
 #Policy config routes
 $routes->get('/policy-config', 'Policyconfigcontroller::index');
 $routes->post('/update-profile', 'Policyconfigcontroller::updateProfile');
 $routes->post('/savings-rate', 'Policyconfigcontroller::savingsRate');
 $routes->post('/savings-gl-config', 'Policyconfigcontroller::savingGlConfig');
+$routes->get('/policy-config/loan-setup', 'Policyconfigcontroller::showLoanSetupForm');
 $routes->post('/loan-setup', 'Policyconfigcontroller::loanSetup');
+$routes->post('/edit-loan-setup', 'Policyconfigcontroller::editLoanSetup');
 
 #control panel
 $routes->get('contribution_type', 'ContributionType::contribution_type');
@@ -94,6 +98,16 @@ $routes->get('approve_application', 'Cooperators::approve_application');
 $routes->get('approve_application/(:num)', 'Cooperators::approve_application_/$1');
 $routes->post('approve_application/(:num)', 'Cooperators::approve_application_/$1');
 
+#Loan routes
+$routes->get('/loan/new', 'LoanController::showLoanApplicationForm');
+$routes->post('/loan/new', 'LoanController::storeLoanApplication');
+$routes->get('/get-cooperator/(:num)', 'LoanController::getCooperator/$1');
+$routes->get('/loan/verify', 'LoanController::showVerifyApplications');
+$routes->post('/loan/verify', 'LoanController::verifyLoanApplication');
+$routes->get('/get-loan-type/(:num)', 'LoanController::getLoanType/$1');
+$routes->get('/view-loan-application/(:num)', 'LoanController::viewLoanApplication/$1');
+$routes->get('/loan/approve', 'LoanController::showApproveApplications');
+$routes->get('/loan/new-payment-schedule', 'LoanController::showPaymentSchedule');
 /**
  * --------------------------------------------------------------------
  * Additional Routing

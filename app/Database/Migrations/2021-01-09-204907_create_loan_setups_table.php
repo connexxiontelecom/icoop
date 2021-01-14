@@ -58,7 +58,8 @@ class CreateLoanSetupsTable extends Migration
 				],
 				'interest_method'=>[
 					'type'=>'INT',
-					'null'=>true
+					'null'=>true,
+					'comment'=>'1=Flat, 2=monthly, 3=yearly'
 				],
 				'commitment'=>[
 					'type'=>'INT',
@@ -84,6 +85,16 @@ class CreateLoanSetupsTable extends Migration
 				'loan_terms'=>[
 					'type'=>'TEXT',
 					'null'=>true
+				],
+				'status'=>[
+					'type'=>'INT',
+					'null'=>true,
+					'default'=>0
+				],
+				'payable'=>[
+					'type'=>'INT',
+					'null'=>true,
+					'default'=>0
 				],
 				'created_at'=>[
 					'type'=>'DATETIME',

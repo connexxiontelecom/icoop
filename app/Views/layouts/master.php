@@ -25,10 +25,6 @@
                         <a class="small_menu_btn" href="javascript:void(0);"><i class="fa fa-align-left"></i></a>
                         <a href="index.html"><span>Qubes</span></a>
                     </div>
-                    <form id="navbar-search" class="navbar-form search-form">
-                        <input value="" class="form-control" placeholder="Search here..." type="text">
-                        <button type="button" class="btn btn-default"><i class="icon-magnifier"></i></button>
-                    </form>
                 </div>
 
                 <div class="navbar-right">
@@ -225,22 +221,36 @@
                                         <li><a href="#">Bank</a></li>
                                         <li><a href="<?=site_url('departments') ?>">Departments</a></li>
                                         <li><a href="<?= site_url('locations') ?>">Location</a></li>
-                                        <li><a href="#">Coop</a></li>
+                                        <li><a href="<?= site_url('coop-banks') ?>">Coop Bank</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="<?=site_url('policy-config') ?>"><i class="icon-calendar"></i><span>Policy Config</span></a></li>
+                                <li>
+                                    <a href="#" class="has-arrow"><i class="icon-calendar"></i><span>Policy Config</span></a>
+                                    <ul>
+                                        <li><a href="<?= site_url('/policy-config') ?>">Policy Config</a></li>
+                                        <li><a href="<?= site_url('/policy-config/loan-setup') ?>">Loan Setup</a></li>
+                                    </ul>
+                                </li>
+                                
                                 <li>
                                     <a href="#" class="has-arrow"><i class="icon-lock"></i><span>Cooperators</span></a>
                                     <ul>
                                         <li><a href="<?=site_url('new_application') ?>">New Application</a></li>
                                         <li><a href="<?=site_url('verify_application') ?>">Verify Applications</a></li>
                                         <li><a href="<?=site_url('approve_application') ?>">Approve Applications</a></li>
-                                        <li><a href="<?=site_url('state') ?>">Location</a></li>
-                                        <li><a href="#">Coop</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="#"><i class="icon-check"></i><span>Savings</span></a></li>
-                                <li><a href="#"><i class="icon-earphones-alt"></i><span>Loans</span></a></li>
+                                <li><a href="#"><i class="icon-earphones-alt"></i><span>Savings</span></a></li>
+                                <li>
+                                    <a href="#" class="has-arrow"><i class="icon-wallet"></i><span>Loans</span></a>
+                                    <ul>
+                                        <li><a href="<?=site_url('/loan/new') ?>">New Loan</a></li>
+                                        <li><a href="<?=site_url('/loan/verify') ?>">Verify Loan</a></li>
+                                        <li><a href="<?=site_url('/loan/approve') ?>">Approve Loan</a></li>
+                                        <li><a href="<?=site_url('/loan/new-payment-schedule') ?>">New Payment Schedule</a></li>
+                                    </ul>
+                                </li>
+                                
                                 <li><a href="#"><i class="icon-list"></i><span>Payables</span></a></li>
                                 <li><a href="#"><i class="icon-list"></i><span>Receivables</span></a></li>
                                 <li>
