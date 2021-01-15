@@ -25,14 +25,14 @@ New Payment Schedule
                 <div class="row m-b-30">
                     <div class="col-lg-12 col-xl-12">
                         <h6 class="sub-title p-3  text-uppercase">New Payment Schedule</h6>
-                        <form action="<?= site_url('/loan/new') ?>" autocomplete="off" method="POST" data-parsley-validate="" id="loanSetupForm">
+                        <form action="<?= site_url('/loan/new-payment-schedule') ?>" autocomplete="off" method="POST" data-parsley-validate="" id="loanSetupForm">
                         <?= csrf_field() ?>
 
                             <div class="row bg-light">
                                 <div class="col-md-6 col-lg-6 col-sm-6">
                                     <div class="form-group">
                                         <strong for="">Date</strong>
-                                        <input required type="date" name="date" id="date" placeholder="dd/mm/yyyy"  class="form-control">
+                                        <input required type="date" name="schedule_date" id="schedule_date" placeholder="dd/mm/yyyy"  class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-lg-6 col-sm-6 response">
@@ -40,16 +40,10 @@ New Payment Schedule
                                         <strong for="">Bank</strong>
                                         <select name="bank" required id="bank" class="form-control">
                                             <option selected disabled>--Select bank--</option>
-                                            
+                                            <?php foreach($coopbank as $bank) : ?>
+                                                <option value="<?= $bank['coop_bank_id'] ?>"><?= $bank['bank_id'] ?></option>
+                                            <?php endforeach; ?>
                                         </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row bg-light">
-                                <div class="col-md-6 col-lg-6 col-sm-6 response">
-                                    <div class="form-group">
-                                        <strong for="">Payment to disburse</strong>
-                                        <input type="number" step="0.01" required  name="payment" id="payment" placeholder="Payment to disburse"  class="form-control money">
                                     </div>
                                 </div>
                             </div>
@@ -57,42 +51,74 @@ New Payment Schedule
                                 <div class="col-md-12 col-lg-12">
                                     <div class="form-group">
                                         <p><strong>Payment to disburse:</strong></p>
+                                        <div class="table-responsive" style="overflow-y: scroll; height:300px;">
+                                            <table class="table table-hover src-table">
+                                                    <tr>
+                                                    <th scope="col">#
+                                                    </th>
+                                                    <th scope="col">Coop ID</th>
+                                                    <th scope="col">Full Name</th>
+                                                    <th scope="col">Loan Type</th>
+                                                    <th scope="col">Amount</th>
+                                                    </tr>
+                                                    <tbody>
+                                                        <?php $i = 1; foreach($loan_apps as $loan): ?>
+                                                            <tr>
+                                                                <th scope="row"> 
+                                                                    <div class="form-group form-check">
+                                                                        <label class="form-check-label" for="exampleCheck1"><?= $i++; ?></label>
+                                                                        <input type="checkbox" name="approved_loans[]" class="form-check-input ml-2">
+                                                                    </div>
+                                                                </th>
+                                                                <td><?= $loan['staff_id'] ?>
+                                                                    <input type="hidden" name="coop_id[]" value="<?= $loan['staff_id'] ?>">
+                                                                </td>
+                                                                <td><?= $loan['name'] ?></td>
+                                                                <td>
+                                                                    <?= $loan['loan_type'] ?>
+                                                                    <input type="hidden" name="loan_type[]" value="<?= $loan['loan_type'] ?>">
+                                                                </td>
+                                                                <td>
+                                                                    ₦<?= number_format($loan['amount'],2) ?>
+                                                                    <input type="hidden" name="amount[]" value="<?= $loan['amount'] ?>">
+                                                                </td>
+                                                            </tr>
+                                                        <?php endforeach; ?>
+                                                    </tbody>
+                                                </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-lg-12">
+                                    <button class="btn btn-primary btn-sm float-right" id="addToCart" type="button">Add to cart</button>
+                                </div>
+                            </div>
+                            <div class="row p-2 mb-2">
+                                <div class="col-md-12 col-lg-12">
+                                    <div class="form-group">
+                                        <p><strong>Cart</strong></p>
                                         <div class="table-responsive">
-                                        <table class="table table-hover">
+                                        <table class="table table-hover target-table">
                                                 <tr>
-                                                <th scope="col">
-                                                <div class="form-group form-check">
-                                                        <label class="form-check-label" for="exampleCheck1">#</label>
-                                                        <input type="checkbox" class="form-check-input ml-2" >
-                                                    </div>
+                                                <th scope="col">#
                                                 </th>
                                                 <th scope="col">Coop ID</th>
                                                 <th scope="col">Full Name</th>
                                                 <th scope="col">Loan Type</th>
                                                 <th scope="col">Amount</th>
                                                 </tr>
-                                            <tbody>
-                                                <?php $i = 1; foreach($loan_apps as $loan): ?>
-                                                    <tr>
-                                                        <th scope="row"> 
-                                                            <div class="form-group form-check">
-                                                                <label class="form-check-label" for="exampleCheck1"><?= $i++; ?></label>
-                                                                <input type="checkbox" class="form-check-input ml-2">
-                                                            </div>
-                                                        </th>
-                                                        <td><?= $loan['staff_id'] ?></td>
-                                                        <td><?= $loan['name'] ?></td>
-                                                        <td><?= $loan['loan_type'] ?></td>
-                                                        <td>₦<?= number_format($loan['amount'],2) ?></td>
-                                                    </tr>
-                                                <?php endforeach; ?>
-                                            </tbody>
                                             </table>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-12 col-lg-12">
-                                    <button class="btn btn-primary btn-sm float-right">Add to cart</button>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12 col-sm-12 d-flex justify-content-center">
+                                    <div class="btn-group ">
+                                        <a href="" class="btn btn-danger btn-sm">Cancel</a>
+                                        <button class="btn btn-primary btn-sm">Submit</button>
+                                    </div>
                                 </div>
                             </div>
                             </div>
@@ -120,127 +146,12 @@ New Payment Schedule
             $('#guarantor_wrapper_2').hide();
             $('#submitLoanBtn').attr('disabled','disabled');
             $('.money').simpleMoneyFormat();
-           $(document).on('blur', '#staff_id', function(e){
-               e.preventDefault();
-               if($(this).val() != ''){
-                $.ajax({
-                    type: "GET",
-                    url: '/get-cooperator/'+$(this).val(),
-                    cache: false,
-                    success: function(html){
-                        var handler = $.parseJSON(html);
-                        if(html.length == 0){
-                            $('#name').text('');
-                        }else{
-                            $('#name').text(handler.cooperator_first_name+" "+handler.cooperator_last_name);
-                        }
-                    }
-                    });
-               }
-           });
-           $(document).on('blur', '#guarantor_1', function(e){
-               e.preventDefault();
-               if($(this).val() != ''){
-                $.ajax({
-                    type: "GET",
-                    url: '/get-cooperator/'+$(this).val(),
-                    cache: false,
-                    success: function(html){
-                        var handler = $.parseJSON(html);
-                        if(html.length == 0){
-                            $('#guarantor_badge_1').val('');
-                        }else{
-                            $('#guarantor_wrapper_1').show();
-                            $('#guarantor_badge_1').html(handler.cooperator_first_name+" "+handler.cooperator_last_name);
-                        }
-                    }
-                    });
-               }
-           });
-           $(document).on('blur', '#guarantor_2', function(e){
-               e.preventDefault();
-               if($(this).val() != ''){
-                $.ajax({
-                    type: "GET",
-                    url: '/get-cooperator/'+$(this).val(),
-                    cache: false,
-                    success: function(html){
-                        var handler = $.parseJSON(html);
-                        if(html.length == 0){
-                            $('#guarantor_badge_2').val('');
-                        }else{
-                            $('#guarantor_wrapper_2').show();
-                            $('#guarantor_badge_2').html(handler.cooperator_first_name+" "+handler.cooperator_last_name);
-                        }
-                    }
-                    });
-               }
-           });
-           $(document).on('blur', '#duration', function(e){
-               e.preventDefault();
-               if(parseInt($(this).val()) > duration){
-                Toastify({
-                    text: "Ooop! The duration you entered cannot be more than the maximum repayment periods for the selected loan type.",
-                    duration: 3000,
-                    newWindow: true,
-                    close: true,
-                    gravity: "top", 
-                    position: "right", 
-                    backgroundColor: "linear-gradient(to right, #FF0000, #FFE8AC)",
-                    stopOnFocus: true, 
-                    onClick: function(){} 
-                    }).showToast();
-                    $('#submitLoanBtn').attr('disabled',true);
-               }else{
-                $('#submitLoanBtn').attr('disabled',false);
-               }
-           });
-           $(document).on('blur', '#amount', function(e){
-               e.preventDefault();
-               var money = $(this).val();
-               if(parseInt(money.replace(/,/g, '')) > amount){
-                Toastify({
-                    text: "Ooop! Amount must not exceed maximum credit limit for the selected loan type.",
-                    duration: 3000,
-                    newWindow: true,
-                    close: true,
-                    gravity: "top", 
-                    position: "right", 
-                    backgroundColor: "linear-gradient(to right, #FF0000, #FFE8AC)",
-                    stopOnFocus: true, 
-                    onClick: function(){} 
-                    }).showToast();
-                    $('#submitLoanBtn').prop('disabled',true);
-               }else{
-                $('#submitLoanBtn').prop('disabled',false);
-               }
-           });
-           $(document).on('change', '#loan_type', function(e){
-               e.preventDefault();
-               if($(this).val() != ''){
-                $.ajax({
-                    type: "GET",
-                    url: '/get-loan-type/'+$(this).val(),
-                    cache: false,
-                    success: function(html){
-                        var handler = $.parseJSON(html);
-                        duration = handler.max_repayment_periods;
-                        amount = handler.max_credit_limit;
-                        $('#loan_terms').text(handler.loan_terms);
-                        $('#duration').val('');
-                        $('#amount').val('');
-                    }
-                    });
-               }
-           });
-            $('#loanSetupForm').parsley().on('field:validated', function() {
-                var ok = $('.parsley-error').length === 0;
-                $('.bs-callout-info').toggleClass('hidden', !ok);
-                $('.bs-callout-warning').toggleClass('hidden', ok);
+
+            $(document).on("click","#addToCart",function(){
+                var getSelectedRows = $(".src-table input:checked").parents("tr");
+                
+                $(".target-table tbody").append(getSelectedRows);
             })
-            .on('form:submit', function() {
-                return true; 
-            });
         });
     </script>
 <?= $this->endSection() ?>
