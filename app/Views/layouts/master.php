@@ -141,7 +141,7 @@
                                 </ul>
                             </li>
                             <li><a href="javascript:void(0);" class="right_toggle icon-menu" title="Right Menu"><i class="fa fa-comments"></i><span class="notification-dot bg-pink"></span></a></li>
-                            <li><a href="<?=site_url('logout'); ?>" class="icon-menu"><i class="fa fa-power-off"></i></a></li>
+                            <li><a href="<?=base_url('logout'); ?>" class="icon-menu"><i class="fa fa-power-off"></i></a></li>
                         </ul>
                     </div>
                 </div>
@@ -193,7 +193,7 @@
 <!--                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#Components-icon"><i class="icon-diamond"></i></a></li>-->
 
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="<?=site_url('logout'); ?>"><i class="fa fa-power-off"></i></i></a>
+                        <a class="nav-link" data-toggle="tab" href="<?=base_url('logout'); ?>"><i class="fa fa-power-off"></i></i></a>
                         <a class="nav-link" data-toggle="tab" href="#Setting-icon"><i class="fa fa-cog"></i></a>
                     </li>
                 </ul>
@@ -203,51 +203,66 @@
                     <div class="tab-pane active" id="Home-icon">
                         <nav class="sidebar-nav sidebar-scroll">
                             <ul class="metismenu">
-                                <li class="active"><a href="<?=site_url('dashboard'); ?>"><i class="icon-speedometer"></i><span>Dashboard</span></a></li>
-                                <li class="header">Menu</li>
-                                <li><a href="<?= site_url('control-panel'); ?>"><i class="icon-paper-plane"></i><span>Control Panel</span></a></li>
+                                <li class="active"><a href="<?=base_url('dashboard'); ?>"><i class="icon-speedometer"></i><span>Dashboard</span></a></li>
+<!--                                <li class="header">Menu</li>-->
+<!--                                <li><a href="--><?//= base_url('control-panel'); ?><!--"><i class="icon-paper-plane"></i><span>Control Panel</span></a></li>-->
                                 <li>
                                     <a href="#" class="has-arrow"><i class="icon-lock"></i><span>Control Panel</span></a>
                                     <ul>
-                                        <li><a href="<?=site_url('contribution_type') ?>">Contribution Type</a></li>
+                                        <li><a href="<?=base_url('contribution_type') ?>">Contribution Type</a></li>
+                                        <li><a href="<?=base_url('payroll_group') ?>">Payroll Group</a></li>
 
                                     </ul>
+
+                               <ul>
+
+<!--                                   <li class="header">Routine</li>-->
+
+                                   <li>
+                                    <a href="#" class="has-arrow"><span>Routines</span></a>
+                                    <ul>
+                                        <li><a href="<?=base_url('upload_routine') ?>">Upload Routine</a></li>
+
+                                    </ul>
+
+                                </li>
+                               </ul>
 
                                 </li>
                                 <li>
                                     <a href="#" class="has-arrow"><i class="icon-lock"></i><span>House Keeping</span></a>
                                     <ul>
-                                        <li><a href="<?=site_url('states') ?>">States</a></li>
+                                        <li><a href="<?=base_url('states') ?>">States</a></li>
                                         <li><a href="#">Bank</a></li>
-                                        <li><a href="<?=site_url('departments') ?>">Departments</a></li>
-                                        <li><a href="<?= site_url('locations') ?>">Location</a></li>
-                                        <li><a href="<?= site_url('coop-banks') ?>">Coop Bank</a></li>
+                                        <li><a href="<?=base_url('departments') ?>">Departments</a></li>
+                                        <li><a href="<?= base_url('locations') ?>">Location</a></li>
+                                        <li><a href="<?= base_url('coop-banks') ?>">Coop Bank</a></li>
                                     </ul>
                                 </li>
                                 <li>
                                     <a href="#" class="has-arrow"><i class="icon-calendar"></i><span>Policy Config</span></a>
                                     <ul>
-                                        <li><a href="<?= site_url('/policy-config') ?>">Policy Config</a></li>
-                                        <li><a href="<?= site_url('/policy-config/loan-setup') ?>">Loan Setup</a></li>
+                                        <li><a href="<?= base_url('/policy-config') ?>">Policy Config</a></li>
+                                        <li><a href="<?= base_url('/policy-config/loan-setup') ?>">Loan Setup</a></li>
                                     </ul>
                                 </li>
                                 
                                 <li>
                                     <a href="#" class="has-arrow"><i class="icon-lock"></i><span>Cooperators</span></a>
                                     <ul>
-                                        <li><a href="<?=site_url('new_application') ?>">New Application</a></li>
-                                        <li><a href="<?=site_url('verify_application') ?>">Verify Applications</a></li>
-                                        <li><a href="<?=site_url('approve_application') ?>">Approve Applications</a></li>
+                                        <li><a href="<?=base_url('new_application') ?>">New Application</a></li>
+                                        <li><a href="<?=base_url('verify_application') ?>">Verify Applications</a></li>
+                                        <li><a href="<?=base_url('approve_application') ?>">Approve Applications</a></li>
                                     </ul>
                                 </li>
                                 <li><a href="#"><i class="icon-earphones-alt"></i><span>Savings</span></a></li>
                                 <li>
                                     <a href="#" class="has-arrow"><i class="icon-wallet"></i><span>Loans</span></a>
                                     <ul>
-                                        <li><a href="<?=site_url('/loan/new') ?>">New Loan</a></li>
-                                        <li><a href="<?=site_url('/loan/verify') ?>">Verify Loan</a></li>
-                                        <li><a href="<?=site_url('/loan/approve') ?>">Approve Loan</a></li>
-                                        <li><a href="<?=site_url('/loan/new-payment-schedule') ?>">New Payment Schedule</a></li>
+                                        <li><a href="<?=base_url('/loan/new') ?>">New Loan</a></li>
+                                        <li><a href="<?=base_url('/loan/verify') ?>">Verify Loan</a></li>
+                                        <li><a href="<?=base_url('/loan/approve') ?>">Approve Loan</a></li>
+                                        <li><a href="<?=base_url('/loan/new-payment-schedule') ?>">New Payment Schedule</a></li>
                                     </ul>
                                 </li>
                                 
@@ -256,10 +271,10 @@
                                 <li>
                                     <a href="javascript:void(0);" class="has-arrow"><i class="icon-lock"></i><span>Financial Accounts</span></a>
                                     <ul>
-                                        <li><a href="<?=site_url('chart-of-accounts') ?>">Chart of Accounts</a></li>
-                                        <li><a href="<?=site_url('journal-voucher') ?>">Journal Voucher</a></li>
-                                        <li><a href="<?=site_url('approve_application') ?>">Posting</a></li>
-                                        <li><a href="<?=site_url('state') ?>">Location</a></li>
+                                        <li><a href="<?=base_url('chart-of-accounts') ?>">Chart of Accounts</a></li>
+                                        <li><a href="<?=base_url('journal-voucher') ?>">Journal Voucher</a></li>
+                                        <li><a href="<?=base_url('approve_application') ?>">Posting</a></li>
+                                        <li><a href="<?=base_url('state') ?>">Location</a></li>
                                         <li><a href="#">Coop</a></li>
                                     </ul>
                                 </li>

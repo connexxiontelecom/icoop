@@ -73,6 +73,9 @@ $routes->post('/edit-loan-setup', 'Policyconfigcontroller::editLoanSetup');
 #control panel
 $routes->get('contribution_type', 'ContributionType::contribution_type');
 $routes->post('contribution_type', 'ContributionType::contribution_type');
+$routes->get('payroll_group', 'PayRollGroup::payroll_group');
+$routes->post('payroll_group', 'PayRollGroup::payroll_group');
+$routes->get('upload_routine', 'Routine::upload_routine');
 
 #chart of accounts
 $routes->get('/chart-of-accounts', 'ChartOfAccountController::index');
