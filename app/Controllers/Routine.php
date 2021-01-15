@@ -157,34 +157,33 @@ class Routine extends BaseController
                          endif;
 
 
-               $v = $this->temp_pd->save($payment_details_array);
-
-                    if($v):
-
-                        $data['temp_pd'] = $this->temp_pd->findAll();
-
-
-
-                       return view('pages/routine/contribution_upload', $data);
-
-                    else:
-
-                        $data = array(
-                            'msg' => 'An error Occurred',
-                            'type' => 'error',
-                            'location' => base_url('contribution_upload')
-
-                        );
-
-                        return view('pages/sweet-alert', $data);
-
-                    endif;
+                    $v = $this->temp_pd->save($payment_details_array);
 
                 endforeach;
 
-//                foreach ($rows as $row):
-//
-//                    endforeach;
+
+
+                if($v):
+
+                    $data['temp_pds'] = $this->temp_pd->findAll();
+                    $data['permission'] = 1;
+
+
+
+                    return view('pages/routine/view_contribution_upload', $data);
+
+                else:
+
+                    $data = array(
+                        'msg' => 'An error Occurred',
+                        'type' => 'error',
+                        'location' => base_url('contribution_upload')
+
+                    );
+
+                    return view('pages/sweet-alert', $data);
+
+                endif;
 
             else:
 
