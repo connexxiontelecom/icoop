@@ -157,10 +157,28 @@ class Routine extends BaseController
                          endif;
 
 
-                print_r($payment_details_array);
-                echo '<br>';
+               $v = $this->temp_pd->save($payment_details_array);
+
+                    if($v):
+
+                        $data['temp_pd'] = $this->temp_pd->findAll();
 
 
+
+                       return view('pages/routine/contribution_upload', $data);
+
+                    else:
+
+                        $data = array(
+                            'msg' => 'An error Occurred',
+                            'type' => 'error',
+                            'location' => base_url('contribution_upload')
+
+                        );
+
+                        return view('pages/sweet-alert', $data);
+
+                    endif;
 
                 endforeach;
 
@@ -199,7 +217,7 @@ class Routine extends BaseController
             $data = array(
                 'msg' => implode(", ", $arr),
                 'type' => 'error',
-                'location' => site_url('contribution_upload')
+                'location' => base_url('contribution_upload')
 
             );
 
