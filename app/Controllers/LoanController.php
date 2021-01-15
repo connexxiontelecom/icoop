@@ -2,6 +2,9 @@
 use App\Models\LoanApplicationModel; 
 use \App\Models\Cooperators;
 use \App\Models\LoanSetupModel;
+use \App\Models\CoopBankModel;
+use \App\Models\ScheduleMasterModel;
+use \App\Models\ScheduleMasterDetailModel;
 
 class LoanController extends BaseController
 {
@@ -11,6 +14,9 @@ class LoanController extends BaseController
 		$this->loanapp = new LoanApplicationModel();
 		$this->coop = new Cooperators();
         $this->loansetup = new LoanSetupModel();
+        $this->coopbank = new CoopBankModel();
+        $this->schedulemaster = new ScheduleMasterModel();
+        $this->schedulemasterdetail = new ScheduleMasterDetailModel();
         $this->session = session();
     }
 
@@ -210,10 +216,60 @@ class LoanController extends BaseController
     public function showPaymentSchedule(){
         $data = [];
         $loan_apps = $this->loanapp->where('approve',1)->findAll();
+        $coopbank = $this->coopbank->findAll();
         $data = [
-            'loan_apps'=>$loan_apps
+            'loan_apps'=>$loan_apps,
+            'coopbank'=>$coopbank
         ];
         $username = $this->session->user_username;
         $this->authenticate_user($username, 'pages/loan/new-payment-schedule', $data); 
+    }
+
+    public function newPaymentSchedule(){
+        helper(['form']);
+        $data = [];
+        if($_POST){
+            $rules = [
+                'schedule_date'=>[
+                    'rules'=>'required',
+                    'label'=>'Schedule date',
+                    'errors'=>[
+                        'required'=>'Schedule date is required'
+                    ]
+				],
+                'bank'=>[
+                    'rules'=>'required',
+                    'label'=>'Bank',
+                    'errors'=>[
+                        'required'=>'Bank is required'
+                    ]
+				],
+            ];
+            if($this->validate($rules)){
+					$data = [
+                        'schedule_date'=>$this->request->getVar('schedule_date'),
+                        'bank_id'=>$this->request->getVar('bank')
+					];
+                    $this->schedulemaster->save($data);
+                    #Schedule detail
+                    for($i = 0; $i<count($this->request->getVar('coop_id')); $i++ ){
+                        $detail = [
+                            'loan_type'=>$this->request->getVar('loan_type'),
+                            'coop_id'=>$this->request->getVar('coop_id'),
+                            'amount'=>$this->request->getVar('amount')
+                        ];
+                        $this->schedulemasterdetail->save($detail);
+                    }
+            
+                    $alert = array(
+                        'msg' => 'Success! New payment scheduled',
+                        'type' => 'success',
+                        'location' => site_url('/loan/verify')
+                    );
+                    return view('pages/sweet-alert', $alert);
+            }else{
+                return $this->response->redirect(site_url('/loan/verify'));
+            }
+        }
     }
 }
