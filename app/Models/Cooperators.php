@@ -23,4 +23,15 @@ class Cooperators extends \CodeIgniter\Model
         'cooperator_approved_date', 'cooperator_approved_comment', 'cooperator_discarded_by', 'cooperator_discarded_date', 'cooperator_discarded_reason', 'cooperator_status'
 
     ];
+
+    public function get_cooporators_staff_id($staff_id){
+        $builder = $this->db->table('cooperators');
+//        $builder->join('locations', 'locations.location_id = applications.application_location_id');
+//        $builder->join('departments', 'departments.department_id = applications.application_department_id');
+//        $builder->join('payroll_groups', 'payroll_groups.pg_id = applications.application_payroll_group_id');
+//        $builder->join('states', 'states.state_id = applications.application_state_id');
+//        $builder->join('banks', 'banks.bank_id = applications.application_bank_id');
+        $builder->where('cooperator_staff_id', $staff_id);
+        return $builder->get()->getResultObject();
+    }
 }
