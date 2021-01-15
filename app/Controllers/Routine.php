@@ -6,6 +6,9 @@ use App\Models\PayrollGroups;
 use App\Models\ContributionTypeModel;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use App\Models\Cooperators;
+use App\Models\TempPaymentsModel;
+Use App\Models\PaymentDetailsModel;
 
 class Routine extends BaseController
 {
@@ -13,6 +16,9 @@ class Routine extends BaseController
     public function __construct(){
         $this->pg = new PayrollGroups();
         $this->contribution_type = new ContributionTypeModel();
+        $this->cooperator = new Cooperators();
+        $this->temp_pd = new TempPaymentsModel();
+        $this->pd = new PaymentDetailsModel();
 
     }
 
@@ -71,6 +77,7 @@ class Routine extends BaseController
             $payroll_group_id = $_POST['contribution_upload_pg'];
             $date = $_POST['contribution_upload_date'];
             $narration = $_POST['contribution_upload_narration'];
+            $ref_code = time();
 
                     if($_FILES["select_excel"]["name"] != ''):
 
@@ -95,9 +102,63 @@ class Routine extends BaseController
                     $staff_id = $row[0];
                     $amount = $row[2];
 
+                    $cooperator_details = $this->cooperator->get_cooperator_staff_id($staff_id);
+
+                    // 1 == non existent cooperator
+                    // 2 == wrong Paygroup
+                    // 3 == valid entry
+                    if(empty($cooperator_details)):
+
+                      $payment_details_array = array(
+                         'temp_pd_staff_id' => $staff_id,
+                          'temp_pd_transaction_date' => $date,
+                          'temp_pd_narration' => $narration,
+                          'temp_pd_amount' => $amount,
+                          'temp_pd_drcrtype' => 1,
+                          'temp_pd_ref_code' => $ref_code,
+                          'temp_pd_status' => 1
+                      );
+
+                        else:
+
+                           $cooperator_pg =  $cooperator_details->cooperator_payroll_group_id;
+
+                   // $payment_details_array = $cooperator_details;
 
 
+                        if($cooperator_pg != $payroll_group_id):
 
+                                $payment_details_array = array(
+                                    'temp_pd_staff_id' => $staff_id,
+                                    'temp_pd_transaction_date' => $date,
+                                    'temp_pd_narration' => $narration,
+                                    'temp_pd_amount' => $amount,
+                                    'temp_pd_drcrtype' => 1,
+                                    'temp_pd_ref_code' => $ref_code,
+                                    'temp_pd_status' => 2
+                                );
+
+                           else:
+
+                                $payment_details_array = array(
+                                    'temp_pd_staff_id' => $staff_id,
+                                    'temp_pd_transaction_date' => $date,
+                                    'temp_pd_narration' => $narration,
+                                    'temp_pd_amount' => $amount,
+                                    'temp_pd_drcrtype' => 1,
+                                    'temp_pd_ref_code' => $ref_code,
+                                    'temp_pd_status' => 3
+                                );
+
+
+                            endif;
+
+
+                         endif;
+
+
+                print_r($payment_details_array);
+                echo '<br>';
 
 
 

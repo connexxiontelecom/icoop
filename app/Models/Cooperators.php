@@ -24,7 +24,7 @@ class Cooperators extends \CodeIgniter\Model
 
     ];
 
-    public function get_cooporators_staff_id($staff_id){
+    public function get_cooperator_staff_id($staff_id){
         $builder = $this->db->table('cooperators');
 //        $builder->join('locations', 'locations.location_id = applications.application_location_id');
 //        $builder->join('departments', 'departments.department_id = applications.application_department_id');
@@ -32,6 +32,6 @@ class Cooperators extends \CodeIgniter\Model
 //        $builder->join('states', 'states.state_id = applications.application_state_id');
 //        $builder->join('banks', 'banks.bank_id = applications.application_bank_id');
         $builder->where('cooperator_staff_id', $staff_id);
-        return $builder->get()->getResultObject();
+        return $builder->get()->getRowObject();
     }
 }
