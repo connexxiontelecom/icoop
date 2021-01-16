@@ -165,7 +165,7 @@ class Cooperators extends BaseController
                                 $data = array(
                                     'msg' => 'Email, Staff ID, or Phone Number Already Exists',
                                     'type' => 'error',
-                                    'location' => site_url('new_application')
+                                    'location' => base_url('new_application')
 
                                 );
 
@@ -182,7 +182,7 @@ class Cooperators extends BaseController
                                         $data = array(
                                             'msg' => 'Application Successful',
                                             'type' => 'success',
-                                            'location' => site_url('new_application')
+                                            'location' => base_url('new_application')
 
                                         );
 
@@ -200,7 +200,7 @@ class Cooperators extends BaseController
                             $data = array(
                                 'msg' => implode(", ", $arr),
                                 'type' => 'error',
-                                'location' => site_url('new_application')
+                                'location' => base_url('new_application')
 
                             );
 
@@ -265,7 +265,7 @@ class Cooperators extends BaseController
                     $data = array(
                         'msg' => 'Application Verified',
                         'type' => 'success',
-                        'location' => site_url('verify_application')
+                        'location' => base_url('verify_application')
 
                     );
 
@@ -275,7 +275,7 @@ class Cooperators extends BaseController
                     $data = array(
                         'msg' => 'An Error Occurred',
                         'type' => 'error',
-                        'location' => site_url('verify_application')
+                        'location' => base_url('verify_application')
 
                     );
 
@@ -302,7 +302,7 @@ class Cooperators extends BaseController
                       $data = array(
                           'msg' => 'Application Discarded',
                           'type' => 'success',
-                          'location' => site_url('verify_application')
+                          'location' => base_url('verify_application')
 
                       );
 
@@ -312,7 +312,7 @@ class Cooperators extends BaseController
                       $data = array(
                           'msg' => 'An Error Occurred',
                           'type' => 'error',
-                          'location' => site_url('verify_application')
+                          'location' => base_url('verify_application')
 
                       );
 
@@ -491,7 +491,7 @@ class Cooperators extends BaseController
                          $data = array(
                              'msg' => 'Application Approved',
                              'type' => 'success',
-                             'location' => site_url('approve_application')
+                             'location' => base_url('approve_application')
 
                          );
 
@@ -501,7 +501,7 @@ class Cooperators extends BaseController
                          $data = array(
                              'msg' => 'An Error Occurred',
                              'type' => 'error',
-                             'location' => site_url('approve_application')
+                             'location' => base_url('approve_application')
 
                          );
 
@@ -530,7 +530,7 @@ class Cooperators extends BaseController
                          $data = array(
                              'msg' => 'Application Discarded',
                              'type' => 'success',
-                             'location' => site_url('verify_application')
+                             'location' => base_url('verify_application')
 
                          );
 
@@ -540,7 +540,7 @@ class Cooperators extends BaseController
                          $data = array(
                              'msg' => 'An Error Occurred',
                              'type' => 'error',
-                             'location' => site_url('verify_application')
+                             'location' => base_url('verify_application')
 
                          );
 
@@ -593,7 +593,7 @@ class Cooperators extends BaseController
             $data = array(
                 'msg' => 'Application Successful',
                 'type' => 'success',
-                'location' => site_url('new_application')
+                'location' => base_url('new_application')
 
             );
 
