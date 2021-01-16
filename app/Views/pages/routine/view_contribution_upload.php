@@ -8,7 +8,7 @@ View Contribution Uploads
 View Contribution Uploads
 <?= $this->endSection() ?>
 <?= $this->section('page_crumb') ?>
-View Contribution Uploads
+View Contribution Uploads - <?=$payroll_group['pg_name']; ?> For <small><?=$contribution_type['contribution_type_name']; ?></small>
 <?= $this->endSection() ?>
 
 <?= $this->section('extra-styles') ?>
@@ -25,7 +25,7 @@ View Contribution Uploads
     <div class="col-lg-12">
         <div class="card">
             <div class="header">
-                <h2>View Contribution Uploads</h2>
+                <h2>View Contribution Uploads</h2> - <?=$payroll_group['pg_name']; ?> For <small><?=$contribution_type['contribution_type_name']; ?></small>
             </div>
             <div class="body">
                 <div class="table-responsive">
@@ -63,6 +63,13 @@ View Contribution Uploads
                             <?php $sn++; endforeach; ?>
                         </tbody>
                     </table>
+
+                    <form method="post" action="<?=base_url('p_contribution_upload') ?>">
+                        <?= csrf_field() ?>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-info btn-block">Process Upload</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

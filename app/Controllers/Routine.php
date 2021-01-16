@@ -9,6 +9,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use App\Models\Cooperators;
 use App\Models\TempPaymentsModel;
 Use App\Models\PaymentDetailsModel;
+use App\Models\ExceptionModel;
 
 class Routine extends BaseController
 {
@@ -19,6 +20,7 @@ class Routine extends BaseController
         $this->cooperator = new Cooperators();
         $this->temp_pd = new TempPaymentsModel();
         $this->pd = new PaymentDetailsModel();
+        $this->exception = new ExceptionModel();
 
     }
 
@@ -31,10 +33,24 @@ class Routine extends BaseController
 
     public function contribution_upload(){
 
-        $data['pgs'] = $this->pg->findAll();
-        $data['cts'] = $this->contribution_type->findAll();
-        $username = $this->session->user_username;
-        $this->authenticate_user($username, 'pages/routine/contribution_upload', $data);
+        $temp_pds = $this->temp_pd->findAll();
+
+        if(empty($temp_pds)):
+            $data['pgs'] = $this->pg->findAll();
+            $data['cts'] = $this->contribution_type->findAll();
+            $username = $this->session->user_username;
+            $this->authenticate_user($username, 'pages/routine/contribution_upload', $data);
+
+        else:
+            $temp_data = $this->temp_pd->first();
+            $contribution_type_id = $temp_data['temp_pd_ct_id'];
+            $payroll_group_id = $temp_data['temp_pd_pg_id'];
+            $data['contribution_type'] = $this->contribution_type->where(['contribution_type_id' => $contribution_type_id])->first();
+            $data['payroll_group'] = $this->pg->where(['pg_id'=> $payroll_group_id])->first();
+            $data['temp_pds'] = $this->temp_pd->findAll();
+            $data['permission'] = 1;
+            return view('pages/routine/view_contribution_upload', $data);
+       endif;
 
     }
 
@@ -72,15 +88,14 @@ class Routine extends BaseController
         ]);
 
         if ($this->validator->withRequest($this->request)->run()):
-
+            $this->temp_pd->delete_temp();
             $contribution_type_id = $_POST['contribution_upload_ct'];
             $payroll_group_id = $_POST['contribution_upload_pg'];
             $date = $_POST['contribution_upload_date'];
             $narration = $_POST['contribution_upload_narration'];
             $ref_code = time();
 
-                    if($_FILES["select_excel"]["name"] != ''):
-
+           if($_FILES["select_excel"]["name"] != ''):
             $allowed_extension = array('xls', 'xlsx');
             $file_array = explode(".", $_FILES['select_excel']['name']);
             $file_extension = end($file_array);
@@ -94,11 +109,9 @@ class Routine extends BaseController
                 //1 is name
                 // 2 is amount
                 // do not forget
-
                unset($rows[0]);
-                echo '<br>';
+                //echo '<br>';
                 foreach ($rows as $row):
-
                     $staff_id = $row[0];
                     $amount = $row[2];
 
@@ -115,6 +128,8 @@ class Routine extends BaseController
                           'temp_pd_narration' => $narration,
                           'temp_pd_amount' => $amount,
                           'temp_pd_drcrtype' => 1,
+                          'temp_pd_ct_id' => $contribution_type_id,
+                          'temp_pd_pg_id' => $payroll_group_id,
                           'temp_pd_ref_code' => $ref_code,
                           'temp_pd_status' => 1
                       );
@@ -134,6 +149,8 @@ class Routine extends BaseController
                                     'temp_pd_narration' => $narration,
                                     'temp_pd_amount' => $amount,
                                     'temp_pd_drcrtype' => 1,
+                                    'temp_pd_ct_id' => $contribution_type_id,
+                                    'temp_pd_pg_id' => $payroll_group_id,
                                     'temp_pd_ref_code' => $ref_code,
                                     'temp_pd_status' => 2
                                 );
@@ -146,6 +163,8 @@ class Routine extends BaseController
                                     'temp_pd_narration' => $narration,
                                     'temp_pd_amount' => $amount,
                                     'temp_pd_drcrtype' => 1,
+                                    'temp_pd_ct_id' => $contribution_type_id,
+                                    'temp_pd_pg_id' => $payroll_group_id,
                                     'temp_pd_ref_code' => $ref_code,
                                     'temp_pd_status' => 3
                                 );
@@ -159,12 +178,16 @@ class Routine extends BaseController
 
                     $v = $this->temp_pd->save($payment_details_array);
 
+//                    print_r($payment_details_array);
+//                    echo '<br>';
+
                 endforeach;
 
 
 
                 if($v):
-
+                    $data['contribution_type'] = $this->contribution_type->where(['contribution_type_id' => $contribution_type_id])->first();
+                    $data['payroll_group'] = $this->pg->where(['pg_id'=> $payroll_group_id])->first();
                     $data['temp_pds'] = $this->temp_pd->findAll();
                     $data['permission'] = 1;
 
@@ -227,5 +250,64 @@ class Routine extends BaseController
 
 
 
+    }
+
+    public  function p_contribution_upload(){
+        $temp_payments = $this->temp_pd->where(['temp_pd_status' => 1])->findAll();
+        foreach ($temp_payments as $temp_payment):
+
+            $exception_array = array(
+               'exception_staff_id' => $temp_payment['temp_pd_staff_id'],
+                'exception_transaction_date' => $temp_payment['temp_pd_transaction_date'],
+                'exception_amount' => $temp_payment['temp_pd_amount'],
+                 'exception_ref_code' => $temp_payment['temp_pd_ref_code']
+            );
+
+           $v =  $this->exception->save($exception_array);
+
+            endforeach;
+
+        $temp_payments = $this->temp_pd->where(['temp_pd_status' => 3])->findAll();
+        foreach ($temp_payments as $temp_payment):
+
+            $payment_details_array = array(
+                'pd_staff_id' => $temp_payment['temp_pd_staff_id'],
+                'pd_transaction_date' => $temp_payment['temp_pd_transaction_date'],
+                'pd_narration' => $temp_payment['temp_pd_narration'],
+                'pd_amount' => $temp_payment['temp_pd_amount'],
+                'pd_drcrtype' => 1,
+                'pd_ct_id' => $temp_payment['temp_pd_ct_id'],
+                'pd_pg_id' => $temp_payment['temp_pd_pg_id'],
+                'pd_ref_code' => $temp_payment['temp_pd_ref_code'],
+                );
+
+
+          $v =   $this->pd->save($payment_details_array);
+
+        endforeach;
+
+        if($v):
+            $this->temp_pd->delete_temp();
+            $data = array(
+                'msg' => 'Action Successful',
+                'type' => 'success',
+                'location' => site_url('contribution_upload')
+
+            );
+
+            return view('pages/sweet-alert', $data);
+
+        else:
+
+            $data = array(
+                'msg' => 'An error Occurred',
+                'type' => 'error',
+                'location' => site_url('contribution_upload')
+
+            );
+
+            return view('pages/sweet-alert', $data);
+
+        endif;
     }
 }

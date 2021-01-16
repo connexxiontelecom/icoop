@@ -78,6 +78,7 @@ $routes->post('payroll_group', 'PayRollGroup::payroll_group');
 $routes->get('upload_routine', 'Routine::upload_routine');
 $routes->get('contribution_upload', 'Routine::contribution_upload');
 $routes->post('contribution_upload', 'Routine::process_contribution_upload');
+$routes->post('p_contribution_upload', 'Routine::p_contribution_upload');
 
 
 #chart of accounts

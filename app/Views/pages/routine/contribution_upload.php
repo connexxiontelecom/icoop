@@ -38,7 +38,7 @@ Contribution Upload
 
                                     <label  for="application_payroll_group_id"> <b> Payroll Group: </b></label>
 
-                                    <select class="custom-select" required name="contribution_upload_pg" id="application_payroll_group_id" onfocus="preview_form('application_payroll_group_id')" onchange="preview_form('application_payroll_group_id')">
+                                    <select class="custom-select" required name="contribution_upload_pg" >
 
                                         <?php foreach ($pgs as $pg): ?>
                                             <option value="<?=$pg['pg_id'] ?>"> <?=$pg['pg_name']; ?></option>
@@ -50,7 +50,7 @@ Contribution Upload
 
                                     <label  for="application_payroll_group_id"> <b> Contribution Type: </b></label>
 
-                                    <select class="custom-select" required name="contribution_upload_ct" id="application_payroll_group_id" onfocus="preview_form('application_payroll_group_id')" onchange="preview_form('application_payroll_group_id')">
+                                    <select class="custom-select" required name="contribution_upload_ct">
 
                                         <?php foreach ($cts as $ct): ?>
                                             <option value="<?=$ct['contribution_type_id'] ?>"> <?=$ct['contribution_type_name']; ?></option>
@@ -75,17 +75,17 @@ Contribution Upload
                                     <input type="file"  class="form-control"  name="select_excel" required>
                                 </div>
 
-
+                                <?= csrf_field() ?>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-info btn-block">Submit</button>
+                                </div>
                             </div>
 
 
                         </div>
                     </fieldset>
 
-                    <?= csrf_field() ?>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-info btn-block">Submit</button>
-                    </div>
+
                 </form>
             </div>
         </div>
