@@ -270,6 +270,16 @@
                                 <li><a href="#"><i class="icon-list"></i><span>Payables</span></a></li>
                                 <li><a href="#"><i class="icon-list"></i><span>Receivables</span></a></li>
                                 <li>
+                                    <a href="javascript:void(0);" class="has-arrow"><i class="icon-lock"></i><span>Messaging</span></a>
+                                    <ul>
+                                        <li><a href="<?=base_url('/messaging/compose-email') ?>">Compose Email</a></li>
+                                        <li><a href="<?=base_url('/messaging/mails') ?>">Mails</a></li>
+                                        <li><a href="<?=base_url('approve_application') ?>">Bulk SMS</a></li>
+                                        <li><a href="<?=base_url('state') ?>">Messages</a></li>
+                                        <li><a href="#">Coop</a></li>
+                                    </ul>
+                                </li>
+                                <li>
                                     <a href="javascript:void(0);" class="has-arrow"><i class="icon-lock"></i><span>Financial Accounts</span></a>
                                     <ul>
                                         <li><a href="<?=base_url('chart-of-accounts') ?>">Chart of Accounts</a></li>

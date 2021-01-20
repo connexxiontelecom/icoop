@@ -29,8 +29,43 @@ View Payment Schedule
 
 <?= $this->section('content') ?>
 <div class="card">
-    <div class="card-block">
-        <h2>more important</h2>
+    <div class="header">
+        <h2>Payment Schedule Detail</h2>
+        <div class="row">
+            <div class="col-md-6 col-lg-6">
+            <div class="body">
+                            <table class="table card-table mb-0">
+                                <tbody>
+                                    <tr>
+                                        <td class="font-weight-bold">Full Name</td>
+                                        <td class="text-right">ci</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-weight-bold">Bank</td>
+                                        <td class="text-right"><?= $schedule->bank_name ?? '' ?></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-weight-bold">Account No.</td>
+                                        <td class="text-right"><?= $schedule['account_no'] ?? '' ?></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-weight-bold">Payable Date</td>
+                                        <td class="text-right">date</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-weight-bold">Branch</td>
+                                        <td class="text-right"><?= $schedule->branch ?? '' ?></span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+            </div>
+        </div>
     </div>
 </div>
 

@@ -309,7 +309,9 @@ class LoanController extends BaseController
         $data = [
             'schedule'=>$this->schedulemaster->getSchedulePaymentDetail($id)
         ];
+        $schedule = $this->schedulemaster->getSchedulePaymentDetail($id);
+        //return dd($schedule);
         $username = $this->session->user_username;
-        $this->authenticate_user($username, 'pages/loan/view-payment-schedule', $data);
+        $this->authenticate_user($username, 'pages/loan/view-payment-schedule', $schedule);
     }
 }
