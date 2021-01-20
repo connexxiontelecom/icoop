@@ -27,6 +27,10 @@ class CreateScheduleMasterDetailsTable extends Migration
 					'type' => 'INT',
 					'null'=>true,
 				],
+				'schedule_master_id' =>[
+					'type' => 'INT',
+					'null'=>true,
+				],
 
 
 			]

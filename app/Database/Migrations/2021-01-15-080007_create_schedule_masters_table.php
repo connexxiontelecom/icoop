@@ -14,7 +14,11 @@ class CreateScheduleMastersTable extends Migration
 					'constraint' => 11,
 					'auto_increment' => true,
 				],
-				'schedule_date' =>[
+				'payable_date' =>[
+					'type' => 'DATETIME',
+					'null'=>true,
+				],
+				'creation_date' =>[
 					'type' => 'DATETIME',
 					'null'=>true,
 				],

@@ -54,7 +54,7 @@ Loan Application Details
                                                     <td>
                                                         <strong>Amount</strong>
                                                     </td>                                                    
-                                                    <td><?= number_format($application['amount'],2) ?></td>
+                                                    <td>₦<?= number_format($application['amount'],2) ?></td>
                                                 </tr>                                               
                                                 <tr>
                                                     <td>
@@ -120,14 +120,26 @@ Loan Application Details
                 </button>
             </div>
             <div class="modal-body">
-                <form action="<?= site_url('/loan/verify') ?>" method="post">
+                <form action="<?= $application['verify'] == 0 ? site_url('/loan/verify') : site_url('/loan/approve') ?>" method="post">
                     <?= csrf_field() ?>
                     <div class="form-group">
                         <input type="hidden" name="application_id" value="<?= $application['loan_app_id'] ?>">
                         <label for="">Comment <small>(Optional)</small></label>
                         <textarea name="comment" id="comment" style="resize:none;" placeholder="Type here..." class="form-control"></textarea>
+                        
+                        <input type="hidden"  name="principal_amount" value="<?=$application['amount'] ?>"> 
+                        <input type="hidden" name="interest_rate" value="<?= $setup['interest_rate'] ?>">
+                        <?php if($application['loan_type'] == 1)  : ?> <!-- Flat -->
+                            <input type="hidden" value="<?= $application['amount']*$setup['interest_rate']/100?>" name="interest">
+                        <?php elseif($application['loan_type'] == 2) : ?>
+                            <input type="hidden" value="<?= number_format($application['amount']*($setup['interest_rate']/100) * $application['duration']/12 ) ?>" name="interest">
+                        <?php else : ?>
+                            <input type="hidden" name="interest" value="<?= number_format($application['amount']*($setup['interest_rate']/100) * $application['duration'] ) ?>">
+                        <?php endif; ?>
+
                     </div>
                     <div class="form-group">
+                        <p><strong>Principal Amount: </strong>₦<?=number_format( $application['amount']) ?></p>
                         <p><strong>Interest Rate: </strong><?= $setup['interest_rate'] ?>%</p>
                         <?php if($application['loan_type'] == 1)  : ?> <!-- Flat -->
                             <p for=""><strong>Interest Amount: </strong>₦<?= number_format(($application['amount']*$setup['interest_rate']/100),2 ) ?></p>

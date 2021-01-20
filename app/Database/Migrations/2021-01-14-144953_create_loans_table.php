@@ -35,6 +35,11 @@ class CreateLoansTable extends Migration
 					'type' => 'DOUBLE',
 					'null'=>true
 				],
+				'disburse' =>[
+					'type' => 'INT',
+					'default'=>0,
+					'null'=>true
+				],
 				'created_at'=>[
 					'type'=>'DATETIME',
 					'null'=>true

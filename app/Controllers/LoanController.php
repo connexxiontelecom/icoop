@@ -1,6 +1,7 @@
 <?php namespace App\Controllers;
 use App\Models\LoanApplicationModel; 
 use \App\Models\Cooperators;
+use \App\Models\LoanModel;
 use \App\Models\LoanSetupModel;
 use \App\Models\CoopBankModel;
 use \App\Models\ScheduleMasterModel;
@@ -17,6 +18,7 @@ class LoanController extends BaseController
         $this->coopbank = new CoopBankModel();
         $this->schedulemaster = new ScheduleMasterModel();
         $this->schedulemasterdetail = new ScheduleMasterDetailModel();
+        $this->loan = new LoanModel();
         $this->session = session();
     }
 
@@ -42,7 +44,7 @@ class LoanController extends BaseController
 	public function storeLoanApplication()
 	{
      
-        helper(['form']);
+        helper(['form', 'date']);
         $data = [];
 
         if($_POST){
@@ -97,7 +99,8 @@ class LoanController extends BaseController
 						'guarantor_2'=>$this->request->getVar('guarantor_2'),
 						'loan_type'=>$this->request->getVar('loan_type'),
 						'duration'=>$this->request->getVar('duration'),
-						'amount'=>str_replace(",","",$this->request->getVar('amount')),
+                        'amount'=>str_replace(",","",$this->request->getVar('amount')),
+                        'applied_date'=>date('Y-m-d H:i:s'),
 						//'loan_terms'=>$this->request->getVar('loan_terms'),
 					];
                     $this->loanapp->save($data);
@@ -170,7 +173,6 @@ class LoanController extends BaseController
     public function approveLoanApplication(){
         helper(['form']);
         $data = [];
-
         if($_POST){
             $rules = [
                 'application_id'=>[
@@ -183,19 +185,34 @@ class LoanController extends BaseController
             ];
             if($this->validate($rules)){
 					$data = [
-                        'verify_comment'=>$this->request->getVar('comment'),
-                        'verify'=>1
-					];
-					$this->loanapp->update($this->request->getVar('application_id'), $data);
-            
+                        'approve_comment'=>$this->request->getVar('comment'),
+                        'approve'=>1,
+                        'approve_by'=>1,
+                        'approve_date'=>date('Y-m-d H:i:s'),
+
+                    ];
+                    $application = $this->loanapp->where('loan_app_id', $this->request->getVar('application_id'))->first();
+                    $this->loanapp->update($this->request->getVar('application_id'), $data);
+                    #Register loan
+                    $loanData = [
+                        'staff_id'=>$application['staff_id'],
+                        'loan_app_id'=>$application['loan_app_id'],
+                        'amount'=>$application['amount'],
+                        'interest'=>$this->request->getVar('interest'),
+                        'interest_rate'=>$this->request->getVar('interest_rate'),
+                        'amount'=>$this->request->getVar('principal_amount'),
+                        'created_at'=>date('Y-m-d H:i:s'),
+                        'disburse'=>0
+                    ];
+                    $this->loan->save($loanData);
                     $alert = array(
                         'msg' => 'Success! Loan application approved.',
                         'type' => 'success',
-                        'location' => site_url('/loan/verify')
+                        'location' => site_url('/loan/approve')
                     );
                     return view('pages/sweet-alert', $alert);
             }else{
-                return $this->response->redirect(site_url('/loan/verify'));
+                return $this->response->redirect(site_url('/loan/approve'));
             }
         }
     }
@@ -215,7 +232,8 @@ class LoanController extends BaseController
 
     public function showPaymentSchedule(){
         $data = [];
-        $loan_apps = $this->loanapp->where('approve',1)->findAll();
+        //$loan_apps = $this->loanapp->where('approve',1)->findAll();
+        $loan_apps = $this->loan->where('disburse',0)->findAll();
         $coopbank = $this->coopbank->findAll();
         $data = [
             'loan_apps'=>$loan_apps,
@@ -228,13 +246,14 @@ class LoanController extends BaseController
     public function newPaymentSchedule(){
         helper(['form']);
         $data = [];
+        
         if($_POST){
             $rules = [
-                'schedule_date'=>[
+                'payable_date'=>[
                     'rules'=>'required',
-                    'label'=>'Schedule date',
+                    'label'=>'Payable date',
                     'errors'=>[
-                        'required'=>'Schedule date is required'
+                        'required'=>'Payable date is required'
                     ]
 				],
                 'bank'=>[
@@ -247,29 +266,40 @@ class LoanController extends BaseController
             ];
             if($this->validate($rules)){
 					$data = [
-                        'schedule_date'=>$this->request->getVar('schedule_date'),
-                        'bank_id'=>$this->request->getVar('bank')
+                        'payable_date'=>$this->request->getVar('payable_date'),
+                        'bank_id'=>$this->request->getVar('bank'),
+                        'creation_date'=>date('Y-m-d H:i:s'),
 					];
                     $this->schedulemaster->save($data);
                     #Schedule detail
-                    for($i = 0; $i<count($this->request->getVar('coop_id')); $i++ ){
-                        $detail = [
-                            'loan_type'=>$this->request->getVar('loan_type'),
-                            'coop_id'=>$this->request->getVar('coop_id'),
-                            'amount'=>$this->request->getVar('amount')
-                        ];
-                        $this->schedulemasterdetail->save($detail);
+                    if($this->request->getVar('approved_loans')){
+                        for($i = 0; $i<count($this->request->getVar('coop_id')); $i++ ){
+                            $detail = [
+                                //'loan_type'=>$this->request->getVar('loan_type')[$i],
+                                'coop_id'=>$this->request->getVar('coop_id')[$i],
+                                'amount'=>$this->request->getVar('amount')[$i],
+                                'schedule_master_id'=>1
+                            ];
+                            $this->schedulemasterdetail->save($detail);
+                        }
                     }
             
                     $alert = array(
                         'msg' => 'Success! New payment scheduled',
                         'type' => 'success',
-                        'location' => site_url('/loan/verify')
+                        'location' => site_url('/loan/new-payment-schedule')
                     );
                     return view('pages/sweet-alert', $alert);
             }else{
-                return $this->response->redirect(site_url('/loan/verify'));
+                return $this->response->redirect(site_url('/loan/new-payment-schedule'));
             }
         }
+    }
+
+
+    public function showPaymentSchedules(){
+        $username = $this->session->user_username;
+        $this->authenticate_user($username, 'pages/loan/payment-schedules', $this->schedulemasterdetail->get_payment_schedules()); 
+        
     }
 }

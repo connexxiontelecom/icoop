@@ -31,8 +31,8 @@ New Payment Schedule
                             <div class="row bg-light">
                                 <div class="col-md-6 col-lg-6 col-sm-6">
                                     <div class="form-group">
-                                        <strong for="">Date</strong>
-                                        <input required type="date" name="schedule_date" id="schedule_date" placeholder="dd/mm/yyyy"  class="form-control">
+                                        <strong for="">Payable Date</strong>
+                                        <input required type="date" name="payable_date" id="payable_date" placeholder="dd/mm/yyyy"  class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-lg-6 col-sm-6 response">
@@ -73,10 +73,10 @@ New Payment Schedule
                                                                 <td><?= $loan['staff_id'] ?>
                                                                     <input type="hidden" name="coop_id[]" value="<?= $loan['staff_id'] ?>">
                                                                 </td>
-                                                                <td><?= $loan['name'] ?></td>
+                                                                <td>Full name</td>
                                                                 <td>
-                                                                    <?= $loan['loan_type'] ?>
-                                                                    <input type="hidden" name="loan_type[]" value="<?= $loan['loan_type'] ?>">
+                                                                    Loan type 
+                                                                    <input type="hidden" name="loan_type[]" value="">
                                                                 </td>
                                                                 <td>
                                                                     ₦<?= number_format($loan['amount'],2) ?>
