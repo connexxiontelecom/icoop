@@ -17,6 +17,8 @@ class ScheduleMasterDetailModel extends Model{
       
     }
 
+   
+
 }
 
 ?>

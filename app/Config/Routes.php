@@ -118,6 +118,7 @@ $routes->post('/loan/approve', 'LoanController::approveLoanApplication');
 $routes->get('/loan/new-payment-schedule', 'LoanController::showPaymentSchedule');
 $routes->post('/loan/new-payment-schedule', 'LoanController::newPaymentSchedule');
 $routes->get('/loan/payment-schedules', 'LoanController::showPaymentSchedules');
+$routes->get('/loan/payment-schedule/(:num)', 'LoanController::showPaymentScheduleDetail/$1');
 /**
  * --------------------------------------------------------------------
  * Additional Routing
