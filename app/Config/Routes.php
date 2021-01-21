@@ -118,8 +118,19 @@ $routes->post('/loan/verify', 'LoanController::verifyLoanApplication');
 $routes->get('/get-loan-type/(:num)', 'LoanController::getLoanType/$1');
 $routes->get('/view-loan-application/(:num)', 'LoanController::viewLoanApplication/$1');
 $routes->get('/loan/approve', 'LoanController::showApproveApplications');
+$routes->post('/loan/approve', 'LoanController::approveLoanApplication');
 $routes->get('/loan/new-payment-schedule', 'LoanController::showPaymentSchedule');
 $routes->post('/loan/new-payment-schedule', 'LoanController::newPaymentSchedule');
+$routes->get('/loan/payment-schedules', 'LoanController::showPaymentSchedules');
+$routes->get('/loan/payment-schedule/(:num)', 'LoanController::showPaymentScheduleDetail/$1');
+
+#Messaging routes
+$routes->get('/messaging/compose-email', 'MessagingController::showComposeEmailView');
+$routes->post('/messaging/compose-email', 'MessagingController::sendEmail');
+$routes->get('/messaging/mails', 'MessagingController::showMails');
+$routes->get('/messaging/open-mail/(:num)', 'MessagingController::openMail/$1');
+$routes->get('/messaging/bulk-sms', 'MessagingController::showBulkSms');
+$routes->post('/messaging/bulk-sms', 'MessagingController::sendBulkSms');
 /**
  * --------------------------------------------------------------------
  * Additional Routing

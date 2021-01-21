@@ -31,8 +31,8 @@ New Payment Schedule
                             <div class="row bg-light">
                                 <div class="col-md-6 col-lg-6 col-sm-6">
                                     <div class="form-group">
-                                        <strong for="">Date</strong>
-                                        <input required type="date" name="schedule_date" id="schedule_date" placeholder="dd/mm/yyyy"  class="form-control">
+                                        <strong for="">Payable Date</strong>
+                                        <input required type="date" name="payable_date" id="payable_date" placeholder="dd/mm/yyyy"  class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-lg-6 col-sm-6 response">
@@ -41,7 +41,7 @@ New Payment Schedule
                                         <select name="bank" required id="bank" class="form-control">
                                             <option selected disabled>--Select bank--</option>
                                             <?php foreach($coopbank as $bank) : ?>
-                                                <option value="<?= $bank['coop_bank_id'] ?>"><?= $bank['bank_id'] ?></option>
+                                                <option value="<?= $bank->coop_bank_id ?>"><?= $bank->bank_name ?? '' ?> - (<?= $bank->account_no ?? '' ?>)</option>
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
@@ -70,17 +70,17 @@ New Payment Schedule
                                                                         <input type="checkbox" name="approved_loans[]" class="form-check-input ml-2">
                                                                     </div>
                                                                 </th>
-                                                                <td><?= $loan['staff_id'] ?>
-                                                                    <input type="hidden" name="coop_id[]" value="<?= $loan['staff_id'] ?>">
+                                                                <td><?= $loan->staff_id ?>
+                                                                    <input type="hidden" name="coop_id[]" value="<?= $loan->staff_id ?>">
                                                                 </td>
-                                                                <td><?= $loan['name'] ?></td>
+                                                                <td><?= $loan->cooperator_first_name ?? '' ?> <?= $loan->cooperator_last_name ?? '' ?></td>
                                                                 <td>
-                                                                    <?= $loan['loan_type'] ?>
-                                                                    <input type="hidden" name="loan_type[]" value="<?= $loan['loan_type'] ?>">
+                                                                    <?= $loan->loan_description ?? '' ?> 
+                                                                    <input type="hidden" name="loan_type[]" value="">
                                                                 </td>
                                                                 <td>
-                                                                    ₦<?= number_format($loan['amount'],2) ?>
-                                                                    <input type="hidden" name="amount[]" value="<?= $loan['amount'] ?>">
+                                                                    ₦<?= number_format($loan->amount ?? 0,2) ?>
+                                                                    <input type="hidden" name="amount[]" value="<?= $loan->amount ?? 0 ?>">
                                                                 </td>
                                                             </tr>
                                                         <?php endforeach; ?>

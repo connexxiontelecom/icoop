@@ -45,7 +45,11 @@ class BaseController extends ResourceController
 //        helper(['form']);
 
         $this->security = \Config\Services::security();
-        $this->validator = \Config\Services::validation();
+		$this->validator = \Config\Services::validation();
+		$this->email = \Config\Services::email();
+		$this->client = \Config\Services::curlrequest();
+
+		
 	}
 
     public function authenticate_user($username, $page, $data = null){

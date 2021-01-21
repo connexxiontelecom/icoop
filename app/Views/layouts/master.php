@@ -261,15 +261,24 @@
                                 <li>
                                     <a href="#" class="has-arrow"><i class="icon-wallet"></i><span>Loans</span></a>
                                     <ul>
-                                        <li><a href="<?=base_url('/loan/new') ?>">New Loan</a></li>
-                                        <li><a href="<?=base_url('/loan/verify') ?>">Verify Loan</a></li>
-                                        <li><a href="<?=base_url('/loan/approve') ?>">Approve Loan</a></li>
-                                        <li><a href="<?=base_url('/loan/new-payment-schedule') ?>">New Payment Schedule</a></li>
+                                        <li><a href="<?=site_url('/loan/new') ?>">New Loan</a></li>
+                                        <li><a href="<?=site_url('/loan/verify') ?>">Verify Loan</a></li>
+                                        <li><a href="<?=site_url('/loan/approve') ?>">Approve Loan</a></li>
+                                        <li><a href="<?=site_url('/loan/new-payment-schedule') ?>">New Payment Schedule</a></li>
+                                        <li><a href="<?=site_url('/loan/payment-schedules') ?>">Payment Schedules</a></li>
                                     </ul>
                                 </li>
                                 
                                 <li><a href="#"><i class="icon-list"></i><span>Payables</span></a></li>
                                 <li><a href="#"><i class="icon-list"></i><span>Receivables</span></a></li>
+                                <li>
+                                    <a href="javascript:void(0);" class="has-arrow"><i class="icon-lock"></i><span>Messaging</span></a>
+                                    <ul>
+                                        <li><a href="<?=base_url('/messaging/compose-email') ?>">Compose Email</a></li>
+                                        <li><a href="<?=base_url('/messaging/mails') ?>">Mails</a></li>
+                                        <li><a href="<?=base_url('/messaging/bulk-sms') ?>">Bulk SMS</a></li>
+                                    </ul>
+                                </li>
                                 <li>
                                     <a href="javascript:void(0);" class="has-arrow"><i class="icon-lock"></i><span>Financial Accounts</span></a>
                                     <ul>

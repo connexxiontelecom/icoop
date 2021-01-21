@@ -2,36 +2,36 @@
 
 use CodeIgniter\Database\Migration;
 
-class CreateScheduleMastersTable extends Migration
+class CreateBulkSmsTable extends Migration
 {
 	public function up()
 	{
 		$this->db->disableForeignKeyChecks();
 		$this->forge->addField(
 			[
-				'schedule_master_id' =>[
+				'bulksms_id' =>[
 					'type' => 'INT',
 					'constraint' => 11,
 					'auto_increment' => true,
 				],
-				'payable_date' =>[
-					'type' => 'DATETIME',
+				'sender_id' =>[
+					'type' => 'TEXT',
 					'null'=>true,
 				],
-				'creation_date' =>[
-					'type' => 'DATETIME',
+				'receivers'=>[
+					'type'=>'TEXT',
 					'null'=>true,
 				],
-				'bank_id' =>[
-					'type' => 'INT',
-					'null'=>true,
+				'message'=>[
+					'type'=>'TEXT',
+					'null'=>true
 				]
 
 
 			]
 		);
-		$this->forge->addKey('schedule_master_id', true);
-		$this->forge->createTable('schedule_masters');
+		$this->forge->addKey('bulksms_id', true);
+		$this->forge->createTable('bulksms');
 	}
 
 	//--------------------------------------------------------------------
