@@ -25,42 +25,82 @@ View Cooperator
     <div class="col-lg-12">
         <div class="card">
             <div class="header">
-                <h2>Cooperators</h2>
+                <h2>View Cooperator</h2>
 
             </div>
-            <div class="body">
-                <div class="table-responsive">
-                    <table class="table table-hover js-basic-example dataTable simpletable table-custom spacing5">
-                        <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Staff ID</th>
-                            <th>Name</th>
-                            <th>Department</th>
-                            <th>Location</th>
-                            <th>Date Approved</th>
-                            <th>Action</th>
-                        </tr>
-                        </thead>
 
-                        <tbody>
-                        <?php $sn = 1; foreach ($cooperators as $cooperator): ?>
-                            <tr>
 
-                                <td><?=$sn; ?></td>
-                                <td><?=$cooperator->cooperator_staff_id; ?></td>
-                                <td><?=$cooperator->cooperator_first_name.' '.$cooperator->cooperator_last_name; ?></td>
-                                <td><?=$cooperator->department_name; ?></td>
-                                <td><?=$cooperator->location_name; ?></td>
-                                <td><?=$cooperator->cooperator_approved_date; ?></td>
-                                <td> <button onclick="location.href='<?php echo site_url('cooperator')."/".$cooperator->cooperator_id;?>'" type="button" class="btn btn-icon icon-left btn-primary"><i class="fa fa-eye"></i></button>
-                                </td>
-                            </tr>
-                            <?php $sn++; endforeach; ?>
-                        </tbody>
-                    </table>
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="profile-header d-flex justify-content-between justify-content-center">
+                        <div class="d-flex">
+                            <div class="mr-3">
+                                <img src="../assets/images/user.png" class="rounded" alt="">
+                            </div>
+                            <div class="details">
+                                <h4 class="mb-0"><?=$cooperator->cooperator_first_name.' '.$cooperator->cooperator_last_name; ?></h4> <br>
+                                <span class="text-light"></span>
+                                <p class="mb-0"><span>Department: <strong><?=$cooperator->department_name; ?></strong></span></p> <br>
+                                <p class="mb-0"><span>Email: <strong><?=$cooperator->cooperator_email; ?></strong></span></p> <br>
+                                <p class="mb-0"><span>Telephone: <strong><?=$cooperator->cooperator_telephone; ?></strong></span></p> <br>
+
+
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row clearfix">
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+                            <div class="card w_card3">
+                                <div class="body">
+                                    <div class="text-center"><i class="fa fa-book"></i>
+                                        <h5 class="m-t-20 mb-0">Ledger</h5>
+                                        <p class="text-muted"></p>
+                                        <a href="<?=base_url('ledger')."/".$cooperator->cooperator_staff_id; ?>" class="btn btn-info btn-round">View Ledger</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+                            <div class="card w_card3">
+                                <div class="body">
+                                    <div class="text-center"><i class="fa fa-youtube-square"></i>
+                                        <h5 class="m-t-20 mb-0">813 Point</h5>
+                                        <p class="text-muted">New Subscribe</p>
+                                        <a href="javascript:void(0);" class="btn btn-success btn-round">Find more</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+                            <div class="card w_card3">
+                                <div class="body">
+                                    <div class="text-center"><i class="fa fa-twitter"></i>
+                                        <h5 class="m-t-20 mb-0">3,756</h5>
+                                        <p class="text-muted">New Followers</p>
+                                        <a href="javascript:void(0);" class="btn btn-primary btn-round">Find more</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+                            <div class="card w_card3">
+                                <div class="body">
+                                    <div class="text-center"><i class="fa fa-facebook-square"></i>
+                                        <h5 class="m-t-20 mb-0">3,756</h5>
+                                        <p class="text-muted">New Like</p>
+                                        <a href="javascript:void(0);" class="btn btn-primary btn-round">Find more</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
+
         </div>
     </div>
 
