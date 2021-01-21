@@ -56,17 +56,18 @@ Verify
                         </tr>
 
                         <tbody>
+                        
                             <?php $i = 1; foreach($applications as $app) : ?>
                                 <tr>
                                     <td><?= $i++ ?></td>
-                                    <td><?= $app['staff_id'] ?></td>
-                                    <td><?= $app['name'] ?></td>
-                                    <td><?= $app['loan_type'] ?> </td>
-                                    <td>₦<?= number_format($app['amount']) ?></td>
-                                    <td><?= number_format($app['duration']) ?> months</td>
-                                    <td><?= date('d M, Y', strtotime($app['applied_date'])) ?> </td>
+                                    <td><?= $app->staff_id ?? '' ?></td>
+                                    <td><?= $app->cooperator_first_name ?? '' ?> <?= $app->cooperator_last_name ?? '' ?></td>
+                                    <td><?= $app->loan_description ?? '' ?> </td>
+                                    <td>₦<?= number_format($app->amount ?? 0) ?></td>
+                                    <td><?= number_format($app->duration ?? 0) ?> months</td>
+                                    <td><?= date('d M, Y', strtotime($app->applied_date)) ?> </td>
                                     <td>
-                                        <a href="<?= site_url('/view-loan-application/'.$app['loan_app_id']) ?>" class="btn btn-primary btn-sm">Learn more</a>
+                                        <a href="<?= site_url('/view-loan-application/'.$app->loan_app_id) ?>" class="btn btn-primary btn-sm">Learn more</a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

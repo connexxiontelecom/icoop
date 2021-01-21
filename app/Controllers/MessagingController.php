@@ -148,7 +148,18 @@ class MessagingController extends BaseController
                         'message'=>$this->request->getVar('message')
 					];
                     $this->bulksms->save($data);
-            
+                    #send mail
+                    $ozMessageData = str_replace(" ", '%20', $this->request->getVar('message'));
+                    $message = 'Message'; //$this->request->getVar('message');
+                    $to = $this->request->getVar('receivers');
+                    $sender_id = $this->request->getVar('sender_id');
+                    $api_token = 'Z7ktaYTC58OmVFgKPvNvb6P6dRK6A5K38fapOIJ5cYs4kqFcX3JTEcl2KTgf';
+                    //$api_token = '54vBqnPgNI3ICsCFGfSskbJqxKWfW1VRx8VEpiQA836GqaiHSAx5StevKrZa';
+                    //$url = 'https://www.bulksmsnigeria.com/api/v1/sms/create?api_token='.$api_token.'&from='.$sender_id.'&to='.$to.'&body='.$ozMessageData.'&dnd=2';
+                    $url = "https://www.bulksmsnigeria.com/api/v1/sms/create?api_token=Z7ktaYTC58OmVFgKPvNvb6P6dRK6A5K38fapOIJ5cYs4kqFcX3JTEcl2KTgf&from=BulkSMS.ng&to=2348032404359&body=Welcome&dnd=2";
+                    //$response = $this->client->get($url);
+
+                    print_r($response);
                     $alert = array(
                         'msg' => 'Success! SMS sent.',
                         'type' => 'success',

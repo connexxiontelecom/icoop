@@ -122,7 +122,7 @@ class LoanController extends BaseController
 	{
         $data = [];
         $data = [
-            'applications'=>$this->loanapp->where('verify',0)->findAll(),
+            'applications'=>$this->loanapp->getLoanVerification(),
         ];
         $username = $this->session->user_username;
         $this->authenticate_user($username, 'pages/loan/verify', $data);
@@ -163,8 +163,9 @@ class LoanController extends BaseController
     public function showApproveApplications()
 	{
         $data = [];
+        //->where('verify',1)->where('approve',0)->findAll()
         $data = [
-            'applications'=>$this->loanapp->where('verify',1)->where('approve',0)->findAll(),
+            'applications'=>$this->loanapp->getLoanApproval(),
         ];
         $username = $this->session->user_username;
         $this->authenticate_user($username, 'pages/loan/approve', $data);
@@ -202,7 +203,8 @@ class LoanController extends BaseController
                         'interest_rate'=>$this->request->getVar('interest_rate'),
                         'amount'=>$this->request->getVar('principal_amount'),
                         'created_at'=>date('Y-m-d H:i:s'),
-                        'disburse'=>0
+                        'disburse'=>0,
+                        'loan_type'=>$this->request->getVar('loan_type'),
                     ];
                     $this->loan->save($loanData);
                     $alert = array(
@@ -218,13 +220,12 @@ class LoanController extends BaseController
     }
 	
     public function viewLoanApplication($id){
-        $data = [];
-        $application = $this->loanapp->where('loan_app_id', $id)->first();
-        $setup = $this->loansetup->where('loan_setup_id', $application['loan_type'])->first();
-
+        $app = $this->loanapp->getLoanApplicationDetail($id);
         $data = [
-            'application'=>$application,
-            'setup'=>$setup
+            'application'=>$app,
+            'guarantor'=>$this->loanapp->getGuarantorOne($id),
+            'guarantor2'=>$this->loanapp->getGuarantorTwo($id),
+            'setup'=>$this->loansetup->where('loan_setup_id', $app->loan_type)->first()
         ];
         $username = $this->session->user_username;
         $this->authenticate_user($username, 'pages/loan/view-loan-application', $data);
@@ -232,9 +233,8 @@ class LoanController extends BaseController
 
     public function showPaymentSchedule(){
         $data = [];
-        //$loan_apps = $this->loanapp->where('approve',1)->findAll();
-        $loan_apps = $this->loan->where('disburse',0)->findAll();
-        $coopbank = $this->coopbank->findAll();
+        $loan_apps = $this->loan->getScheduledPayment(); 
+        $coopbank = $this->coopbank->getCoopBanks();
         $data = [
             'loan_apps'=>$loan_apps,
             'coopbank'=>$coopbank
@@ -270,15 +270,16 @@ class LoanController extends BaseController
                         'bank_id'=>$this->request->getVar('bank'),
                         'creation_date'=>date('Y-m-d H:i:s'),
 					];
-                    $this->schedulemaster->save($data);
+                    
+                    $id = $this->schedulemaster->insert($data);
                     #Schedule detail
                     if($this->request->getVar('approved_loans')){
                         for($i = 0; $i<count($this->request->getVar('coop_id')); $i++ ){
                             $detail = [
-                                //'loan_type'=>$this->request->getVar('loan_type')[$i],
+                                //'loan_type'=>$this->request->getVar('loan_type')[$i], 
                                 'coop_id'=>$this->request->getVar('coop_id')[$i],
                                 'amount'=>$this->request->getVar('amount')[$i],
-                                'schedule_master_id'=>1
+                                'schedule_master_id'=>$id
                             ];
                             $this->schedulemasterdetail->save($detail);
                         }
@@ -301,6 +302,7 @@ class LoanController extends BaseController
          $data = [
             'schedules'=>$this->schedulemaster->getScheduleMaster()
         ];
+        
         $username = $this->session->user_username;
         $this->authenticate_user($username, 'pages/loan/payment-schedules', $data); 
     }
@@ -309,9 +311,9 @@ class LoanController extends BaseController
         $data = [
             'schedule'=>$this->schedulemaster->getSchedulePaymentDetail($id)
         ];
-        $schedule = $this->schedulemaster->getSchedulePaymentDetail($id);
-        //return dd($schedule);
+        
+        //$schedule = $this->schedulemaster->getSchedulePaymentDetail($id);
         $username = $this->session->user_username;
-        $this->authenticate_user($username, 'pages/loan/view-payment-schedule', $schedule);
+        $this->authenticate_user($username, 'pages/loan/view-payment-schedule', $data);
     }
 }

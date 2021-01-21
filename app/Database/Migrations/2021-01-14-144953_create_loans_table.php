@@ -22,6 +22,10 @@ class CreateLoansTable extends Migration
 					'type' => 'INT',
 					'null'=>true,
 				],
+				'loan_type' =>[
+					'type' => 'INT',
+					'null'=>true,
+				],
 				'amount' =>[
 					'type' => 'DOUBLE',
 					'null'=>true,
