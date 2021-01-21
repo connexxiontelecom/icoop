@@ -253,6 +253,8 @@
                                         <li><a href="<?=base_url('new_application') ?>">New Application</a></li>
                                         <li><a href="<?=base_url('verify_application') ?>">Verify Applications</a></li>
                                         <li><a href="<?=base_url('approve_application') ?>">Approve Applications</a></li>
+                                        <li><a href="<?=base_url('cooperators') ?>">Cooperators</a></li>
+
                                     </ul>
                                 </li>
                                 <li><a href="#"><i class="icon-earphones-alt"></i><span>Savings</span></a></li>

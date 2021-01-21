@@ -7,6 +7,9 @@ use App\Models\Banks;
 use App\Models\PayrollGroups;
 use App\Models\StateModel;
 use App\Models\DepartmentModel;
+use App\Models\PaymentDetailsModel;
+use App\Models\ContributionTypeModel;
+
 
 
 class Cooperators extends BaseController
@@ -19,6 +22,8 @@ class Cooperators extends BaseController
              $this->bank = new Banks();
              $this->pg = new PayrollGroups();
              $this->cooperator = new \App\Models\Cooperators();
+             $this->pd = new PaymentDetailsModel();
+             $this->ct = new ContributionTypeModel();
              $this->session = session();
 
         }
@@ -586,6 +591,143 @@ class Cooperators extends BaseController
 
          }
 
+         public function cooperators(){
+
+             $data['cooperators'] = $this->cooperator->get_active_cooperators();
+
+             $username = $this->session->user_username;
+              //print_r($data['cooperators']);
+             $this->authenticate_user($username, 'pages/cooperators/cooperators', $data);
+
+         }
+
+    public function coperator($cooperator_id){
+
+
+
+        $cooperator =  $this->cooperator->get_cooperator( $cooperator_id);
+
+
+
+        if(!empty($cooperator)):
+
+            if($cooperator->cooperator_status == 2):
+
+                $data['cooperator'] = $cooperator;
+                $data['states'] = $this->state->findAll();
+                $data['departments'] = $this->department->findAll();
+                $data['banks'] = $this->bank->findAll();
+                $data['pgs'] = $this->pg->findAll();
+
+                $username = $this->session->user_username;
+
+                $this->authenticate_user($username, 'pages/cooperators/view_cooperator', $data);
+
+            else:
+
+                return redirect('error_404');
+
+            endif;
+
+        else:
+
+            return redirect('error_404');
+
+        endif;
+
+    }
+
+
+    public function ledger($staff_id){
+
+
+
+        $cooperator =  $this->cooperator->get_cooperator_staff_id( $staff_id);
+
+
+
+        if(!empty($cooperator)):
+
+            if($cooperator->cooperator_status == 2):
+
+                $ledgers = $this->pd->get_payment_staff_id($staff_id);
+
+            $i = 0;
+
+            foreach ($ledgers as $ledger):
+
+
+                $data['contribution_types'][$i] = $this->ct->where(['contribution_type_id' => $ledger->pd_ct_id])->first();
+
+            $i++;
+
+            endforeach;
+               $data['cooperator'] = $cooperator;
+                $data['states'] = $this->state->findAll();
+                $data['departments'] = $this->department->findAll();
+                $data['banks'] = $this->bank->findAll();
+                $data['pgs'] = $this->pg->findAll();
+
+                $username = $this->session->user_username;
+//
+              $this->authenticate_user($username, 'pages/cooperators/ledger', $data);
+
+            else:
+
+                return redirect('error_404');
+
+            endif;
+
+        else:
+
+            return redirect('error_404');
+
+        endif;
+
+    }
+
+    public function view_ledger($ct_id, $staff_id){
+
+
+
+        $cooperator =  $this->cooperator->get_cooperator_staff_id( $staff_id);
+
+
+
+
+
+        if(!empty($cooperator)):
+
+            if($cooperator->cooperator_status == 2):
+
+                $data['ledgers'] = $this->pd->where(['pd_staff_id' => $staff_id, 'pd_ct_id' => $ct_id])->orderBy('pd_transaction_date', 'DESC')->findAll();
+                $data['ct'] = $this->ct->where(['contribution_type_id' => $ct_id])->first();
+
+
+
+                $data['cooperator'] = $cooperator;
+                $data['states'] = $this->state->findAll();
+                $data['departments'] = $this->department->findAll();
+                $data['banks'] = $this->bank->findAll();
+                $data['pgs'] = $this->pg->findAll();
+
+                $username = $this->session->user_username;
+//
+                $this->authenticate_user($username, 'pages/cooperators/view_ledger', $data);
+
+            else:
+
+                return redirect('error_404');
+
+            endif;
+
+        else:
+
+            return redirect('error_404');
+
+        endif;
+
+    }
 
 
         public function test_sweet(){
