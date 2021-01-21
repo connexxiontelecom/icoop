@@ -586,6 +586,50 @@ class Cooperators extends BaseController
 
          }
 
+         public function cooperators(){
+
+             $data['cooperators'] = $this->cooperator->get_active_cooperators();
+
+             $username = $this->session->user_username;
+              //print_r($data['cooperators']);
+             $this->authenticate_user($username, 'pages/cooperators/cooperators', $data);
+
+         }
+
+    public function coperator($cooperator_id){
+
+
+
+        $cooperator =  $this->cooperator->get_cooperator( $cooperator_id);
+
+        if(!empty($cooperator)):
+
+            if($cooperator->cooperator_status == 0):
+
+                $data['cooperator'] = $cooperator;
+                $data['states'] = $this->state->findAll();
+                $data['departments'] = $this->department->findAll();
+                $data['banks'] = $this->bank->findAll();
+                $data['pgs'] = $this->pg->findAll();
+
+                $username = $this->session->user_username;
+
+                $this->authenticate_user($username, 'pages/cooperators/view_cooperator', $data);
+
+            else:
+
+                return redirect('error_404');
+
+            endif;
+
+        else:
+
+            return redirect('error_404');
+
+        endif;
+
+    }
+
 
 
         public function test_sweet(){

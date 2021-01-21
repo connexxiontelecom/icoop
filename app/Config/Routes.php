@@ -104,6 +104,8 @@ $routes->post('verify_application/(:num)', 'Cooperators::verify_application_/$1'
 $routes->get('approve_application', 'Cooperators::approve_application');
 $routes->get('approve_application/(:num)', 'Cooperators::approve_application_/$1');
 $routes->post('approve_application/(:num)', 'Cooperators::approve_application_/$1');
+$routes->get('cooperators', 'Cooperators::cooperators');
+$routes->get('cooperator/(:num)', 'Cooperators::coperator/$1');
 
 #Loan routes
 $routes->get('/loan/new', 'LoanController::showLoanApplicationForm');
