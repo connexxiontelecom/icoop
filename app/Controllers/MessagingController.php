@@ -8,6 +8,7 @@ use \App\Models\ScheduleMasterModel;
 use \App\Models\ScheduleMasterDetailModel;
 
 use \App\Models\MailModel;
+use \App\Models\BulkSmsModel;
 
 class MessagingController extends BaseController
 {
@@ -23,6 +24,7 @@ class MessagingController extends BaseController
         $this->loan = new LoanModel();
         #
         $this->mail = new MailModel();
+        $this->bulksms = new BulkSmsModel();
         $this->session = session();
     }
 
@@ -103,11 +105,59 @@ class MessagingController extends BaseController
     }
     public function showBulkSms()
 	{
-        $data = [];
-       /*  $data = [
-            'mails'=>$this->mail->getMails(),
-        ]; */
+        
+         $data = [
+            'sms'=>$this->bulksms->findAll(),
+        ]; 
         $username = $this->session->user_username;
         $this->authenticate_user($username, 'pages/messaging/bulk-sms', $data);
+    }
+
+    public function sendBulkSms(){
+        helper(['form']);
+        $data = [];
+        
+        if($_POST){
+            $rules = [
+                'sender_id'=>[
+                    'rules'=>'required',
+                    'label'=>'Sender ID',
+                    'errors'=>[
+                        'required'=>'Sender ID is required'
+                    ]
+				],
+                'receivers'=>[
+                    'rules'=>'required',
+                    'label'=>'Receivers',
+                    'errors'=>[
+                        'required'=>'Receivers field is required'
+                    ]
+				],
+                'message'=>[
+                    'rules'=>'required',
+                    'label'=>'Message',
+                    'errors'=>[
+                        'required'=>'Message field is required'
+                    ]
+				],
+            ];
+            if($this->validate($rules)){
+					$data = [
+                        'sender_id'=>$this->request->getVar('sender_id'),
+                        'receivers'=>$this->request->getVar('receivers'),
+                        'message'=>$this->request->getVar('message')
+					];
+                    $this->bulksms->save($data);
+            
+                    $alert = array(
+                        'msg' => 'Success! SMS sent.',
+                        'type' => 'success',
+                        'location' => site_url('/messaging/bulk-sms')
+                    );
+                    return view('pages/sweet-alert', $alert);
+            }else{
+                return $this->response->redirect(site_url('/messaging/bulk-sms'));
+            }
+        }
     }
 }

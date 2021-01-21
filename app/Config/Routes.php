@@ -125,6 +125,8 @@ $routes->get('/messaging/compose-email', 'MessagingController::showComposeEmailV
 $routes->post('/messaging/compose-email', 'MessagingController::sendEmail');
 $routes->get('/messaging/mails', 'MessagingController::showMails');
 $routes->get('/messaging/open-mail/(:num)', 'MessagingController::openMail/$1');
+$routes->get('/messaging/bulk-sms', 'MessagingController::showBulkSms');
+$routes->post('/messaging/bulk-sms', 'MessagingController::sendBulkSms');
 /**
  * --------------------------------------------------------------------
  * Additional Routing

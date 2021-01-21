@@ -274,9 +274,7 @@
                                     <ul>
                                         <li><a href="<?=base_url('/messaging/compose-email') ?>">Compose Email</a></li>
                                         <li><a href="<?=base_url('/messaging/mails') ?>">Mails</a></li>
-                                        <li><a href="<?=base_url('approve_application') ?>">Bulk SMS</a></li>
-                                        <li><a href="<?=base_url('state') ?>">Messages</a></li>
-                                        <li><a href="#">Coop</a></li>
+                                        <li><a href="<?=base_url('/messaging/bulk-sms') ?>">Bulk SMS</a></li>
                                     </ul>
                                 </li>
                                 <li>
