@@ -97,11 +97,12 @@ Contribution Types
                                 <table class="table table-hover js-basic-example dataTable simpletable table-custom spacing5">
                                     <thead>
                                     <tr>
-                                        <th>#</th>
-                                        <th>Date</th>
-                                        <th>Reference Number</th>
-                                        <th>Dr</th>
-                                        <th>Cr</th>
+                                        <th><strong># </strong></th>
+                                        <th><strong>Date</strong></th>
+                                        <th><strong>Reference Number</strong></th>
+                                        <th><strong>Dr</strong></th>
+                                        <th><strong>Cr</strong></th>
+                                        <th><strong>Balance</strong></th>
 
 
 
@@ -109,10 +110,13 @@ Contribution Types
                                     </thead>
 
                                     <tbody>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td> <strong>BF:</strong> <?=number_format($bf); ?></td>
                                     <?php $sn = 1;
-
-
-
                                     foreach ($ledgers as $ledger): ?>
                                         <tr>
 
@@ -122,6 +126,8 @@ Contribution Types
 
                                             <td><?php
                                                 if($ledger['pd_drcrtype'] == 2):
+                                                    $dr = $ledger['pd_amount'];
+                                                    $cr = 0;
 
                                                     echo number_format($ledger['pd_amount']);
 
@@ -135,6 +141,9 @@ Contribution Types
                                                 <?php
                                                 if($ledger['pd_drcrtype'] == 1):
 
+                                                    $cr = $ledger['pd_amount'];
+                                                    $dr = 0;
+
                                                     echo number_format($ledger['pd_amount']);
 
                                                 else:
@@ -143,6 +152,13 @@ Contribution Types
                                                 endif;
 
                                                 ?>
+                                            </td>
+
+                                            <td>
+                                                <?php $bf = ($bf + $cr) - $dr;
+                                                echo number_format($bf);
+                                                ?>
+
                                             </td>
 
 

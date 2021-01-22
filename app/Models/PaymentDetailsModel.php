@@ -45,10 +45,13 @@ class PaymentDetailsModel extends \CodeIgniter\Model
         return $builder->getResultArray();
     }
 
-//    public function get_contribution_ledger_year($staff_id, $ct_id, $year){
-//
-//        $builder = $this->db->query("select * from payment_details where pd_staff_id = '$staff_id', pd_ct_id = '$ct_id', date('Y', strtotime('pd_transaction_date')) = '$year'");
-//        return $builder->getResultArray();
-//    }
+    public function get_contribution_ledger_past_year($staff_id, $ct_id, $year){
+        $builder = $this->db->table('payment_details');
+        $builder->where(['pd_staff_id' => $staff_id, 'pd_ct_id' => $ct_id]);
+        $builder->where('year(pd_transaction_date) <', $year);
+
+        //$builder = $this->db->query("select * from payment_details where pd_staff_id = '$staff_id', pd_ct_id = '$ct_id', date('Y', strtotime('pd_transaction_date')) = '$year'");
+        return $builder->get()->getResultObject();
+    }
 
 }
