@@ -207,7 +207,7 @@
 <!--                                <li class="header">Menu</li>-->
 <!--                                <li><a href="--><?//= base_url('control-panel'); ?><!--"><i class="icon-paper-plane"></i><span>Control Panel</span></a></li>-->
                                 <li>
-                                    <a href="#" class="has-arrow"><i class="icon-lock"></i><span>Control Panel</span></a>
+                                    <a href="#" class="has-arrow"><i class="fa fa-cog"></i><span>Control Panel</span></a>
                                     <ul>
                                         <li><a href="<?=base_url('contribution_type') ?>">Contribution Type</a></li>
                                         <li><a href="<?=base_url('payroll_group') ?>">Payroll Group</a></li>
@@ -230,7 +230,7 @@
 
                                 </li>
                                 <li>
-                                    <a href="#" class="has-arrow"><i class="icon-lock"></i><span>House Keeping</span></a>
+                                    <a href="#" class="has-arrow"><i class="fa fa-cogs"></i><span>House Keeping</span></a>
                                     <ul>
                                         <li><a href="<?=base_url('states') ?>">States</a></li>
                                         <li><a href="#">Bank</a></li>
@@ -240,7 +240,7 @@
                                     </ul>
                                 </li>
                                 <li>
-                                    <a href="#" class="has-arrow"><i class="icon-calendar"></i><span>Policy Config</span></a>
+                                    <a href="#" class="has-arrow"><i class="fa fa-compass"></i><span>Policy Config</span></a>
                                     <ul>
                                         <li><a href="<?= base_url('/policy-config') ?>">Policy Config</a></li>
                                         <li><a href="<?= base_url('/policy-config/loan-setup') ?>">Loan Setup</a></li>
@@ -248,7 +248,7 @@
                                 </li>
                                 
                                 <li>
-                                    <a href="#" class="has-arrow"><i class="icon-lock"></i><span>Cooperators</span></a>
+                                    <a href="#" class="has-arrow"><i class="fa fa-users"></i><span>Cooperators</span></a>
                                     <ul>
                                         <li><a href="<?=base_url('new_application') ?>">New Application</a></li>
                                         <li><a href="<?=base_url('verify_application') ?>">Verify Applications</a></li>
@@ -257,9 +257,9 @@
 
                                     </ul>
                                 </li>
-                                <li><a href="#"><i class="icon-earphones-alt"></i><span>Savings</span></a></li>
+                                <li><a href="#"><i class="icon-bag"></i><span>Savings</span></a></li>
                                 <li>
-                                    <a href="#" class="has-arrow"><i class="icon-wallet"></i><span>Loans</span></a>
+                                    <a href="#" class="has-arrow"><i class="fa fa-money"></i><span>Loans</span></a>
                                     <ul>
                                         <li><a href="<?=base_url('/loan/new') ?>">New Loan</a></li>
                                         <li><a href="<?=base_url('/loan/verify') ?>">Verify Loan</a></li>
@@ -268,10 +268,10 @@
                                     </ul>
                                 </li>
                                 
-                                <li><a href="#"><i class="icon-list"></i><span>Payables</span></a></li>
-                                <li><a href="#"><i class="icon-list"></i><span>Receivables</span></a></li>
+                                <li><a href="#"><i class="fa fa-arrow-circle-up"></i><span>Payables</span></a></li>
+                                <li><a href="#"><i class="fa fa-arrow-circle-down"></i><span>Receivables</span></a></li>
                                 <li>
-                                    <a href="javascript:void(0);" class="has-arrow"><i class="icon-lock"></i><span>Financial Accounts</span></a>
+                                    <a href="javascript:void(0);" class="has-arrow"><i class="fa fa-university"></i><span>Financial Accounts</span></a>
                                     <ul>
                                         <li><a href="<?=base_url('chart-of-accounts') ?>">Chart of Accounts</a></li>
                                         <li><a href="<?=base_url('journal-voucher') ?>">Journal Voucher</a></li>
