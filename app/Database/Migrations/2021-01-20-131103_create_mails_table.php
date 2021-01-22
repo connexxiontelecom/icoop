@@ -2,36 +2,40 @@
 
 use CodeIgniter\Database\Migration;
 
-class CreateScheduleMastersTable extends Migration
+class CreateMailsTable extends Migration
 {
 	public function up()
 	{
 		$this->db->disableForeignKeyChecks();
 		$this->forge->addField(
 			[
-				'schedule_master_id' =>[
+				'mail_id' =>[
 					'type' => 'INT',
 					'constraint' => 11,
 					'auto_increment' => true,
 				],
-				'payable_date' =>[
-					'type' => 'DATETIME',
+				'subject' =>[
+					'type' => 'TEXT',
 					'null'=>true,
 				],
-				'creation_date' =>[
-					'type' => 'DATETIME',
-					'null'=>true,
+				'body' =>[
+					'type' => 'TEXT',
+					'null'=>true
 				],
-				'bank_id' =>[
+				'sent_by' =>[
 					'type' => 'INT',
 					'null'=>true,
-				]
+				],
+				'created_at'=>[
+					'type'=>'DATETIME',
+					'null'=>true,
+				],
 
 
 			]
 		);
-		$this->forge->addKey('schedule_master_id', true);
-		$this->forge->createTable('schedule_masters');
+		$this->forge->addKey('mail_id', true);
+		$this->forge->createTable('mails');
 	}
 
 	//--------------------------------------------------------------------

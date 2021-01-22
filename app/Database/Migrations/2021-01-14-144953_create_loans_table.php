@@ -22,6 +22,10 @@ class CreateLoansTable extends Migration
 					'type' => 'INT',
 					'null'=>true,
 				],
+				'loan_type' =>[
+					'type' => 'INT',
+					'null'=>true,
+				],
 				'amount' =>[
 					'type' => 'DOUBLE',
 					'null'=>true,
@@ -33,6 +37,11 @@ class CreateLoansTable extends Migration
 				],
 				'interest_rate' =>[
 					'type' => 'DOUBLE',
+					'null'=>true
+				],
+				'disburse' =>[
+					'type' => 'INT',
+					'default'=>0,
 					'null'=>true
 				],
 				'created_at'=>[
