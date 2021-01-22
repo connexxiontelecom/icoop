@@ -56,46 +56,38 @@ View Cooperator
                             <div class="card w_card3">
                                 <div class="body">
                                     <div class="text-center"><i class="fa fa-book"></i>
-                                        <h5 class="m-t-20 mb-0">Ledger</h5>
+                                        <h5 class="m-t-20 mb-0">Contribution Ledger</h5>
                                         <p class="text-muted"></p>
                                         <a href="<?=base_url('ledger')."/".$cooperator->cooperator_staff_id; ?>" class="btn btn-info btn-round">View Ledger</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-lg-3 col-md-6 col-sm-12">
                             <div class="card w_card3">
                                 <div class="body">
-                                    <div class="text-center"><i class="fa fa-youtube-square"></i>
-                                        <h5 class="m-t-20 mb-0">813 Point</h5>
-                                        <p class="text-muted">New Subscribe</p>
-                                        <a href="javascript:void(0);" class="btn btn-success btn-round">Find more</a>
+                                    <div class="text-center"><i class="fa fa-book"></i>
+                                        <h5 class="m-t-20 mb-0">Outstanding Loans</h5>
+                                        <p class="text-muted"></p>
+                                        <a href="<?=base_url('ledger')."/".$cooperator->cooperator_staff_id; ?>" class="btn btn-info btn-round">View Ledger</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-lg-3 col-md-6 col-sm-12">
                             <div class="card w_card3">
                                 <div class="body">
-                                    <div class="text-center"><i class="fa fa-twitter"></i>
-                                        <h5 class="m-t-20 mb-0">3,756</h5>
-                                        <p class="text-muted">New Followers</p>
-                                        <a href="javascript:void(0);" class="btn btn-primary btn-round">Find more</a>
+                                    <div class="text-center"><i class="fa fa-book"></i>
+                                        <h5 class="m-t-20 mb-0">Finished Loans</h5>
+                                        <p class="text-muted"></p>
+                                        <a href="<?=base_url('ledger')."/".$cooperator->cooperator_staff_id; ?>" class="btn btn-info btn-round">View Ledger</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <div class="card w_card3">
-                                <div class="body">
-                                    <div class="text-center"><i class="fa fa-facebook-square"></i>
-                                        <h5 class="m-t-20 mb-0">3,756</h5>
-                                        <p class="text-muted">New Like</p>
-                                        <a href="javascript:void(0);" class="btn btn-primary btn-round">Find more</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
 
                 </div>

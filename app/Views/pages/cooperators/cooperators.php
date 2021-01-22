@@ -49,7 +49,7 @@ Cooperators
 
                                 <td><?=$sn; ?></td>
                                 <td><?=$cooperator->cooperator_staff_id; ?></td>
-                                <td><?=$cooperator->cooperator_first_name.' '.$cooperator->cooperator_last_name; ?></td>
+                                    <td><?=$cooperator->cooperator_first_name.' '.$cooperator->cooperator_last_name; ?></td>
                                 <td><?=$cooperator->department_name; ?></td>
                                 <td><?=$cooperator->location_name; ?></td>
                                 <td><?=$cooperator->cooperator_approved_date; ?></td>

@@ -107,6 +107,7 @@ $routes->post('approve_application/(:num)', 'Cooperators::approve_application_/$
 $routes->get('cooperators', 'Cooperators::cooperators');
 $routes->get('cooperator/(:num)', 'Cooperators::coperator/$1');
 $routes->get('ledger/(:any)', 'Cooperators::ledger/$1');
+$routes->post('ledger/(:any)', 'Cooperators::ledger/$1');
 $routes->get('view_ledger/(:num)/(:any)', 'Cooperators::view_ledger/$1/$2');
 
 #Loan routes

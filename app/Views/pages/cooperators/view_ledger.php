@@ -36,9 +36,9 @@ Ledger
                             <th>#</th>
                             <th>Date</th>
                             <th>Reference Number</th>
-
-                            <th>Cr</th>
                             <th>Dr</th>
+                            <th>Cr</th>
+
 
 
                         </tr>
@@ -51,19 +51,7 @@ Ledger
                                 <td><?=$sn; ?></td>
                                 <td><?=$ledger['pd_transaction_date']; ?></td>
                                 <td><?=$ledger['pd_ref_code']; ?></td>
-                                <td>
-                                    <?php
-                                    if($ledger['pd_drcrtype'] == 1):
 
-                                        echo number_format($ledger['pd_amount']);
-
-                                    else:
-                                     echo '0';
-
-                                    endif;
-
-                                    ?>
-                                </td>
                                 <td><?php
                                     if($ledger['pd_drcrtype'] == 2):
 
@@ -75,6 +63,19 @@ Ledger
                                     endif;
 
                                     ?></td>
+                                <td>
+                                    <?php
+                                    if($ledger['pd_drcrtype'] == 1):
+
+                                        echo number_format($ledger['pd_amount']);
+
+                                    else:
+                                        echo '0';
+
+                                    endif;
+
+                                    ?>
+                                </td>
 
 
                             </tr>

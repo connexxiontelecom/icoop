@@ -639,92 +639,134 @@ class Cooperators extends BaseController
 
 
     public function ledger($staff_id){
-
-
-
         $cooperator =  $this->cooperator->get_cooperator_staff_id( $staff_id);
+        $method = $this->request->getMethod();
+
+        if($method == 'post'):
+            $year = $this->request->getPost('ct_year');
+            $ct_id = $this->request->getPost('ct_id');
+            if($year == 'a'):
+                    $data['bf'] = 0;
+                    $ledgers = $this->pd->get_payment_staff_id($staff_id);
+                    $i = 0;
+                    foreach ($ledgers as $ledger):
+                        $data['contribution_types'][$i] = $this->ct->where(['contribution_type_id' => $ledger->pd_ct_id])->first();
+                        $i++;
+                    endforeach;
+                    $data['ledgers'] = $this->pd->where(['pd_staff_id' => $staff_id, 'pd_ct_id' => $ct_id])
+//                        ->orderBy('pd_transaction_date', 'DESC')
+                        ->findAll();
+                    $data['cts'] = $this->ct->where(['contribution_type_id' => $ct_id])->first();
+                    $data['check'] = 1;
+                    $data['years'] = $this->pd->get_year_pd($staff_id);
+                    $data['cooperator'] = $cooperator;
+                    $data['states'] = $this->state->findAll();
+                    $data['departments'] = $this->department->findAll();
+                    $data['banks'] = $this->bank->findAll();
+                    $data['pgs'] = $this->pg->findAll();
+                    $username = $this->session->user_username;
+                    $this->authenticate_user($username, 'pages/cooperators/ledger', $data);
+               else:
+                    $ledgers = $this->pd->get_payment_staff_id($staff_id);
+                    $i = 0;
+                    foreach ($ledgers as $ledger):
+                        $data['contribution_types'][$i] = $this->ct->where(['contribution_type_id' => $ledger->pd_ct_id])->first();
+                        $i++;
+                    endforeach;
+                    $ledgs = $this->pd->get_contribution_ledger_past_year($staff_id, $ct_id, $year);
+
+                    $total_cr = 0;
+                    $total_dr = 0;
+                    $cr = 0;
+                    $dr = 0;
+
+                    foreach ($ledgs as $ledg):
+
+                        if($ledg->pd_drcrtype == 1):
+                            $cr = $ledg->pd_amount;
+                            $total_cr = $total_cr + $cr;
+                        endif;
+
+                        if($ledg->pd_drcrtype == 2):
+                            $dr = $ledg->pd_amount;
+                            $total_dr = $total_dr + $dr;
+                        endif;
+
+                      endforeach;
 
 
 
-        if(!empty($cooperator)):
 
-            if($cooperator->cooperator_status == 2):
-
-                $ledgers = $this->pd->get_payment_staff_id($staff_id);
-
-            $i = 0;
-
-            foreach ($ledgers as $ledger):
+                    $data['ledgers'] = $this->pd->where(['pd_staff_id' => $staff_id, 'pd_ct_id' => $ct_id, 'year(pd_transaction_date)' => $year])
+//                        ->orderBy('pd_transaction_date', 'DESC')
+                        ->findAll();
 
 
-                $data['contribution_types'][$i] = $this->ct->where(['contribution_type_id' => $ledger->pd_ct_id])->first();
+                    $data['bf'] = $total_cr - $total_dr;
+                    $data['cts'] = $this->ct->where(['contribution_type_id' => $ct_id])->first();
+                    $data['check'] = 1;
+                    $data['years'] = $this->pd->get_year_pd($staff_id);
+                    $data['cooperator'] = $cooperator;
+                    $data['states'] = $this->state->findAll();
+                    $data['departments'] = $this->department->findAll();
+                    $data['banks'] = $this->bank->findAll();
+                    $data['pgs'] = $this->pg->findAll();
+                    $username = $this->session->user_username;
+                    $this->authenticate_user($username, 'pages/cooperators/ledger', $data);
+                endif;
+            endif;
+        if($method == 'get'):
+            if(!empty($cooperator)):
+                if($cooperator->cooperator_status == 2):
+                    $ledgers = $this->pd->get_payment_staff_id($staff_id);
+                    $i = 0;
 
-            $i++;
-
-            endforeach;
-               $data['cooperator'] = $cooperator;
-                $data['states'] = $this->state->findAll();
-                $data['departments'] = $this->department->findAll();
-                $data['banks'] = $this->bank->findAll();
-                $data['pgs'] = $this->pg->findAll();
-
-                $username = $this->session->user_username;
-//
-              $this->authenticate_user($username, 'pages/cooperators/ledger', $data);
+                foreach ($ledgers as $ledger):
+                    $data['contribution_types'][$i] = $this->ct->where(['contribution_type_id' => $ledger->pd_ct_id])->first();
+                    $i++;
+                endforeach;
+                    $data['ledgers'] = [ ];
+                    $data['check'] = 0;
+                    $data['years'] = $this->pd->get_year_pd($staff_id);
+                    $data['cooperator'] = $cooperator;
+                    $data['states'] = $this->state->findAll();
+                    $data['departments'] = $this->department->findAll();
+                    $data['banks'] = $this->bank->findAll();
+                    $data['pgs'] = $this->pg->findAll();
+                    $username = $this->session->user_username;
+                    $this->authenticate_user($username, 'pages/cooperators/ledger', $data);
+                else:
+                    return redirect('error_404');
+                endif;
 
             else:
 
                 return redirect('error_404');
 
             endif;
-
-        else:
-
-            return redirect('error_404');
 
         endif;
 
     }
 
     public function view_ledger($ct_id, $staff_id){
-
-
-
         $cooperator =  $this->cooperator->get_cooperator_staff_id( $staff_id);
-
-
-
-
-
         if(!empty($cooperator)):
-
             if($cooperator->cooperator_status == 2):
-
                 $data['ledgers'] = $this->pd->where(['pd_staff_id' => $staff_id, 'pd_ct_id' => $ct_id])->orderBy('pd_transaction_date', 'DESC')->findAll();
                 $data['ct'] = $this->ct->where(['contribution_type_id' => $ct_id])->first();
-
-
-
                 $data['cooperator'] = $cooperator;
                 $data['states'] = $this->state->findAll();
                 $data['departments'] = $this->department->findAll();
                 $data['banks'] = $this->bank->findAll();
                 $data['pgs'] = $this->pg->findAll();
-
                 $username = $this->session->user_username;
-//
                 $this->authenticate_user($username, 'pages/cooperators/view_ledger', $data);
-
             else:
-
                 return redirect('error_404');
-
             endif;
-
         else:
-
             return redirect('error_404');
-
         endif;
 
     }
