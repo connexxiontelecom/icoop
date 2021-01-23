@@ -16,6 +16,14 @@ class LoanModel extends Model{
         $builder->where('loans.disburse = 0');
         return $builder->get()->getResultObject();
     }
+    public function getCooperatorSavings($id){
+        $builder = $this->db->table('payment_details');
+        /* $builder->join('cooperators', 'cooperators.cooperator_staff_id = loans.staff_id');
+        $builder->join('loan_setups', 'loans.loan_type = loan_setups.loan_setup_id'); */
+        $builder->where('payment_details.pd_staff_id = '.$id);
+        $builder->selectSum('payment_details.pd_amount');
+        return $builder->get()->getResultObject();
+    }
 
 }
 

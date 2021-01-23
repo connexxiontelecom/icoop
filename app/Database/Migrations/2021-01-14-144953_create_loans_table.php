@@ -44,6 +44,12 @@ class CreateLoansTable extends Migration
 					'default'=>0,
 					'null'=>true
 				],
+				'paid_back' =>[
+					'type' => 'INT',
+					'default'=>0,
+					'null'=>true,
+					'comment'=>'0=no, 1=yes'
+				],
 				'created_at'=>[
 					'type'=>'DATETIME',
 					'null'=>true

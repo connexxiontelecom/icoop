@@ -34,7 +34,12 @@ class LoanController extends BaseController
     
     public function getCooperator($id){
         $cooperator = $this->coop->where('cooperator_staff_id', $id)->first();
-        return json_encode($cooperator);
+        $savings = $this->loan->getCooperatorSavings($id);
+        $data = [
+            'cooperator'=>$cooperator,
+            'savings'=>$savings
+        ];
+        return json_encode($data);
     }
     public function getLoanType($id){
         $setup = $this->loansetup->where('loan_setup_id', $id)->first();
