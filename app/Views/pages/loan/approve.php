@@ -46,29 +46,28 @@ Approve Loan Application
                         
                         <tr>
                             <th>#</th>
-                            <th>Staff Name</th>
+                            <th>Coop ID</th>
+                            <th>Name</th>
+                            <th>Loan Type</th>
                             <th>Amount</th>
                             <th>Duration</th>
-                            <th>Guarantor 1</th>
-                            <th>Guarantor 2</th>
-                            <th>Loan Type</th>
-                            <th>Loan Terms</th>
+                            <th>Application Date</th>
                             <th>Action</th>
                         </tr>
 
                         <tbody>
+                        
                             <?php $i = 1; foreach($applications as $app) : ?>
                                 <tr>
                                     <td><?= $i++ ?></td>
-                                    <td><?= $app['name'] ?></td>
-                                    <td><?= number_format($app['amount']) ?></td>
-                                    <td><?= number_format($app['duration']) ?> months</td>
-                                    <td><?= $app['guarantor'] ?> </td>
-                                    <td><?= $app['guarantor_2'] ?> </td>
-                                    <td><?= $app['loan_type'] ?> </td>
-                                    <td><?= $app['loan_terms'] ?> </td>
+                                    <td><?= $app->staff_id ?? '' ?></td>
+                                    <td><?= $app->cooperator_first_name ?? '' ?> <?= $app->cooperator_last_name ?? '' ?></td>
+                                    <td><?= $app->loan_description ?? '' ?> </td>
+                                    <td>₦<?= number_format($app->amount ?? 0) ?></td>
+                                    <td><?= number_format($app->duration ?? 0) ?> months</td>
+                                    <td><?= date('d M, Y', strtotime($app->applied_date)) ?> </td>
                                     <td>
-                                        <a href="<?= site_url('/view-loan-application/'.$app['loan_app_id']) ?>" class="btn btn-primary btn-sm">Learn more</a>
+                                        <a href="<?= site_url('/view-loan-application/'.$app->loan_app_id) ?>" class="btn btn-primary btn-sm">Learn more</a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
