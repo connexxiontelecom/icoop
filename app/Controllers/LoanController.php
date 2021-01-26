@@ -1,6 +1,7 @@
 <?php namespace App\Controllers;
 use App\Models\LoanApplicationModel; 
 use \App\Models\Cooperators;
+use \App\Models\UserModel;
 use \App\Models\LoanModel;
 use \App\Models\LoanSetupModel;
 use \App\Models\CoopBankModel;
@@ -19,6 +20,7 @@ class LoanController extends BaseController
         $this->schedulemaster = new ScheduleMasterModel();
         $this->schedulemasterdetail = new ScheduleMasterDetailModel();
         $this->loan = new LoanModel();
+        $this->user = new UserModel();
         $this->session = session();
     }
 
@@ -26,7 +28,7 @@ class LoanController extends BaseController
 	{
         $data = [];
         $data = [
-            'loan_types'=>$this->loansetup->findAll()
+            'loan_types'=>$this->loansetup->where('status',1)->findAll()
         ];
         $username = $this->session->user_username;
         $this->authenticate_user($username, 'pages/loan/new', $data);
@@ -38,6 +40,13 @@ class LoanController extends BaseController
         $data = [
             'cooperator'=>$cooperator,
             'savings'=>$savings
+        ];
+        return json_encode($data);
+    }
+    public function getGuarantor($id){
+        $cooperator = $this->coop->where('cooperator_staff_id', $id)->first();
+        $data = [
+            'cooperator'=>$cooperator
         ];
         return json_encode($data);
     }
@@ -136,7 +145,7 @@ class LoanController extends BaseController
     public function verifyLoanApplication(){
         helper(['form']);
         $data = [];
-
+        $username = $this->session->user_username;
         if($_POST){
             $rules = [
                 'application_id'=>[
@@ -150,7 +159,9 @@ class LoanController extends BaseController
             if($this->validate($rules)){
 					$data = [
                         'verify_comment'=>$this->request->getVar('comment'),
-                        'verify'=>1
+                        'verify'=>1,
+                        'verify_date'=>date('y-m-d H:i:s'),
+                        'verified_by'=> $this->user->where('email', $username)->first()['user_id'],
 					];
                     $this->loanapp->update($this->request->getVar('application_id'), $data);
             $alert = array(
@@ -168,7 +179,6 @@ class LoanController extends BaseController
     public function showApproveApplications()
 	{
         $data = [];
-        //->where('verify',1)->where('approve',0)->findAll()
         $data = [
             'applications'=>$this->loanapp->getLoanApproval(),
         ];
@@ -179,6 +189,7 @@ class LoanController extends BaseController
     public function approveLoanApplication(){
         helper(['form']);
         $data = [];
+        $username = $this->session->user_username;
         if($_POST){
             $rules = [
                 'application_id'=>[
@@ -193,7 +204,7 @@ class LoanController extends BaseController
 					$data = [
                         'approve_comment'=>$this->request->getVar('comment'),
                         'approve'=>1,
-                        'approve_by'=>1,
+                        'approved_by'=> $this->user->where('email', $username)->first()['user_id'],
                         'approve_date'=>date('Y-m-d H:i:s'),
 
                     ];
@@ -206,9 +217,10 @@ class LoanController extends BaseController
                         'amount'=>$application['amount'],
                         'interest'=>$this->request->getVar('interest'),
                         'interest_rate'=>$this->request->getVar('interest_rate'),
-                        'amount'=>$this->request->getVar('principal_amount'),
+                        //'amount'=>$this->request->getVar('principal_amount'),
                         'created_at'=>date('Y-m-d H:i:s'),
                         'disburse'=>0,
+                        'scheduled'=>0,
                         'loan_type'=>$this->request->getVar('loan_type'),
                     ];
                     $this->loan->save($loanData);
@@ -251,7 +263,6 @@ class LoanController extends BaseController
     public function newPaymentSchedule(){
         helper(['form']);
         $data = [];
-        
         if($_POST){
             $rules = [
                 'payable_date'=>[
@@ -287,6 +298,8 @@ class LoanController extends BaseController
                                 'schedule_master_id'=>$id
                             ];
                             $this->schedulemasterdetail->save($detail);
+                            //$loan = $this->loan->where('loan_id', $this->request->getVar('loan_id'))->first()['loan_id'];
+                            $this->loan->update($this->request->getVar('loan_id'), ['scheduled'=>1]);
                         }
                     }
             
@@ -313,12 +326,80 @@ class LoanController extends BaseController
     }
 
     public function showPaymentScheduleDetail($id){
-        $data = [
-            'schedule'=>$this->schedulemaster->getSchedulePaymentDetail($id)
-        ];
-        
-        //$schedule = $this->schedulemaster->getSchedulePaymentDetail($id);
-        $username = $this->session->user_username;
-        $this->authenticate_user($username, 'pages/loan/view-payment-schedule', $data);
+        $content = $this->schedulemaster->getSchedulePaymentDetail($id);
+        if(!empty($content)){
+            $data = [
+                'schedule'=>$content
+            ];
+            $username = $this->session->user_username;
+            $this->authenticate_user($username, 'pages/loan/view-payment-schedule', $data);
+
+        }else{
+           return redirect()->to('/loan/payment-schedules');  
+        }
     }
+
+
+    public function showLoandPayables(){
+        $data = [
+            'payables'=>$this->loan->getPayables(),
+        ];
+       
+        $username = $this->session->user_username;
+        $this->authenticate_user($username, 'pages/loan/payables', $data);
+    }
+
+    public function loanPayableAction(){
+        helper(['form']);
+        $data = [];
+        if($_POST){
+            $rules = [
+                'loan'=>[
+                    'rules'=>'required',
+                    'label'=>'Loan',
+                    'errors'=>[
+                        'required'=>'Loan is required'
+                    ]
+				],
+                'hidden_action'=>[
+                    'rules'=>'required',
+                    'label'=>'Action name',
+                    'errors'=>[
+                        'required'=>'Action name is required'
+                    ]
+				],
+            ];
+            if($this->request->getVar('hidden_action') == 'approve'){
+                $this->loan->update($this->request->getVar('loan'), ['disburse'=>1]);
+                $alert = array(
+                        'msg' => 'Success! Loan disbursed',
+                        'type' => 'success',
+                        'location' => site_url('/loan/payables')
+                    );
+                    return view('pages/sweet-alert', $alert);
+            }else{
+                $this->loan->update($this->request->getVar('loan'), ['disburse'=>0]);
+                $alert = array(
+                        'msg' => 'Success! Loan declined.',
+                        'type' => 'success',
+                        'location' => site_url('/loan/payables')
+                    );
+                    return view('pages/sweet-alert', $alert);
+            }
+        }
+    }
+
+   /*  public function showPayableDetail($id){
+        $content = $this->schedulemaster->getPayableDetails($id);
+        if(!empty($content)){
+            $data = [
+                'detail'=>$content
+            ];
+            $username = $this->session->user_username;
+            $this->authenticate_user($username, 'pages/loan/view-payment-schedule', $data);
+
+        }else{
+           return redirect()->to('/loan/payment-schedules');  
+        }
+    } */
 }

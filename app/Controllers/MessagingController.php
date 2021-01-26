@@ -83,7 +83,42 @@ class MessagingController extends BaseController
                         'sent_by'=>1,
 					];
                     $this->mail->save($data);
-            
+                    #send email
+                    $this->email->setFrom('info@laukamz.com', 'laukamz');
+                    $this->email->setTo('talktojoegee@gmail.com');
+                    //            $this->email->setCC('another@another-example.com');
+                    //            $this->email->setBCC('them@their-example.com');
+                    $this->email->setSubject($this->request->getVar('subject'));
+                    $this->email->setMailType('html');
+
+                    //$booking = $this->booking->where(['booking_reg_id' => $_POST['reg_id']])->first();
+                    //$location = $this->location->where(['location_id' => $booking['booking_location_id']])->first();
+
+
+                    /* $data['location'] = $location['location_name'];
+                    $data['date'] = $booking['booking_date'];
+                    $data['name'] = $r['reg_last_name']." ".$r['reg_first_name'];
+                    $data['time'] = $booking['booking_time'];
+                    $data['serial_number'] = $booking['booking_serial_number'];
+
+                    $serial_number = $booking['booking_serial_number'];
+                    if($serial_number == null){
+
+                        $serial_number = time();
+                    }
+                    $location_name = $location['location_name'];
+                    $booking_date = $booking['booking_date'];
+                    $booking_time = $booking['booking_time']; */
+
+                    $data = [
+                        'message'=>'Email body goes here'
+                    ];
+
+                    $body =  view('pages/email/email-campaign', $data);
+                    $this->email->setMessage($body);
+                    $this->email->send();
+
+                    #end email send
                     $alert = array(
                         'msg' => 'Success! Mail sent.',
                         'type' => 'success',

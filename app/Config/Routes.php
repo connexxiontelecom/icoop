@@ -109,6 +109,7 @@ $routes->post('approve_application/(:num)', 'Cooperators::approve_application_/$
 $routes->get('/loan/new', 'LoanController::showLoanApplicationForm');
 $routes->post('/loan/new', 'LoanController::storeLoanApplication');
 $routes->get('/get-cooperator/(:num)', 'LoanController::getCooperator/$1');
+$routes->get('/get-guarantor/(:num)', 'LoanController::getGuarantor/$1');
 $routes->get('/loan/verify', 'LoanController::showVerifyApplications');
 $routes->post('/loan/verify', 'LoanController::verifyLoanApplication');
 $routes->get('/get-loan-type/(:num)', 'LoanController::getLoanType/$1');
@@ -119,6 +120,10 @@ $routes->get('/loan/new-payment-schedule', 'LoanController::showPaymentSchedule'
 $routes->post('/loan/new-payment-schedule', 'LoanController::newPaymentSchedule');
 $routes->get('/loan/payment-schedules', 'LoanController::showPaymentSchedules');
 $routes->get('/loan/payment-schedule/(:num)', 'LoanController::showPaymentScheduleDetail/$1');
+$routes->get('/loan/payables', 'LoanController::showLoandPayables'); 
+$routes->post('/loan/payable-action', 'LoanController::loanPayableAction');
+
+
 
 #Messaging routes
 $routes->get('/messaging/compose-email', 'MessagingController::showComposeEmailView');

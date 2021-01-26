@@ -267,7 +267,7 @@
                                     </ul>
                                 </li>
                                 
-                                <li><a href="#"><i class="icon-list"></i><span>Payables</span></a></li>
+                                <li><a href="<?= site_url('/loan/payables') ?>"><i class="icon-list"></i><span>Payables</span></a></li>
                                 <li><a href="#"><i class="icon-list"></i><span>Receivables</span></a></li>
                                 <li>
                                     <a href="javascript:void(0);" class="has-arrow"><i class="icon-lock"></i><span>Messaging</span></a>

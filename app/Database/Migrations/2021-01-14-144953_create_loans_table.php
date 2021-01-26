@@ -50,6 +50,12 @@ class CreateLoansTable extends Migration
 					'null'=>true,
 					'comment'=>'0=no, 1=yes'
 				],
+				'scheduled' =>[
+					'type' => 'INT',
+					'default'=>0,
+					'null'=>true,
+					'comment'=>'0=not scheduled, 1=scheduled'
+				],
 				'created_at'=>[
 					'type'=>'DATETIME',
 					'null'=>true

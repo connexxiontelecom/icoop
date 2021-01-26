@@ -27,6 +27,15 @@ class ScheduleMasterModel extends Model{
         $builder->where('schedule_masters.schedule_master_id = '.$id);
         return $builder->get()->getRowObject();
     }
+/*     public function getPayableDetails($id){
+        $builder = $this->db->table('schedule_masters');
+        $builder->join('banks', 'banks.bank_id = schedule_masters.bank_id');
+        $builder->join('schedule_master_details', 'schedule_master_details.schedule_master_id = schedule_masters.schedule_master_id');
+        $builder->join('cooperators', 'cooperators.cooperator_staff_id = schedule_master_details.coop_id');
+        $builder->join('coop_banks', 'coop_banks.bank_id = banks.bank_id');
+        $builder->where('schedule_masters.schedule_master_id = '.$id);
+        return $builder->get()->getRowObject();
+    } */
 
 }
 

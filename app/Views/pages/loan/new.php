@@ -171,7 +171,7 @@
                if($(this).val() != ''){
                 $.ajax({
                     type: "GET",
-                    url: '/get-cooperator/'+$(this).val(),
+                    url: '/get-guarantor/'+$(this).val(),
                     cache: false,
                     success: function(html){
                         var handler = $.parseJSON(html);
@@ -179,7 +179,7 @@
                             $('#guarantor_badge_1').val('');
                         }else{
                             $('#guarantor_wrapper_1').show();
-                            $('#guarantor_badge_1').html(handler.cooperator_first_name+" "+handler.cooperator_last_name);
+                            $('#guarantor_badge_1').html(handler.cooperator.cooperator_first_name+" "+handler.cooperator.cooperator_last_name);
                         }
                     }
                     });
@@ -190,7 +190,7 @@
                if($(this).val() != ''){
                 $.ajax({
                     type: "GET",
-                    url: '/get-cooperator/'+$(this).val(),
+                    url: '/get-guarantor/'+$(this).val(),
                     cache: false,
                     success: function(html){
                         var handler = $.parseJSON(html);
@@ -198,7 +198,7 @@
                             $('#guarantor_badge_2').val('');
                         }else{
                             $('#guarantor_wrapper_2').show();
-                            $('#guarantor_badge_2').html(handler.cooperator_first_name+" "+handler.cooperator_last_name);
+                            $('#guarantor_badge_2').html(handler.cooperator.cooperator_first_name+" "+handler.cooperator.cooperator_last_name);
                         }
                     }
                     });

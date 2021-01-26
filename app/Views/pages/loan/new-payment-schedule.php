@@ -72,6 +72,7 @@ New Payment Schedule
                                                                 </th>
                                                                 <td><?= $loan->staff_id ?>
                                                                     <input type="hidden" name="coop_id[]" value="<?= $loan->staff_id ?>">
+                                                                    <input type="hidden" name="loan_id[]" value="<?= $loan->loan_id ?>">
                                                                 </td>
                                                                 <td><?= $loan->cooperator_first_name ?? '' ?> <?= $loan->cooperator_last_name ?? '' ?></td>
                                                                 <td>
