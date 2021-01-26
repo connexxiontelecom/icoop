@@ -12,9 +12,10 @@
 
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <!-- VENDOR CSS -->
-    <link rel="stylesheet" href="<?php echo site_url() ?>assets/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?php echo site_url() ?>assets/vendor/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="<?php echo site_url() ?>assets/vendor/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="<?php echo site_url() ?>assets/vendor/animate-css/vivify.min.css">
+    <link rel="stylesheet" href="<?php echo site_url() ?>assets/vendor/jquery-datatable/dataTables.bootstrap4.min.css">
 
     <link rel="stylesheet" href="<?php echo site_url() ?>assets/vendor/c3/c3.min.css"/>
     <link rel="stylesheet" href="<?php echo site_url() ?>assets/vendor/chartist/css/chartist.min.css">
@@ -24,3 +25,16 @@
     <link rel="stylesheet" href="<?php echo site_url() ?>assets/css/site.min.css">
     <?= $this->renderSection('extra-styles') ?>
 </head>
+
+<style>
+
+   .simpletable thead {
+
+    }
+
+   thead th, tfoot th {
+       /*font-family: 'Calibri bolder', sans-serif;*/
+       /*font-weight: 10000;*/
+       font: small-caps bolder 16px/40px Calibri, sans-serif;
+   }
+    </style>

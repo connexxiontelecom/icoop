@@ -30,7 +30,8 @@ Approve Applications
             </div>
             <div class="body">
                 <div class="table-responsive">
-                    <table class="table table-hover js-basic-example dataTable simpletable table-custom spacing5">
+<!--                    <table class="table table-hover js-basic-example dataTable simpletable table-custom spacing5">-->
+                    <table class="simpletable table table-striped table-hover dataTable js-exportable">
                         <thead>
                         <tr>
                             <th>#</th>
@@ -81,54 +82,16 @@ Approve Applications
 <script src="assets/vendor/dropify/js/dropify.js"></script>
 <script src="assets/js/common.js"></script>
 
-<script src="assets/bundles/datatablescripts.bundle.js"></script>
-<script src="assets/vendor/jquery-datatable/buttons/dataTables.buttons.min.js"></script>
-<script src="assets/vendor/jquery-datatable/buttons/buttons.bootstrap4.min.js"></script>
-<script src="assets/vendor/jquery-datatable/buttons/buttons.colVis.min.js"></script>
-<script src="assets/vendor/jquery-datatable/buttons/buttons.html5.min.js"></script>
-<script src="assets/vendor/jquery-datatable/buttons/buttons.print.min.js"></script>
+<!--<script src="assets/bundles/datatablescripts.bundle.js"></script>-->
+<!--<script src="assets/vendor/jquery-datatable/buttons/dataTables.buttons.min.js"></script>-->
+<!--<script src="assets/vendor/jquery-datatable/buttons/buttons.bootstrap4.min.js"></script>-->
+<!--<script src="assets/vendor/jquery-datatable/buttons/buttons.colVis.min.js"></script>-->
+<!--<script src="assets/vendor/jquery-datatable/buttons/buttons.html5.min.js"></script>-->
+<!--<script src="assets/vendor/jquery-datatable/buttons/buttons.print.min.js"></script>-->
 <script>
     $(document).ready(function(){
         $('.simpletable').DataTable();
 
-        $('.error-wrapper').hide();
-        addNewStateForm.onsubmit = async (e) => {
-            e.preventDefault();
-
-            axios.post('/add-new-state',new FormData(addNewStateForm))
-                .then(response=>{
-                    Toastify({
-                        text: "Success! New state saved.",
-                        duration: 3000,
-                        newWindow: true,
-                        close: true,
-                        gravity: "top",
-                        position: 'right',
-                        backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-                        stopOnFocus: true,
-                        onClick: function(){}
-                    }).showToast();
-                    $("#stateTable").load(location.href + " #stateTable");
-                    $('#state_name').val('');
-                })
-                .catch(error=>{
-                    //$('#validation-errors').html('');
-                    $.each(error.response.data.errors, function(key, value){
-                        Toastify({
-                            text: 'Error',
-                            duration: 3000,
-                            newWindow: true,
-                            close: true,
-                            gravity: "top",
-                            position: 'right',
-                            backgroundColor: "linear-gradient(to right, #FF0000, #FE0000)",
-                            stopOnFocus: true,
-                            onClick: function(){}
-                        }).showToast();
-                        //$('#validation-errors').append("<li><i class='ti-hand-point-right text-danger mr-2'></i><small class='text-danger'>"+value+"</small></li>");
-                    });
-                });
-        };
     });
 </script>
 <?= $this->endSection() ?>

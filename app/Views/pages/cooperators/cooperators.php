@@ -30,10 +30,10 @@ Cooperators
             </div>
             <div class="body">
                 <div class="table-responsive">
-                    <table class="table table-hover js-basic-example dataTable simpletable table-custom spacing5">
+                    <table class="simpletable table table-striped table-hover dataTable js-exportable">
                         <thead>
                         <tr>
-                            <th>#</th>
+                            <th style="font-weight: bolder">#</th>
                             <th>Staff ID</th>
                             <th>Name</th>
                             <th>Department</th>
@@ -85,5 +85,10 @@ Cooperators
 <script src="assets/vendor/jquery-datatable/buttons/buttons.colVis.min.js"></script>
 <script src="assets/vendor/jquery-datatable/buttons/buttons.html5.min.js"></script>
 <script src="assets/vendor/jquery-datatable/buttons/buttons.print.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('.simpletable').DataTable();
 
+    });
+</script>
 <?= $this->endSection() ?>

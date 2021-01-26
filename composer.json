@@ -7,8 +7,9 @@
 	"require": {
 		"php": ">=7.2",
 		"codeigniter4/framework": "^4",
-		"phpoffice/phpspreadsheet": "^1.16"
-	},
+		"phpoffice/phpspreadsheet": "^1.16",
+      "ext-json": "*"
+    },
 	"require-dev": {
 		"fzaninotto/faker": "^1.9@dev",
 		"mikey179/vfsstream": "1.6.*",
