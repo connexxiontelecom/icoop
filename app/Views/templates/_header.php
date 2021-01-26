@@ -20,6 +20,9 @@
     <link rel="stylesheet" href="<?php echo site_url() ?>assets/vendor/c3/c3.min.css"/>
     <link rel="stylesheet" href="<?php echo site_url() ?>assets/vendor/chartist/css/chartist.min.css">
     <link rel="stylesheet" href="<?php echo site_url() ?>assets/vendor/chartist-plugin-tooltip/chartist-plugin-tooltip.css">
+    <link href="<?php echo site_url();?>assets/third-party/jquery-ui/themes/smoothness/theme.css" rel="stylesheet" type="text/css"/>
+    <link href="<?php echo site_url();?>assets/third-party/themes/smoothness/jquery-min.css" rel="stylesheet" type="text/css"/>
+    <link href="<?php echo site_url();?>assets/js/jquery-ui.css" rel="stylesheet" type="text/css"/>
 
     <!-- MAIN CSS -->
     <link rel="stylesheet" href="<?php echo site_url() ?>assets/css/site.min.css">

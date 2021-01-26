@@ -57,5 +57,13 @@ class Cooperators extends \CodeIgniter\Model
         return $builder->get()->getResultObject();
     }
 
+   public function search_cooperators($value){
+       $builder = $this->db->table('cooperators');
+
+        $builder->like('cooperator_staff_id', $value);
+        $builder->orLike('cooperator_first_name', $value);
+        $builder->orLike('cooperator_last_name', $value);
+       return $builder->get()->getResultObject();
+    }
 
 }

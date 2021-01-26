@@ -132,6 +132,13 @@ $routes->get('/messaging/mails', 'MessagingController::showMails');
 $routes->get('/messaging/open-mail/(:num)', 'MessagingController::openMail/$1');
 $routes->get('/messaging/bulk-sms', 'MessagingController::showBulkSms');
 $routes->post('/messaging/bulk-sms', 'MessagingController::sendBulkSms');
+
+##WIthdraw Routes
+$routes->get('new_withdraw', 'Withdraw::new_withdraw');
+$routes->get('search_cooperator', 'Withdraw::search_cooperator');
+$routes->post('compute_balance', 'Withdraw:compute_balance');
+$routes->get('compute_balance', 'Withdraw:compute_balance');
+
 /**
  * --------------------------------------------------------------------
  * Additional Routing
