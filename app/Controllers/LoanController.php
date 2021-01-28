@@ -344,7 +344,6 @@ class LoanController extends BaseController
         $data = [
             'payables'=>$this->loan->getPayables(),
         ];
-       
         $username = $this->session->user_username;
         $this->authenticate_user($username, 'pages/loan/payables', $data);
     }
