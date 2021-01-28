@@ -168,4 +168,269 @@ class Withdraw extends BaseController
         echo json_encode($data);
     }
 
+    public function verify_withdrawal(){
+
+        $method = $this->request->getMethod();
+
+        if($method == 'get'):
+
+            $new_withdraw_array = array();
+            $wits = $this->withdraw->get_pending_withdrawals();
+            $i = 0;
+            foreach ($wits as $wit):
+
+                $bf = 0;
+
+                $ledgers =  $this->pd->where(['pd_staff_id' => $wit['withdraw_staff_id'], 'pd_ct_id' => $wit['withdraw_ct_id']])
+//                        ->orderBy('pd_transaction_date', 'DESC')
+                    ->findAll();
+                foreach ($ledgers as $ledger):
+                    if($ledger['pd_drcrtype'] == 2):
+                        $dr = $ledger['pd_amount'];
+                        $cr = 0;
+
+                    endif;
+                    if($ledger['pd_drcrtype'] == 1):
+                        $cr = $ledger['pd_amount'];
+                        $dr = 0;
+                    endif;
+
+                    $bf = ($bf + $cr) - $dr;
+                endforeach;
+
+                $update_array[$i] = array(
+                    'balance' => $bf,
+                );
+
+                $new_withdraw_array[$i] = $wit + $update_array[$i];
+                $i++;
+            endforeach;
+
+            $data['withdrawals'] = $new_withdraw_array;
+           // print_r($data['withdrawals']);
+            $username = $this->session->user_username;
+            $this->authenticate_user($username, 'pages/withdraw/verify_withdrawal', $data);
+
+        endif;
+
+        if($method == 'post'):
+
+            $withdraw_status = $_POST['withdraw_status'];
+
+            if($withdraw_status == 1):
+
+             $_POST['withdraw_verify_date'] = date('Y-m-d');
+            $_POST['withdraw_verify_by']  = $this->session->user_first_name." ".$this->session->user_last_name;
+
+            $v = $this->withdraw->save($_POST);
+
+                if($v):
+
+                    $data = array(
+                        'msg' => 'Action Successful',
+                        'type' => 'success',
+                        'location' => base_url('verify_withdrawal')
+
+                    );
+                    return view('pages/sweet-alert', $data);
+
+                else:
+                    $data = array(
+                        'msg' => 'An Error Occurred',
+                        'type' => 'error',
+                        'location' => base_url('verify_withdrawal')
+
+                    );
+                    return view('pages/sweet-alert', $data);
+
+
+                endif;
+
+
+            endif;
+            if($withdraw_status == 3):
+
+                $_POST['withdraw_discarded_date'] = date('Y-m-d');
+                $_POST['withdraw_discarded_by']  = $this->session->user_first_name." ".$this->session->user_last_name;
+
+                $v = $this->withdraw->save($_POST);
+
+                if($v):
+
+                    $data = array(
+                        'msg' => 'Action Successful',
+                        'type' => 'success',
+                        'location' => base_url('verify_withdrawal')
+
+                    );
+                    return view('pages/sweet-alert', $data);
+
+                else:
+                    $data = array(
+                        'msg' => 'An Error Occurred',
+                        'type' => 'error',
+                        'location' => base_url('verify_withdrawal')
+
+                    );
+                    return view('pages/sweet-alert', $data);
+
+
+                endif;
+
+
+            endif;
+
+
+
+
+        endif;
+    }
+
+    public function approve_withdrawal(){
+
+        $method = $this->request->getMethod();
+
+        if($method == 'get'):
+
+            $new_withdraw_array = array();
+            $wits = $this->withdraw->get_verified_withdrawals();
+            $i = 0;
+            foreach ($wits as $wit):
+
+                $bf = 0;
+
+                $ledgers =  $this->pd->where(['pd_staff_id' => $wit['withdraw_staff_id'], 'pd_ct_id' => $wit['withdraw_ct_id']])
+//                        ->orderBy('pd_transaction_date', 'DESC')
+                    ->findAll();
+                foreach ($ledgers as $ledger):
+                    if($ledger['pd_drcrtype'] == 2):
+                        $dr = $ledger['pd_amount'];
+                        $cr = 0;
+
+                    endif;
+                    if($ledger['pd_drcrtype'] == 1):
+                        $cr = $ledger['pd_amount'];
+                        $dr = 0;
+                    endif;
+
+                    $bf = ($bf + $cr) - $dr;
+                endforeach;
+
+                $update_array[$i] = array(
+                    'balance' => $bf,
+                );
+
+                $new_withdraw_array[$i] = $wit + $update_array[$i];
+                $i++;
+            endforeach;
+
+            $data['withdrawals'] = $new_withdraw_array;
+            // print_r($data['withdrawals']);
+            $username = $this->session->user_username;
+            $this->authenticate_user($username, 'pages/withdraw/approve_withdrawal', $data);
+
+        endif;
+
+        if($method == 'post'):
+
+            $withdraw_status = $_POST['withdraw_status'];
+
+            if($withdraw_status == 2):
+
+                $_POST['withdraw_approved_date'] = date('Y-m-d');
+                $_POST['withdraw_approved_by']  = $this->session->user_first_name." ".$this->session->user_last_name;
+
+                $v = $this->withdraw->save($_POST);
+
+                if($v):
+
+                        $temp_payment = $this->withdraw->where(['withdraw_id' => $_POST['withdraw_id']])->first();
+                    $coop = $this->cooperator->where(['cooperator_staff_id' =>$temp_payment['withdraw_staff_id'] ])->first();
+                    $payment_details_array = array(
+                        'pd_staff_id' => $temp_payment['withdraw_staff_id'],
+                        'pd_transaction_date' => $temp_payment['withdraw_date'],
+                        'pd_narration' => $temp_payment['withdraw_narration'],
+                        'pd_amount' => $temp_payment['withdraw_amount'],
+                        'pd_drcrtype' => 2,
+                        'pd_ct_id' => $temp_payment['withdraw_ct_id'],
+                        'pd_pg_id' => $coop['cooperator_payroll_group_id'],
+                        'pd_ref_code' => time(),
+                    );
+
+
+                    $v =   $this->pd->save($payment_details_array);
+
+                    if($v):
+                        $data = array(
+                            'msg' => 'Action Successful',
+                            'type' => 'success',
+                            'location' => base_url('approve_withdrawal')
+
+                        );
+                        return view('pages/sweet-alert', $data);
+                    else:
+                        $data = array(
+                            'msg' => 'An Error Occurred',
+                            'type' => 'error',
+                            'location' => base_url('approve_withdrawal')
+
+                        );
+                        return view('pages/sweet-alert', $data);
+
+
+                    endif;
+
+
+                else:
+                    $data = array(
+                        'msg' => 'An Error Occurred',
+                        'type' => 'error',
+                        'location' => base_url('approve_withdrawal')
+
+                    );
+                    return view('pages/sweet-alert', $data);
+
+
+                endif;
+
+
+            endif;
+            if($withdraw_status == 3):
+
+                $_POST['withdraw_discarded_date'] = date('Y-m-d');
+                $_POST['withdraw_discarded_by']  = $this->session->user_first_name." ".$this->session->user_last_name;
+
+                $v = $this->withdraw->save($_POST);
+
+                if($v):
+
+                    $data = array(
+                        'msg' => 'Action Successful',
+                        'type' => 'success',
+                        'location' => base_url('approve_withdrawal')
+
+                    );
+                    return view('pages/sweet-alert', $data);
+
+                else:
+                    $data = array(
+                        'msg' => 'An Error Occurred',
+                        'type' => 'error',
+                        'location' => base_url('approve_withdrawal')
+
+                    );
+                    return view('pages/sweet-alert', $data);
+
+
+                endif;
+
+
+            endif;
+
+
+
+
+        endif;
+    }
+
 }

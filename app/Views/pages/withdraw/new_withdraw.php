@@ -146,14 +146,14 @@ New Withdrawal
                 if(withdraw_amount <= withdraw_balance){
                     $('#withdraw_submit').show();
                     $('#withdraw_warning').hide();
-                    console.log(withdraw_balance+" ,,,"+withdraw_amount )
+
                    // alert(withdraw_balance);
                 }
 
                 if(withdraw_amount > withdraw_balance){
                     $('#withdraw_submit').hide();
                     $('#withdraw_warning').show();
-                    console.log(withdraw_balance+" ,,,"+withdraw_amount )
+
                     //alert(withdraw_balance);
                 }
             });
