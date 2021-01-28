@@ -233,7 +233,7 @@ class Cooperators extends BaseController
 
         public function verify_application(){
 
-           $data['applications'] = $this->application->get_pending_verification();
+           $data['applications'] = $this->application->get_pending_verifications();
 
             $username = $this->session->user_username;
            // print_r($data['applications']);

@@ -32,7 +32,7 @@
 
             </div>
             <div class="body wizard_validation">
-                <form id="wizard_with_validation" method="POST">
+                <form id="wizard_with_validation" method="POST" data-persist="garlic">
                     <h3>Personal Information</h3>
                     <fieldset>
                         <div class="row clearfix">
@@ -279,7 +279,7 @@
 
                                         <div class="input-group input-group-sm mb-3">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" id="inputGroup-sizing-sm">Staff ID:</span>
+                                                <span class="input-group-text" id="inputGroup-sizing-sm" style="width: 120px;">Staff ID:</span>
                                             </div>
                                             <input type="text"   id="application_staff_ida" disabled class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                                         </div>

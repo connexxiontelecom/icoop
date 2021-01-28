@@ -231,7 +231,11 @@
 
                                     </ul>
                                 </li>
-                                <li><a href="#"><i class="icon-bag"></i><span>Savings</span></a></li>
+                                <li><a href="#" class="has-arrow"><i class="icon-bag"></i><span>Savings</span></a>
+                                <ul>
+                                    <li><a href="<?=base_url('new_withdraw') ?>">New Withdraw</a></li>
+                                </ul>
+                                </li>
                                 <li>
                                     <a href="#" class="has-arrow"><i class="fa fa-money"></i><span>Loans</span></a>
                                     <ul>
