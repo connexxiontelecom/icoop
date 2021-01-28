@@ -138,9 +138,13 @@ $routes->get('new_withdraw', 'Withdraw::new_withdraw');
 $routes->post('new_withdraw', 'Withdraw::new_withdraw');
 $routes->get('search_cooperator', 'Withdraw::search_cooperator');
 $routes->post('compute_balance', 'Withdraw::compute_balance');
-//$routes->get('compute_balance', 'Withdraw::compute_balance');
 $routes->post('get_ct', 'Withdraw::get_ct');
-//$routes->get('compute_balance', 'Withdraw::compute_balance');
+$routes->post('verify_withdrawal', 'Withdraw::verify_withdrawal');
+$routes->get('verify_withdrawal', 'Withdraw::verify_withdrawal');
+$routes->post('approve_withdrawal', 'Withdraw::approve_withdrawal');
+$routes->get('approve_withdrawal', 'Withdraw::approve_withdrawal');
+
+
 
 /**
  * --------------------------------------------------------------------

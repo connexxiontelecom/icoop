@@ -234,6 +234,8 @@
                                 <li><a href="#" class="has-arrow"><i class="icon-bag"></i><span>Savings</span></a>
                                 <ul>
                                     <li><a href="<?=base_url('new_withdraw') ?>">New Withdraw</a></li>
+                                    <li><a href="<?=base_url('verify_withdrawal') ?>">Verify Withdrawal</a></li>
+                                    <li><a href="<?=base_url('approve_withdrawal') ?>">Approve Withdrawal</a></li>
                                 </ul>
                                 </li>
                                 <li>
