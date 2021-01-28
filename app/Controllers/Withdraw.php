@@ -75,16 +75,27 @@ class Withdraw extends BaseController
 
                  $bf = ($bf + $cr) - $dr;
            endforeach;
-          $data = "Balance for Selected Contribution Type is:".$bf;
+          $data = "Balance for Selected Contribution Type is: NGN".number_format($bf);
         echo json_encode($data);
 
         else:
-            $data = "Balance for Selected Contribution Type is:".$bf;
+            $data = "Balance for Selected Contribution Type is:".number_format($bf);
             echo json_encode($data);
             endif;
 
 
 
+    }
+
+    public function get_ct(){
+        $staff_id = $_POST['staff_id'];
+        $ledgers = $this->pd->get_payment_staff_id($staff_id);
+        $i = 0;
+        foreach ($ledgers as $ledger):
+            $data[$i] = $this->contribution_type->where(['contribution_type_id' => $ledger->pd_ct_id])->first();
+            $i++;
+        endforeach;
+        echo json_encode($data);
     }
 
 }

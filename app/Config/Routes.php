@@ -135,9 +135,12 @@ $routes->post('/messaging/bulk-sms', 'MessagingController::sendBulkSms');
 
 ##WIthdraw Routes
 $routes->get('new_withdraw', 'Withdraw::new_withdraw');
+$routes->post('new_withdraw', 'Withdraw::new_withdraw');
 $routes->get('search_cooperator', 'Withdraw::search_cooperator');
-$routes->post('compute_balance', 'Withdraw:compute_balance');
-$routes->get('compute_balance', 'Withdraw:compute_balance');
+$routes->post('compute_balance', 'Withdraw::compute_balance');
+//$routes->get('compute_balance', 'Withdraw::compute_balance');
+$routes->post('get_ct', 'Withdraw::get_ct');
+//$routes->get('compute_balance', 'Withdraw::compute_balance');
 
 /**
  * --------------------------------------------------------------------
