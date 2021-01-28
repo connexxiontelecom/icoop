@@ -140,17 +140,21 @@ New Withdrawal
             });
 
             $("#withdraw_amount").keyup(function () {
-                let withdraw_amount = $(this).val();
-                let withdraw_balance = $('#withdraw_balance').val();
+                let withdraw_amount = parseFloat($(this).val());
+                let withdraw_balance = parseFloat($('#withdraw_balance').val());
                 // alert(withdraw_balance);
-                if(withdraw_amount < withdraw_balance){
+                if(withdraw_amount <= withdraw_balance){
                     $('#withdraw_submit').show();
                     $('#withdraw_warning').hide();
+                    console.log(withdraw_balance+" ,,,"+withdraw_amount )
+                   // alert(withdraw_balance);
                 }
 
                 if(withdraw_amount > withdraw_balance){
                     $('#withdraw_submit').hide();
                     $('#withdraw_warning').show();
+                    console.log(withdraw_balance+" ,,,"+withdraw_amount )
+                    //alert(withdraw_balance);
                 }
             });
         });
