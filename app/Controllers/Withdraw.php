@@ -26,10 +26,27 @@ class Withdraw extends BaseController
     }
 
     public function new_withdraw(){
+        $method = $this->request->getMethod();
 
-        $data['cts'] = $this->contribution_type->findAll();
-        $username = $this->session->user_username;
-        $this->authenticate_user($username, 'pages/withdraw/new_withdraw', $data);
+        if($method == 'get'):
+
+
+            $data['cts'] = $this->contribution_type->findAll();
+            $username = $this->session->user_username;
+            $this->authenticate_user($username, 'pages/withdraw/new_withdraw', $data);
+
+        endif;
+
+        if($method == 'post'):
+
+
+
+
+//            $data['cts'] = $this->contribution_type->findAll();
+//            $username = $this->session->user_username;
+//            $this->authenticate_user($username, 'pages/withdraw/new_withdraw', $data);
+
+        endif;
     }
 
     public function search_cooperator()
@@ -75,11 +92,13 @@ class Withdraw extends BaseController
 
                  $bf = ($bf + $cr) - $dr;
            endforeach;
-          $data = "Balance for Selected Contribution Type is: NGN".number_format($bf);
+          $data['note'] = "Balance for Selected Contribution Type is: NGN".number_format($bf);
+          $data['balance'] = $bf;
         echo json_encode($data);
 
         else:
-            $data = "Balance for Selected Contribution Type is:".number_format($bf);
+            $data['note'] = "Balance for Selected Contribution Type is: NGN".number_format($bf);
+            $data['balance'] = $bf;
             echo json_encode($data);
             endif;
 

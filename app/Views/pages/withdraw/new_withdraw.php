@@ -47,7 +47,7 @@ New Withdrawal
 
                                     <label  for="application_payroll_group_id"> <b> Contribution Type: </b></label>
 
-                                    <select class="custom-select" id="ct_id" required name="contribution_upload_ct" onchange="get_account_balance()">
+                                    <select class="custom-select" id="ct_id" required name="withdraw_ct_id" onchange="get_account_balance()">
                                     <option> -- Select Contribution Type --</option>
 <!--                                        --><?php //foreach ($cts as $ct): ?>
 <!--                                            <option value="--><?//=$ct['contribution_type_id'] ?><!--"> --><?//=$ct['contribution_type_name']; ?><!--</option>-->
@@ -62,20 +62,21 @@ New Withdrawal
                                 <div class="form-group">
 
                                     <label  for="application_payroll_group_id"> <b> Amount: </b></label>
-                                    <input type="text" class="form-control"  required  name="withdraw_amount" placeholder="Enter Amount">
+                                    <input type="text" class="form-control"  required  name="withdraw_amount" id="withdraw_amount" placeholder="Enter Amount">
 
-                                    <input type="hidden" name="balance" >
+
+                                    <input type="hidden" id="withdraw_balance" name="withdraw_balance" >
 
                                 </div>
                                 <div class="form-group">
                                     <label for="application_first_name"><b>Date:</b></label>
-                                    <input type="date"  class="form-control" placeholder="Date" name="contribution_upload_date" required>
+                                    <input type="date"  class="form-control" placeholder="Date" name="withdraw_date" required>
                                 </div>
 
 
                                 <div class="form-group">
                                     <label for="application_address"><b>Narration:</b></label>
-                                    <textarea name="contribution_upload_narration" id="application_address"  cols="30" rows="3" placeholder="Address *" onautocomplete="preview_form('application_address')" onkeyup="preview_form('application_address')" class="form-control no-resize" required></textarea>
+                                    <textarea name="withdraw_narration" id="withdraw_narration"  cols="30" rows="3" placeholder="Narration "  class="form-control no-resize"></textarea>
                                 </div>
 
 
@@ -83,7 +84,12 @@ New Withdrawal
 
                                 <?= csrf_field() ?>
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-info btn-block">Submit</button>
+                                    <button type="submit" id="withdraw_submit" class="btn btn-info btn-block">Submit</button>
+                                    <div class="alert alert-danger alert-dismissible" role="alert" id="withdraw_warning">
+                                        <!--                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+                                        <i class="fa fa-warning"></i> Withdraw Amount is Greater than Balance
+                                    </div>
+
                                 </div>
                             </div>
 
@@ -125,21 +131,34 @@ New Withdrawal
 
     $(document).ready(function() {
         $('#balance_warning').hide();
-
-
+        $('#withdraw_submit').hide();
+        $('#withdraw_warning').hide();
 
         $(function () {
             $("#search_account").autocomplete({
                 source: "<?php echo base_url('search_cooperator'); ?>",
             });
+
+            $("#withdraw_amount").keyup(function () {
+                let withdraw_amount = $(this).val();
+                let withdraw_balance = $('#withdraw_balance').val();
+                // alert(withdraw_balance);
+                if(withdraw_amount < withdraw_balance){
+                    $('#withdraw_submit').show();
+                    $('#withdraw_warning').hide();
+                }
+
+                if(withdraw_amount > withdraw_balance){
+                    $('#withdraw_submit').hide();
+                    $('#withdraw_warning').show();
+                }
+            });
         });
-
-
-
-
     });
+
     function get_account_balance(){
         $("#balance_warning").hide();
+        $("#withdraw_balance").val(0);
         $("#b_t").empty()
         let t_staff_id =  $("#search_account").val();
         let ct_id = $("#ct_id").val();
@@ -155,7 +174,8 @@ New Withdrawal
             dataType: 'json',
             success:function(response){
                 $("#balance_warning").show();
-                $("#b_t").append(response)
+                $("#b_t").append(response.note);
+                $("#withdraw_balance").val(response.balance);
                 console.log(response)
             }
         });
@@ -164,15 +184,12 @@ New Withdrawal
 
     function get_ct(){
         let t_staff_id =  $("#search_account").val();
-
         let staff_id = t_staff_id.split(',')[0];
-
         $.ajax({
             url: '<?php echo site_url('get_ct') ?>',
             type: 'post',
             data: {
                 'staff_id': staff_id,
-
             },
             dataType: 'json',
             success:function(response){
@@ -181,7 +198,6 @@ New Withdrawal
                 for (var i=0; i<response.length; i++) {
                     $("#ct_id").append('<option value="' + response[i].contribution_type_id + '">' + response[i].contribution_type_name + '</option>');
                 }
-
                 // console.log(response);
             }
         });
