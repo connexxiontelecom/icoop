@@ -39,6 +39,57 @@ class Withdraw extends BaseController
 
         if($method == 'post'):
 
+            $withdraw_balance = $_POST['withdraw_balance'];
+            $withdraw_amount = $_POST['withdraw_amount'];
+
+            if($withdraw_amount > $withdraw_balance):
+                $data = array(
+                    'msg' => 'Insufficient Balance',
+                    'type' => 'error',
+                    'location' => base_url('new_withdraw')
+
+                );
+
+                return view('pages/sweet-alert', $data);
+
+
+                else:
+
+                    unset($_POST['withdraw_balance']);
+                    $_POST['withdraw_status'] = 0;
+                    $withdraw_staff_id = $_POST['withdraw_staff_id'];
+                    $withdraw_staff_id = substr($withdraw_staff_id, 0, strpos($withdraw_staff_id, ','));
+                    $_POST['withdraw_staff_id'] = $withdraw_staff_id;
+                    $v =  $this->withdraw->save($_POST);
+
+                    if($v):
+
+                        $data = array(
+                            'msg' => 'Action Successful',
+                            'type' => 'success',
+                            'location' => base_url('new_withdraw')
+
+                        );
+                        return view('pages/sweet-alert', $data);
+
+                    else:
+                        $data = array(
+                            'msg' => 'An Error Occured',
+                            'type' => 'error',
+                            'location' => base_url('new_withdraw')
+
+                        );
+                        return view('pages/sweet-alert', $data);
+
+
+                    endif;
+
+                    endif;
+
+
+
+
+
 
 
 
