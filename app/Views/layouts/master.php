@@ -249,8 +249,8 @@
                                     </ul>
                                 </li>
                                 
-                                <li><a href="#"><i class="fa fa-arrow-circle-up"></i><span>Payables</span></a></li>
-                                <li><a href="#"><i class="fa fa-arrow-circle-down"></i><span>Receivables</span></a></li>
+                                <li><a href="<?= site_url('/loan/payables') ?>"><i class="icon-list"></i><span>Payables</span></a></li>
+                                <li><a href="#"><i class="icon-list"></i><span>Receivables</span></a></li>
                                 <li>
 
                                     <a href="javascript:void(0);" class="has-arrow"><i class="fa fa-university"></i><span>Financial Accounts</span></a>

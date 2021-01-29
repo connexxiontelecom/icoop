@@ -138,6 +138,7 @@
     <script>
         var duration = 0;
         var amount = 0;
+        var savings = 0;
         var guarantor = null;
         var staff = null;
         $(document).ready(function(){
@@ -157,7 +158,9 @@
                         if(html.length == 0){
                             $('#name').text('');
                         }else{
-                            $('#name').text(handler.cooperator_first_name+" "+handler.cooperator_last_name);
+                        savings = handler.savings[0].pd_amount;
+                        console.log("Savings: "+savings);
+                            $('#name').text(handler.cooperator.cooperator_first_name+" "+handler.cooperator.cooperator_last_name);
                         }
                     }
                     });
@@ -168,7 +171,7 @@
                if($(this).val() != ''){
                 $.ajax({
                     type: "GET",
-                    url: '/get-cooperator/'+$(this).val(),
+                    url: '/get-guarantor/'+$(this).val(),
                     cache: false,
                     success: function(html){
                         var handler = $.parseJSON(html);
@@ -176,7 +179,7 @@
                             $('#guarantor_badge_1').val('');
                         }else{
                             $('#guarantor_wrapper_1').show();
-                            $('#guarantor_badge_1').html(handler.cooperator_first_name+" "+handler.cooperator_last_name);
+                            $('#guarantor_badge_1').html(handler.cooperator.cooperator_first_name+" "+handler.cooperator.cooperator_last_name);
                         }
                     }
                     });
@@ -187,7 +190,7 @@
                if($(this).val() != ''){
                 $.ajax({
                     type: "GET",
-                    url: '/get-cooperator/'+$(this).val(),
+                    url: '/get-guarantor/'+$(this).val(),
                     cache: false,
                     success: function(html){
                         var handler = $.parseJSON(html);
@@ -195,7 +198,7 @@
                             $('#guarantor_badge_2').val('');
                         }else{
                             $('#guarantor_wrapper_2').show();
-                            $('#guarantor_badge_2').html(handler.cooperator_first_name+" "+handler.cooperator_last_name);
+                            $('#guarantor_badge_2').html(handler.cooperator.cooperator_first_name+" "+handler.cooperator.cooperator_last_name);
                         }
                     }
                     });
@@ -223,9 +226,9 @@
            $(document).on('blur', '#amount', function(e){
                e.preventDefault();
                var money = $(this).val();
-               if(parseInt(money.replace(/,/g, '')) > amount){
+               if(parseInt(money.replace(/,/g, '')) > amount || parseInt(money.replace(/,/g, '')) > savings){
                 Toastify({
-                    text: "Ooop! Amount must not exceed maximum credit limit for the selected loan type.",
+                    text: "Ooop! Amount must not exceed maximum credit limit for the selected loan type or your savings is not up to this amount.",
                     duration: 3000,
                     newWindow: true,
                     close: true,

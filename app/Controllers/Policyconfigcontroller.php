@@ -307,6 +307,13 @@ class Policyconfigcontroller extends BaseController
                         'required'=>'Interest method is required'
                     ]
 					],
+                'interest_charge_type'=>[
+                    'rules'=>'required',
+                    'label'=>'Interest charge type',
+                    'errors'=>[
+                        'required'=>'Interest charge type is required'
+                    ]
+					],
                 'loan_gl_account_number'=>[
                     'rules'=>'required',
                     'label'=>'Loan GL Account Number',

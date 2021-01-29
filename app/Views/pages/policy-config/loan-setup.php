@@ -89,12 +89,23 @@ Loan Setup
                             <div class="row">
                                 <div class="col-md-6 col-lg-6 col-sm-6">
                                     <div class="form-group">
-                                        <label for="">Interest Method</label>
-                                        <select name="interest_method" required id="interest_method" class="form-control">
-                                            <option disabled selected>Select interest method</option>
+                                        <label for="">Interest Charge Type</label>
+                                        <select name="interest_charge_type" required id="interest_charge_type" class="form-control">
+                                            <option disabled selected>Select interest charge type</option>
                                             <option value="1">Flat</option>
                                             <option value="2">Monthly</option>
                                             <option value="3">Yearly</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-6 col-sm-6">
+                                    <div class="form-group">
+                                        <label for="">Interest Method</label>
+                                        <select name="interest_method" required id="interest_method" class="form-control">
+                                            <option disabled selected>Select interest method</option>
+                                            <option value="1">Upfront</option>
+                                            <option value="2">Reducing Balance</option>
+                                            <option value="3">Targetted</option>
                                         </select>
                                     </div>
                                 </div>
@@ -116,7 +127,7 @@ Loan Setup
                                         <select name="status" id="status" class="form-control">
                                             <option selected disabled>Select status</option>
                                             <option value="1">Active</option>
-                                            <option value="2">Block</option>
+                                            <option value="0">Block</option>
                                         </select>
                                     </div>
                                 </div>

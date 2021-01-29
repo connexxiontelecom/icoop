@@ -59,6 +59,11 @@ class CreateLoanSetupsTable extends Migration
 				'interest_method'=>[
 					'type'=>'INT',
 					'null'=>true,
+					'comment'=>'1=Upfront, 2=Reducing balance, 3=targetted'
+				],
+				'interest_charge_type'=>[
+					'type'=>'INT',
+					'null'=>true,
 					'comment'=>'1=Flat, 2=monthly, 3=yearly'
 				],
 				'commitment'=>[
@@ -89,12 +94,14 @@ class CreateLoanSetupsTable extends Migration
 				'status'=>[
 					'type'=>'INT',
 					'null'=>true,
-					'default'=>0
+					'default'=>0,
+					'comment'=>'0=blocked, 1=active'
 				],
 				'payable'=>[
 					'type'=>'INT',
 					'null'=>true,
-					'default'=>0
+					'default'=>1,
+					'comment'=>'1=cash, 2=vendor'
 				],
 				'created_at'=>[
 					'type'=>'DATETIME',

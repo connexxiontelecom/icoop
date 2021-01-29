@@ -2,45 +2,44 @@
 
 use CodeIgniter\Database\Migration;
 
-class CreateScheduleMasterDetailsTable extends Migration
+class CreatePayableDetailsTable extends Migration
 {
 	public function up()
 	{
 		$this->db->disableForeignKeyChecks();
 		$this->forge->addField(
 			[
-				'schedule_master_detail_id' =>[
+				'payable_detail_id' =>[
 					'type' => 'INT',
 					'constraint' => 11,
 					'auto_increment' => true,
 				],
-				'coop_id' =>[
+				'payable_master_id' =>[
 					'type' => 'INT',
 					'null'=>true,
 				],
-				'amount' =>[
-					'type' => 'DOUBLE',
-					'null'=>true,
-					'default'=>0
-				],
-				'loan_type' =>[
+				'schedule_id' =>[
 					'type' => 'INT',
 					'null'=>true,
 				],
-				'loan_id' =>[
+				'app_id' =>[
 					'type' => 'INT',
 					'null'=>true,
 				],
-				'schedule_master_id' =>[
-					'type' => 'INT',
+				'payable_no'=>[
+					'type'=>'TEXT',
 					'null'=>true,
 				],
+				'type'=>[
+					'type'=>'INT',
+					'null'=>true
+				]
 
 
 			]
 		);
-		$this->forge->addKey('schedule_master_detail_id', true);
-		$this->forge->createTable('schedule_master_details');
+		$this->forge->addKey('payable_detail_id', true);
+		$this->forge->createTable('payable_details');
 	}
 
 	//--------------------------------------------------------------------
