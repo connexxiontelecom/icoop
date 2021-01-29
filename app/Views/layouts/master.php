@@ -23,79 +23,79 @@
                 <div class="navbar-left">
                     <div class="navbar-brand">
                         <a class="small_menu_btn" href="javascript:void(0);"><i class="fa fa-align-left"></i></a>
-                        <a href="index.html"><span>Qubes</span></a>
+                        <a href="<?=base_url(); ?>"><span>iCoop</span></a>
                     </div>
                 </div>
 
                 <div class="navbar-right">
                     <div id="navbar-menu">
                         <ul class="nav navbar-nav">
-                            <li><a href="#" class="icon-menu reports">Reports</a></li>
-                            <li><a href="#" class="icon-menu project">Project</a></li>
-                            <li><a href="#" class="icon-menu settings">Settings</a></li>
-                            <li class="dropdown">
-                                <a href="javascript:void(0);" class="dropdown-toggle icon-menu" data-toggle="dropdown"><i class="fa fa-envelope"></i>
-                                    <span class="notification-dot bg-green"></span>
-                                </a>
-                                <ul class="dropdown-menu right_chat email vivify fadeIn">
-                                    <li class="header">You have 4 New eMail</li>
-                                    <li>
-                                        <a href="javascript:void(0);">
-                                            <div class="media">
-                                                <div class="avtar-pic w35 lbg-indigo"><span>FC</span></div>
-                                                <div class="media-body">
-                                                    <span class="name">Folisise Chosielie <small class="float-right">12min ago</small></span>
-                                                    <span class="message">New Messages</span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0);">
-                                            <div class="media">
-                                                <img class="media-object" src="../assets/images/xs/avatar5.jpg" alt="">
-                                                <div class="media-body">
-                                                    <span class="name">Louis Henry <small class="float-right">38min ago</small></span>
-                                                    <span class="message">Integer ante arcu, accumsan a, consectetuer eget, posuere ut, mauris.</span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0);">
-                                            <div class="media">
-                                                <div class="avtar-pic w35 lbg-red"><span>FC</span></div>
-                                                <div class="media-body">
-                                                    <span class="name">James Wert <small class="float-right">Just now</small></span>
-                                                    <span class="message">It is a long established fact that a reader will be distracted</span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0);">
-                                            <div class="media">
-                                                <div class="avtar-pic w35 lbg-green"><span>FC</span></div>
-                                                <div class="media-body">
-                                                    <span class="name">James Wert <small class="float-right">Just now</small></span>
-                                                    <span class="message">The point of using Lorem Ipsum is that it has a more</span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0);">
-                                            <div class="media mb-0">
-                                                <img class="media-object" src="../assets/images/xs/avatar2.jpg" alt="">
-                                                <div class="media-body">
-                                                    <span class="name">Debra Stewart <small class="float-right">2hr ago</small></span>
-                                                    <span class="message">Nullam vel sem. Nullam vel sem.</span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
+<!--                            <li><a href="#" class="icon-menu reports">Reports</a></li>-->
+<!--                            <li><a href="#" class="icon-menu project">Project</a></li>-->
+<!--                            <li><a href="#" class="icon-menu settings">Settings</a></li>-->
+<!--                            <li class="dropdown">-->
+<!--                                <a href="javascript:void(0);" class="dropdown-toggle icon-menu" data-toggle="dropdown"><i class="fa fa-envelope"></i>-->
+<!--                                    <span class="notification-dot bg-green"></span>-->
+<!--                                </a>-->
+<!--                                <ul class="dropdown-menu right_chat email vivify fadeIn">-->
+<!--                                    <li class="header">You have 4 New eMail</li>-->
+<!--                                    <li>-->
+<!--                                        <a href="javascript:void(0);">-->
+<!--                                            <div class="media">-->
+<!--                                                <div class="avtar-pic w35 lbg-indigo"><span>FC</span></div>-->
+<!--                                                <div class="media-body">-->
+<!--                                                    <span class="name">Folisise Chosielie <small class="float-right">12min ago</small></span>-->
+<!--                                                    <span class="message">New Messages</span>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </a>-->
+<!--                                    </li>-->
+<!--                                    <li>-->
+<!--                                        <a href="javascript:void(0);">-->
+<!--                                            <div class="media">-->
+<!--                                                <img class="media-object" src="../assets/images/xs/avatar5.jpg" alt="">-->
+<!--                                                <div class="media-body">-->
+<!--                                                    <span class="name">Louis Henry <small class="float-right">38min ago</small></span>-->
+<!--                                                    <span class="message">Integer ante arcu, accumsan a, consectetuer eget, posuere ut, mauris.</span>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </a>-->
+<!--                                    </li>-->
+<!--                                    <li>-->
+<!--                                        <a href="javascript:void(0);">-->
+<!--                                            <div class="media">-->
+<!--                                                <div class="avtar-pic w35 lbg-red"><span>FC</span></div>-->
+<!--                                                <div class="media-body">-->
+<!--                                                    <span class="name">James Wert <small class="float-right">Just now</small></span>-->
+<!--                                                    <span class="message">It is a long established fact that a reader will be distracted</span>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </a>-->
+<!--                                    </li>-->
+<!--                                    <li>-->
+<!--                                        <a href="javascript:void(0);">-->
+<!--                                            <div class="media">-->
+<!--                                                <div class="avtar-pic w35 lbg-green"><span>FC</span></div>-->
+<!--                                                <div class="media-body">-->
+<!--                                                    <span class="name">James Wert <small class="float-right">Just now</small></span>-->
+<!--                                                    <span class="message">The point of using Lorem Ipsum is that it has a more</span>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </a>-->
+<!--                                    </li>-->
+<!--                                    <li>-->
+<!--                                        <a href="javascript:void(0);">-->
+<!--                                            <div class="media mb-0">-->
+<!--                                                <img class="media-object" src="../assets/images/xs/avatar2.jpg" alt="">-->
+<!--                                                <div class="media-body">-->
+<!--                                                    <span class="name">Debra Stewart <small class="float-right">2hr ago</small></span>-->
+<!--                                                    <span class="message">Nullam vel sem. Nullam vel sem.</span>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </a>-->
+<!--                                    </li>-->
+<!--                                </ul>-->
+<!--                            </li>-->
                             <li class="dropdown">
                                 <a href="javascript:void(0);" class="dropdown-toggle icon-menu" data-toggle="dropdown"><i class="fa fa-bell"></i>
                                     <span class="notification-dot bg-azura"></span>
@@ -107,40 +107,14 @@
                                             <div class="feeds-left lbg-red"><i class="fa fa-check"></i></div>
                                             <div class="feeds-body">
                                                 <h4 class="title text-danger">Issue Fixed <small class="float-right text-muted">9:10 AM</small></h4>
-                                                <small>WE have fix all Design bug with Responsive</small>
+                                                <small>WE have fix all Design bug with iCoop</small>
                                             </div>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="javascript:void(0);">
-                                            <div class="feeds-left lbg-info"><i class="fa fa-user"></i></div>
-                                            <div class="feeds-body">
-                                                <h4 class="title text-info">New User <small class="float-right text-muted">9:15 AM</small></h4>
-                                                <small>I feel great! Thanks team</small>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0);">
-                                            <div class="feeds-left lbg-orange"><i class="fa fa-question-circle"></i></div>
-                                            <div class="feeds-body">
-                                                <h4 class="title text-warning">Server Warning <small class="float-right text-muted">9:17 AM</small></h4>
-                                                <small>Your connection is not private</small>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0);">
-                                            <div class="feeds-left lbg-green"><i class="fa fa-thumbs-o-up"></i></div>
-                                            <div class="feeds-body">
-                                                <h4 class="title text-success">2 New Feedback <small class="float-right text-muted">9:22 AM</small></h4>
-                                                <small>It will give a smart finishing to your site</small>
-                                            </div>
-                                        </a>
-                                    </li>
+
                                 </ul>
                             </li>
-                            <li><a href="javascript:void(0);" class="right_toggle icon-menu" title="Right Menu"><i class="fa fa-comments"></i><span class="notification-dot bg-pink"></span></a></li>
+<!--                            <li><a href="javascript:void(0);" class="right_toggle icon-menu" title="Right Menu"><i class="fa fa-comments"></i><span class="notification-dot bg-pink"></span></a></li>-->
                             <li><a href="<?=base_url('logout'); ?>" class="icon-menu"><i class="fa fa-power-off"></i></a></li>
                         </ul>
                     </div>
@@ -194,7 +168,7 @@
 
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="tab" href="<?=base_url('logout'); ?>"><i class="fa fa-power-off"></i></i></a>
-                        <a class="nav-link" data-toggle="tab" href="#Setting-icon"><i class="fa fa-cog"></i></a>
+<!--                        <a class="nav-link" data-toggle="tab" href="#Setting-icon"><i class="fa fa-cog"></i></a>-->
                     </li>
                 </ul>
             </div>
@@ -207,7 +181,7 @@
 <!--                                <li class="header">Menu</li>-->
 <!--                                <li><a href="--><?//= base_url('control-panel'); ?><!--"><i class="icon-paper-plane"></i><span>Control Panel</span></a></li>-->
                                 <li>
-                                    <a href="#" class="has-arrow"><i class="icon-lock"></i><span>Control Panel</span></a>
+                                    <a href="#" class="has-arrow"><i class="fa fa-cog"></i><span>Control Panel</span></a>
                                     <ul>
                                         <li><a href="<?=base_url('contribution_type') ?>">Contribution Type</a></li>
                                         <li><a href="<?=base_url('payroll_group') ?>">Payroll Group</a></li>
@@ -230,7 +204,7 @@
 
                                 </li>
                                 <li>
-                                    <a href="#" class="has-arrow"><i class="icon-lock"></i><span>House Keeping</span></a>
+                                    <a href="#" class="has-arrow"><i class="fa fa-cogs"></i><span>House Keeping</span></a>
                                     <ul>
                                         <li><a href="<?=base_url('states') ?>">States</a></li>
                                         <li><a href="#">Bank</a></li>
@@ -240,7 +214,7 @@
                                     </ul>
                                 </li>
                                 <li>
-                                    <a href="#" class="has-arrow"><i class="icon-calendar"></i><span>Policy Config</span></a>
+                                    <a href="#" class="has-arrow"><i class="fa fa-compass"></i><span>Policy Config</span></a>
                                     <ul>
                                         <li><a href="<?= base_url('/policy-config') ?>">Policy Config</a></li>
                                         <li><a href="<?= base_url('/policy-config/loan-setup') ?>">Loan Setup</a></li>
@@ -248,16 +222,24 @@
                                 </li>
                                 
                                 <li>
-                                    <a href="#" class="has-arrow"><i class="icon-lock"></i><span>Cooperators</span></a>
+                                    <a href="#" class="has-arrow"><i class="fa fa-users"></i><span>Cooperators</span></a>
                                     <ul>
                                         <li><a href="<?=base_url('new_application') ?>">New Application</a></li>
                                         <li><a href="<?=base_url('verify_application') ?>">Verify Applications</a></li>
                                         <li><a href="<?=base_url('approve_application') ?>">Approve Applications</a></li>
+                                        <li><a href="<?=base_url('cooperators') ?>">Cooperators</a></li>
+
                                     </ul>
                                 </li>
-                                <li><a href="#"><i class="icon-earphones-alt"></i><span>Savings</span></a></li>
+                                <li><a href="#" class="has-arrow"><i class="icon-bag"></i><span>Savings</span></a>
+                                <ul>
+                                    <li><a href="<?=base_url('new_withdraw') ?>">New Withdraw</a></li>
+                                    <li><a href="<?=base_url('verify_withdrawal') ?>">Verify Withdrawal</a></li>
+                                    <li><a href="<?=base_url('approve_withdrawal') ?>">Approve Withdrawal</a></li>
+                                </ul>
+                                </li>
                                 <li>
-                                    <a href="#" class="has-arrow"><i class="icon-wallet"></i><span>Loans</span></a>
+                                    <a href="#" class="has-arrow"><i class="fa fa-money"></i><span>Loans</span></a>
                                     <ul>
                                         <li><a href="<?=site_url('/loan/new') ?>">New Loan</a></li>
                                         <li><a href="<?=site_url('/loan/verify') ?>">Verify Loan</a></li>
@@ -270,6 +252,9 @@
                                 <li><a href="<?= site_url('/loan/payables') ?>"><i class="icon-list"></i><span>Payables</span></a></li>
                                 <li><a href="#"><i class="icon-list"></i><span>Receivables</span></a></li>
                                 <li>
+
+                                    <a href="javascript:void(0);" class="has-arrow"><i class="fa fa-university"></i><span>Financial Accounts</span></a>
+
                                     <a href="javascript:void(0);" class="has-arrow"><i class="icon-lock"></i><span>Messaging</span></a>
                                     <ul>
                                         <li><a href="<?=base_url('/messaging/compose-email') ?>">Compose Email</a></li>
@@ -279,6 +264,7 @@
                                 </li>
                                 <li>
                                     <a href="javascript:void(0);" class="has-arrow"><i class="icon-lock"></i><span>Financial Accounts</span></a>
+
                                     <ul>
                                         <li><a href="<?=base_url('chart-of-accounts') ?>">Chart of Accounts</a></li>
                                         <li><a href="<?=base_url('journal-voucher') ?>">Journal Voucher</a></li>

@@ -104,6 +104,11 @@ $routes->post('verify_application/(:num)', 'Cooperators::verify_application_/$1'
 $routes->get('approve_application', 'Cooperators::approve_application');
 $routes->get('approve_application/(:num)', 'Cooperators::approve_application_/$1');
 $routes->post('approve_application/(:num)', 'Cooperators::approve_application_/$1');
+$routes->get('cooperators', 'Cooperators::cooperators');
+$routes->get('cooperator/(:num)', 'Cooperators::coperator/$1');
+$routes->get('ledger/(:any)', 'Cooperators::ledger/$1');
+$routes->post('ledger/(:any)', 'Cooperators::ledger/$1');
+$routes->get('view_ledger/(:num)/(:any)', 'Cooperators::view_ledger/$1/$2');
 
 #Loan routes
 $routes->get('/loan/new', 'LoanController::showLoanApplicationForm');
@@ -132,6 +137,20 @@ $routes->get('/messaging/mails', 'MessagingController::showMails');
 $routes->get('/messaging/open-mail/(:num)', 'MessagingController::openMail/$1');
 $routes->get('/messaging/bulk-sms', 'MessagingController::showBulkSms');
 $routes->post('/messaging/bulk-sms', 'MessagingController::sendBulkSms');
+
+##WIthdraw Routes
+$routes->get('new_withdraw', 'Withdraw::new_withdraw');
+$routes->post('new_withdraw', 'Withdraw::new_withdraw');
+$routes->get('search_cooperator', 'Withdraw::search_cooperator');
+$routes->post('compute_balance', 'Withdraw::compute_balance');
+$routes->post('get_ct', 'Withdraw::get_ct');
+$routes->post('verify_withdrawal', 'Withdraw::verify_withdrawal');
+$routes->get('verify_withdrawal', 'Withdraw::verify_withdrawal');
+$routes->post('approve_withdrawal', 'Withdraw::approve_withdrawal');
+$routes->get('approve_withdrawal', 'Withdraw::approve_withdrawal');
+
+
+
 /**
  * --------------------------------------------------------------------
  * Additional Routing

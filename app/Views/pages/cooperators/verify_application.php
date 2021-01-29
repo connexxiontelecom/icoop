@@ -33,7 +33,7 @@ Verify Applications
                     <table class="table table-hover js-basic-example dataTable simpletable table-custom spacing5">
                         <thead>
                         <tr>
-                            <th>#</th>
+                            <th style="font-weight: bolder">#</th>
                             <th>Staff ID</th>
                             <th>Name</th>
                             <th>Department</th>
@@ -57,6 +57,8 @@ Verify Applications
                             </td>
                         </tr>
                        <?php $sn++; endforeach; ?>
+
+
                         </tbody>
                     </table>
                 </div>
@@ -89,44 +91,6 @@ Verify Applications
     $(document).ready(function(){
         $('.simpletable').DataTable();
 
-        $('.error-wrapper').hide();
-        addNewStateForm.onsubmit = async (e) => {
-            e.preventDefault();
-
-            axios.post('/add-new-state',new FormData(addNewStateForm))
-                .then(response=>{
-                    Toastify({
-                        text: "Success! New state saved.",
-                        duration: 3000,
-                        newWindow: true,
-                        close: true,
-                        gravity: "top",
-                        position: 'right',
-                        backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-                        stopOnFocus: true,
-                        onClick: function(){}
-                    }).showToast();
-                    $("#stateTable").load(location.href + " #stateTable");
-                    $('#state_name').val('');
-                })
-                .catch(error=>{
-                    //$('#validation-errors').html('');
-                    $.each(error.response.data.errors, function(key, value){
-                        Toastify({
-                            text: 'Error',
-                            duration: 3000,
-                            newWindow: true,
-                            close: true,
-                            gravity: "top",
-                            position: 'right',
-                            backgroundColor: "linear-gradient(to right, #FF0000, #FE0000)",
-                            stopOnFocus: true,
-                            onClick: function(){}
-                        }).showToast();
-                        //$('#validation-errors').append("<li><i class='ti-hand-point-right text-danger mr-2'></i><small class='text-danger'>"+value+"</small></li>");
-                    });
-                });
-        };
-    });
+      });
 </script>
 <?= $this->endSection() ?>
