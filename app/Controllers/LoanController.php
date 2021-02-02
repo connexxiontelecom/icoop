@@ -5,6 +5,7 @@ use \App\Models\UserModel;
 use \App\Models\LoanModel;
 use \App\Models\LoanSetupModel;
 use \App\Models\CoopBankModel;
+use \App\Models\WithdrawModel;
 use \App\Models\ScheduleMasterModel;
 use \App\Models\ScheduleMasterDetailModel;
 
@@ -20,6 +21,7 @@ class LoanController extends BaseController
         $this->schedulemaster = new ScheduleMasterModel();
         $this->schedulemasterdetail = new ScheduleMasterDetailModel();
         $this->loan = new LoanModel();
+        $this->withdraw = new WithdrawModel();
         $this->user = new UserModel();
         $this->session = session();
     }
@@ -251,10 +253,12 @@ class LoanController extends BaseController
     public function showPaymentSchedule(){
         $data = [];
         $loan_apps = $this->loan->getScheduledPayment(); 
+        $withdraws = $this->withdraw->getScheduledWithdrawal(); 
         $coopbank = $this->coopbank->getCoopBanks();
         $data = [
             'loan_apps'=>$loan_apps,
-            'coopbank'=>$coopbank
+            'coopbank'=>$coopbank,
+            'withdraws'=>$withdraws
         ];
         $username = $this->session->user_username;
         $this->authenticate_user($username, 'pages/loan/new-payment-schedule', $data); 
@@ -302,6 +306,20 @@ class LoanController extends BaseController
                             $this->loan->update($this->request->getVar('loan_id'), ['scheduled'=>1]);
                         }
                     }
+                    #withdraw detail
+                    if($this->request->getVar('withdraws')){
+                        for($i = 0; $i<count($this->request->getVar('withdraw_staff_id')); $i++ ){
+                            $detail = [
+                                //'loan_type'=>$this->request->getVar('loan_type')[$i], 
+                                'coop_id'=>$this->request->getVar('withdraw_staff_id')[$i],
+                                'amount'=>$this->request->getVar('withdraw_amount')[$i],
+                                'schedule_master_id'=>$id
+                            ];
+                            $this->schedulemasterdetail->save($detail);
+                            //$loan = $this->loan->where('loan_id', $this->request->getVar('loan_id'))->first()['loan_id'];
+                            $this->withdraw->update($this->request->getVar('withdraw_id'), ['withdraw_status'=>4]);
+                        }
+                    }
             
                     $alert = array(
                         'msg' => 'Success! New payment scheduled',
@@ -327,6 +345,7 @@ class LoanController extends BaseController
 
     public function showPaymentScheduleDetail($id){
         $content = $this->schedulemaster->getSchedulePaymentDetail($id);
+        return dd($content);
         if(!empty($content)){
             $data = [
                 'schedule'=>$content
