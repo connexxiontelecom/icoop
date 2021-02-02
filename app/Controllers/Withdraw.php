@@ -11,6 +11,7 @@ use App\Models\TempPaymentsModel;
 Use App\Models\PaymentDetailsModel;
 use App\Models\ExceptionModel;
 use App\Models\WithdrawModel;
+use App\Models\PolicyConfigModel;
 
 class Withdraw extends BaseController
 {
@@ -22,6 +23,7 @@ class Withdraw extends BaseController
         $this->pd = new PaymentDetailsModel();
         $this->exception = new ExceptionModel();
         $this->withdraw = new WithdrawModel();
+        $this->policy = new PolicyConfigModel();
 
     }
 
@@ -30,7 +32,7 @@ class Withdraw extends BaseController
 
         if($method == 'get'):
 
-
+            $data['policy_configs'] = $this->policy->first();
             $data['cts'] = $this->contribution_type->findAll();
             $username = $this->session->user_username;
             $this->authenticate_user($username, 'pages/withdraw/new_withdraw', $data);
@@ -118,6 +120,7 @@ class Withdraw extends BaseController
     }
 
     public function compute_balance(){
+        $policy_configs = $this->policy->first();
 
         $staff_id = $_POST['staff_id'];
         $ct_id = $_POST['ct_id'];
@@ -143,8 +146,13 @@ class Withdraw extends BaseController
 
                  $bf = ($bf + $cr) - $dr;
            endforeach;
-          $data['note'] = "Balance for Selected Contribution Type is: NGN".number_format($bf);
-          $data['balance'] = $bf;
+           $max_withdrawal = $policy_configs['max_withdrawal_amount'];
+           $bf_w = ($max_withdrawal/100)*$bf;
+
+
+
+          $data['note'] = 'Withdrawal Balance: NGN'.number_format($bf_w).'<br>'.    'Savings Balance: NGN'.number_format($bf);
+          $data['balance'] = $bf_w;
         echo json_encode($data);
 
         else:

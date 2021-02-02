@@ -62,16 +62,26 @@ New Withdrawal
                                 <div class="form-group">
 
                                     <label  for="application_payroll_group_id"> <b> Amount: </b></label>
-                                    <input type="text" class="form-control"  required  name="withdraw_amount" id="withdraw_amount" placeholder="Enter Amount">
+                                    <input type="text" class="form-control"  required  name="withdraw_amount" id="withdraw_amount" onkeyup="get_withdraw_charge()" placeholder="Enter Amount">
+
+
 
 
                                     <input type="hidden" id="withdraw_balance" name="withdraw_balance" >
 
+                                    <input type="hidden" id="withdraw_charge" name="withdraw_charge" value="<?=$policy_configs['savings_withdrawal_charge']; ?>" >
+
                                 </div>
-                                <div class="form-group">
-                                    <label for="application_first_name"><b>Date:</b></label>
-                                    <input type="date"  class="form-control" placeholder="Date" name="withdraw_date" required>
+
+                                <div class="alert alert-warning alert-dismissible" role="alert" id="charge_warning">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <i class="fa fa-warning"></i> <span id="c_t"></span>
                                 </div>
+<!--                                <div class="form-group">-->
+<!--                                    <label for="application_first_name"><b>Date:</b></label>-->
+<!--                                    <input type="date"  class="form-control" placeholder="Date" name="withdraw_date" required>-->
+<!--                                </div>-->
+                                <input type="hidden"  class="form-control" placeholder="Date" name="withdraw_date" value="<?=date('Y-m-d') ?>" required>
 
 
                                 <div class="form-group">
@@ -87,7 +97,7 @@ New Withdrawal
                                     <button type="submit" id="withdraw_submit" class="btn btn-info btn-block">Submit</button>
                                     <div class="alert alert-danger alert-dismissible" role="alert" id="withdraw_warning">
                                         <!--                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
-                                        <i class="fa fa-warning"></i> Withdraw Amount is Greater than Balance
+                                        <i class="fa fa-warning"></i> Withdraw Amount is Greater than Withdrawable Amount
                                     </div>
 
                                 </div>
@@ -133,6 +143,7 @@ New Withdrawal
         $('#balance_warning').hide();
         $('#withdraw_submit').hide();
         $('#withdraw_warning').hide();
+        $('#charge_warning').hide();
 
         $(function () {
             $("#search_account").autocomplete({
@@ -141,11 +152,16 @@ New Withdrawal
 
             $("#withdraw_amount").keyup(function () {
                 let withdraw_amount = parseFloat($(this).val());
+                let withdraw_charge = parseFloat($('#withdraw_charge').val());
                 let withdraw_balance = parseFloat($('#withdraw_balance').val());
+                let charge = (withdraw_charge/100)*withdraw_amount;
                 // alert(withdraw_balance);
                 if(withdraw_amount <= withdraw_balance){
                     $('#withdraw_submit').show();
                     $('#withdraw_warning').hide();
+                    $('#charge_warning').show();
+                    $("#c_t").empty();
+                    $("#c_t").append('Withdraw Charges: '+' NGN'+charge.toLocaleString());
 
                    // alert(withdraw_balance);
                 }
@@ -153,9 +169,14 @@ New Withdrawal
                 if(withdraw_amount > withdraw_balance){
                     $('#withdraw_submit').hide();
                     $('#withdraw_warning').show();
-
-                    //alert(withdraw_balance);
+                    $("#c_t").empty();
+                    $('#charge_warning').hide();
+                   //alert(withdraw_balance);
                 }
+
+
+
+
             });
         });
     });
@@ -185,6 +206,9 @@ New Withdrawal
         });
 
     }
+
+
+
 
     function get_ct(){
         let t_staff_id =  $("#search_account").val();

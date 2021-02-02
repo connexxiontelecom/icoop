@@ -123,6 +123,14 @@ class Policyconfigcontroller extends BaseController
                         'required'=>'Savings withdrawal charge is required'
                     	]
 					],
+                'max_withdrawal_amount'=>[
+                    'rules'=>'required',
+                    'label'=>'Maximum Withdrawal Amount',
+                    'errors'=>[
+                        'required'=>'Maximum Withdrawal is required'
+                    ]
+                ],
+
             ];
             if($this->validate($rules)){
 				$policy = $this->policy->first();
@@ -132,6 +140,7 @@ class Policyconfigcontroller extends BaseController
 						'registration_fee'=>$this->request->getVar('registration_fee'),
 						'savings_interest_rate'=>$this->request->getVar('savings_interest_rate'),
 						'savings_withdrawal_charge'=>$this->request->getVar('savings_withdrawal_charge'),
+                        'max_withdrawal_amount' => $this->request->getVar('max_withdrawal_amount')
 					];
 					$this->policy->save($data);
 					return $this->response->redirect(site_url('/policy-config'));
@@ -141,6 +150,7 @@ class Policyconfigcontroller extends BaseController
 						'registration_fee'=>$this->request->getVar('registration_fee'),
 						'savings_interest_rate'=>$this->request->getVar('savings_interest_rate'),
 						'savings_withdrawal_charge'=>$this->request->getVar('savings_withdrawal_charge'),
+                        'max_withdrawal_amount' => $this->request->getVar('max_withdrawal_amount')
 					];
 					$this->policy->update($policy['policy_config_id'], $data);
 					return $this->response->redirect(site_url('/policy-config'));
