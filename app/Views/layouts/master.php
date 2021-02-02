@@ -254,12 +254,14 @@
                                         <li><a href="<?=site_url('/loan/payment-schedules') ?>">Payment Schedules</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="#"><i class="icon-list"></i><span>Receivables</span></a></li>
+                                
+                                <li><a href="<?= site_url('/loan/payables') ?>"><i class="fa fa-arrow-up"></i><span>Payables</span></a></li>
+                                <li><a href="#"><i class="fa fa-arrow-down"></i><span>Receivables</span></a></li>
                                 <li>
 
-                                    <a href="javascript:void(0);" class="has-arrow"><i class="fa fa-university"></i><span>Financial Accounts</span></a>
 
-                                    <a href="javascript:void(0);" class="has-arrow"><i class="icon-lock"></i><span>Messaging</span></a>
+
+                                    <a href="javascript:void(0);" class="has-arrow"><i class="fa fa-envelope"></i><span>Messaging</span></a>
                                     <ul>
                                         <li><a href="<?=base_url('/messaging/compose-email') ?>">Compose Email</a></li>
                                         <li><a href="<?=base_url('/messaging/mails') ?>">Mails</a></li>
@@ -267,7 +269,7 @@
                                     </ul>
                                 </li>
                                 <li>
-                                    <a href="javascript:void(0);" class="has-arrow"><i class="icon-lock"></i><span>Financial Accounts</span></a>
+                                    <a href="javascript:void(0);" class="has-arrow"><i class="fa fa-university"></i><span>Financial Accounts</span></a>
 
                                     <ul>
                                         <li><a href="<?=base_url('chart-of-accounts') ?>">Chart of Accounts</a></li>

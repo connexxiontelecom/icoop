@@ -31,7 +31,7 @@ Policy Config
                                 <div class="slide"></div>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#profile3" role="tab">Savings Rate</a>
+                                <a class="nav-link" data-toggle="tab" href="#profile3" role="tab">Savings Config</a>
                                 <div class="slide"></div>
                             </li>
                             <li class="nav-item">
@@ -83,32 +83,39 @@ Policy Config
                             </div>
                             <div class="tab-pane" id="profile3" role="tabpanel">
                             <form action="<?= site_url('savings-rate') ?>" method="POST">
-                                <h6 class="text-primary text-uppercase mb-4">Savings Rate</h6>
+                                <h6 class="text-primary text-uppercase mb-4">Savings Config</h6>
                                     <?= csrf_field() ?>
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Minimum saving</label>
-                                        <div class="col-sm-10">
+                                        <label class="col-sm-4 col-form-label">Minimum saving</label>
+                                        <div class="col-sm-8">
                                             <input type="number" value="<?= $profile['minimum_saving'] ?? '' ?>" step="0.01" class="form-control" placeholder="Minimum saving" name="minimum_saving">
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Registration Fee</label>
-                                        <div class="col-sm-10">
+                                        <label class="col-sm-4 col-form-label">Registration Fee</label>
+                                        <div class="col-sm-8">
                                             <input type="number" step="0.01" value="<?= $profile['registration_fee'] ?? '' ?>" class="form-control" placeholder="Registration Fee" name="registration_fee">
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Savings Interest Rate</label>
-                                        <div class="col-sm-10">
+                                        <label class="col-sm-4 col-form-label">Savings Interest Rate(%)</label>
+                                        <div class="col-sm-8">
                                             <input type="number" step="0.01" value="<?= $profile['savings_interest_rate'] ?? '' ?>" class="form-control" placeholder="Savings Interest Rate" name="savings_interest_rate">
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Savings Withdrawal Charge</label>
-                                        <div class="col-sm-10">
+                                        <label class="col-sm-4 col-form-label">Savings Withdrawal Charge(%)</label>
+                                        <div class="col-sm-8">
                                             <input type="number" step="0.01" value="<?= $profile['savings_withdrawal_charge'] ?? '' ?>" class="form-control" placeholder="Savings Withdrawal Charge" name="savings_withdrawal_charge">
                                         </div>
                                     </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">Max Withdrawal(%)</label>
+                                    <div class="col-sm-8">
+                                        <input type="number" step="0.01" value="<?= $profile['max_withdrawal_amount'] ?? '0' ?>" class="form-control" placeholder="Max Withdrawal Amount" name="max_withdrawal_amount">
+                                    </div>
+                                </div>
                                     <div class="row form-group d-flex justify-content-center">
                                         <button class="btn-mini btn btn-primary"><i class="ti-check mr-2"></i> Save</button>
                                     </div>

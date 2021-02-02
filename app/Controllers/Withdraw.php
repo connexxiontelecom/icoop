@@ -11,6 +11,7 @@ use App\Models\TempPaymentsModel;
 Use App\Models\PaymentDetailsModel;
 use App\Models\ExceptionModel;
 use App\Models\WithdrawModel;
+use App\Models\PolicyConfigModel;
 
 class Withdraw extends BaseController
 {
@@ -22,6 +23,7 @@ class Withdraw extends BaseController
         $this->pd = new PaymentDetailsModel();
         $this->exception = new ExceptionModel();
         $this->withdraw = new WithdrawModel();
+        $this->policy = new PolicyConfigModel();
 
     }
 
@@ -30,7 +32,7 @@ class Withdraw extends BaseController
 
         if($method == 'get'):
 
-
+            $data['policy_configs'] = $this->policy->first();
             $data['cts'] = $this->contribution_type->findAll();
             $username = $this->session->user_username;
             $this->authenticate_user($username, 'pages/withdraw/new_withdraw', $data);
@@ -39,52 +41,191 @@ class Withdraw extends BaseController
 
         if($method == 'post'):
 
-            $withdraw_balance = $_POST['withdraw_balance'];
-            $withdraw_amount = $_POST['withdraw_amount'];
 
-            if($withdraw_amount > $withdraw_balance):
+            $this->validator->setRules( [
+                'withdraw_staff_id'=>[
+                    'rules'=>'required',
+                    'errors'=>[
+                        'required'=>'Enter Staff ID'
+                    ]
+                ],
+
+                'withdraw_ct_id'=>[
+                    'rules'=>'required',
+                    'errors'=>[
+                        'required'=>'Select a Contribution Type'
+                    ]
+                ],
+
+                'withdraw_amount'=>[
+                    'rules'=>'required',
+                    'errors'=>[
+                        'required'=>'Enter an amount'
+                    ]
+                ],
+
+
+
+            ]);
+            if ($this->validator->withRequest($this->request)->run()):
+
+
+            $file = $this->request->getFile('withdraw_file');
+
+            if(!empty($file)):
+
+                if($file->isValid() && !$file->hasMoved()):
+
+                    $extension = $file->guessExtension();
+                    $extension = strtolower($extension);
+
+                    if($extension == 'pdf'):
+
+                            $file_name = $file->getRandomName();
+
+                            $_POST['withdraw_doc'] = $file_name;
+
+                            $file->move('.uploads/withdrawals', $file_name);
+
+                        $withdraw_balance = $_POST['withdraw_balance'];
+                        $withdraw_amount = $_POST['withdraw_amount'];
+
+                        if($withdraw_amount > $withdraw_balance):
+                            $data = array(
+                                'msg' => 'Insufficient Balance',
+                                'type' => 'error',
+                                'location' => base_url('new_withdraw')
+
+                            );
+
+                            return view('pages/sweet-alert', $data);
+
+
+                        else:
+
+                            $_POST['withdraw_charges'] = ($_POST['withdraw_charge']/100)*$withdraw_amount;
+                            unset($_POST['withdraw_charge']);
+                            unset($_POST['withdraw_balance']);
+                            $_POST['withdraw_status'] = 0;
+                            $withdraw_staff_id = $_POST['withdraw_staff_id'];
+                            $withdraw_staff_id = substr($withdraw_staff_id, 0, strpos($withdraw_staff_id, ','));
+                            $_POST['withdraw_staff_id'] = $withdraw_staff_id;
+                            $v =  $this->withdraw->save($_POST);
+
+                            if($v):
+
+                                $data = array(
+                                    'msg' => 'Action Successful',
+                                    'type' => 'success',
+                                    'location' => base_url('new_withdraw')
+
+                                );
+                                return view('pages/sweet-alert', $data);
+
+                            else:
+                                $data = array(
+                                    'msg' => 'An Error Occured',
+                                    'type' => 'error',
+                                    'location' => base_url('new_withdraw')
+
+                                );
+                                return view('pages/sweet-alert', $data);
+
+
+                            endif;
+
+                        endif;
+
+
+                        else:
+
+                            $data = array(
+                                'msg' => 'Only PDF files are allowed',
+                                'type' => 'error',
+                                'location' => base_url('new_withdraw')
+
+                            );
+
+                            echo view('pages/sweet-alert', $data);
+
+                        endif;
+
+                 endif;
+
+           else:
+
+               $withdraw_balance = $_POST['withdraw_balance'];
+               $withdraw_amount = $_POST['withdraw_amount'];
+
+               if($withdraw_amount > $withdraw_balance):
+                   $data = array(
+                       'msg' => 'Insufficient Balance',
+                       'type' => 'error',
+                       'location' => base_url('new_withdraw')
+
+                   );
+
+                   return view('pages/sweet-alert', $data);
+
+
+               else:
+
+                   $_POST['withdraw_charges'] = ($_POST['withdraw_charge']/100)*$withdraw_amount;
+                   unset($_POST['withdraw_charge']);
+                   unset($_POST['withdraw_balance']);
+                   $_POST['withdraw_status'] = 0;
+                   $withdraw_staff_id = $_POST['withdraw_staff_id'];
+                   $withdraw_staff_id = substr($withdraw_staff_id, 0, strpos($withdraw_staff_id, ','));
+                   $_POST['withdraw_staff_id'] = $withdraw_staff_id;
+                   $v =  $this->withdraw->save($_POST);
+
+                   if($v):
+
+                       $data = array(
+                           'msg' => 'Action Successful',
+                           'type' => 'success',
+                           'location' => base_url('new_withdraw')
+
+                       );
+                       return view('pages/sweet-alert', $data);
+
+                   else:
+                       $data = array(
+                           'msg' => 'An Error Occured',
+                           'type' => 'error',
+                           'location' => base_url('new_withdraw')
+
+                       );
+                       return view('pages/sweet-alert', $data);
+
+
+                   endif;
+
+               endif;
+
+
+               endif;
+
+
+
+
+
+
+            else:
+
+                $arr = $this->validator->getErrors();
+
                 $data = array(
-                    'msg' => 'Insufficient Balance',
+                    'msg' => implode(", ", $arr),
                     'type' => 'error',
                     'location' => base_url('new_withdraw')
 
                 );
 
-                return view('pages/sweet-alert', $data);
+                echo view('pages/sweet-alert', $data);
 
 
-                else:
-
-                    unset($_POST['withdraw_balance']);
-                    $_POST['withdraw_status'] = 0;
-                    $withdraw_staff_id = $_POST['withdraw_staff_id'];
-                    $withdraw_staff_id = substr($withdraw_staff_id, 0, strpos($withdraw_staff_id, ','));
-                    $_POST['withdraw_staff_id'] = $withdraw_staff_id;
-                    $v =  $this->withdraw->save($_POST);
-
-                    if($v):
-
-                        $data = array(
-                            'msg' => 'Action Successful',
-                            'type' => 'success',
-                            'location' => base_url('new_withdraw')
-
-                        );
-                        return view('pages/sweet-alert', $data);
-
-                    else:
-                        $data = array(
-                            'msg' => 'An Error Occured',
-                            'type' => 'error',
-                            'location' => base_url('new_withdraw')
-
-                        );
-                        return view('pages/sweet-alert', $data);
-
-
-                    endif;
-
-                    endif;
+            endif;
 
 
 
@@ -118,6 +259,7 @@ class Withdraw extends BaseController
     }
 
     public function compute_balance(){
+        $policy_configs = $this->policy->first();
 
         $staff_id = $_POST['staff_id'];
         $ct_id = $_POST['ct_id'];
@@ -143,8 +285,13 @@ class Withdraw extends BaseController
 
                  $bf = ($bf + $cr) - $dr;
            endforeach;
-          $data['note'] = "Balance for Selected Contribution Type is: NGN".number_format($bf);
-          $data['balance'] = $bf;
+           $max_withdrawal = $policy_configs['max_withdrawal_amount'];
+           $bf_w = ($max_withdrawal/100)*$bf;
+
+
+
+          $data['note'] = 'Withdrawal Balance: NGN'.number_format($bf_w).'<br>'.'Savings Balance: NGN'.number_format($bf);
+          $data['balance'] = $bf_w;
         echo json_encode($data);
 
         else:
@@ -153,9 +300,7 @@ class Withdraw extends BaseController
             echo json_encode($data);
             endif;
 
-
-
-    }
+        }
 
     public function get_ct(){
         $staff_id = $_POST['staff_id'];
@@ -344,21 +489,21 @@ class Withdraw extends BaseController
 
                 if($v):
 
-                        $temp_payment = $this->withdraw->where(['withdraw_id' => $_POST['withdraw_id']])->first();
-                    $coop = $this->cooperator->where(['cooperator_staff_id' =>$temp_payment['withdraw_staff_id'] ])->first();
-                    $payment_details_array = array(
-                        'pd_staff_id' => $temp_payment['withdraw_staff_id'],
-                        'pd_transaction_date' => $temp_payment['withdraw_date'],
-                        'pd_narration' => $temp_payment['withdraw_narration'],
-                        'pd_amount' => $temp_payment['withdraw_amount'],
-                        'pd_drcrtype' => 2,
-                        'pd_ct_id' => $temp_payment['withdraw_ct_id'],
-                        'pd_pg_id' => $coop['cooperator_payroll_group_id'],
-                        'pd_ref_code' => time(),
-                    );
-
-
-                    $v =   $this->pd->save($payment_details_array);
+//                    $temp_payment = $this->withdraw->where(['withdraw_id' => $_POST['withdraw_id']])->first();
+//                    $coop = $this->cooperator->where(['cooperator_staff_id' =>$temp_payment['withdraw_staff_id'] ])->first();
+//                    $payment_details_array = array(
+//                        'pd_staff_id' => $temp_payment['withdraw_staff_id'],
+//                        'pd_transaction_date' => $temp_payment['withdraw_date'],
+//                        'pd_narration' => $temp_payment['withdraw_narration'],
+//                        'pd_amount' => $temp_payment['withdraw_amount'],
+//                        'pd_drcrtype' => 2,
+//                        'pd_ct_id' => $temp_payment['withdraw_ct_id'],
+//                        'pd_pg_id' => $coop['cooperator_payroll_group_id'],
+//                        'pd_ref_code' => time(),
+//                    );
+//
+//
+//                    $v =   $this->pd->save($payment_details_array);
 
                     if($v):
                         $data = array(
