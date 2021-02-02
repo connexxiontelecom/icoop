@@ -202,10 +202,9 @@ Approve Withdrawals
 
 
                                     <div class="col-lg-6 col-md-12">
+                                        <div class="header">
+                                            <p> <small><b>Balance:</b> <?=number_format($withdrawal['balance']); ?></small></p>
 
-                                        <div class="form-group">
-                                            <label>Balance:</label>
-                                            <input class="form-control" value="<?=number_format($withdrawal['balance']); ?>" disabled readonly>
                                         </div>
                                     </div>
                                 </div>

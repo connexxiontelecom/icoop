@@ -149,7 +149,7 @@ Verify Withdrawals
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title h4" id="myLargeModalLabel">Discard Withdrawal</h5>
+                            <h5 class="modal-title h4" id="myLargeModalLabel">Disqualify Withdrawal</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                             </button>
@@ -179,14 +179,15 @@ Verify Withdrawals
                                         </div>
                                     </div>
 
-
                                     <div class="col-lg-6 col-md-12">
+                                        <div class="header">
+                                            <p> <small><b>Balance:</b> <?=number_format($withdrawal['balance']); ?></small></p>
 
-                                        <div class="form-group">
-                                            <label>Balance:</label>
-                                            <input class="form-control" value="<?=number_format($withdrawal['balance']); ?>" disabled readonly>
                                         </div>
                                     </div>
+
+
+
                                 </div>
 
                                 <div class="form-group">
