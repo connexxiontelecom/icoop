@@ -123,6 +123,15 @@ Approve Withdrawals
                                     <input class="form-control" value="<?=number_format($withdrawal['withdraw_amount']); ?>" disabled readonly>
                                 </div>
 
+                                <?php if(!empty($withdrawal['withdraw_doc'])): ?>
+
+                                    <div class="form-group">
+
+                                        <button type="button" class="btn btn-primary mb-2" onclick="window.open('<?php echo base_url('.uploads/withdrawals')."/".$withdrawal['withdraw_doc'];?>', '_blank')" ><i class="fa fa-paperclip"></i> <span>View Attachment</span></button>
+
+                                    </div>
+
+                                <?php endif; ?>
                                 <input type="hidden" name="withdraw_status" value="2">
 
                                 <input type="hidden" name="withdraw_id" value="<?=$withdrawal['withdraw_id']; ?>">
@@ -214,6 +223,15 @@ Approve Withdrawals
                                     <input class="form-control" value="<?=number_format($withdrawal['withdraw_amount']); ?>" disabled readonly>
                                 </div>
 
+                                <?php if(!empty($withdrawal['withdraw_doc'])): ?>
+
+                                    <div class="form-group">
+
+                                        <button type="button" class="btn btn-primary mb-2" onclick="window.open('<?php echo base_url('.uploads/withdrawals')."/".$withdrawal['withdraw_doc'];?>', '_blank')" ><i class="fa fa-paperclip"></i> <span>View Attachment</span></button>
+
+                                    </div>
+
+                                <?php endif; ?>
                                 <input type="hidden" name="withdraw_status" value="3">
 
                                 <input type="hidden" name="withdraw_id" value="<?=$withdrawal['withdraw_id']; ?>">
