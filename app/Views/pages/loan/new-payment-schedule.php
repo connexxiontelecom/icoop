@@ -85,6 +85,29 @@ New Payment Schedule
                                                                 </td>
                                                             </tr>
                                                         <?php endforeach; ?>
+                                                        <?php foreach($withdraws as $withdraw): ?>
+                                                            <tr>
+                                                                <th scope="row"> 
+                                                                    <div class="form-group form-check">
+                                                                        <label class="form-check-label" for="exampleCheck1"><?= $i++; ?></label>
+                                                                        <input type="checkbox" name="withdraws[]" class="form-check-input ml-2">
+                                                                    </div>
+                                                                </th>
+                                                                <td><?= $withdraw->withdraw_staff_id ?>
+                                                                    <input type="hidden" name="withdraw_staff_id[]" value="<?= $withdraw->withdraw_staff_id ?>">
+                                                                    <input type="hidden" name="withdraw_id[]" value="<?= $withdraw->withdraw_id ?>">
+                                                                </td>
+                                                                <td><?= $withdraw->cooperator_first_name ?? '' ?> <?= $withdraw->cooperator_last_name ?? '' ?></td>
+                                                                <td>
+                                                                    <?= $withdraw->withdraw_narration ?? '' ?> 
+                                                                    <input type="hidden" name="loan_type[]" value="">
+                                                                </td>
+                                                                <td>
+                                                                    ₦<?= number_format($withdraw->withdraw_amount ?? 0,2) ?>
+                                                                    <input type="hidden" name="withdraw_amount[]" value="<?= $withdraw->withdraw_amount ?? 0 ?>">
+                                                                </td>
+                                                            </tr>
+                                                        <?php endforeach; ?>
                                                     </tbody>
                                                 </table>
                                         </div>

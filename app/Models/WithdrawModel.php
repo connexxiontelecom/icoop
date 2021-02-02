@@ -36,4 +36,12 @@ class WithdrawModel extends \CodeIgniter\Model
             return $builder->get()->getResultArray();
 
         }
+
+    public function getScheduledWithdrawal(){
+        $builder = $this->db->table('withdraws');
+        $builder->join('cooperators', 'cooperators.cooperator_staff_id = withdraws.withdraw_staff_id');
+        //$builder->join('loan_setups', 'loans.loan_type = loan_setups.loan_setup_id');
+        $builder->where('withdraws.withdraw_status = 2');
+        return $builder->get()->getResultObject();
+    }
 }

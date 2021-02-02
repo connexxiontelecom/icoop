@@ -37,6 +37,7 @@
                                     <div class="form-group">
                                         <strong for="">Staff ID</strong>
                                         <input required type="number" name="staff_id" id="staff_id" placeholder="Staff ID"  class="form-control">
+                                        <div id="suggesstion-box"></div>
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-lg-6 col-sm-6 response">
@@ -146,7 +147,24 @@
             $('#guarantor_wrapper_2').hide();
             $('#submitLoanBtn').attr('disabled','disabled');
             $('.money').simpleMoneyFormat();
-           $(document).on('blur', '#staff_id', function(e){
+            
+/*             $("#staff_id").keyup(function(){
+                $.ajax({
+                type: "POST",
+                url: "<?php echo site_url('compute_balance') ?>",
+                data:'keyword='+$(this).val(),
+                beforeSend: function(){
+                    //$("#staff_id").css("background","#FFF url(LoaderIcon.gif) no-repeat 165px");
+                },
+                success: function(data){
+                    $("#suggesstion-box").show();
+                    $("#suggesstion-box").html(data);
+                    $("#staff_id").css("background","#FFF");
+                }
+                });
+            });
+             */
+            $(document).on('blur', '#staff_id', function(e){
                e.preventDefault();
                if($(this).val() != ''){
                 $.ajax({
@@ -155,17 +173,17 @@
                     cache: false,
                     success: function(html){
                         var handler = $.parseJSON(html);
-                        if(html.length == 0){
+                        //if(html.length == 0){
                             $('#name').text('');
-                        }else{
-                        savings = handler.savings[0].pd_amount;
-                        console.log("Savings: "+savings);
+                        //}else{
+                        savings = handler.savings.pd_amount;
+                        
                             $('#name').text(handler.cooperator.cooperator_first_name+" "+handler.cooperator.cooperator_last_name);
-                        }
+                        //}
                     }
                     });
                }
-           });
+           }); 
            $(document).on('blur', '#guarantor_1', function(e){
                e.preventDefault();
                if($(this).val() != ''){
@@ -269,6 +287,33 @@
             .on('form:submit', function() {
                 return true; 
             });
+
+            $("#search_account").autocomplete({
+                source: "<?php echo base_url('search_cooperator'); ?>",
+            });
+
+          
         });
+        function get_ct(){
+            let t_staff_id =  $("#search_account").val();
+            let staff_id = t_staff_id.split(',')[0];
+            $.ajax({
+                url: '<?php echo site_url('get_ct') ?>',
+                type: 'post',
+                data: {
+                    'staff_id': staff_id,
+                },
+                dataType: 'json',
+                success:function(response){
+                    $("#ct_id").empty();
+                    $("#ct_id").append('<option> -- Select Contribution Type --</option>');
+                    for (var i=0; i<response.length; i++) {
+                        $("#ct_id").append('<option value="' + response[i].contribution_type_id + '">' + response[i].contribution_type_name + '</option>');
+                    }
+                    // console.log(response);
+                }
+            });
+
+    }
     </script>
 <?= $this->endSection() ?>

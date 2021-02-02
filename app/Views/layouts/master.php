@@ -244,12 +244,16 @@
                                         <li><a href="<?=site_url('/loan/new') ?>">New Loan</a></li>
                                         <li><a href="<?=site_url('/loan/verify') ?>">Verify Loan</a></li>
                                         <li><a href="<?=site_url('/loan/approve') ?>">Approve Loan</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0);" class="has-arrow"><i class="fa fa-money"></i><span>Payables</span></a>
+                                    <ul>
+                                        <li><a href="<?= site_url('/loan/payables') ?>">Payables</a></li>
                                         <li><a href="<?=site_url('/loan/new-payment-schedule') ?>">New Payment Schedule</a></li>
                                         <li><a href="<?=site_url('/loan/payment-schedules') ?>">Payment Schedules</a></li>
                                     </ul>
                                 </li>
-                                
-                                <li><a href="<?= site_url('/loan/payables') ?>"><i class="fa fa-arrow-up"></i><span>Payables</span></a></li>
                                 <li><a href="#"><i class="fa fa-arrow-down"></i><span>Receivables</span></a></li>
                                 <li>
 

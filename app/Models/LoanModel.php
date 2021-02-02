@@ -17,6 +17,7 @@ class LoanModel extends Model{
         $builder->where('loans.scheduled = 0');
         return $builder->get()->getResultObject();
     }
+
     public function getCooperatorSavings($id){
         $builder = $this->db->table('payment_details');
         /* $builder->join('cooperators', 'cooperators.cooperator_staff_id = loans.staff_id');
