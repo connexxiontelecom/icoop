@@ -89,7 +89,10 @@ New Withdrawal
                                     <textarea name="withdraw_narration" id="withdraw_narration"  cols="30" rows="3" placeholder="Narration "  class="form-control no-resize"></textarea>
                                 </div>
 
-
+                                <div class="form-group">
+                                    <label for="application_first_name"><b>File(.PDF):</b></label>
+                                    <input type="file"  class="form-control"  name="withdraw_file">
+                                </div>
 
 
                                 <?= csrf_field() ?>
