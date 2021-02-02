@@ -56,8 +56,8 @@ Verify Withdrawals
                                 <td><?=number_format($withdrawal['withdraw_amount']); ?></td>
 
                                 <td>
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#verifyModal<?=$withdrawal['withdraw_id'] ?>"><i class="fa fa-pencil-square-o"></i></button>
-                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal<?=$withdrawal['withdraw_id'] ?>"> <i class="fa fa-trash-o"></i></button>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#verifyModal<?=$withdrawal['withdraw_id'] ?>"><i class="fa fa-check"></i></button>
+                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal<?=$withdrawal['withdraw_id'] ?>"> <i class="fa fa-times"></i></button>
 
                                 </td>
                             </tr>
@@ -122,6 +122,15 @@ Verify Withdrawals
                                     <label>Amount:</label>
                                     <input class="form-control" value="<?=number_format($withdrawal['withdraw_amount']); ?>" disabled readonly>
                                 </div>
+                                <?php if(!empty($withdrawal['withdraw_doc'])): ?>
+
+                                <div class="form-group">
+
+                                    <button type="button" class="btn btn-primary mb-2" onclick="window.open('<?php echo base_url('.uploads/withdrawals')."/".$withdrawal['withdraw_doc'];?>', '_blank')" ><i class="fa fa-paperclip"></i> <span>View Attachment</span></button>
+
+                                </div>
+
+                                <?php endif; ?>
 
                                 <input type="hidden" name="withdraw_status" value="1">
 
@@ -149,7 +158,7 @@ Verify Withdrawals
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title h4" id="myLargeModalLabel">Discard Withdrawal</h5>
+                            <h5 class="modal-title h4" id="myLargeModalLabel">Disqualify Withdrawal</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                             </button>
@@ -179,20 +188,31 @@ Verify Withdrawals
                                         </div>
                                     </div>
 
-
                                     <div class="col-lg-6 col-md-12">
+                                        <div class="header">
+                                            <p> <small><b>Balance:</b> <?=number_format($withdrawal['balance']); ?></small></p>
 
-                                        <div class="form-group">
-                                            <label>Balance:</label>
-                                            <input class="form-control" value="<?=number_format($withdrawal['balance']); ?>" disabled readonly>
                                         </div>
                                     </div>
+
+
+
                                 </div>
 
                                 <div class="form-group">
                                     <label>Amount:</label>
                                     <input class="form-control" value="<?=number_format($withdrawal['withdraw_amount']); ?>" disabled readonly>
                                 </div>
+
+                                <?php if(!empty($withdrawal['withdraw_doc'])): ?>
+
+                                    <div class="form-group">
+
+                                        <button type="button" class="btn btn-primary mb-2" onclick="window.open('<?php echo base_url('.uploads/withdrawals')."/".$withdrawal['withdraw_doc'];?>', '_blank')" ><i class="fa fa-paperclip"></i> <span>View Attachment</span></button>
+
+                                    </div>
+
+                                <?php endif; ?>
 
                                 <input type="hidden" name="withdraw_status" value="3">
 

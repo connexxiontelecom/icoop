@@ -49,6 +49,7 @@ class BaseController extends ResourceController
 		$this->email = \Config\Services::email();
 		$this->client = \Config\Services::curlrequest();
 
+
 		
 	}
 

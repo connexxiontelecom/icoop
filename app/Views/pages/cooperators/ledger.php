@@ -8,7 +8,7 @@ Contribution Types - <?=$cooperator->cooperator_first_name.' '.$cooperator->coop
 Contribution Types - <?=$cooperator->cooperator_first_name.' '.$cooperator->cooperator_last_name; ?>
 <?= $this->endSection() ?>
 <?= $this->section('page_crumb') ?>
-Contribution Types
+Contribution Types - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
 <?= $this->endSection() ?>
 
 <?= $this->section('extra-styles') ?>
@@ -70,7 +70,7 @@ Contribution Types
 
                                 <?= csrf_field() ?>
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-info btn-block">Submit</button>
+                                    <button type="submit" class="btn btn-info btn-block">Retrieve</button>
                                 </div>
                             </div>
 
@@ -99,7 +99,7 @@ Contribution Types
                                     <tr>
                                         <th><strong># </strong></th>
                                         <th><strong>Date</strong></th>
-                                        <th><strong>Reference Number</strong></th>
+                                        <th><strong>Narration</strong></th>
                                         <th><strong>Dr</strong></th>
                                         <th><strong>Cr</strong></th>
                                         <th><strong>Balance</strong></th>
@@ -110,24 +110,32 @@ Contribution Types
                                     </thead>
 
                                     <tbody>
-                                    <td></td>
+                                    <?php if($bf > 0): ?>
+                                    <tr>
+                                     <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
                                     <td> <strong>BF:</strong> <?=number_format($bf); ?></td>
+                                    </tr>
+
+                                       <?php endif; ?>
                                     <?php $sn = 1;
+                                            $total_cr = 0;
+                                            $total_dr = 0;
                                     foreach ($ledgers as $ledger): ?>
                                         <tr>
 
                                             <td><?=$sn; ?></td>
                                             <td><?=$ledger['pd_transaction_date']; ?></td>
-                                            <td><?=$ledger['pd_ref_code']; ?></td>
+                                            <td><?=$ledger['pd_narration']; ?></td>
 
                                             <td><?php
                                                 if($ledger['pd_drcrtype'] == 2):
                                                     $dr = $ledger['pd_amount'];
                                                     $cr = 0;
+                                                    $total_dr = $dr + $total_dr;
 
                                                     echo number_format($ledger['pd_amount']);
 
@@ -143,6 +151,7 @@ Contribution Types
 
                                                     $cr = $ledger['pd_amount'];
                                                     $dr = 0;
+                                                    $total_cr = $cr + $total_cr;
 
                                                     echo number_format($ledger['pd_amount']);
 
@@ -164,6 +173,15 @@ Contribution Types
 
                                         </tr>
                                         <?php $sn++; endforeach; ?>
+
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td><strong>Total:</strong> <?=number_format( $total_dr); ?></td>
+                                        <td><strong>Total:</strong> <?=number_format($total_cr ); ?></td>
+                                        <td> <strong>Balance:</strong> <?=number_format($total_cr - $total_dr); ?></td>
+                                    </tr>
                                     </tbody>
                                 </table>
                               <?php  else:
