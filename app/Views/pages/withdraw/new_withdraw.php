@@ -62,7 +62,7 @@ New Withdrawal
                                 <div class="form-group">
 
                                     <label  for="application_payroll_group_id"> <b> Amount: </b></label>
-                                    <input type="text" class="form-control"  required  name="withdraw_amount" id="withdraw_amount" onkeyup="get_withdraw_charge()" placeholder="Enter Amount">
+                                    <input type="text" class="form-control"  required  name="withdraw_amount" id="withdraw_amount"  placeholder="Enter Amount">
 
 
 

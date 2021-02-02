@@ -57,6 +57,8 @@ class Withdraw extends BaseController
 
                 else:
 
+                    $_POST['withdraw_charges'] = ($_POST['withdraw_charge']/100)*$withdraw_amount;
+                    unset($_POST['withdraw_charge']);
                     unset($_POST['withdraw_balance']);
                     $_POST['withdraw_status'] = 0;
                     $withdraw_staff_id = $_POST['withdraw_staff_id'];
@@ -151,7 +153,7 @@ class Withdraw extends BaseController
 
 
 
-          $data['note'] = 'Withdrawal Balance: NGN'.number_format($bf_w).'<br>'.    'Savings Balance: NGN'.number_format($bf);
+          $data['note'] = 'Withdrawal Balance: NGN'.number_format($bf_w).'<br>'.'Savings Balance: NGN'.number_format($bf);
           $data['balance'] = $bf_w;
         echo json_encode($data);
 
@@ -161,9 +163,7 @@ class Withdraw extends BaseController
             echo json_encode($data);
             endif;
 
-
-
-    }
+        }
 
     public function get_ct(){
         $staff_id = $_POST['staff_id'];
@@ -352,21 +352,21 @@ class Withdraw extends BaseController
 
                 if($v):
 
-                        $temp_payment = $this->withdraw->where(['withdraw_id' => $_POST['withdraw_id']])->first();
-                    $coop = $this->cooperator->where(['cooperator_staff_id' =>$temp_payment['withdraw_staff_id'] ])->first();
-                    $payment_details_array = array(
-                        'pd_staff_id' => $temp_payment['withdraw_staff_id'],
-                        'pd_transaction_date' => $temp_payment['withdraw_date'],
-                        'pd_narration' => $temp_payment['withdraw_narration'],
-                        'pd_amount' => $temp_payment['withdraw_amount'],
-                        'pd_drcrtype' => 2,
-                        'pd_ct_id' => $temp_payment['withdraw_ct_id'],
-                        'pd_pg_id' => $coop['cooperator_payroll_group_id'],
-                        'pd_ref_code' => time(),
-                    );
-
-
-                    $v =   $this->pd->save($payment_details_array);
+//                        $temp_payment = $this->withdraw->where(['withdraw_id' => $_POST['withdraw_id']])->first();
+//                    $coop = $this->cooperator->where(['cooperator_staff_id' =>$temp_payment['withdraw_staff_id'] ])->first();
+//                    $payment_details_array = array(
+//                        'pd_staff_id' => $temp_payment['withdraw_staff_id'],
+//                        'pd_transaction_date' => $temp_payment['withdraw_date'],
+//                        'pd_narration' => $temp_payment['withdraw_narration'],
+//                        'pd_amount' => $temp_payment['withdraw_amount'],
+//                        'pd_drcrtype' => 2,
+//                        'pd_ct_id' => $temp_payment['withdraw_ct_id'],
+//                        'pd_pg_id' => $coop['cooperator_payroll_group_id'],
+//                        'pd_ref_code' => time(),
+//                    );
+//
+//
+//                    $v =   $this->pd->save($payment_details_array);
 
                     if($v):
                         $data = array(
