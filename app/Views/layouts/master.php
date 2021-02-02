@@ -254,8 +254,6 @@
                                         <li><a href="<?=site_url('/loan/payment-schedules') ?>">Payment Schedules</a></li>
                                     </ul>
                                 </li>
-                                
-                                <li><a href="<?= site_url('/loan/payables') ?>"><i class="fa fa-arrow-up"></i><span>Payables</span></a></li>
                                 <li><a href="#"><i class="fa fa-arrow-down"></i><span>Receivables</span></a></li>
                                 <li>
 
