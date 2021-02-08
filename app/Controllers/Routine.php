@@ -4,6 +4,7 @@
 namespace App\Controllers;
 use App\Models\PayrollGroups;
 use App\Models\ContributionTypeModel;
+use DateTime;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use App\Models\Cooperators;
@@ -12,6 +13,7 @@ Use App\Models\PaymentDetailsModel;
 use App\Models\ExceptionModel;
 use App\Models\InterestRoutineModel;
 use App\Models\LoanModel;
+use App\Models\LoanRepaymentModel;
 
 class Routine extends BaseController
 {
@@ -25,6 +27,7 @@ class Routine extends BaseController
         $this->exception = new ExceptionModel();
         $this->ir = new InterestRoutineModel();
         $this->loan = new LoanModel();
+        $this->lr = new LoanRepaymentModel();
 
     }
 
@@ -348,6 +351,7 @@ class Routine extends BaseController
 			
 			$month = $_POST['ir_month'];
 			$year = $_POST['ir_year'];
+			$date = $_POST['ir_date'];
 				
 				$check_ir = $this->ir->where(['ir_month' => $month, 'ir_year' => $year])->findAll();
 				
@@ -363,11 +367,124 @@ class Routine extends BaseController
 					return view('pages/sweet-alert', $data);
 					
 					else:
-						
-						$active_loans = 1;
 					
+					$active_loans = $this->loan->get_interestable_loans($date);
+					$ref_code = 'interest_'.time();
+					
+						foreach ($active_loans as $active_loan):
+							
+							//print_r($active_loan);
 						
-						endif;
+							if($active_loan->interest_method == 2):
+								
+								$loan_repayments = $this->lr->where(['lr_loan_id' => $active_loan->loan_id])->findAll();
+							
+								$total_cr = 0;
+								$total_dr = 0;
+								$cr = 0;
+								$dr = 0;
+								
+								foreach ($loan_repayments as $loan_repayment):
+									
+									if($loan_repayment['lr_dctype'] == 1):
+										$cr = $loan_repayment['lr_amount'];
+										$total_cr = $total_cr + $cr;
+									endif;
+									
+									if($loan_repayment['lr_dctype']  == 2):
+										$dr = $loan_repayment['lr_amount'];
+										$total_dr = $total_dr + $dr;
+									endif;
+								
+								endforeach;
+								
+								$interest_rate = $active_loan->interest_rate/100;
+								$amount = $active_loan->amount + ($total_dr - $total_cr);
+								$interest_amount = $interest_rate * $amount;
+								
+								
+								
+							
+							endif;
+							
+							if($active_loan->interest_method == 3):
+							
+								$interest_rate = $active_loan->interest_rate/100;
+								$amount = $active_loan->amount;
+								
+								$interest_amount = $interest_rate * $amount;
+								
+								
+							
+							endif;
+							
+							$dateObj   = DateTime::createFromFormat('!m', $month);
+							$monthName = $dateObj->format('F');
+							
+							
+							$lr_array = array(
+								'lr_loan_id' => $active_loan->loan_id,
+								'lr_month' => $month,
+								'lr_year' => $year,
+								'lr_amount' => $interest_amount,
+								'lr_narration' => 'Interest for on '.$active_loan->loan_description.' '.$monthName.', '.$year,
+								'lr_dctype' => 2,
+								'lr_ref' => $ref_code,
+								'lr_mi' => 0,
+								'lr_mpr' => 0,
+								'lr_interest' => 1,
+								'lr_date' => $date
+								
+								
+							);
+							
+							$loan_details = $this->loan->where(['loan_id' => $active_loan->loan_id])->first();
+							$loan_interest_amount = $loan_details['interest'] + $interest_amount;
+							
+							$loan_array = array('loan_id' => $active_loan->loan_id,
+												'interest' => $loan_interest_amount,
+								);
+							
+							$ir_array = array(
+								'ir_month' => $month,
+								'ir_year' => $year,
+								'ir_date' => $date
+							);
+							
+							$i = $this->loan->save($loan_array);
+
+							$j = $this->lr->save($lr_array);
+
+							$k = $this->ir->save($ir_array);
+						
+						if($i && $j && $k):
+							
+							$data = array(
+								'msg' => 'Action Successful',
+								'type' => 'success',
+								'location' => site_url('interest_routine')
+							
+							);
+							
+							return view('pages/sweet-alert', $data);
+							
+							
+							else:
+								
+								$data = array(
+									'msg' => 'An Error Occured',
+									'type' => 'error',
+									'location' => site_url('interest_routine')
+								
+								);
+								
+								return view('pages/sweet-alert', $data);
+								
+								endif;
+								
+						endforeach;
+					
+					endif;
 			
 			else:
 				$arr = $this->validator->getErrors();
