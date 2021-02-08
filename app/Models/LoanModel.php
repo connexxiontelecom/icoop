@@ -34,6 +34,17 @@ class LoanModel extends Model{
         $builder->where('loans.disburse = 0');
         return $builder->get()->getResultObject();
     }
+	
+	public function get_interestable_loans($date){
+		$builder = $this->db->table('loans');
+		//$builder->join('loans', 'loans.loan_id = loan_repayments.lr_loan_id');
+		//$builder->join('loan_setups', 'loan_setups.loan_setup_id = loans.loan_type');
+		$builder->groupBy('payment_details.pd_ct_id');
+		$builder->where('loans.disburse', 1);
+		$builder->where('loans.paid_back', 0);
+		$builder->where('loans.disburse_date <', $date);
+		return $builder->get()->getResultObject();
+	}
 
 }
 

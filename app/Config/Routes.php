@@ -79,6 +79,7 @@ $routes->get('upload_routine', 'Routine::upload_routine');
 $routes->get('contribution_upload', 'Routine::contribution_upload');
 $routes->post('contribution_upload', 'Routine::process_contribution_upload');
 $routes->post('p_contribution_upload', 'Routine::p_contribution_upload');
+$routes->get('interest_routine', 'Routine::interest_routine');
 
 
 #chart of accounts
@@ -139,7 +140,7 @@ $routes->get('/messaging/open-mail/(:num)', 'MessagingController::openMail/$1');
 $routes->get('/messaging/bulk-sms', 'MessagingController::showBulkSms');
 $routes->post('/messaging/bulk-sms', 'MessagingController::sendBulkSms');
 
-##WIthdraw Routes
+##Withdraw Routes
 $routes->get('new_withdraw', 'Withdraw::new_withdraw');
 $routes->post('new_withdraw', 'Withdraw::new_withdraw');
 $routes->get('search_cooperator', 'Withdraw::search_cooperator');
