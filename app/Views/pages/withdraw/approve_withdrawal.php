@@ -56,8 +56,8 @@ Approve Withdrawals
                                 <td><?=number_format($withdrawal['withdraw_amount']); ?></td>
 
                                 <td>
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ApproveModal<?=$withdrawal['withdraw_id'] ?>"><i class="fa fa-pencil-square-o"></i></button>
-                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal<?=$withdrawal['withdraw_id'] ?>"> <i class="fa fa-trash-o"></i></button>
+                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#ApproveModal<?=$withdrawal['withdraw_id'] ?>"><i class="fa fa-check"></i></button>
+                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal<?=$withdrawal['withdraw_id'] ?>"> <i class="fa fa-times"></i></button>
 
                                 </td>
                             </tr>
