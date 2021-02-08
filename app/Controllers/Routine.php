@@ -10,6 +10,8 @@ use App\Models\Cooperators;
 use App\Models\TempPaymentsModel;
 Use App\Models\PaymentDetailsModel;
 use App\Models\ExceptionModel;
+use App\Models\InterestRoutineModel;
+use App\Models\LoanModel;
 
 class Routine extends BaseController
 {
@@ -21,6 +23,8 @@ class Routine extends BaseController
         $this->temp_pd = new TempPaymentsModel();
         $this->pd = new PaymentDetailsModel();
         $this->exception = new ExceptionModel();
+        $this->ir = new InterestRoutineModel();
+        $this->loan = new LoanModel();
 
     }
 
@@ -310,4 +314,77 @@ class Routine extends BaseController
 
         endif;
     }
+	
+	public function interest_routine(){
+		
+		$method = $this->request->getMethod();
+		if($method == 'get'):
+			$data = [];
+	        $username = $this->session->user_username;
+			$this->authenticate_user($username, 'pages/routine/interest_routine_base', $data);
+			
+		endif;
+		
+		if($method == 'post'):
+			$this->validator->setRules( [
+				'ir_month'=>[
+					'rules'=>'required',
+					'errors'=>[
+						'required'=>'Select a Month'
+					]
+				],
+				
+				'ir_year'=>[
+					'rules'=>'required',
+					'errors'=>[
+						'required'=>'Select a year'
+					]
+				],
+				
+				
+			]);
+			
+			if ($this->validator->withRequest($this->request)->run()):
+			
+			$month = $_POST['ir_month'];
+			$year = $_POST['ir_year'];
+				
+				$check_ir = $this->ir->where(['ir_month' => $month, 'ir_year' => $year])->findAll();
+				
+				if(!empty($check_ir)):
+					
+					$data = array(
+						'msg' => 'Interest Routine already ran for selected Month and Year',
+						'type' => 'error',
+						'location' => site_url('interest_routine')
+					
+					);
+					
+					return view('pages/sweet-alert', $data);
+					
+					else:
+						
+						$active_loans = 1;
+					
+						
+						endif;
+			
+			else:
+				$arr = $this->validator->getErrors();
+				
+				$data = array(
+					'msg' => implode(", ", $arr),
+					'type' => 'error',
+					'location' => base_url('interest_routine')
+				
+				);
+				
+				echo view('pages/sweet-alert', $data);
+			
+			endif;
+			
+		
+		endif;
+	}
+	
 }
