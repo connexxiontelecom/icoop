@@ -70,7 +70,7 @@ View Payment Schedule
                                 
                                 <tr>
                                     <td class="font-weight-bold">Guarantor 1</td>
-                                    <td class="text-right"><?= $schedule->branch ?? '' ?></span>
+                                    <td class="text-right"><?= $schedule->guarantor ?? '' ?></span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -84,37 +84,37 @@ View Payment Schedule
                             <tbody>
                                 <tr>
                                     <td class="font-weight-bold">Loan Type</td>
-                                    <td class="text-right"><?= $schedule->cooperator_first_name ?? '' ?> <?= $schedule->cooperator_last_name ?? '' ?></span>
+                                    <td class="text-right"><?= $schedule->loan_description ?? '' ?></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="font-weight-bold">Date Applied</td>
-                                    <td class="text-right"><?= $schedule->bank_name ?? '' ?> </span>
+                                    <td class="text-right"><?= !is_null($schedule->creation_date) ? date('d-m-Y', strtotime($schedule->creation_date)) : '-' ?> </span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="font-weight-bold">Verified By</td>
-                                    <td class="text-right"><?= $schedule->account_no ?? '' ?></span>
+                                    <td class="text-right"><?= $schedule->verified_by ?? '' ?></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="font-weight-bold">Date Verified</td>
-                                    <td class="text-right">₦<?= number_format($schedule->amount ?? 0,2) ?></span>
+                                    <td class="text-right"><?= !is_null($schedule->verify_date) ? date('d-m-Y', strtotime($schedule->verify_date)) : '-' ?> </span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="font-weight-bold">Approved By</td>
-                                    <td class="text-right"></span>
+                                    <td class="text-right"><?= $schedule->approved_by ?? '' ?></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="font-weight-bold">Date Approved</td>
-                                    <td class="text-right"><?= $schedule->branch ?? '' ?></span>
+                                    <td class="text-right"><?= !is_null($schedule->approve_date) ? date('d-m-Y', strtotime($schedule->approve_date)) : '-' ?> </span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="font-weight-bold">Guarantor 2</td>
-                                    <td class="text-right"><?= $schedule->branch ?? '' ?></span>
+                                    <td class="text-right"><?= $schedule->guarantor_2 ?? '' ?></span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -159,6 +159,8 @@ View Payment Schedule
                     <div class="form-group d-flex justify-content-center">
                         <input type="hidden" name="hidden_action" id="hidden_action">
                         <input type="hidden" name="loan" value="<?= $schedule->loan_id?>">
+                        <input type="hidden" name="staff_id" value="<?= $schedule->coop_id ?>">
+                        <input type="hidden" name="amount" value="<?= $schedule->amount ?>">
                         <div class="btn-group">
                             <button type="button" class="btn btn-round btn-warning text-white btn-sm" data-dismiss="modal">Cancel</button>
                             <button type="submit" class="btn btn-round btn-danger btn-sm" >No</button>

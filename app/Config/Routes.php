@@ -114,6 +114,7 @@ $routes->get('view_ledger/(:num)/(:any)', 'Cooperators::view_ledger/$1/$2');
 $routes->get('/loan/new', 'LoanController::showLoanApplicationForm');
 $routes->post('/loan/new', 'LoanController::storeLoanApplication');
 $routes->get('/get-cooperator/(:num)', 'LoanController::getCooperator/$1');
+$routes->post('/get-savings', 'LoanController::getSavings');
 $routes->get('/get-guarantor/(:num)', 'LoanController::getGuarantor/$1');
 $routes->get('/loan/verify', 'LoanController::showVerifyApplications');
 $routes->post('/loan/verify', 'LoanController::verifyLoanApplication');

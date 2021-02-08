@@ -37,7 +37,7 @@ New Withdrawal
                                 <div class="form-group">
 
                                     <label  for="application_payroll_group_id"> <b> Staff ID or Name: </b></label>
-                                    <input type="text" class="form-control"  id="search_account"  onblur="get_ct()"   required  name="withdraw_staff_id" placeholder="Enter staff id or  name">
+                                    <input type="text" class="form-control"  id="search_account"  onblur="get_ct()"   required  name="withdraw_staff_id" placeholder="Enter staff ID or  name">
 
 
 

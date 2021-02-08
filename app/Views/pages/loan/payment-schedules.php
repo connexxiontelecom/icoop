@@ -44,7 +44,7 @@ Payment Schedules
                             <tr>
                                 <td><?= $i++ ?></td>
                                 <td><?= date('d M, Y', strtotime($schedule->payable_date)) ?></td>
-                                <td><?= $schedule->account_no ?? '' ?></td>
+                                <td><?= $schedule->bank_name ?? '' ?> (<?= $schedule->account_no ?? '' ?>)</td>
                                 <td>
                                     <a href="<?= site_url('/loan/payment-schedule/'.$schedule->schedule_master_id) ?>" class="btn btn-primary btn-sm">Learn more</a>
                                 </td>

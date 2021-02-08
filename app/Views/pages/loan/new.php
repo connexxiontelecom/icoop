@@ -23,7 +23,7 @@
         <div class="card-block">
             <div class="container">
                 <div class="row m-b-30">
-                    <div class="col-lg-12 col-xl-12">
+                    <div class="col-lg-7 col-md-12 col-xl-7">
                         <h6 class="sub-title p-3  text-uppercase">New Loan Application</h6>
                         <form action="<?= site_url('/loan/new') ?>" autocomplete="off" method="POST" data-parsley-validate="" id="loanSetupForm">
                         <?= csrf_field() ?>
@@ -33,22 +33,16 @@
                                 </div>
                             </div>
                             <div class="row bg-light">
-                                <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="col-md-12 col-lg-12 col-sm-12">
                                     <div class="form-group">
                                         <strong for="">Staff ID</strong>
-                                        <input required type="number" name="staff_id" id="staff_id" placeholder="Staff ID"  class="form-control">
-                                        <div id="suggesstion-box"></div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-lg-6 col-sm-6 response">
-                                    <div class="form-group">
-                                        <strong for="">Name</strong>
-                                        <p id="name"></p>
+                                        <input required type="text" name="staff_id" id="search_account"  onblur="getSavings()" placeholder="Enter staff ID or  name"  class="form-control">
+                                        
                                     </div>
                                 </div>
                             </div>
                             <div class="row bg-light">
-                                <div class="col-md-6 col-lg-6 col-sm-6 response">
+                                <div class="col-md-12 col-lg-12 col-sm-12 response">
                                     <div class="form-group">
                                         <strong for="">Loan Type</strong>
                                         <select name="loan_type" required id="loan_type" class="form-control">
@@ -59,7 +53,9 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-lg-6 col-sm-6 response">
+                            </div>
+                            <div class="row bg-light">
+                                <div class="col-md-12 col-lg-12 col-sm-12 response">
                                     <div class="form-group">
                                         <strong for="">Duration (months)</strong>
                                         <input type="number" required class="form-control" placeholder="Duration" id="duration" name="duration" >
@@ -68,7 +64,7 @@
                                 </div>
                             </div>
                             <div class="row bg-light">
-                                <div class="col-md-6 col-lg-6 col-sm-6 response">
+                                <div class="col-md-12 col-lg-12 col-sm-12 response">
                                     <div class="form-group">
                                         <strong for="">Amount</strong>
                                         <input type="text" required  name="amount" id="amount" placeholder="Amount"  class="form-control money">
@@ -142,48 +138,13 @@
         var savings = 0;
         var guarantor = null;
         var staff = null;
+        var guarantor_2 = null;
         $(document).ready(function(){
             $('#guarantor_wrapper_1').hide();
             $('#guarantor_wrapper_2').hide();
             $('#submitLoanBtn').attr('disabled','disabled');
             $('.money').simpleMoneyFormat();
             
-/*             $("#staff_id").keyup(function(){
-                $.ajax({
-                type: "POST",
-                url: "<?php echo site_url('compute_balance') ?>",
-                data:'keyword='+$(this).val(),
-                beforeSend: function(){
-                    //$("#staff_id").css("background","#FFF url(LoaderIcon.gif) no-repeat 165px");
-                },
-                success: function(data){
-                    $("#suggesstion-box").show();
-                    $("#suggesstion-box").html(data);
-                    $("#staff_id").css("background","#FFF");
-                }
-                });
-            });
-             */
-            $(document).on('blur', '#staff_id', function(e){
-               e.preventDefault();
-               if($(this).val() != ''){
-                $.ajax({
-                    type: "GET",
-                    url: '/get-cooperator/'+$(this).val(),
-                    cache: false,
-                    success: function(html){
-                        var handler = $.parseJSON(html);
-                        //if(html.length == 0){
-                            $('#name').text('');
-                        //}else{
-                        savings = handler.savings.pd_amount;
-                        
-                            $('#name').text(handler.cooperator.cooperator_first_name+" "+handler.cooperator.cooperator_last_name);
-                        //}
-                    }
-                    });
-               }
-           }); 
            $(document).on('blur', '#guarantor_1', function(e){
                e.preventDefault();
                if($(this).val() != ''){
@@ -291,29 +252,22 @@
             $("#search_account").autocomplete({
                 source: "<?php echo base_url('search_cooperator'); ?>",
             });
-
-          
         });
-        function get_ct(){
-            let t_staff_id =  $("#search_account").val();
-            let staff_id = t_staff_id.split(',')[0];
-            $.ajax({
-                url: '<?php echo site_url('get_ct') ?>',
-                type: 'post',
-                data: {
-                    'staff_id': staff_id,
-                },
-                dataType: 'json',
-                success:function(response){
-                    $("#ct_id").empty();
-                    $("#ct_id").append('<option> -- Select Contribution Type --</option>');
-                    for (var i=0; i<response.length; i++) {
-                        $("#ct_id").append('<option value="' + response[i].contribution_type_id + '">' + response[i].contribution_type_name + '</option>');
-                    }
-                    // console.log(response);
-                }
-            });
 
-    }
+        function getSavings(){
+            var staff = $('#search_account').val();
+            let staff_id = staff.split(',')[0];
+            $.ajax({
+            url: '<?php echo site_url('get-savings') ?>',
+            type: 'post',
+            data: {
+                'staff_id': staff_id,
+            },
+            dataType: 'json',
+            success:function(response){
+                savings = response.savings.pd_amount;
+            }
+        });
+        }
     </script>
 <?= $this->endSection() ?>
