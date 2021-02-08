@@ -8,6 +8,7 @@ use \App\Models\CoopBankModel;
 use \App\Models\WithdrawModel;
 use \App\Models\ScheduleMasterModel;
 use \App\Models\ScheduleMasterDetailModel;
+use \App\Models\PaymentDetailsModel;
 
 class LoanController extends BaseController
 {
@@ -23,6 +24,7 @@ class LoanController extends BaseController
         $this->loan = new LoanModel();
         $this->withdraw = new WithdrawModel();
         $this->user = new UserModel();
+        $this->paymentdetail = new PaymentDetailsModel();
         $this->session = session();
     }
 
@@ -36,7 +38,7 @@ class LoanController extends BaseController
         $this->authenticate_user($username, 'pages/loan/new', $data);
     }
     
-    public function getCooperator($id){
+   /*  public function getCooperator($id){
         $cooperator = $this->coop->where('cooperator_staff_id', $id)->first();
         $savings = $this->loan->getCooperatorSavings($id);
         $data = [
@@ -44,6 +46,15 @@ class LoanController extends BaseController
             'savings'=>$savings
         ];
         return json_encode($data);
+    } */
+    public function getSavings(){ 
+        $staff_id = $_POST['staff_id'];
+        $savings = $this->loan->getCooperatorSavings($staff_id);
+        $data = [
+            'savings'=>$savings
+        ];
+        echo json_encode($data);
+        
     }
     public function getGuarantor($id){
         $cooperator = $this->coop->where('cooperator_staff_id', $id)->first();
@@ -59,7 +70,7 @@ class LoanController extends BaseController
 
 	public function storeLoanApplication()
 	{
-     
+             
         helper(['form', 'date']);
         $data = [];
 
@@ -110,14 +121,14 @@ class LoanController extends BaseController
             ];
             if($this->validate($rules)){
 					$data = [
-						'staff_id'=>$this->request->getVar('staff_id'),
-						'guarantor'=>$this->request->getVar('guarantor_1'),
+						'staff_id'=>current(explode(",", $this->request->getVar('staff_id'))),
+                        'guarantor'=>$this->request->getVar('guarantor_1'),
+                        'name'=>substr($this->request->getVar('staff_id'), strlen(current(explode(" ", $this->request->getVar('staff_id'))))),
 						'guarantor_2'=>$this->request->getVar('guarantor_2'),
 						'loan_type'=>$this->request->getVar('loan_type'),
 						'duration'=>$this->request->getVar('duration'),
                         'amount'=>str_replace(",","",$this->request->getVar('amount')),
                         'applied_date'=>date('Y-m-d H:i:s'),
-						//'loan_terms'=>$this->request->getVar('loan_terms'),
 					];
                     $this->loanapp->save($data);
                     $alert = array(
@@ -260,6 +271,7 @@ class LoanController extends BaseController
             'coopbank'=>$coopbank,
             'withdraws'=>$withdraws
         ];
+        
         $username = $this->session->user_username;
         $this->authenticate_user($username, 'pages/loan/new-payment-schedule', $data); 
     }
@@ -340,15 +352,18 @@ class LoanController extends BaseController
         ];
         
         $username = $this->session->user_username;
+        
         $this->authenticate_user($username, 'pages/loan/payment-schedules', $data); 
     }
 
     public function showPaymentScheduleDetail($id){
         $content = $this->schedulemaster->getSchedulePaymentDetail($id);
+        //return dd($content);
         if(!empty($content)){
             $data = [
                 'schedule'=>$content
             ];
+            
             $username = $this->session->user_username;
             $this->authenticate_user($username, 'pages/loan/view-payment-schedule', $data);
 
@@ -388,6 +403,18 @@ class LoanController extends BaseController
             ];
             if($this->request->getVar('hidden_action') == 'approve'){
                 $this->loan->update($this->request->getVar('loan'), ['disburse'=>1]);
+                
+                $payment = [
+                    'pd_staff_id'=>$this->request->getVar('staff_id'),
+                    'pd_transaction_date'=>date('Y-m-d H:i:s'),
+                    'pd_narration'=>'Loan approved for disburs.',
+                    'pd_amount'=>$this->request->getVar('amount'),
+                    'pd_drcrtype'=>1,
+                    'pd_ct_id'=>3,
+                    'pd_pg_id'=>1,
+                    'pd_ref_code'=>substr(sha1(time()), 22,32)
+                ];
+                $this->paymentdetail->save($payment);
                 $alert = array(
                         'msg' => 'Success! Loan disbursed',
                         'type' => 'success',

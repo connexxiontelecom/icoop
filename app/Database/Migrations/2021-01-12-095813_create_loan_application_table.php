@@ -51,7 +51,7 @@ class CreateLoanApplicationTable extends Migration
 					'null'=>true
 				],
 				'verified_by' =>[
-					'type' => 'INT',
+					'type' => 'TEXT',
 					'null'=>true
 				],
 				'verify_date'=>[
@@ -59,7 +59,7 @@ class CreateLoanApplicationTable extends Migration
 					'null'=>true
 				],
 				'approved_by' =>[
-						'type' => 'INT',
+						'type' => 'TEXT',
 						'null'=>true
 					],
 				'approve_date' =>[
@@ -81,7 +81,7 @@ class CreateLoanApplicationTable extends Migration
 						'null'=>true
 					],
 				'applied_by' =>[
-						'type' => 'INT',
+						'type' => 'TEXT',
 						'null'=>true
 					],
 				'verify_comment' =>[
