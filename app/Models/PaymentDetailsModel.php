@@ -2,6 +2,7 @@
 
 
 namespace App\Models;
+//1 = CREDIT, 2 = DEBIT
 
 
 class PaymentDetailsModel extends \CodeIgniter\Model
