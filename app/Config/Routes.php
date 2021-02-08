@@ -80,6 +80,7 @@ $routes->get('contribution_upload', 'Routine::contribution_upload');
 $routes->post('contribution_upload', 'Routine::process_contribution_upload');
 $routes->post('p_contribution_upload', 'Routine::p_contribution_upload');
 $routes->get('interest_routine', 'Routine::interest_routine');
+$routes->post('interest_routine', 'Routine::interest_routine');
 
 
 #chart of accounts

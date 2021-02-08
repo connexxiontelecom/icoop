@@ -2,7 +2,7 @@
 	
 	
 	namespace App\Models;
-	
+	//1 = CREDIT, 2 = DEBIT
 	
 	class LoanRepaymentModel extends \CodeIgniter\Model
 	{
