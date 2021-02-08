@@ -70,7 +70,7 @@ View Cooperator
                                     <div class="text-center"><i class="fa fa-book"></i>
                                         <h5 class="m-t-20 mb-0">Outstanding Loans</h5>
                                         <p class="text-muted"></p>
-                                        <a href="<?=base_url('ledger')."/".$cooperator->cooperator_staff_id; ?>" class="btn btn-info btn-round">View Ledger</a>
+                                        <a href="<?=base_url('loan_ledger')."/".$cooperator->cooperator_staff_id; ?>" class="btn btn-info btn-round">View Ledger</a>
                                     </div>
                                 </div>
                             </div>

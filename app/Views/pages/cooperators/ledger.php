@@ -64,10 +64,6 @@ Contribution Types - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
                                     </select>
                                 </div>
 
-
-
-
-
                                 <?= csrf_field() ?>
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-info btn-block">Retrieve</button>

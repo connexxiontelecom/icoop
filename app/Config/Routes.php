@@ -80,6 +80,7 @@ $routes->get('contribution_upload', 'Routine::contribution_upload');
 $routes->post('contribution_upload', 'Routine::process_contribution_upload');
 $routes->post('p_contribution_upload', 'Routine::p_contribution_upload');
 $routes->get('interest_routine', 'Routine::interest_routine');
+$routes->post('interest_routine', 'Routine::interest_routine');
 
 
 #chart of accounts
@@ -110,6 +111,8 @@ $routes->get('cooperator/(:num)', 'Cooperators::coperator/$1');
 $routes->get('ledger/(:any)', 'Cooperators::ledger/$1');
 $routes->post('ledger/(:any)', 'Cooperators::ledger/$1');
 $routes->get('view_ledger/(:num)/(:any)', 'Cooperators::view_ledger/$1/$2');
+$routes->get('loan_ledger/(:any)', 'Cooperators::loan_ledger/$1');
+$routes->post('loan_ledger/(:any)', 'Cooperators::loan_ledger/$1');
 
 #Loan routes
 $routes->get('/loan/new', 'LoanController::showLoanApplicationForm');

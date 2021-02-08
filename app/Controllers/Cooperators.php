@@ -9,6 +9,9 @@ use App\Models\StateModel;
 use App\Models\DepartmentModel;
 use App\Models\PaymentDetailsModel;
 use App\Models\ContributionTypeModel;
+use App\Models\LoanModel;
+use App\Models\LoanSetupModel;
+use App\Models\LoanRepaymentModel;
 
 
 
@@ -25,6 +28,9 @@ class Cooperators extends BaseController
              $this->pd = new PaymentDetailsModel();
              $this->ct = new ContributionTypeModel();
              $this->session = session();
+             $this->loan = new LoanModel();
+             $this->ls = new LoanSetupModel();
+             $this->lr = new LoanRepaymentModel();
 
         }
 
@@ -770,9 +776,139 @@ class Cooperators extends BaseController
         endif;
 
     }
+	
+	
+	public function loan_ledger($staff_id){
+		$cooperator =  $this->cooperator->get_cooperator_staff_id( $staff_id);
+		$method = $this->request->getMethod();
+		
+		if($method == 'post'):
+			$year = $this->request->getPost('loan_year');
+			$loan_id = $this->request->getPost('loan_id');
+			if($year == 'a'):
+				
+				$data['ledgers'] = (object)$this->loan->get_loans_staff_id($staff_id, $loan_id);
+				
+				
+				
+				$data['ls'] = $this->ls->where(['loan_setup_id' => $loan_id])->first();
+				$data['check'] = 1;
+				$data['years'] = $this->lr->get_year_loan($staff_id);
+				$data['cooperator'] = $cooperator;
+				$data['states'] = $this->state->findAll();
+				$data['departments'] = $this->department->findAll();
+				$data['banks'] = $this->bank->findAll();
+				$data['pgs'] = $this->pg->findAll();
+				$username = $this->session->user_username;
+				
+				//print_r($data['ledgers']);
+				$this->authenticate_user($username, 'pages/cooperators/loan_ledger', $data);
+			
+			endif;
+		
+			
+			
+			
+			endif;
+		
+		
+		
+		
+		if($method == 'get'):
+			if(!empty($cooperator)):
+				if($cooperator->cooperator_status == 2):
+					
+					
+					
+					$loans = $this->loan->get_loan_staff_id($staff_id);
+					$i = 0;
+					
+					foreach ($loans as $loan):
+						
+						if($loan->disburse == 1 && $loan->paid_back == 0):
+							//$data['loan_types'][$i] = $this->ls->where(['loan_setup_id' => $loan->loan_type])->first();
+							
+							$loan_ledgers = $this->loan->get_loans_staff_id($staff_id, $loan->loan_type);
+							
+							$total_cr = 0;
+							$total_dr = 0;
+							$cr = 0;
+							$dr = 0;
+					
+							$total_interest = 0;
+							foreach ($loan_ledgers as$loan_ledger):
+									
+									if($loan_ledger->lr_dctype == 1):
+										$cr = $loan_ledger->lr_amount;
+										$total_cr = $total_cr + $cr;
+									endif;
+								
+								if($loan_ledger->lr_dctype == 2 && $loan_ledger->lr_interest == 0):
+									$dr = $loan_ledger->lr_amount;
+									$total_dr = $total_dr + $dr;
+								endif;
+									
+//									if($loan_ledger->lr_dctype == 2):
+//										$dr = $loan_ledger->lr_amount;
+//										$total_dr = $total_dr + $dr;
+//									endif;
+									
+									
+										
+										
+										$total_interest = $total_interest + $loan_ledger->lr_mi;
+									
+							
+								
+									
+								endforeach;
+								
+								$total_cr = $total_cr - $total_dr;
+								
+								
+							
+							$data['ledgers'][$i]  = array(
+								'loan_description' => $loan_ledgers[0]->loan_description,
+								'loan_principal' => $loan_ledgers[0]->amount,
+								'loan_total_interest' => $total_interest,
+								'loan_total_cr' => $total_cr,
+								'loan_total_dr' => $total_dr,
+								'loan_balance' => $loan_ledgers[0]->amount + ($total_dr - $total_cr),
+								'loan_type' => $loan->loan_type
+							
+							);
+						
+							$i++;
+						endif;
+					endforeach;
 
-
-        public function test_sweet(){
+					$data['cooperator'] = $cooperator;
+					$data['states'] = $this->state->findAll();
+					$data['departments'] = $this->department->findAll();
+					$data['banks'] = $this->bank->findAll();
+					$data['pgs'] = $this->pg->findAll();
+					$username = $this->session->user_username;
+					
+					//print_r($data['ledgers']);
+					$this->authenticate_user($username, 'pages/cooperators/outstanding_loan_ledger', $data);
+					
+					
+				else:
+					return redirect('error_404');
+				endif;
+			
+			else:
+				
+				return redirect('error_404');
+			
+			endif;
+		
+		endif;
+		
+	}
+    
+    
+    public function test_sweet(){
 
             $data = array(
                 'msg' => 'Application Successful',
