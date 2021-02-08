@@ -386,12 +386,12 @@ class Routine extends BaseController
 								
 								foreach ($loan_repayments as $loan_repayment):
 									
-									if($loan_repayment['pd_drcrtype'] == 1):
+									if($loan_repayment['lr_dctype'] == 1):
 										$cr = $loan_repayment['lr_amount'];
 										$total_cr = $total_cr + $cr;
 									endif;
 									
-									if($loan_repayment['pd_drcrtype']  == 2):
+									if($loan_repayment['lr_dctype']  == 2):
 										$dr = $loan_repayment['lr_amount'];
 										$total_dr = $total_dr + $dr;
 									endif;
@@ -399,18 +399,9 @@ class Routine extends BaseController
 								endforeach;
 								
 								$interest_rate = $active_loan->interest_rate/100;
-								$amount = $total_dr - $total_cr;
-								
-								if($amount > 0):
+								$amount = $active_loan->amount + ($total_dr - $total_cr);
 								$interest_amount = $interest_rate * $amount;
 								
-								endif;
-								
-								if($amount == 0):
-									$amount = $active_loan->amount;
-									$interest_amount = $interest_rate * $amount;
-								
-								endif;
 								
 								
 							
