@@ -402,7 +402,7 @@ class LoanController extends BaseController
 				],
             ];
             if($this->request->getVar('hidden_action') == 'approve'){
-                $this->loan->update($this->request->getVar('loan'), ['disburse'=>1]);
+                $this->loan->update($this->request->getVar('loan'), ['disburse'=>1, 'disburse_date'=>date('Y-m-d H:i:s')]);
                 
                 $payment = [
                     'pd_staff_id'=>$this->request->getVar('staff_id'),
