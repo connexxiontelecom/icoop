@@ -89,7 +89,7 @@ View Payment Schedule
                                 </tr>
                                 <tr>
                                     <td class="font-weight-bold">Date Applied</td>
-                                    <td class="text-right"><?= $schedule->bank_name ?? '' ?> </span>
+                                    <td class="text-right"><?= !is_null($schedule->creation_date) ? date('d-m-Y', strtotime($schedule->creation_date)) : '-' ?> </span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -159,6 +159,8 @@ View Payment Schedule
                     <div class="form-group d-flex justify-content-center">
                         <input type="hidden" name="hidden_action" id="hidden_action">
                         <input type="hidden" name="loan" value="<?= $schedule->loan_id?>">
+                        <input type="hidden" name="staff_id" value="<?= $schedule->coop_id ?>">
+                        <input type="hidden" name="amount" value="<?= $schedule->amount ?>">
                         <div class="btn-group">
                             <button type="button" class="btn btn-round btn-warning text-white btn-sm" data-dismiss="modal">Cancel</button>
                             <button type="submit" class="btn btn-round btn-danger btn-sm" >No</button>
