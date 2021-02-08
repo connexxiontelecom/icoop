@@ -25,6 +25,8 @@ class ScheduleMasterModel extends Model{
         $builder->join('cooperators', 'cooperators.cooperator_staff_id = schedule_master_details.coop_id');
         $builder->join('coop_banks', 'coop_banks.bank_id = banks.bank_id');
         $builder->join('loans', 'loans.staff_id = cooperators.cooperator_staff_id');
+        $builder->join('loan_setups', 'loan_setups.loan_setup_id = loans.loan_type');
+        $builder->join('loan_applications', 'loan_applications.loan_app_id = loans.loan_app_id');
         $builder->where('schedule_masters.schedule_master_id = '.$id);
         return $builder->get()->getRowObject();
     }

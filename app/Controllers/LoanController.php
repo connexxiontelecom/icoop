@@ -358,6 +358,7 @@ class LoanController extends BaseController
 
     public function showPaymentScheduleDetail($id){
         $content = $this->schedulemaster->getSchedulePaymentDetail($id);
+        //return dd($content);
         if(!empty($content)){
             $data = [
                 'schedule'=>$content
