@@ -398,7 +398,7 @@ class Routine extends BaseController
 								
 								endforeach;
 								
-								$interest_rate = $active_loan->interest_rate/100;
+								$interest_rate = $active_loan->ls_interest_rate/100;
 								$amount = $active_loan->amount + ($total_dr - $total_cr);
 								$interest_amount = $interest_rate * $amount;
 								
@@ -409,7 +409,7 @@ class Routine extends BaseController
 							
 							if($active_loan->interest_method == 3):
 							
-								$interest_rate = $active_loan->interest_rate/100;
+								$interest_rate = $active_loan->ls_interest_rate/100;
 								$amount = $active_loan->amount;
 								
 								$interest_amount = $interest_rate * $amount;
@@ -427,12 +427,13 @@ class Routine extends BaseController
 								'lr_month' => $month,
 								'lr_year' => $year,
 								'lr_amount' => $interest_amount,
-								'lr_narration' => 'Interest for on '.$active_loan->loan_description.' '.$monthName.', '.$year,
+								'lr_narration' => 'Interest Due for'.$monthName.', '.$year. 'for '.$active_loan->loan_description,
 								'lr_dctype' => 2,
 								'lr_ref' => $ref_code,
 								'lr_mi' => 0,
 								'lr_mpr' => 0,
 								'lr_interest' => 1,
+								'lr_interest_rate' => $active_loan->ls_interest_rate,
 								'lr_date' => $date
 								
 								

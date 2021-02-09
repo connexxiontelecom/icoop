@@ -787,7 +787,7 @@ class Cooperators extends BaseController
 			$loan_id = $this->request->getPost('loan_id');
 			if($year == 'a'):
 				
-				$data['ledgers'] = (object)$this->loan->get_loans_staff_id($staff_id, $loan_id);
+				$data['ledgers'] = $this->loan->get_loans_staff_id($staff_id, $loan_id);
 				
 				
 				
@@ -801,8 +801,8 @@ class Cooperators extends BaseController
 				$data['pgs'] = $this->pg->findAll();
 				$username = $this->session->user_username;
 				
-				//print_r($data['ledgers']);
-				$this->authenticate_user($username, 'pages/cooperators/loan_ledger', $data);
+				print_r($data['ledgers']);
+				//$this->authenticate_user($username, 'pages/cooperators/loan_ledger', $data);
 			
 			endif;
 		

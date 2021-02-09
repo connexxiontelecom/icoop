@@ -73,9 +73,9 @@ Loans - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
 									<td> # </td>
 									<td><?=$disbursed_date; ?></td>
 									<td><?="Loan Disbursed"; ?></td>
-									<td><?=number_format($total_dr); ?></td>
-									<td>0</td>
-									<td> <?=number_format($total_dr, 2); ?></td>
+									<td style="text-align: right"><?=number_format($total_dr, 2); ?></td>
+									<td style="text-align: right">0</td>
+									<td style="text-align: right"> <?=number_format($total_dr, 2); ?></td>
 								</tr>
 						
 						
@@ -87,7 +87,7 @@ Loans - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
 										<td><?=$ledger->lr_date; ?></td>
 										<td><?=$ledger->lr_narration; ?></td>
 								
-										<td><?php
+										<td style="text-align: right"><?php
 										        if($ledger->lr_dctype == 2):
 											        $dr = $ledger->lr_amount;
 											        $cr = 0;
@@ -101,7 +101,7 @@ Loans - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
 										        endif;
 									
 									        ?></td>
-										<td>
+										<td style="text-align: right">
 									        <?php
 										        if($ledger->lr_dctype == 1):
 											
@@ -119,7 +119,7 @@ Loans - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
 									        ?>
 										</td>
 								
-										<td>
+										<td style="text-align: right">
 									        <?php $bf = ($bf + $dr) - $cr;
 										        echo number_format($bf, 2);
 									        ?>
@@ -134,9 +134,9 @@ Loans - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
 									<td></td>
 									<td></td>
 									<td></td>
-									<td><strong>Total:</strong> <?=number_format( $total_dr, 2); ?></td>
-									<td><strong>Total:</strong> <?=number_format($total_cr, 2 ); ?></td>
-									<td> <strong>Balance:</strong> <?=number_format($total_dr - $total_cr, 2); ?></td>
+									<td style="text-align: right"><strong>Total:</strong> <?=number_format( $total_dr, 2); ?></td>
+									<td style="text-align: right"><strong>Total:</strong> <?=number_format($total_cr, 2 ); ?></td>
+									<td style="text-align: right"> <strong>Balance:</strong> <?=number_format($total_dr - $total_cr, 2); ?></td>
 								</tr>
 								</tbody>
 							</table>
