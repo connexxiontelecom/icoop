@@ -56,6 +56,7 @@ class LoanModel extends Model{
 	public function get_loans_staff_id($staff_id, $loan_id){
 		$builder = $this->db->table('loans');
 		$builder->join('loan_setups', 'loan_setups.loan_setup_id = loans.loan_type');
+		$builder->join('loan_applications', 'loan_applications.loan_app_id = loans.loan_app_id');
 		$builder->join('loan_repayments', 'loan_repayments.lr_loan_id = loans.loan_id');
 		$builder->where('loan_setups.loan_setup_id', $loan_id);
 		$builder->where('loans.staff_id', $staff_id);
