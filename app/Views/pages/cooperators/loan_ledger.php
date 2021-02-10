@@ -165,9 +165,9 @@ Loans - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
 							<th><strong># </strong></th>
 							<th><strong>Date</strong></th>
 							<th><strong>Narration</strong></th>
-							<th><strong>Dr</strong></th>
-							<th><strong>Cr</strong></th>
-							<th><strong>Balance</strong></th>
+							<th style="text-align: right"><strong>Dr</strong></th>
+							<th style="text-align: right"><strong>Cr</strong></th>
+							<th style="text-align: right"><strong>Balance</strong></th>
 						
 						
 						
@@ -200,7 +200,7 @@ Loans - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
 							<td><?=$disbursed_date; ?></td>
 							<td><?="Loan Disbursed"; ?></td>
 							<td style="text-align: right"><?=number_format($total_dr, 2); ?></td>
-							<td style="text-align: right">0</td>
+							<td style="text-align: right"><?=number_format(0, 2); ?></td>
 							<td style="text-align: right"> <?=number_format($total_dr, 2); ?></td>
 						</tr>
 						
@@ -222,7 +222,7 @@ Loans - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
 											echo number_format($ledger->lr_amount, 2);
 										
 										else:
-											echo '0';
+											echo number_format(0, 2);
 										
 										endif;
 									
@@ -238,7 +238,7 @@ Loans - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
 											echo number_format($ledger->lr_amount, 2);
 										
 										else:
-											echo '0';
+											echo number_format(0, 2);
 										
 										endif;
 									

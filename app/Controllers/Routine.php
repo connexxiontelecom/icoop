@@ -14,6 +14,10 @@ use App\Models\ExceptionModel;
 use App\Models\InterestRoutineModel;
 use App\Models\LoanModel;
 use App\Models\LoanRepaymentModel;
+use App\Models\LoanExceptionModel;
+use App\Models\TempLoanRepaymentModel;
+use App\Models\LoanSetupModel;
+
 
 class Routine extends BaseController
 {
@@ -28,6 +32,9 @@ class Routine extends BaseController
         $this->ir = new InterestRoutineModel();
         $this->loan = new LoanModel();
         $this->lr = new LoanRepaymentModel();
+        $this->le = new LoanExceptionModel();
+        $this->temp_lr = new TempLoanRepaymentModel();
+        $this->ls = new LoanSetupModel();
 
     }
 
@@ -516,68 +523,74 @@ class Routine extends BaseController
 	}
 	
 	
-	public function lp_upload(){
+	public function lr_upload(){
 		
-		$temp_pds = $this->temp_pd->findAll();
+		$temp_lrs = $this->temp_lr->findAll();
 		
-		if(empty($temp_pds)):
-			$data['pgs'] = $this->pg->findAll();
-			$data['cts'] = $this->contribution_type->findAll();
+		if(empty($temp_lrs)):
+			$data['loan_types'] = $this->ls->findAll();
 			$username = $this->session->user_username;
-			$this->authenticate_user($username, 'pages/routine/contribution_upload', $data);
+			$this->authenticate_user($username, 'pages/routine/lr_upload', $data);
 		
 		else:
-			$temp_data = $this->temp_pd->first();
-			$contribution_type_id = $temp_data['temp_pd_ct_id'];
-			$payroll_group_id = $temp_data['temp_pd_pg_id'];
-			$data['contribution_type'] = $this->contribution_type->where(['contribution_type_id' => $contribution_type_id])->first();
-			$data['payroll_group'] = $this->pg->where(['pg_id'=> $payroll_group_id])->first();
-			$data['temp_pds'] = $this->temp_pd->findAll();
+			$temp_data = $this->temp_lr->first();
+			$dateObj   = DateTime::createFromFormat('!m', $temp_data['temp_lr_month']);
+			$data['monthName'] = $dateObj->format('F');
+			$data['year'] = $temp_data['temp_lr_year'];
+			$loan_id = $temp_data['temp_lr_loan_id'];
+			$data['loan_type'] = $this->ls->where(['loan_setup_id' => $loan_id])->first();
+			
+			$data['temp_lrs'] = $this->temp_lr->findAll();
 			$data['permission'] = 1;
-			return view('pages/routine/view_contribution_upload', $data);
+			return view('pages/routine/view_lr_upload', $data);
 		endif;
 		
 	}
 	
-	public function process_lp_upload(){
+	public function process_lr_upload(){
 		
 		$this->validator->setRules( [
-			'contribution_upload_pg'=>[
+			'lr_upload_lt'=>[
 				'rules'=>'required',
 				'errors'=>[
-					'required'=>'Select a Payroll Group'
+					'required'=>'Select a Loan Type'
 				]
 			],
 			
-			'contribution_upload_ct'=>[
-				'rules'=>'required',
-				'errors'=>[
-					'required'=>'Select a Contribution Type'
-				]
-			],
 			
-			'contribution_upload_date'=>[
+			'lr_upload_date'=>[
 				'rules'=>'required',
 				'errors'=>[
 					'required'=>'Enter a Date'
 				]
 			],
 			
-			'contribution_upload_narration'=>[
+			'lr_upload_month'=>[
 				'rules'=>'required',
 				'errors'=>[
-					'required'=>'Enter a Narration'
+					'required'=>'Select a Month'
+				]
+			],
+			
+			'lr_upload_year'=>[
+				'rules'=>'required',
+				'errors'=>[
+					'required'=>'Select a Year'
 				]
 			],
 		
 		]);
 		
 		if ($this->validator->withRequest($this->request)->run()):
-			$this->temp_pd->delete_temp();
-			$contribution_type_id = $_POST['contribution_upload_ct'];
-			$payroll_group_id = $_POST['contribution_upload_pg'];
-			$date = $_POST['contribution_upload_date'];
-			$narration = $_POST['contribution_upload_narration'];
+			$this->temp_lr->delete_temp();
+			$lt_id = $_POST['lr_upload_lt'];
+			$lt_details = $this->ls->where('loan_setup_id', $lt_id)->first();
+			$lr_month = $_POST['lr_upload_month'];
+			$dateObj   = DateTime::createFromFormat('!m', $lr_month);
+			$monthName = $dateObj->format('F');
+			$lr_year = $_POST['lr_upload_year'];
+			$date = $_POST['lr_upload_date'];
+			$narration = 'Loan repayment on '.$lt_details['loan_description'].' for '.$monthName.', '.$lr_year;
 			$ref_code = time();
 			
 			if($_FILES["select_excel"]["name"] != ''):
@@ -600,64 +613,66 @@ class Routine extends BaseController
 					foreach ($rows as $row):
 						$staff_id = $row[0];
 						$staff_name = $row[1];
-						
 						$amount = $row[2];
-						
 						$cooperator_details = $this->cooperator->get_cooperator_staff_id($staff_id);
 						
 						// 1 == non existent cooperator
-						// 2 == wrong Paygroup
+						// 2 == wrong loan
 						// 3 == valid entry
 						if(empty($cooperator_details)):
 							
 							$payment_details_array = array(
-								'temp_pd_staff_id' => $staff_id,
-								'temp_pd_staff_name' => $staff_name,
-								'temp_pd_transaction_date' => $date,
-								'temp_pd_narration' => $narration,
-								'temp_pd_amount' => $amount,
-								'temp_pd_drcrtype' => 1,
-								'temp_pd_ct_id' => $contribution_type_id,
-								'temp_pd_pg_id' => $payroll_group_id,
-								'temp_pd_ref_code' => $ref_code,
-								'temp_pd_status' => 1
+								'temp_lr_staff_id' => $staff_id,
+								'temp_lr_staff_name' => $staff_name,
+								'temp_lr_transaction_date' => $date,
+								'temp_lr_narration' => $narration,
+								'temp_lr_month' => $lr_month,
+								'temp_lr_year' => $lr_year,
+								'temp_lr_amount' => $amount,
+								'temp_lr_drcrtype' => 1,
+								'temp_lr_loan_id' => $lt_id,
+								'temp_lr_ref_code' => $ref_code,
+								'temp_lr_status' => 1
 							);
 						
 						else:
 							
+							$loans = $this->loan->get_active_loans_staff_id($staff_id, $lt_id);
 							$cooperator_pg =  $cooperator_details->cooperator_payroll_group_id;
 							
 							// $payment_details_array = $cooperator_details;
 							
 							
-							if($cooperator_pg != $payroll_group_id):
+							if(empty($loans)):
 								
 								$payment_details_array = array(
-									'temp_pd_staff_id' => $staff_id,
-									'temp_pd_staff_name' => $staff_name,
-									'temp_pd_transaction_date' => $date,
-									'temp_pd_narration' => $narration,
-									'temp_pd_amount' => $amount,
-									'temp_pd_drcrtype' => 1,
-									'temp_pd_ct_id' => $contribution_type_id,
-									'temp_pd_pg_id' => $payroll_group_id,
-									'temp_pd_ref_code' => $ref_code,
-									'temp_pd_status' => 2
+									'temp_lr_staff_id' => $staff_id,
+									'temp_lr_staff_name' => $staff_name,
+									'temp_lr_transaction_date' => $date,
+									'temp_lr_narration' => $narration,
+									'temp_lr_month' => $lr_month,
+									'temp_lr_year' => $lr_year,
+									'temp_lr_amount' => $amount,
+									'temp_lr_drcrtype' => 1,
+									'temp_lr_loan_id' => $lt_id,
+									'temp_lr_ref_code' => $ref_code,
+									'temp_lr_status' => 2
 								);
 							
 							else:
 								
 								$payment_details_array = array(
-									'temp_pd_staff_id' => $staff_id,
-									'temp_pd_staff_name' => $staff_name,
-									'temp_pd_transaction_date' => $date,
-									'temp_pd_narration' => $narration,
-									'temp_pd_amount' => $amount,
-									'temp_pd_drcrtype' => 1,
-									'temp_pd_ct_id' => $contribution_type_id,
-									'temp_pd_pg_id' => $payroll_group_id,
-									'temp_pd_ref_code' => $ref_code,
-									'temp_pd_status' => 3
+									'temp_lr_staff_id' => $staff_id,
+									'temp_lr_staff_name' => $staff_name,
+									'temp_lr_transaction_date' => $date,
+									'temp_lr_narration' => $narration,
+									'temp_lr_month' => $lr_month,
+									'temp_lr_year' => $lr_year,
+									'temp_lr_amount' => $amount,
+									'temp_lr_drcrtype' => 1,
+									'temp_lr_loan_id' => $lt_id,
+									'temp_lr_ref_code' => $ref_code,
+									'temp_lr_status' => 3
 								);
 							
 							
@@ -667,7 +682,7 @@ class Routine extends BaseController
 						endif;
 						
 						
-						$v = $this->temp_pd->save($payment_details_array);
+						$v = $this->temp_lr->save($payment_details_array);
 
 //                    print_r($payment_details_array);
 //                    echo '<br>';
@@ -677,14 +692,20 @@ class Routine extends BaseController
 					
 					
 					if($v):
-						$data['contribution_type'] = $this->contribution_type->where(['contribution_type_id' => $contribution_type_id])->first();
-						$data['payroll_group'] = $this->pg->where(['pg_id'=> $payroll_group_id])->first();
-						$data['temp_pds'] = $this->temp_pd->findAll();
+						
+						$temp_data = $this->temp_lr->first();
+						$dateObj   = DateTime::createFromFormat('!m', $temp_data['temp_lr_month']);
+						$data['monthName'] = $dateObj->format('F');
+						$data['year'] = $temp_data['temp_lr_year'];
+						$loan_id = $temp_data['temp_lr_loan_id'];
+						$data['loan_type'] = $this->ls->where(['loan_setup_id' => $loan_id])->first();
+						
+						$data['temp_lrs'] = $this->temp_lr->findAll();
 						$data['permission'] = 1;
 						
 						
 						
-						return view('pages/routine/view_contribution_upload', $data);
+						return view('pages/routine/view_lr_upload', $data);
 					
 					else:
 						
@@ -743,64 +764,183 @@ class Routine extends BaseController
 		
 	}
 	
-	public  function p_lp_upload(){
-		$temp_payments = $this->temp_pd->where(['temp_pd_status' => 1])->findAll();
+	public  function p_lr_upload(){
+		$temp_payments = $this->temp_lr->where(['temp_lr_status' => 1])->findAll();
 		
 		foreach ($temp_payments as $temp_payment):
 			
 			$exception_array = array(
-				'exception_staff_id' => $temp_payment['temp_pd_staff_id'],
-				'exception_staff_name' => $temp_payment['temp_pd_staff_name'],
-				'exception_transaction_date' => $temp_payment['temp_pd_transaction_date'],
-				'exception_amount' => $temp_payment['temp_pd_amount'],
-				'exception_ref_code' => $temp_payment['temp_pd_ref_code']
+				'loan_exception_staff_id' => $temp_payment['temp_lr_staff_id'],
+				'loan_exception_staff_name' => $temp_payment['temp_lr_staff_name'],
+				'loan_exception_transaction_date' => $temp_payment['temp_lr_transaction_date'],
+				'loan_exception_month' => $temp_payment['temp_lr_month'],
+				'loan_exception_year' => $temp_payment['temp_lr_year'],
+				'loan_exception_amount' => $temp_payment['temp_lr_amount'],
+				'loan_exception_ref_code' => $temp_payment['temp_lr_ref_code']
 			);
 			
-			$v =  $this->exception->save($exception_array);
+			$v =  $this->le->save($exception_array);
 		
 		endforeach;
 		
-		$temp_payments = $this->temp_pd->where(['temp_pd_status' => 3])->findAll();
+		$temp_payments = $this->temp_lr->where(['temp_lr_status' => 3])->findAll();
 		foreach ($temp_payments as $temp_payment):
+			$staff_id = $temp_payment['temp_lr_staff_id'];
+			$loan_type = $temp_payment['temp_lr_loan_id'];
+			$loans = $this->loan->get_active_loans_staff_id($staff_id, $loan_type);
 			
-			$payment_details_array = array(
-				'pd_staff_id' => $temp_payment['temp_pd_staff_id'],
-				'pd_transaction_date' => $temp_payment['temp_pd_transaction_date'],
-				'pd_narration' => $temp_payment['temp_pd_narration'],
-				'pd_amount' => $temp_payment['temp_pd_amount'],
-				'pd_drcrtype' => 1,
-				'pd_ct_id' => $temp_payment['temp_pd_ct_id'],
-				'pd_pg_id' => $temp_payment['temp_pd_pg_id'],
-				'pd_ref_code' => $temp_payment['temp_pd_ref_code'],
+			$loan_id = $loans->loan_id;
+			$loan_amount = $loans->amount;
+			
+			$loan_ledgers = $this->loan->get_loans_staff_id($staff_id, $loan_id);
+			
+			$total_cr = 0;
+			$total_dr = 0;
+			$cr = 0;
+			$dr = 0;
+			$total_mi = 0;
+			$total_interest = 0;
+			$total_cr_mi = 0;
+			$total_dr_mi = 0;
+			
+			foreach ($loan_ledgers as$loan_ledger):
+				
+				if($loan_ledger->lr_dctype == 1):
+					$cr = $loan_ledger->lr_amount;
+					$total_cr = $total_cr + $cr;
+					
+					$total_cr_mi = $total_cr_mi + $loan_ledger->lr_mi;
+				endif;
+				
+				if($loan_ledger->lr_dctype == 2):
+					$dr = $loan_ledger->lr_amount;
+					$total_dr = $total_dr + $dr;
+					
+					$total_dr_mi = $total_dr_mi + $loan_ledger->lr_mi;
+				endif;
+				
+				if($loan_ledger->lr_interest == 1):
+					
+					$total_interest = $total_interest + $loan_ledger->lr_amount;
+				endif;
+				
+				//$total_interest = $total_interest + $loan_ledger->lr_mi;
+
+//									if($loan_ledger->lr_dctype == 2):
+//										$dr = $loan_ledger->lr_amount;
+//										$total_dr = $total_dr + $dr;
+//									endif;
+			
+			endforeach;
+			
+			$total_mi = $total_cr_mi - $total_dr_mi;
+			
+			$interest_unpaid = $total_mi = $total_interest;
+			
+			if($interest_unpaid >= $temp_payment['temp_lr_amount']):
+				
+				
+					$mi = $temp_payment['temp_lr_amount'];
+					$mpr = 0;
+					
+			else:
+				
+				$mi =$interest_unpaid;
+				$mpr = $temp_payment['temp_lr_amount'] - $interest_unpaid;
+			
+			endif;
+			
+			
+			$loan_repayment = array(
+				'lr_staff_id' => $temp_payment['temp_lr_staff_id'],
+				'lr_loan_id' => $loan_id,
+				'lr_month' => $temp_payment['temp_lr_month'],
+				'lr_year' => $temp_payment['temp_lr_year'],
+				'lr_amount' => $temp_payment['temp_lr_amount'],
+				'lr_dctype' => $temp_payment['temp_lr_drcrtype'],
+				'lr_ref' => $temp_payment['temp_lr_ref_code'],
+				'lr_narration' => $temp_payment['temp_lr_narration'],
+				'lr_mi' => $mi,
+				'lr_mpr' => $mpr,
+				'lr_interest' => 0,
+				'lr_date' => $temp_payment['temp_lr_transaction_date'],
 			);
 			
 			
-			$v =   $this->pd->save($payment_details_array);
+			$v =   $this->lr->save($loan_repayment);
+			
+			$loan_ledgers = $this->loan->get_loans_staff_id($staff_id, $loan_id);
+			
+			$total_cr = 0;
+			$total_dr = 0;
+			$cr = 0;
+			$dr = 0;
+			$total_mi = 0;
+			$total_interest = 0;
+			$total_cr_mi = 0;
+			$total_dr_mi = 0;
+			
+			foreach ($loan_ledgers as$loan_ledger):
+				
+				if($loan_ledger->lr_dctype == 1):
+					$cr = $loan_ledger->lr_amount;
+					$total_cr = $total_cr + $cr;
+					
+					$total_cr_mi = $total_cr_mi + $loan_ledger->lr_mi;
+				endif;
+				
+				if($loan_ledger->lr_dctype == 2):
+					$dr = $loan_ledger->lr_amount;
+					$total_dr = $total_dr + $dr;
+					
+					$total_dr_mi = $total_dr_mi + $loan_ledger->lr_mi;
+				endif;
+
+			
+			endforeach;
+			
+			$balance =  $loan_amount+($total_dr - $total_cr);
+			
+//			echo 'total dr: '.$total_dr.'<br>';
+//			echo 'total cr: '.$total_cr.'<br>';
+//			echo 'balance: '.$balance;
+			
+			if($balance <= 0):
+
+				$loan_array = array(
+					'loan_id' => $loan_id,
+					'paid_back' => 1
+				);
+
+			$this->loan->save($loan_array);
+
+			endif;
+		
 		
 		endforeach;
 		
 		if($v):
-			$this->temp_pd->delete_temp();
+			$this->temp_lr->delete_temp();
 			$data = array(
 				'msg' => 'Action Successful',
 				'type' => 'success',
-				'location' => site_url('contribution_upload')
-			
+				'location' => site_url('lr_upload')
+
 			);
-			
+
 			return view('pages/sweet-alert', $data);
-		
+
 		else:
-			
+
 			$data = array(
 				'msg' => 'An error Occurred',
 				'type' => 'error',
-				'location' => site_url('contribution_upload')
-			
+				'location' => site_url('lr_upload')
+
 			);
-			
+
 			return view('pages/sweet-alert', $data);
-		
+
 		endif;
 	}
 	

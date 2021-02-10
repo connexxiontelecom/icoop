@@ -1,14 +1,14 @@
 <?= $this->extend('layouts/master') ?>
 
 <?= $this->section('title') ?>
-View Contribution Uploads
+View Loan Repayment Uploads
 <?= $this->endSection() ?>
 
 <?= $this->section('current_page') ?>
-View Contribution Uploads
+View Loan Reyapment Uploads
 <?= $this->endSection() ?>
 <?= $this->section('page_crumb') ?>
-View Contribution Uploads - <?=$payroll_group['pg_name']; ?> For <small><?=$contribution_type['contribution_type_name']; ?></small>
+View Loan Repayment Uploads - <?=$loan_type['loan_description']; ?> For <small><?=$monthName." ,".$year; ?></small>
 <?= $this->endSection() ?>
 
 <?= $this->section('extra-styles') ?>
@@ -25,7 +25,7 @@ View Contribution Uploads - <?=$payroll_group['pg_name']; ?> For <small><?=$cont
     <div class="col-lg-12">
         <div class="card">
             <div class="header">
-                <h2>View Contribution Uploads</h2> - <?=$payroll_group['pg_name']; ?> For <small><?=$contribution_type['contribution_type_name']; ?></small>
+                <h2>View Loan Repayment Uploads - <?=$loan_type['loan_description']; ?> For <small><?=$monthName." ,".$year; ?></small>
             </div>
             <div class="body">
                 <div class="table-responsive">
@@ -43,22 +43,22 @@ View Contribution Uploads - <?=$payroll_group['pg_name']; ?> For <small><?=$cont
                         </thead>
 
                         <tbody>
-                        <?php $sn = 1; foreach ($temp_pds as $temp_pd): ?>
+                        <?php $sn = 1; foreach ($temp_lrs as $temp_lr): ?>
                             <?php
                             $color = 'white';
-                            if($temp_pd['temp_pd_status'] == 1){ $color = 'red'; }
-                            if($temp_pd['temp_pd_status'] == 2){ $color = 'yellow'; }
+                            if($temp_lr['temp_lr_status'] == 1){ $color = 'red'; }
+                            if($temp_lr['temp_lr_status'] == 2){ $color = 'yellow'; }
                             ?>
                             <tr style="background-color: <?php echo $color; ?>">
 
                                 <td><?=$sn; ?></td>
-                                <td><?=$temp_pd['temp_pd_staff_id']; ?></td>
-                                <td style="text-align: right;"><?=number_format($temp_pd['temp_pd_amount'], 2); ?></td>
-                                <td><?=$temp_pd['temp_pd_narration']; ?></td>
-                                <td><?=$temp_pd['temp_pd_ref_code']; ?></td>
-								<td><?php if($temp_pd['temp_pd_status'] == 1){ echo "Member Does Not Exist"; }
-										if($temp_pd['temp_pd_status'] == 2){ echo "Member Does Not Belong to Selected Payroll Group"; } ?></td>
-                                <td><?=$temp_pd['temp_pd_transaction_date']; ?></td>
+                                <td><?=$temp_lr['temp_lr_staff_id']; ?></td>
+                                <td style="text-align: right;"><?=number_format($temp_lr['temp_lr_amount'], 2); ?></td>
+                                <td><?=$temp_lr['temp_lr_narration']; ?></td>
+                                <td><?=$temp_lr['temp_lr_ref_code']; ?></td>
+								<td><?php if($temp_lr['temp_lr_status'] == 1){ echo "Member Does Not Exist"; }
+										if($temp_lr['temp_lr_status'] == 2){ echo "Member does not have an active loan running"; } ?></td>
+                                <td><?=$temp_lr['temp_lr_transaction_date']; ?></td>
 
 
                             </tr>
@@ -67,7 +67,7 @@ View Contribution Uploads - <?=$payroll_group['pg_name']; ?> For <small><?=$cont
                         </tbody>
                     </table>
 
-                    <form method="post" action="<?=base_url('p_contribution_upload') ?>">
+                    <form method="post" action="<?=base_url('p_lr_upload') ?>">
                         <?= csrf_field() ?>
                         <div class="form-group">
                             <button type="submit" class="btn btn-info btn-block">Process Upload</button>

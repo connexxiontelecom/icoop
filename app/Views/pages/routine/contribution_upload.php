@@ -39,7 +39,7 @@ Contribution Upload
                                     <label  for="application_payroll_group_id"> <b> Payroll Group: </b></label>
 
                                     <select class="custom-select" required name="contribution_upload_pg" >
-
+										<option value='' disabled selected> --Select -- </option>
                                         <?php foreach ($pgs as $pg): ?>
                                             <option value="<?=$pg['pg_id'] ?>"> <?=$pg['pg_name']; ?></option>
                                         <?php endforeach; ?>
@@ -51,7 +51,7 @@ Contribution Upload
                                     <label  for="application_payroll_group_id"> <b> Contribution Type: </b></label>
 
                                     <select class="custom-select" required name="contribution_upload_ct">
-
+										<option value='' disabled selected> --Select -- </option>
                                         <?php foreach ($cts as $ct): ?>
                                             <option value="<?=$ct['contribution_type_id'] ?>"> <?=$ct['contribution_type_name']; ?></option>
                                         <?php endforeach; ?>
@@ -66,7 +66,7 @@ Contribution Upload
 
                                 <div class="form-group">
                                     <label for="application_address"><b>Narration:</b></label>
-                                    <textarea name="contribution_upload_narration" id="application_address"  cols="30" rows="3" placeholder="Address *" onautocomplete="preview_form('application_address')" onkeyup="preview_form('application_address')" class="form-control no-resize" required></textarea>
+                                    <textarea name="contribution_upload_narration" id="application_address"  cols="30" rows="3" placeholder="Narration *" class="form-control no-resize" required></textarea>
                                 </div>
 
 

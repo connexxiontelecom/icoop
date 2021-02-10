@@ -48,8 +48,8 @@ class LoanModel extends Model{
 	
 	public function get_loan_staff_id($staff_id){
 		$builder = $this->db->table('loans');
-		$builder->groupBy('loans.loan_type');
 		$builder->where('loans.staff_id', $staff_id);
+		
 		return $builder->get()->getResultObject();
 	}
 	
@@ -58,7 +58,7 @@ class LoanModel extends Model{
 		$builder->join('loan_setups', 'loan_setups.loan_setup_id = loans.loan_type');
 		$builder->join('loan_applications', 'loan_applications.loan_app_id = loans.loan_app_id');
 		$builder->join('loan_repayments', 'loan_repayments.lr_loan_id = loans.loan_id');
-		$builder->where('loan_setups.loan_setup_id', $loan_id);
+		$builder->where('loan_repayments.lr_loan_id', $loan_id);
 		$builder->where('loans.staff_id', $staff_id);
 		return $builder->get()->getResultObject();
   
@@ -86,6 +86,18 @@ class LoanModel extends Model{
 		
 		//$builder = $this->db->query("select * from payment_details where pd_staff_id = '$staff_id', pd_ct_id = '$ct_id', date('Y', strtotime('pd_transaction_date')) = '$year'");
 		return $builder->get()->getResultArray();
+	}
+	
+	public function get_active_loans_staff_id($staff_id, $lt_id){
+		$builder = $this->db->table('loans');
+		$builder->join('loan_setups', 'loan_setups.loan_setup_id = loans.loan_type');
+		$builder->join('loan_applications', 'loan_applications.loan_app_id = loans.loan_app_id');
+		$builder->where('loans.disburse', 1);
+		$builder->where('loans.paid_back', 0);
+		$builder->where('loan_setups.loan_setup_id', $lt_id);
+		$builder->where('loans.staff_id', $staff_id);
+		return $builder->get()->getRowObject();
+		
 	}
 	
 	
