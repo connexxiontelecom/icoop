@@ -120,6 +120,8 @@ class Routine extends BaseController
                 //echo '<br>';
                 foreach ($rows as $row):
                     $staff_id = $row[0];
+                    $staff_name = $row[1];
+                
                     $amount = $row[2];
 
                     $cooperator_details = $this->cooperator->get_cooperator_staff_id($staff_id);
@@ -131,6 +133,7 @@ class Routine extends BaseController
 
                       $payment_details_array = array(
                          'temp_pd_staff_id' => $staff_id,
+                          'temp_pd_staff_name' => $staff_name,
                           'temp_pd_transaction_date' => $date,
                           'temp_pd_narration' => $narration,
                           'temp_pd_amount' => $amount,
@@ -152,6 +155,7 @@ class Routine extends BaseController
 
                                 $payment_details_array = array(
                                     'temp_pd_staff_id' => $staff_id,
+	                                'temp_pd_staff_name' => $staff_name,
                                     'temp_pd_transaction_date' => $date,
                                     'temp_pd_narration' => $narration,
                                     'temp_pd_amount' => $amount,
@@ -166,6 +170,7 @@ class Routine extends BaseController
 
                                 $payment_details_array = array(
                                     'temp_pd_staff_id' => $staff_id,
+	                                'temp_pd_staff_name' => $staff_name,
                                     'temp_pd_transaction_date' => $date,
                                     'temp_pd_narration' => $narration,
                                     'temp_pd_amount' => $amount,
@@ -261,10 +266,12 @@ class Routine extends BaseController
 
     public  function p_contribution_upload(){
         $temp_payments = $this->temp_pd->where(['temp_pd_status' => 1])->findAll();
+        
         foreach ($temp_payments as $temp_payment):
 
             $exception_array = array(
                'exception_staff_id' => $temp_payment['temp_pd_staff_id'],
+                'exception_staff_name' => $temp_payment['temp_pd_staff_name'],
                 'exception_transaction_date' => $temp_payment['temp_pd_transaction_date'],
                 'exception_amount' => $temp_payment['temp_pd_amount'],
                  'exception_ref_code' => $temp_payment['temp_pd_ref_code']
