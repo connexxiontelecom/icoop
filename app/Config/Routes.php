@@ -129,12 +129,20 @@ $routes->get('/get-loan-type/(:num)', 'LoanController::getLoanType/$1');
 $routes->get('/view-loan-application/(:num)', 'LoanController::viewLoanApplication/$1');
 $routes->get('/loan/approve', 'LoanController::showApproveApplications');
 $routes->post('/loan/approve', 'LoanController::approveLoanApplication');
-$routes->get('/loan/new-payment-schedule', 'LoanController::showPaymentSchedule');
-$routes->post('/loan/new-payment-schedule', 'LoanController::newPaymentSchedule');
-$routes->get('/loan/payment-schedules', 'LoanController::showPaymentSchedules');
-$routes->get('/loan/payment-schedule/(:num)', 'LoanController::showPaymentScheduleDetail/$1');
+#Payment routes
+$routes->get('/loan/new-payment-schedule', 'PaymentController::newPaymentSchedule');
+$routes->post('/loan/new-payment-schedule', 'PaymentController::postNewPaymentSchedule');
+$routes->get('/loan/payment-schedules', 'PaymentController::showScheduledPayments');
+$routes->get('/loan/verified-payment-schedules', 'PaymentController::showVerifiedScheduledPayments');
+$routes->get('/loan/payment-schedule/(:num)', 'PaymentController::showPaymentScheduleDetail/$1');
+$routes->get('/loan/return-schedule-payment/(:num)', 'PaymentController::returnSchedulePayment/$1');
+$routes->post('/loan/return-bulk-schedule', 'PaymentController::returnBulkSchedule');
+$routes->post('/loan/verify-schedule', 'PaymentController::verifySchedule');
+$routes->post('/loan/approve-schedule', 'PaymentController::approveSchedule');
 $routes->get('/loan/payables', 'LoanController::showLoandPayables'); 
 $routes->post('/loan/payable-action', 'LoanController::loanPayableAction');
+$routes->post('/loan/add-payment-to-cart', 'PaymentController::addPaymentToCart');
+$routes->get('/loan/remove-from-cart/(:num)', 'PaymentController::removeFromCart/$1');
 
 
 

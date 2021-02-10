@@ -9,6 +9,7 @@ use \App\Models\WithdrawModel;
 use \App\Models\ScheduleMasterModel;
 use \App\Models\ScheduleMasterDetailModel;
 use \App\Models\PaymentDetailsModel;
+use \App\Models\PaymentCartModel;
 
 class LoanController extends BaseController
 {
@@ -25,6 +26,7 @@ class LoanController extends BaseController
         $this->withdraw = new WithdrawModel();
         $this->user = new UserModel();
         $this->paymentdetail = new PaymentDetailsModel();
+        $this->paymentcart = new PaymentCartModel();
         $this->session = session();
     }
 
@@ -251,6 +253,7 @@ class LoanController extends BaseController
 	
     public function viewLoanApplication($id){
         $app = $this->loanapp->getLoanApplicationDetail($id);
+        
         $data = [
             'application'=>$app,
             'guarantor'=>$this->loanapp->getGuarantorOne($id),
@@ -266,113 +269,20 @@ class LoanController extends BaseController
         $loan_apps = $this->loan->getScheduledPayment(); 
         $withdraws = $this->withdraw->getScheduledWithdrawal(); 
         $coopbank = $this->coopbank->getCoopBanks();
+        $cart = $this->loan->getItemsInCart();
+        //return dd($loan_apps);
         $data = [
             'loan_apps'=>$loan_apps,
             'coopbank'=>$coopbank,
-            'withdraws'=>$withdraws
+            'withdraws'=>$withdraws,
+            'cart'=>$cart
         ];
         
         $username = $this->session->user_username;
         $this->authenticate_user($username, 'pages/loan/new-payment-schedule', $data); 
     }
 
-    public function newPaymentSchedule(){
-        helper(['form']);
-        $data = [];
-        if($_POST){
-            $rules = [
-                'payable_date'=>[
-                    'rules'=>'required',
-                    'label'=>'Payable date',
-                    'errors'=>[
-                        'required'=>'Payable date is required'
-                    ]
-				],
-                'bank'=>[
-                    'rules'=>'required',
-                    'label'=>'Bank',
-                    'errors'=>[
-                        'required'=>'Bank is required'
-                    ]
-				],
-            ];
-            if($this->validate($rules)){
-					$data = [
-                        'payable_date'=>$this->request->getVar('payable_date'),
-                        'bank_id'=>$this->request->getVar('bank'),
-                        'creation_date'=>date('Y-m-d H:i:s'),
-					];
-                    
-                    $id = $this->schedulemaster->insert($data);
-                    #Schedule detail
-                    if($this->request->getVar('approved_loans')){
-                        for($i = 0; $i<count($this->request->getVar('coop_id')); $i++ ){
-                            $detail = [
-                                //'loan_type'=>$this->request->getVar('loan_type')[$i], 
-                                'coop_id'=>$this->request->getVar('coop_id')[$i],
-                                'amount'=>$this->request->getVar('amount')[$i],
-                                'schedule_master_id'=>$id
-                            ];
-                            $this->schedulemasterdetail->save($detail);
-                            //$loan = $this->loan->where('loan_id', $this->request->getVar('loan_id'))->first()['loan_id'];
-                            $this->loan->update($this->request->getVar('loan_id'), ['scheduled'=>1]);
-                        }
-                    }
-                    #withdraw detail
-                    if($this->request->getVar('withdraws')){
-                        for($i = 0; $i<count($this->request->getVar('withdraw_staff_id')); $i++ ){
-                            $detail = [
-                                //'loan_type'=>$this->request->getVar('loan_type')[$i], 
-                                'coop_id'=>$this->request->getVar('withdraw_staff_id')[$i],
-                                'amount'=>$this->request->getVar('withdraw_amount')[$i],
-                                'schedule_master_id'=>$id
-                            ];
-                            $this->schedulemasterdetail->save($detail);
-                            //$loan = $this->loan->where('loan_id', $this->request->getVar('loan_id'))->first()['loan_id'];
-                            $this->withdraw->update($this->request->getVar('withdraw_id'), ['withdraw_status'=>4]);
-                        }
-                    }
-            
-                    $alert = array(
-                        'msg' => 'Success! New payment scheduled',
-                        'type' => 'success',
-                        'location' => site_url('/loan/new-payment-schedule')
-                    );
-                    return view('pages/sweet-alert', $alert);
-            }else{
-                return $this->response->redirect(site_url('/loan/new-payment-schedule'));
-            }
-        }
-    }
-
-
-    public function showPaymentSchedules(){
-         $data = [
-            'schedules'=>$this->schedulemaster->getScheduleMaster()
-        ];
-        
-        $username = $this->session->user_username;
-        
-        $this->authenticate_user($username, 'pages/loan/payment-schedules', $data); 
-    }
-
-    public function showPaymentScheduleDetail($id){
-        $content = $this->schedulemaster->getSchedulePaymentDetail($id);
-        //return dd($content);
-        if(!empty($content)){
-            $data = [
-                'schedule'=>$content
-            ];
-            
-            $username = $this->session->user_username;
-            $this->authenticate_user($username, 'pages/loan/view-payment-schedule', $data);
-
-        }else{
-           return redirect()->to('/loan/payment-schedules');  
-        }
-    }
-
-
+    
     public function showLoandPayables(){
         $data = [
             'payables'=>$this->loan->getPayables(),
@@ -433,17 +343,5 @@ class LoanController extends BaseController
         }
     }
 
-   /*  public function showPayableDetail($id){
-        $content = $this->schedulemaster->getPayableDetails($id);
-        if(!empty($content)){
-            $data = [
-                'detail'=>$content
-            ];
-            $username = $this->session->user_username;
-            $this->authenticate_user($username, 'pages/loan/view-payment-schedule', $data);
-
-        }else{
-           return redirect()->to('/loan/payment-schedules');  
-        }
-    } */
+   
 }
