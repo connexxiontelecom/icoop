@@ -51,27 +51,20 @@ Loans - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
 							
 						
 						</li>
-						<li class="m-b-15">
-							<div><kbd> Application Date:</kbd> <small><?=$loan_details->applied_date; ?></small>
-							</div>
-							
-						</li>
-					</ul>
-				</div>
-				<div class="col-sm-4">
-					<ul class="list-unstyled">
-						<li class="m-b-15">
-							<div><kbd>Total Encumbered Savings:</kbd> <small><?=number_format('0', 2); ?></small></div>
 						
-						</li>
 						<li class="m-b-15">
 							<div><kbd>Bank Details:</kbd> <small><?=$cooperator->bank_name.' ['.$cooperator->cooperator_account_number.']'; ?></small>
 							</div>
 						
 						</li>
-						<li class="m-b-15">
-							<div><kbd> Loan Start Date:</kbd> <small><?=$loan_details->disburse_date; ?></small></div>
 						
+						<li class="m-b-15">
+							<div><kbd>Total Encumbered Savings:</kbd> <small><?=number_format('0', 2); ?></small></div>
+						
+						</li>
+						<li class="m-b-15">
+							<div><kbd>Encumbered Amount:</kbd> <small><?=0 ?></small>
+							</div>
 						
 						</li>
 						
@@ -84,10 +77,22 @@ Loans - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
 						
 						</li>
 						<li class="m-b-15">
+							<div><kbd>Loan Principal:</kbd> <small><?=number_format($loan_details->amount, 2); ?></small></div>
+						
+						</li>
+						
+						<li class="m-b-15">
 							<div><kbd>Interest Rate:</kbd> <small><?=$loan_details->ls_interest_rate; ?></small>
 							</div>
 						
 						</li>
+						
+						<li class="m-b-15">
+							<div><kbd> Expected Interest:</kbd> <small><?=0 ?></small></div>
+						
+						
+						</li>
+						
 						<li class="m-b-15">
 							<div><kbd> Payment Duration:</kbd> <small><?=$loan_details->duration." "; ?>Month(s)</small></div>
 						
@@ -98,43 +103,25 @@ Loans - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
 							</div>
 						
 						</li>
+						
+						
 					</ul>
 				</div>
-				
-				
-			</div>
-		
-			
-			<div class="row">
 				<div class="col-sm-4">
 					<ul class="list-unstyled">
-						<li class="m-b-15">
-							<div><kbd>Loan Principal:</kbd> <small><?=number_format($loan_details->amount, 2); ?></small></div>
 						
-						</li>
 						<li class="m-b-15">
-							<div><kbd>Encumbered Amount:</kbd> <small><?=0 ?></small>
+							<div><kbd> Application Date:</kbd> <small><?=$loan_details->applied_date; ?></small>
 							</div>
 						
 						</li>
-						<li class="m-b-15">
-							<div><kbd> Disbursed Date:</kbd> <small><?=$loan_details->disburse_date; ?></small></div>
 						
-						
-						</li>
-						
-						<li class="m-b-15">
-							<div><kbd> Expected Interest:</kbd> <small><?=0 ?></small></div>
-						
-						
-						</li>
-					
-					</ul>
-				</div>
-				<div class="col-sm-4">
-					<ul class="list-unstyled">
 						<li class="m-b-15">
 							<div><kbd>Verified Date:</kbd> <small><?=$loan_details->verify_date; ?></small></div>
+						
+						</li>
+						<li class="m-b-15">
+							<div><kbd>Verified By:</kbd> <small><?=0 ?></small></div>
 						
 						</li>
 						<li class="m-b-15">
@@ -143,27 +130,32 @@ Loans - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
 						
 						</li>
 						
-					</ul>
-				</div>
-				<div class="col-sm-4">
-					<ul class="list-unstyled">
-						<li class="m-b-15">
-							<div><kbd>Verified By:</kbd> <small><?=0 ?></small></div>
 						
-						</li>
 						<li class="m-b-15">
 							<div><kbd>Approved By:</kbd> <small><?=0 ?></small>
 							</div>
 						
 						</li>
-					
-					
+						
+						<li class="m-b-15">
+							<div><kbd> Disbursed Date:</kbd> <small><?=$loan_details->disburse_date; ?></small></div>
+						
+						
+						</li>
+						<li class="m-b-15">
+							<div><kbd> Loan Start Date:</kbd> <small><?=$loan_details->disburse_date; ?></small></div>
+						
+						
+						</li>
+						
 					</ul>
 				</div>
-			
-			
+				
+				
 			</div>
+		
 			
+		
 			
 			<div class="table-responsive">
 				<?php  if(!empty($ledgers)): ?>
@@ -173,9 +165,9 @@ Loans - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
 							<th><strong># </strong></th>
 							<th><strong>Date</strong></th>
 							<th><strong>Narration</strong></th>
-							<th><strong>Dr</strong></th>
-							<th><strong>Cr</strong></th>
-							<th><strong>Balance</strong></th>
+							<th style="text-align: right"><strong>Dr</strong></th>
+							<th style="text-align: right"><strong>Cr</strong></th>
+							<th style="text-align: right"><strong>Balance</strong></th>
 						
 						
 						
@@ -208,7 +200,7 @@ Loans - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
 							<td><?=$disbursed_date; ?></td>
 							<td><?="Loan Disbursed"; ?></td>
 							<td style="text-align: right"><?=number_format($total_dr, 2); ?></td>
-							<td style="text-align: right">0</td>
+							<td style="text-align: right"><?=number_format(0, 2); ?></td>
 							<td style="text-align: right"> <?=number_format($total_dr, 2); ?></td>
 						</tr>
 						
@@ -230,7 +222,7 @@ Loans - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
 											echo number_format($ledger->lr_amount, 2);
 										
 										else:
-											echo '0';
+											echo number_format(0, 2);
 										
 										endif;
 									
@@ -246,7 +238,7 @@ Loans - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
 											echo number_format($ledger->lr_amount, 2);
 										
 										else:
-											echo '0';
+											echo number_format(0, 2);
 										
 										endif;
 									
