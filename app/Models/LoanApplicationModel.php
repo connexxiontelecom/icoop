@@ -22,6 +22,8 @@ class LoanApplicationModel extends Model{
         $builder = $this->db->table('loan_applications');
         $builder->join('cooperators', 'cooperators.cooperator_staff_id = loan_applications.staff_id');
         $builder->join('loan_setups', 'loan_setups.loan_setup_id = loan_applications.loan_type');
+        $builder->join('locations', 'locations.location_id = cooperators.cooperator_location_id');
+        $builder->join('payroll_groups', 'payroll_groups.pg_id = cooperators.cooperator_payroll_group_id');
         $builder->where('loan_applications.loan_app_id = '.$id);
         return $builder->get()->getRowObject();
     }

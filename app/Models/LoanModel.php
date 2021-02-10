@@ -5,7 +5,7 @@ use CodeIgniter\Model;
 class LoanModel extends Model{
     protected $table = 'loans';
     protected $primaryKey = 'loan_id';
-    protected $allowedFields = ['loan_app_id', 'staff_id', 'amount', 'interest_rate', 'loan_type', 'interest', 'disburse', 'created_at', 'scheduled', 'paid_back'];
+    protected $allowedFields = ['loan_app_id', 'staff_id', 'schedule_master_id', 'amount', 'interest_rate', 'loan_type', 'interest', 'disburse', 'cart', 'created_at', 'scheduled', 'paid_back'];
 
 
 
@@ -15,8 +15,17 @@ class LoanModel extends Model{
         $builder->join('loan_setups', 'loans.loan_type = loan_setups.loan_setup_id');
         $builder->where('loans.disburse = 0');
         $builder->where('loans.scheduled = 0');
+        $builder->where('loans.cart = 0');
         return $builder->get()->getResultObject();
     }
+    public function getLoanCart($id){
+        $builder = $this->db->table('loans');
+        //$builder->join('cooperators', 'cooperators.cooperator_staff_id = loans.staff_id');
+        $builder->join('payment_carts', 'payment_carts.loan_id = loans.loan_id');
+        $builder->where('loans.loan_id = '.$id);
+        return $builder->get()->getRowObject();
+    }
+    
 
     public function getCooperatorSavings($id){
         $builder = $this->db->table('payment_details');
@@ -32,6 +41,27 @@ class LoanModel extends Model{
         $builder->join('cooperators', 'cooperators.cooperator_staff_id = loans.staff_id');
         $builder->where('loans.paid_back = 0');
         $builder->where('loans.disburse = 0');
+        return $builder->get()->getResultObject();
+    }
+
+
+
+    #Approved loans
+    public function getApprovedLoans(){
+        $builder = $this->db->table('loans');
+        $builder->join('cooperators', 'cooperators.cooperator_staff_id = loans.staff_id');
+        $builder->join('loan_setups', 'loans.loan_type = loan_setups.loan_setup_id');
+        $builder->where('loans.cart = 0');
+        return $builder->get()->getResultObject();
+    }
+    #Items in cart
+    public function getItemsInCart(){
+        $builder = $this->db->table('loans');
+        $builder->join('cooperators', 'cooperators.cooperator_staff_id = loans.staff_id');
+        $builder->join('loan_setups', 'loans.loan_type = loan_setups.loan_setup_id');
+        $builder->join('banks', 'cooperators.cooperator_bank_id = banks.bank_id');
+        $builder->where('loans.cart = 1');
+        $builder->where('loans.scheduled = 0');
         return $builder->get()->getResultObject();
     }
 

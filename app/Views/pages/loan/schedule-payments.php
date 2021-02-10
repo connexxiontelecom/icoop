@@ -64,7 +64,7 @@ Approve Loan Application
                                     <td><?= number_format($app['duration']) ?> months</td>
                                     <td><?= $app['loan_type'] ?> </td>
                                     <td>
-                                        <a href="<?= site_url('/view-loan-application/'.$app['loan_app_id']) ?>" class="btn btn-primary btn-sm">Learn more</a>
+                                        <a href="<?= site_url('/view-loan-application/'.$app['loan_app_id']) ?>" class="btn btn-primary btn-sm">View</a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
