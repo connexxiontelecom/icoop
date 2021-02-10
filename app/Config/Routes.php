@@ -81,6 +81,9 @@ $routes->post('contribution_upload', 'Routine::process_contribution_upload');
 $routes->post('p_contribution_upload', 'Routine::p_contribution_upload');
 $routes->get('interest_routine', 'Routine::interest_routine');
 $routes->post('interest_routine', 'Routine::interest_routine');
+$routes->get('lr_upload', 'Routine::lr_upload');
+$routes->post('lr_upload', 'Routine::process_lr_upload');
+$routes->post('p_lr_upload', 'Routine::p_lr_upload');
 
 
 #chart of accounts
