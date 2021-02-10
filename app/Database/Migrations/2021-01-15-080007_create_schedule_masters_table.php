@@ -25,7 +25,34 @@ class CreateScheduleMastersTable extends Migration
 				'bank_id' =>[
 					'type' => 'INT',
 					'null'=>true,
-				]
+				],
+				'transaction_type' =>[
+					'type' => 'INT',
+					'null'=>true,
+					'comment'=>'1=loan,2=withdraw,3=closure'
+				],
+				'loan_id' =>[
+					'type' => 'INT',
+					'null'=>true,
+				],
+				'verified_by' =>[
+					'type' => 'TEXT',
+					'null'=>true,
+				],
+				'verified' =>[
+					'type' => 'INT',
+					'null'=>true,
+					'default'=>0
+				],
+				'date_verified' =>[
+					'type' => 'TEXT',
+					'null'=>true,
+				],
+				'amount' =>[
+					'type' => 'DOUBLE',
+					'null'=>true,
+					'default'=>0
+				],
 
 
 			]

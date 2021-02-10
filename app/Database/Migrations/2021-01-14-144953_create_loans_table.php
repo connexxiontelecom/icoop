@@ -44,6 +44,15 @@ class CreateLoansTable extends Migration
 					'default'=>0,
 					'null'=>true
 				],
+				'cart' =>[
+					'type' => 'INT',
+					'default'=>0,
+					'null'=>true
+				],
+				'schedule_master_id' =>[
+					'type' => 'INT',
+					'null'=>true
+				],
 				'disburse_date' =>[
 					'type' => 'DATETIME',
 					'null'=>true

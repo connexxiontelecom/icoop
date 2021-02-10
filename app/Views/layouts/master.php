@@ -248,11 +248,32 @@
                                     </ul>
                                 </li>
                                 <li>
-                                    <a href="javascript:void(0);" class="has-arrow"><i class="fa fa-money"></i><span>Payables</span></a>
+                                    <a href="javascript:void(0);" class="has-arrow"><i class="fa fa-money"></i><span>Payments</span></a>
+                                    
                                     <ul>
-                                        <li><a href="<?= site_url('/loan/payables') ?>">Payables</a></li>
-                                        <li><a href="<?=site_url('/loan/new-payment-schedule') ?>">New Payment Schedule</a></li>
-                                        <li><a href="<?=site_url('/loan/payment-schedules') ?>">Payment Schedules</a></li>
+                                        <li>
+                                            <a href="#" class="has-arrow"><span>Member Payments</span></a>
+                                            <ul>
+                                                <li><a href="<?=site_url('/loan/new-payment-schedule') ?>" class="text-white">Payment Schedule</a></li>
+                                                <li><a href="<?=base_url('/loan/payment-schedules') ?>">Verify</a></li>
+                                                <li><a href="<?=base_url('/loan/verified-payment-schedules') ?>">Approve</a></li>
+
+                                            </ul>
+
+                                        </li>
+                                    </ul>
+                                    <ul>
+                                        <li>
+                                            <a href="#" class="has-arrow"><span>3rd Party Payments</span></a>
+                                            <ul>
+                                                <li><a href="<?=site_url('/loan/new-payment-schedule') ?>">Entry</a></li>
+                                                <li><a href="<?=base_url('upload_routine') ?>">New Payment</a></li>
+                                                <li><a href="<?=base_url('upload_routine') ?>">Verify</a></li>
+                                                <li><a href="<?=base_url('upload_routine') ?>">Approve</a></li>
+
+                                            </ul>
+
+                                        </li>
                                     </ul>
                                 </li>
                                 <li><a href="#"><i class="fa fa-arrow-down"></i><span>Receivables</span></a></li>

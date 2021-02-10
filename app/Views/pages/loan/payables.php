@@ -66,7 +66,7 @@ Payables
                                     <td><?= number_format($app->duration ?? 0) ?> months</td>
                                     <td><?= date('d M, Y', strtotime($app->created_at)) ?> </td>
                                     <td>
-                                        <a href="<?= site_url('/loan/payment-schedule/'.$app->loan_id) ?>" class="btn btn-primary btn-sm">Learn more</a>
+                                        <a href="<?= site_url('/loan/payment-schedule/'.$app->loan_id) ?>" class="btn btn-primary btn-sm">View</a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
