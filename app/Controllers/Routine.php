@@ -118,10 +118,11 @@ class Routine extends BaseController
                 // do not forget
                unset($rows[0]);
                 //echo '<br>';
+ 
                 foreach ($rows as $row):
                     $staff_id = $row[0];
                     $staff_name = $row[1];
-                
+
                     $amount = $row[2];
 
                     $cooperator_details = $this->cooperator->get_cooperator_staff_id($staff_id);

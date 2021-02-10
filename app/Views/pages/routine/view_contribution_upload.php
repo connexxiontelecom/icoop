@@ -37,6 +37,7 @@ View Contribution Uploads - <?=$payroll_group['pg_name']; ?> For <small><?=$cont
                             <th> Amount</th>
                             <th> Narration </th>
                             <th> Ref Code</th>
+							<th> Comments</th>
                             <th> Date </th>
                         </tr>
                         </thead>
@@ -46,15 +47,17 @@ View Contribution Uploads - <?=$payroll_group['pg_name']; ?> For <small><?=$cont
                             <?php
                             $color = 'white';
                             if($temp_pd['temp_pd_status'] == 1){ $color = 'red'; }
-                            if($temp_pd['temp_pd_status'] == 2){ $color = 'amber'; }
+                            if($temp_pd['temp_pd_status'] == 2){ $color = 'yellow'; }
                             ?>
                             <tr style="background-color: <?php echo $color; ?>">
 
                                 <td><?=$sn; ?></td>
                                 <td><?=$temp_pd['temp_pd_staff_id']; ?></td>
-                                <td><?=$temp_pd['temp_pd_amount']; ?></td>
+                                <td style="text-align: right;"><?=number_format($temp_pd['temp_pd_amount'], 2); ?></td>
                                 <td><?=$temp_pd['temp_pd_narration']; ?></td>
                                 <td><?=$temp_pd['temp_pd_ref_code']; ?></td>
+								<td><?php if($temp_pd['temp_pd_status'] == 1){ echo "Member Does Not Exist"; }
+										if($temp_pd['temp_pd_status'] == 2){ echo "Member Does Not Belong to Selected Payroll Group"; } ?></td>
                                 <td><?=$temp_pd['temp_pd_transaction_date']; ?></td>
 
 
