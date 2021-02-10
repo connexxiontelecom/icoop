@@ -2,6 +2,7 @@
 
 
 namespace App\Models;
+//1 = CREDIT, 2 = DEBIT
 
 
 class PaymentDetailsModel extends \CodeIgniter\Model
@@ -53,5 +54,14 @@ class PaymentDetailsModel extends \CodeIgniter\Model
         //$builder = $this->db->query("select * from payment_details where pd_staff_id = '$staff_id', pd_ct_id = '$ct_id', date('Y', strtotime('pd_transaction_date')) = '$year'");
         return $builder->get()->getResultObject();
     }
+	
+	
+	public function get_regular_savings($staff_id){
+		$builder = $this->db->table('payment_details');
+		$builder->join('contribution_type', 'contribution_type.contribution_type_id = payment_details.pd_ct_id');
+		$builder->where('payment_details.pd_staff_id', $staff_id);
+		$builder->where('contribution_type.contribution_type_regular', 1);
+		return $builder->get()->getResultObject();
+	}
 
 }

@@ -79,6 +79,11 @@ $routes->get('upload_routine', 'Routine::upload_routine');
 $routes->get('contribution_upload', 'Routine::contribution_upload');
 $routes->post('contribution_upload', 'Routine::process_contribution_upload');
 $routes->post('p_contribution_upload', 'Routine::p_contribution_upload');
+$routes->get('interest_routine', 'Routine::interest_routine');
+$routes->post('interest_routine', 'Routine::interest_routine');
+$routes->get('lr_upload', 'Routine::lr_upload');
+$routes->post('lr_upload', 'Routine::process_lr_upload');
+$routes->post('p_lr_upload', 'Routine::p_lr_upload');
 
 
 #chart of accounts
@@ -109,6 +114,8 @@ $routes->get('cooperator/(:num)', 'Cooperators::coperator/$1');
 $routes->get('ledger/(:any)', 'Cooperators::ledger/$1');
 $routes->post('ledger/(:any)', 'Cooperators::ledger/$1');
 $routes->get('view_ledger/(:num)/(:any)', 'Cooperators::view_ledger/$1/$2');
+$routes->get('loan_ledger/(:any)', 'Cooperators::loan_ledger/$1');
+$routes->post('loan_ledger/(:any)', 'Cooperators::loan_ledger/$1');
 
 #Loan routes
 $routes->get('/loan/new', 'LoanController::showLoanApplicationForm');
@@ -147,7 +154,7 @@ $routes->get('/messaging/open-mail/(:num)', 'MessagingController::openMail/$1');
 $routes->get('/messaging/bulk-sms', 'MessagingController::showBulkSms');
 $routes->post('/messaging/bulk-sms', 'MessagingController::sendBulkSms');
 
-##WIthdraw Routes
+##Withdraw Routes
 $routes->get('new_withdraw', 'Withdraw::new_withdraw');
 $routes->post('new_withdraw', 'Withdraw::new_withdraw');
 $routes->get('search_cooperator', 'Withdraw::search_cooperator');

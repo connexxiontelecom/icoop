@@ -37,11 +37,11 @@ class Cooperators extends \CodeIgniter\Model
 
     public function get_cooperator_staff_id($staff_id){
         $builder = $this->db->table('cooperators');
-//        $builder->join('locations', 'locations.location_id = cooperators.cooperator_location_id');
-//        $builder->join('departments', 'departments.department_id = cooperators.cooperator_department_id');
-//        $builder->join('payroll_groups', 'payroll_groups.pg_id = cooperators.cooperator_payroll_group_id');
-//        $builder->join('states', 'states.state_id = cooperators.cooperator_state_id');
-//        $builder->join('banks', 'banks.bank_id = cooperators.cooperator_bank_id');
+        $builder->join('locations', 'locations.location_id = cooperators.cooperator_location_id');
+        $builder->join('departments', 'departments.department_id = cooperators.cooperator_department_id');
+        $builder->join('payroll_groups', 'payroll_groups.pg_id = cooperators.cooperator_payroll_group_id');
+        $builder->join('states', 'states.state_id = cooperators.cooperator_state_id');
+        $builder->join('banks', 'banks.bank_id = cooperators.cooperator_bank_id');
         $builder->where('cooperator_staff_id', $staff_id);
         return $builder->get()->getRowObject();
     }

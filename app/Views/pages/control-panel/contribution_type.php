@@ -36,6 +36,7 @@ Contribution Type
                         <tr>
                             <th>#</th>
                             <th>Contribution Type</th>
+							<th>Regular</th>
                             
                             <th>Action</th>
                         </tr>
@@ -47,6 +48,7 @@ Contribution Type
 
                                 <td><?=$sn; ?></td>
                                 <td><?=$contribution_type['contribution_type_name']; ?></td>
+								<td><?php if($contribution_type['contribution_type_regular'] == 1): echo "yes"; else: echo "No"; endif; ?></td>
 
                                 <td>
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal<?=$contribution_type['contribution_type_id'] ?>"><i class="fa fa-pencil-square-o"></i></button>
@@ -79,6 +81,17 @@ Contribution Type
                                 <label>Contribution type:</label>
                                 <input class="form-control" name="contribution_type_name" required>
                             </div>
+							
+							<div class="form-group">
+								
+								<label>Regular?</label>
+								<select class="custom-select" required name="contribution_upload_pg" >
+									
+									<option value="0"> No </option>
+										<option value="1"> Yes </option>
+									
+								</select>
+							</div>
 
                             <input type="hidden" name="type" value="1">
 
@@ -113,8 +126,19 @@ Contribution Type
                             <input type="hidden" name="type" value="2">
 
                             <input type="hidden" name="contribution_type_id" value="<?=$contribution_type['contribution_type_id']; ?>">
-
-                            <?= csrf_field() ?>
+	
+							<div class="form-group">
+		
+								<label>Regular?</label>
+								<select class="custom-select" required name="contribution_upload_pg" >
+			
+									<option value="0" <?php if($contribution_type['contribution_type_regular'] !== 1): echo "selected"; endif; ?>> No </option>
+									<option value="1"  <?php if($contribution_type['contribution_type_regular'] == 1): echo "selected"; endif; ?>> Yes </option>
+		
+								</select>
+							</div>
+	
+							<?= csrf_field() ?>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-info btn-block">Submit</button>
                             </div>

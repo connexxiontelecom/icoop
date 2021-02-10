@@ -196,6 +196,7 @@
                                     <a href="#" class="has-arrow"><span>Routines</span></a>
                                     <ul>
                                         <li><a href="<?=base_url('upload_routine') ?>">Upload Routine</a></li>
+										<li><a href="<?=base_url('interest_routine') ?>">Interest Routine</a></li>
 
                                     </ul>
 

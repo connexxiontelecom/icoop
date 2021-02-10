@@ -64,10 +64,6 @@ Contribution Types - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
                                     </select>
                                 </div>
 
-
-
-
-
                                 <?= csrf_field() ?>
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-info btn-block">Retrieve</button>
@@ -81,123 +77,141 @@ Contribution Types - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
 
                 </form>
 
+			</div>
 
+        
 
-                <?php if(!empty($check)): ?>
-
-                <div class="col-lg-12">
-
-                        <div class="header">
-                            <h2>View Ledger (<?=$cts['contribution_type_name']; ?>)</h2>
-
-                        </div>
-                        <div class="body">
-                            <div class="table-responsive">
-                            <?php  if(!empty($ledgers)): ?>
-                                <table class="table table-hover js-basic-example dataTable simpletable table-custom spacing5">
-                                    <thead>
-                                    <tr>
-                                        <th><strong># </strong></th>
-                                        <th><strong>Date</strong></th>
-                                        <th><strong>Narration</strong></th>
-                                        <th><strong>Dr</strong></th>
-                                        <th><strong>Cr</strong></th>
-                                        <th><strong>Balance</strong></th>
-
-
-
-                                    </tr>
-                                    </thead>
-
-                                    <tbody>
-                                    <?php if($bf > 0): ?>
-                                    <tr>
-                                     <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td> <strong>BF:</strong> <?=number_format($bf); ?></td>
-                                    </tr>
-
-                                       <?php endif; ?>
-                                    <?php $sn = 1;
-                                            $total_cr = 0;
-                                            $total_dr = 0;
-                                    foreach ($ledgers as $ledger): ?>
-                                        <tr>
-
-                                            <td><?=$sn; ?></td>
-                                            <td><?=$ledger['pd_transaction_date']; ?></td>
-                                            <td><?=$ledger['pd_narration']; ?></td>
-
-                                            <td><?php
-                                                if($ledger['pd_drcrtype'] == 2):
-                                                    $dr = $ledger['pd_amount'];
-                                                    $cr = 0;
-                                                    $total_dr = $dr + $total_dr;
-
-                                                    echo number_format($ledger['pd_amount']);
-
-                                                else:
-                                                    echo '0';
-
-                                                endif;
-
-                                                ?></td>
-                                            <td>
-                                                <?php
-                                                if($ledger['pd_drcrtype'] == 1):
-
-                                                    $cr = $ledger['pd_amount'];
-                                                    $dr = 0;
-                                                    $total_cr = $cr + $total_cr;
-
-                                                    echo number_format($ledger['pd_amount']);
-
-                                                else:
-                                                    echo '0';
-
-                                                endif;
-
-                                                ?>
-                                            </td>
-
-                                            <td>
-                                                <?php $bf = ($bf + $cr) - $dr;
-                                                echo number_format($bf);
-                                                ?>
-
-                                            </td>
-
-
-                                        </tr>
-                                        <?php $sn++; endforeach; ?>
-
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td><strong>Total:</strong> <?=number_format( $total_dr); ?></td>
-                                        <td><strong>Total:</strong> <?=number_format($total_cr ); ?></td>
-                                        <td> <strong>Balance:</strong> <?=number_format($total_cr - $total_dr); ?></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                              <?php  else:
-
-                                echo "No data Available";
-                                endif; ?>
-                            </div>
-                        </div>
-
-                </div>
-
-                <?php endif; ?>
-
-            </div>
+            
         </div>
+	
+	    <?php if(!empty($check)): ?>
+			<div class="col-lg-12">
+			<div class="card">
+				
+				
+					<div class="header">
+						<h2>Account Statement for (<?=$ct['contribution_type_name']; ?>) - <?=$cooperator->cooperator_first_name.' '.$cooperator->cooperator_last_name; ?></h2>
+						<ul class="header-dropdown dropdown">
+						
+							<li><a href="javascript:void(0);" class="full-screen"><i class="icon-frame"></i></a></li>
+					
+						</ul>
+						
+						<ul class="list-unstyled">
+							<li class="m-b-15">
+								<div><kbd>Period:</kbd> <small><?=$y; ?></small></div>
+							
+							</li>
+						
+						
+						</ul>
+					</div>
+					<div class="body">
+						<div class="table-responsive">
+						    <?php  if(!empty($ledgers)): ?>
+								<table class="table table-hover js-basic-example dataTable simpletable table-custom spacing5">
+									<thead>
+									<tr>
+										<th><strong># </strong></th>
+										<th><strong>Date</strong></th>
+										<th style="text-align: right"><strong>Narration</strong></th>
+										<th style="text-align: right"><strong>Dr</strong></th>
+										<th style="text-align: right"><strong>Cr</strong></th>
+										<th style="text-align: right"><strong>Balance</strong></th>
+								
+								
+								
+									</tr>
+									</thead>
+								
+									<tbody>
+								    <?php if($bf > 0): ?>
+										<tr>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td style="text-align: right"> <strong>BF:</strong> <?=number_format($bf); ?></td>
+										</tr>
+								
+								    <?php endif; ?>
+								    <?php $sn = 1;
+									    $total_cr = 0;
+									    $total_dr = 0;
+									    foreach ($ledgers as $ledger): ?>
+											<tr>
+											
+												<td><?=$sn; ?></td>
+												<td><?=$ledger['pd_transaction_date']; ?></td>
+												<td><?=$ledger['pd_narration']; ?></td>
+											
+												<td style="text-align: right"><?php
+													    if($ledger['pd_drcrtype'] == 2):
+														    $dr = $ledger['pd_amount'];
+														    $cr = 0;
+														    $total_dr = $dr + $total_dr;
+														
+														    echo number_format($ledger['pd_amount'] , 2);
+													
+													    else:
+														    echo number_format(0, 2);
+													
+													    endif;
+												
+												    ?></td>
+												<td style="text-align: right">
+												    <?php
+													    if($ledger['pd_drcrtype'] == 1):
+														
+														    $cr = $ledger['pd_amount'];
+														    $dr = 0;
+														    $total_cr = $cr + $total_cr;
+														
+														    echo number_format($ledger['pd_amount']);
+													
+													    else:
+														    echo number_format(0, 2);
+													
+													    endif;
+												
+												    ?>
+												</td>
+											
+												<td style="text-align: right">
+												    <?php $bf = ($bf + $cr) - $dr;
+													    echo number_format($bf, 2);
+												    ?>
+											
+												</td>
+										
+										
+											</tr>
+										    <?php $sn++; endforeach; ?>
+								
+									<tr>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td style="text-align: right"><strong>Total:</strong> <?=number_format( $total_dr, 2); ?></td>
+										<td style="text-align: right"><strong>Total:</strong> <?=number_format($total_cr, 2 ); ?></td>
+										<td style="text-align: right"> <strong>Balance:</strong> <?=number_format($total_cr - $total_dr, 2); ?></td>
+									</tr>
+									</tbody>
+								</table>
+						    <?php  else:
+							
+							    echo "No data Available";
+						    endif; ?>
+						</div>
+					</div>
+			
+				</div>
+			</div>
+	    <?php endif; ?>
     </div>
+	
+
 
 </div>
 

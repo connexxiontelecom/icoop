@@ -49,9 +49,8 @@ Upload Routine
                         <div class="card w_card3">
                             <div class="body">
                                 <div class="text-center"><i class="fa fa-twitter"></i>
-                                    <h5 class="m-t-20 mb-0">3,756</h5>
-                                    <p class="text-muted">New Followers</p>
-                                    <a href="javascript:void(0);" class="btn btn-primary btn-round">Find more</a>
+                                    <h5 class="m-t-20 mb-0">Loan Repayment Upload</h5>
+                                    <a href="<?php echo base_url('lr_upload'); ?>" class="btn btn-primary btn-round">Go >></a>
                                 </div>
                             </div>
                         </div>

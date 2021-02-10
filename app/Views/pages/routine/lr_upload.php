@@ -1,14 +1,14 @@
 <?= $this->extend('layouts/master') ?>
 
 <?= $this->section('title') ?>
-Contribution Upload
+Loan Repayment Upload
 <?= $this->endSection() ?>
 
 <?= $this->section('current_page') ?>
-Contribution Upload
+Loan Repayment Upload
 <?= $this->endSection() ?>
 <?= $this->section('page_crumb') ?>
-Contribution Upload
+Loan Repayment Upload
 <?= $this->endSection() ?>
 
 <?= $this->section('extra-styles') ?>
@@ -25,7 +25,7 @@ Contribution Upload
     <div class="col-lg-12">
         <div class="card">
             <div class="header">
-                <h2>Contribution Upload</h2>
+                <h2>Loan Repayment Upload</h2>
             </div>
 
             <div class="body">
@@ -36,38 +36,49 @@ Contribution Upload
                             <div class="col-lg-6 col-md-12">
                                 <div class="form-group">
 
-                                    <label  for="application_payroll_group_id"> <b> Payroll Group: </b></label>
+                                    <label  for="application_payroll_group_id"> <b> Loan Type: </b></label>
 
-                                    <select class="custom-select" required name="contribution_upload_pg" >
+                                    <select class="custom-select" required name="lr_upload_lt" >
 										<option value='' disabled selected> --Select -- </option>
-                                        <?php foreach ($pgs as $pg): ?>
-                                            <option value="<?=$pg['pg_id'] ?>"> <?=$pg['pg_name']; ?></option>
+
+                                        <?php foreach ($loan_types as $loan_type): ?>
+                                            <option value="<?=$loan_type['loan_setup_id'] ?>"> <?=$loan_type['loan_description']; ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
-
-                                <div class="form-group">
-
-                                    <label  for="application_payroll_group_id"> <b> Contribution Type: </b></label>
-
-                                    <select class="custom-select" required name="contribution_upload_ct">
-										<option value='' disabled selected> --Select -- </option>
-                                        <?php foreach ($cts as $ct): ?>
-                                            <option value="<?=$ct['contribution_type_id'] ?>"> <?=$ct['contribution_type_name']; ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
+	
+								<div class="form-group">
+		
+									<label  for="application_payroll_group_id"> <b> Select Year: </b></label>
+		
+									<select class="custom-select" required name="lr_upload_year" >
+			
+										<option value="<?=date('Y') ?>"> <?=date('Y') ?></option>
+		
+									</select>
+								</div>
+	
+								<div class="form-group">
+		                            <?php $months = array(1 => 'January', 2 => 'February', 3 => 'March', 4 => 'April', 5 => 'May', 6 => 'June', 7 => 'July', 8 => 'August', 9 => 'September', 10 => 'October', 11 => 'November', 12 => 'December'); ?>
+		
+									<label  for="application_payroll_group_id"> <b> Select Month: </b></label>
+		
+									<select class="custom-select" required name="lr_upload_month">
+			
+			                            <?php foreach ($months as $key => $month): ?>
+											<option value="<?=$key ?>" <?php  if(date('n') == $key){ echo "selected";}?>> <?=$month; ?></option>
+			                            <?php endforeach; ?>
+									</select>
+								</div>
+                            
 
                                 <div class="form-group">
                                     <label for="application_first_name"><b>Date:</b></label>
-                                    <input type="date"  class="form-control" placeholder="Date" name="contribution_upload_date" required>
+                                    <input type="date"  class="form-control" placeholder="Date" name="lr_upload_date" required>
                                 </div>
 
 
-                                <div class="form-group">
-                                    <label for="application_address"><b>Narration:</b></label>
-                                    <textarea name="contribution_upload_narration" id="application_address"  cols="30" rows="3" placeholder="Narration *" class="form-control no-resize" required></textarea>
-                                </div>
+                              
 
 
                                 <div class="form-group">

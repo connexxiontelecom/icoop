@@ -56,7 +56,7 @@ Verify Withdrawals
                                 <td><?=number_format($withdrawal['withdraw_amount']); ?></td>
 
                                 <td>
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#verifyModal<?=$withdrawal['withdraw_id'] ?>"><i class="fa fa-check"></i></button>
+                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#verifyModal<?=$withdrawal['withdraw_id'] ?>"><i class="fa fa-check"></i></button>
                                     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal<?=$withdrawal['withdraw_id'] ?>"> <i class="fa fa-times"></i></button>
 
                                 </td>
