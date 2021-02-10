@@ -49,7 +49,7 @@ class PaymentController extends BaseController
         ];
         
         $username = $this->session->user_username;
-        $this->authenticate_user($username, 'pages/loan/new-payment-schedule', $data); 
+        $this->authenticate_user($username, 'pages/payment/new-payment-schedule', $data); 
     }
 
 
@@ -212,7 +212,16 @@ class PaymentController extends BaseController
         
         $username = $this->session->user_username;
         
-        $this->authenticate_user($username, 'pages/loan/payment-schedules', $data); 
+        $this->authenticate_user($username, 'pages/payment/payment-schedules', $data); 
+    }
+     public function showVerifiedScheduledPayments(){
+         $data = [
+            'schedules'=>$this->schedulemaster->getVerifiedScheduleMaster()
+        ];
+        
+        $username = $this->session->user_username;
+        
+        $this->authenticate_user($username, 'pages/payment/approve-payment-schedules', $data); 
     }
 
 
@@ -226,7 +235,7 @@ class PaymentController extends BaseController
             ];
             
             $username = $this->session->user_username;
-            $this->authenticate_user($username, 'pages/loan/view-payment-schedule', $data);
+            $this->authenticate_user($username, 'pages/payment/view-payment-schedule', $data);
 
         }else{
            return redirect()->to('/loan/payment-schedules');  
@@ -291,6 +300,32 @@ class PaymentController extends BaseController
                 ]);
             $alert = array(
                 'msg' => 'Success! Payment shedule verified.',
+                'type' => 'success',
+                'location' => site_url('/loan/payment-schedules')
+
+            );
+            return view('pages/sweet-alert', $alert);
+        }
+    }
+    public function approveSchedule(){
+        helper(['form']);
+        $data = [];
+        $username = $this->session->user_username;
+        if($_POST){ 
+            $this->schedulemaster->update($this->request->getVar('schedule'), 
+                ['verified_by'=>$this->user->where('email', $username)->first()['first_name'],
+                'date_verified'=>date('Y-m-d H:i:s'),
+                'verified'=>2//approved
+                ]);
+            $scheduledetail = $this->schedulemasterdetail->where('schedule_master_id', 
+                $this->request->getVar('schedule'))->findAll();
+           // return dd($scheduledetail);
+            foreach($scheduledetail as $detail){
+                $loan = $this->loan->where('loan_id', $detail['loan_id'])->first();
+                $this->loan->update($loan, ['disburse'=>1, 'disburse_date'=>date('Y-m-d H:i:s')]);
+            }
+            $alert = array(
+                'msg' => 'Success! Payment disbursed.',
                 'type' => 'success',
                 'location' => site_url('/loan/payment-schedules')
 

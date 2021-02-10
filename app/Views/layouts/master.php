@@ -255,7 +255,7 @@
                                             <ul>
                                                 <li><a href="<?=site_url('/loan/new-payment-schedule') ?>" class="text-white">Payment Schedule</a></li>
                                                 <li><a href="<?=base_url('/loan/payment-schedules') ?>">Verify</a></li>
-                                                <li><a href="<?=base_url('upload_routine') ?>">Approve</a></li>
+                                                <li><a href="<?=base_url('/loan/verified-payment-schedules') ?>">Approve</a></li>
 
                                             </ul>
 

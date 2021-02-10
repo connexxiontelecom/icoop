@@ -103,10 +103,18 @@ Payment Schedule
                                         <?php if(count($detail) > 0) : ?>
                                         <tr>
                                             <td colspan="7" class="text-right">
-                                                <div class="btn-group">
-                                                    <button class="btn btn-danger btn-sm" type="submit" >Return Schedule</button>
-                                                    <button class="btn btn-primary btn-sm text-right" data-target="#verifyScheduleModal" data-toggle="modal" type="button">Verify Schedule</button>
-                                                </div>
+                                                <?php if($master->verified == 0) : ?>
+                                                    <div class="btn-group">
+                                                        <button class="btn btn-danger btn-sm" type="submit" >Return Schedule</button>
+                                                        <button class="btn btn-primary btn-sm text-right" data-target="#verifyScheduleModal" data-toggle="modal" type="button">Verify Schedule</button>
+                                                    </div>
+
+                                                <?php else : ?>
+                                                    <div class="btn-group">
+                                                        <button class="btn btn-danger btn-sm" type="submit" >Return Schedule</button>
+                                                        <button class="btn btn-primary btn-sm text-right" data-target="#approveScheduleModal" data-toggle="modal" type="button">Approve Schedule</button>
+                                                    </div>
+                                                <?php endif; ?>
                                             </td>
                                         </tr>
                                         <?php endif; ?>
@@ -144,6 +152,35 @@ Payment Schedule
                       <input type="hidden" name="schedule" value="<?= $master->schedule_master_id ?>">
                         <button class="btn-sm btn btn-danger" data-dismiss="modal">No, cancel.</button>
                        <button class="btn-sm btn btn-primary" type="submit">Yes, verify.</button>
+                      </div>
+                    </div>
+               </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="approveScheduleModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title h4" id="myLargeModalLabel">Approve Payment Schedule</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+               <p>Are you sure you want to approve this payment schedule?</p>
+               <form action="<?= site_url('/loan/approve-schedule') ?>" method="post">
+                    <?= csrf_field() ?>
+                    <div class="form-group">
+                        <label for="">Comment <i>(Optional)</i></label>
+                        <textarea name="comment" id="comment" style="resize:none;" placeholder="Leave comment here..." class="form-control"></textarea>
+                    </div>
+                    <div class="form-group text-right">
+                      <div class="btn-group">
+                      <input type="hidden" name="schedule" value="<?= $master->schedule_master_id ?>">
+                        <button class="btn-sm btn btn-danger" data-dismiss="modal">No, cancel.</button>
+                       <button class="btn-sm btn btn-primary" type="submit">Yes, approve.</button>
                       </div>
                     </div>
                </form>
