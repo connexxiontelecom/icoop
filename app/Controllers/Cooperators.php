@@ -671,6 +671,7 @@ class Cooperators extends BaseController
                     $data['banks'] = $this->bank->findAll();
                     $data['pgs'] = $this->pg->findAll();
                     $username = $this->session->user_username;
+                    $data['y'] = 'All Transactions';
                     $this->authenticate_user($username, 'pages/cooperators/ledger', $data);
                else:
                     $ledgers = $this->pd->get_payment_staff_id($staff_id);
@@ -717,6 +718,7 @@ class Cooperators extends BaseController
                     $data['departments'] = $this->department->findAll();
                     $data['banks'] = $this->bank->findAll();
                     $data['pgs'] = $this->pg->findAll();
+	               $data['y'] = "January - December ".$year;
                     $username = $this->session->user_username;
                     $this->authenticate_user($username, 'pages/cooperators/ledger', $data);
                 endif;
@@ -787,9 +789,30 @@ class Cooperators extends BaseController
 			$loan_id = $this->request->getPost('loan_id');
 			if($year == 'a'):
 				
-				$data['ledgers'] = (object)$this->loan->get_loans_staff_id($staff_id, $loan_id);
+				$data['ledgers'] = $this->loan->get_loans_staff_id($staff_id, $loan_id);
+				$data['loan_details'] = $data['ledgers'][0];
 				
+				$ledgs = $this->pd->get_regular_savings($staff_id);
+				$total_cr = 0;
+				$total_dr = 0;
+				$cr = 0;
+				$dr = 0;
 				
+				foreach ($ledgs as $ledg):
+					
+					if($ledg->pd_drcrtype == 1):
+						$cr = $ledg->pd_amount;
+						$total_cr = $total_cr + $cr;
+					endif;
+					
+					if($ledg->pd_drcrtype == 2):
+						$dr = $ledg->pd_amount;
+						$total_dr = $total_dr + $dr;
+					endif;
+				
+				endforeach;
+				
+				$data['savings'] = $total_cr - $total_dr;
 				
 				$data['ls'] = $this->ls->where(['loan_setup_id' => $loan_id])->first();
 				$data['check'] = 1;
@@ -801,7 +824,7 @@ class Cooperators extends BaseController
 				$data['pgs'] = $this->pg->findAll();
 				$username = $this->session->user_username;
 				
-				//print_r($data['ledgers']);
+				//print_r($data['loan_details']);
 				$this->authenticate_user($username, 'pages/cooperators/loan_ledger', $data);
 			
 			endif;
@@ -828,7 +851,7 @@ class Cooperators extends BaseController
 						if($loan->disburse == 1 && $loan->paid_back == 0):
 							//$data['loan_types'][$i] = $this->ls->where(['loan_setup_id' => $loan->loan_type])->first();
 							
-							$loan_ledgers = $this->loan->get_loans_staff_id($staff_id, $loan->loan_type);
+							$loan_ledgers = $this->loan->get_loans_staff_id($staff_id, $loan->loan_id);
 							
 							$total_cr = 0;
 							$total_dr = 0;
@@ -843,7 +866,7 @@ class Cooperators extends BaseController
 										$total_cr = $total_cr + $cr;
 									endif;
 								
-								if($loan_ledger->lr_dctype == 2 && $loan_ledger->lr_interest == 0):
+								if($loan_ledger->lr_dctype == 2):
 									$dr = $loan_ledger->lr_amount;
 									$total_dr = $total_dr + $dr;
 								endif;
@@ -863,7 +886,7 @@ class Cooperators extends BaseController
 									
 								endforeach;
 								
-								$total_cr = $total_cr - $total_dr;
+								//$total_cr = $total_cr - $total_dr;
 								
 								
 							
@@ -874,7 +897,7 @@ class Cooperators extends BaseController
 								'loan_total_cr' => $total_cr,
 								'loan_total_dr' => $total_dr,
 								'loan_balance' => $loan_ledgers[0]->amount + ($total_dr - $total_cr),
-								'loan_type' => $loan->loan_type
+								'loan_type' => $loan->loan_id
 							
 							);
 						
