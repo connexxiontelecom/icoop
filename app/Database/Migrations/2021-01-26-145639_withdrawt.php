@@ -88,8 +88,7 @@ class Withdrawt extends Migration
                     'null' => 'true'
 
                 ],
-
-
+                
             ]
         );
         $this->forge->addKey('withdraw_id', true);
