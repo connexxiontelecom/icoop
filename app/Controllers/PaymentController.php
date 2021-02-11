@@ -10,6 +10,7 @@ use \App\Models\ScheduleMasterModel;
 use \App\Models\ScheduleMasterDetailModel;
 use \App\Models\PaymentDetailsModel;
 use \App\Models\PaymentCartModel;
+use \App\Models\LoanRepaymentModel;
 
 class PaymentController extends BaseController
 {
@@ -27,6 +28,7 @@ class PaymentController extends BaseController
         $this->user = new UserModel();
         $this->paymentdetail = new PaymentDetailsModel();
         $this->paymentcart = new PaymentCartModel();
+        $this->loanrepayment = new LoanRepaymentModel();
         $this->session = session();
     }
 
@@ -319,11 +321,51 @@ class PaymentController extends BaseController
                 ]);
             $scheduledetail = $this->schedulemasterdetail->where('schedule_master_id', 
                 $this->request->getVar('schedule'))->findAll();
-           // return dd($scheduledetail);
             foreach($scheduledetail as $detail){
                 $loan = $this->loan->where('loan_id', $detail['loan_id'])->first();
                 $this->loan->update($loan, ['disburse'=>1, 'disburse_date'=>date('Y-m-d H:i:s')]);
+                #register loan repayment
+               $loan_repayment = [
+                    'lr_staff_id' => $loan['staff_id'],
+                    'lr_loan_id' => $loan['loan_id'],
+                    'lr_month' => date('m', strtotime($loan['created_at'])),
+                    'lr_year' => date('Y', strtotime($loan['created_at'])),
+                    'lr_amount' => $loan['interest'],
+                    'lr_dctype' => 2,
+                    'lr_ref' => substr(sha1(time()),32,40),
+                    'lr_narration' => 'interest on loan type',
+                    'lr_mi' => 0,
+                    'lr_mpr' => 0,
+                    'lr_interest' => 1,
+                    'lr_date' => date('Y-m-d H:i:s'),
+               ];
+               $this->loanrepayment->save($loan_repayment);
+
             }
+            #register withdraw
+            /* $payment_details_array = array(
+                'pd_staff_id' => $staff_id,
+                'pd_transaction_date' =>'withdraw_date',
+                'pd_narration' => $withdraw_narration,
+                'pd_amount' => $withdraw_amount,
+                'pd_drcrtype' => 2,
+                'pd_ct_id' => $withdraw_ct_id,
+                'pd_pg_id' => $cooperator_payroll_group_id,
+                'pd_ref_code' => time(),
+            );
+            $v =  $this->pd->save($payment_details_array); */
+            
+            $payment = [
+                    'pd_staff_id'=>$this->request->getVar('staff_id'),
+                    'pd_transaction_date'=>date('Y-m-d H:i:s'),
+                    'pd_narration'=>'Loan approved for disbursed.',
+                    'pd_amount'=>$this->request->getVar('amount'),
+                    'pd_drcrtype'=>1,
+                    'pd_ct_id'=>3,
+                    'pd_pg_id'=>1,
+                    'pd_ref_code'=>substr(sha1(time()), 22,32)
+                ];
+                $this->paymentdetail->save($payment);
             $alert = array(
                 'msg' => 'Success! Payment disbursed.',
                 'type' => 'success',

@@ -7,7 +7,7 @@ class ScheduleMasterModel extends Model{
     protected $primaryKey = 'schedule_master_id';
     protected $allowedFields = ['bank_id', 'payable_date', 'creation_date', 'loan_id', 'transaction_type','verified', 'amount', 'verified_by', 'date_verified'];
 
-
+    
 
 
     public function getScheduleMaster(){
