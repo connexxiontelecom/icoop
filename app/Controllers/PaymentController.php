@@ -56,11 +56,12 @@ class PaymentController extends BaseController
 
 
      public function addPaymentToCart(){
+        //return dd($_POST);
          helper(['form']);
         $data = [];
-        if($_POST){            
-                #register loan application
-                if(!empty($this->request->getVar('approved_loans')) ){
+        if($_POST){     
+            if(!empty($this->request->getVar('approved_loans')) || !empty($this->request->getVar('withdraws'))){
+                if(!empty($this->request->getVar('approved_loans'))){
                     foreach($this->request->getVar('approved_loans') as $loan){
                         if(isset($loan)){
                             $detail = [
@@ -76,25 +77,38 @@ class PaymentController extends BaseController
                             $this->loan->update($loan, ['cart'=>1]);
                         }
                     }
-                     $alert = array(
-                            'msg' => 'Success! Selection was added to cart.',
-                            'type' => 'success',
-                            'location' => site_url('/loan/new-payment-schedule')
-    
-                        );
-                        return view('pages/sweet-alert', $alert);
-                }else{
-                    $alert = array(
-                            'msg' => 'Ooops! No selection was made.',
-                            'type' => 'error',
-                            'location' => site_url('/loan/new-payment-schedule')
-    
-                        );
-                        return view('pages/sweet-alert', $alert);
+                }
+                
+                if(!empty($this->request->getVar('withdraws'))){
+                    for($i = 0; $i<count($this->request->getVar('withdraws')); $i++){
+                        if(isset($this->request->getVar('withdraw_id')[$i])){                           
+                            //$this->withdraw->update($this->request->getVar('withdraw_id')[$i], ['cart'=>1]);
+                            $down = $this->withdraw->where('withdraw_id', $this->request->getVar('withdraw_id')[$i])->first();
+                            //return dd($down);
+                            $this->withdraw->update($down, ['cart'=>1]);
+                        }
 
                     }
-           
-        }
+                }
+                 $alert = array(
+                        'msg' => 'Success! Selection was added to cart.',
+                        'type' => 'success',
+                        'location' => site_url('/loan/new-payment-schedule')
+    
+                    );
+                    return view('pages/sweet-alert', $alert);
+            }else{
+                $alert = array(
+                        'msg' => 'Ooops! No selection was made.',
+                        'type' => 'error',
+                        'location' => site_url('/loan/new-payment-schedule')
+    
+                    );
+                    return view('pages/sweet-alert', $alert);
+        
+            }
+
+            }    
     }
 
     public function removeFromCart($id){
