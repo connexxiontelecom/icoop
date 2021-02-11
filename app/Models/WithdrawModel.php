@@ -42,6 +42,15 @@ class WithdrawModel extends \CodeIgniter\Model
         $builder->join('cooperators', 'cooperators.cooperator_staff_id = withdraws.withdraw_staff_id');
         //$builder->join('loan_setups', 'loans.loan_type = loan_setups.loan_setup_id');
         $builder->where('withdraws.withdraw_status = 2');
+        $builder->where('withdraws.cart = 0');
         return $builder->get()->getResultObject();
     }
+
+    /*     public function getApprovedLoans(){
+        $builder = $this->db->table('loans');
+        $builder->join('cooperators', 'cooperators.cooperator_staff_id = loans.staff_id');
+        $builder->join('loan_setups', 'loans.loan_type = loan_setups.loan_setup_id');
+        $builder->where('loans.cart = 0');
+        return $builder->get()->getResultObject();
+    } */
 }
