@@ -228,9 +228,14 @@ class PaymentController extends BaseController
                                 'transaction_type'=>2//withdraw
                             ];
                             $this->schedulemasterdetail->save($detail);
-                            $val = $this->withdraw->where('withdraw_id', $this->request->getVar('withdraw_id')[$i])->first();
-                            //return dd($val);
-                            $this->withdraw->update($val, ['scheduled'=>1]);
+                            $withdraw_id = $this->request->getVar('withdraw_id')[$i];
+                            //$val = $this->withdraw->where('withdraw_id', )->first();
+                            $data = array(
+                                'withdraw_id' => $withdraw_id,
+                                'scheduled' => 1
+                            );
+                            
+                            $this->withdraw->save($data);
                         }
                     }
             
