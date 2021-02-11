@@ -490,7 +490,7 @@ class Withdraw extends BaseController
 
             $withdraw_status = $_POST['withdraw_status'];
 
-            if($withdraw_status == 2):
+            if($withdraw_status == 2): //approve
 
                 $_POST['withdraw_approved_date'] = date('Y-m-d');
                 $_POST['withdraw_approved_by']  = $this->session->user_first_name." ".$this->session->user_last_name;

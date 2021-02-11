@@ -223,7 +223,7 @@ Loan Setup
                                         <td scope="col">₦<?= number_format($setup['min_credit_limit'],2) ?></td>
                                         <td scope="col">₦<?= number_format($setup['max_credit_limit'],2) ?></td>
                                         <td scope="col"><?= $setup['max_repayment_periods'] ?></td>
-                                        <td scope="col"><?= $setup['interest_rate'] ?>%</td>
+                                        <td scope="col"><?= $setup['ls_interest_rate'] ?>%</td>
                                         <td scope="col"><?php if($setup['interest_method'] == 1){ echo "Flat"; }else if($setup['interest_method'] == 2){ echo "Monthly"; }else{ echo "Yearly"; }?></td>
                                         <td scope="col"><?= $setup['status'] == 1 ? 'Active' : 'Blocked' ?></td>
                                         <td scope="col"><?= $setup['payable'] == 1 ? 'Cash' : 'Vendor' ?></td>
@@ -309,7 +309,7 @@ Loan Setup
                                                                         <div class="form-group">
                                                                             <label for="">Interest Rate</label>
                                                                             <div class="input-group mb-3">
-                                                                                <input type="number" required step="0.01" value="<?= $setup['interest_rate'] ?? '' ?>" class="form-control" placeholder="Interest Rate" name="interest_rate" >
+                                                                                <input type="number" required step="0.01" value="<?= $setup['ls_interest_rate'] ?? '' ?>" class="form-control" placeholder="Interest Rate" name="interest_rate" >
                                                                                 <div class="input-group-append">
                                                                                     <span class="input-group-text">(%)</span>
                                                                                 </div>

@@ -84,15 +84,15 @@ Loan Application Details
                                     </tr>
                                     <tr>
                                         <td class="text-nowrap">Loan Interest Rate</td>
-                                        <td><strong><?= $application->interest_rate.'%' ?? '' ?></strong></td>
+                                        <td><strong><?= $application->ls_interest_rate.'%' ?? '' ?></strong></td>
                                         <td class="text-nowrap">Interest Amount</td>
                                         <td>
                                         <?php if($application->loan_type == 1)  : ?> <!-- Flat -->
-                                                <p for=""><strong>₦<?= number_format(($application->amount*$setup['interest_rate']/100),2 ) ?></strong></p>
+                                                <p for=""><strong>₦<?= number_format(($application->amount*$setup['ls_interest_rate']/100),2 ) ?></strong></p>
                                             <?php elseif($application->loan_type == 2) : ?>
-                                                <p for=""><strong>₦<?= number_format($application->amount*($setup['interest_rate']/100) * $application->duration/12 ) ?></strong></p>
+                                                <p for=""><strong>₦<?= number_format($application->amount*($setup['ls_interest_rate']/100) * $application->duration/12 ) ?></strong></p>
                                             <?php else : ?>
-                                                <p for=""><strong>₦<?= number_format($application->amount*($setup['interest_rate']/100) * $application->duration ) ?></strong></p>
+                                                <p for=""><strong>₦<?= number_format($application->amount*($setup['ls_interest_rate']/100) * $application->duration ) ?></strong></p>
                                             <?php endif; ?>
                                         </td>
                                     </tr>
@@ -104,9 +104,9 @@ Loan Application Details
                                     </tr>
                                     <tr>
                                         <td class="text-nowrap">Disbursed</td>
-                                        <td><strong><?= $application->interest_rate.'%' ?? '' ?></strong></td>
+                                        <td><strong><?= $application->ls_interest_rate.'%' ?? '' ?></strong></td>
                                         <td class="text-nowrap">Disbursed Date</td>
-                                        <td><strong><?= $application->interest_rate.'%' ?? '' ?></strong></td>
+                                        <td><strong><?= $application->ls_interest_rate.'%' ?? '' ?></strong></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -158,7 +158,7 @@ Loan Application Details
                         </div>
                     </div>
                     <div class="col-lg-12 col-md-12">
-                        <div class="table-responsive">                                        
+                        <div class="table-responsive">
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
@@ -192,14 +192,14 @@ Loan Application Details
                                         <div class="d-flex justify-content-center">
                                         <input type="hidden" name="application_id" value="<?= $application->loan_app_id ?>">
                                         <input type="hidden" name="loan_type" value="<?= $application->loan_type ?>">
-                                        <input type="hidden"  name="principal_amount" value="<?=$application->amount ?>"> 
-                                        <input type="hidden" name="interest_rate" value="<?= $setup['interest_rate'] ?>">
+                                        <input type="hidden"  name="principal_amount" value="<?=$application->amount ?>">
+                                        <input type="hidden" name="interest_rate" value="<?= $setup['ls_interest_rate'] ?>">
                                         <?php if($application->loan_type == 1)  : ?> <!-- Flat -->
-                                            <input type="hidden" value="<?= $application->amount*$setup['interest_rate']/100?>" name="interest">
+                                            <input type="hidden" value="<?= $application->amount*$setup['ls_interest_rate']/100?>" name="interest">
                                         <?php elseif($application->loan_type == 2) : ?>
-                                            <input type="hidden" value="<?= number_format($application->amount*($setup['interest_rate']/100) * $application->duration/12 ) ?>" name="interest">
+                                            <input type="hidden" value="<?= number_format($application->amount*($setup['ls_interest_rate']/100) * $application->duration/12 ) ?>" name="interest">
                                         <?php else : ?>
-                                            <input type="hidden" name="interest" value="<?= number_format($application->amount * ($setup['interest_rate']/100) * $application->duration ) ?>">
+                                            <input type="hidden" name="interest" value="<?= number_format($application->amount * ($setup['ls_interest_rate']/100) * $application->duration ) ?>">
                                         <?php endif; ?>
                                             <div class="btn-group ">
                                                 <button type="button" class="btn btn-round btn-danger btn-sm" data-dismiss="modal">Disqualify Application</button>
@@ -249,26 +249,26 @@ Loan Application Details
                         <label for="">Comment <small>(Optional)</small></label>
                         <textarea name="comment" id="comment" style="resize:none;" placeholder="Type here..." class="form-control"></textarea>
                         
-                        <input type="hidden"  name="principal_amount" value="<?=$application->amount ?>"> 
-                        <input type="hidden" name="interest_rate" value="<?= $setup['interest_rate'] ?>">
+                        <input type="hidden"  name="principal_amount" value="<?=$application->amount ?>">
+                        <input type="hidden" name="interest_rate" value="<?= $setup['ls_interest_rate'] ?>">
                         <?php if($application->loan_type == 1)  : ?> <!-- Flat -->
-                            <input type="hidden" value="<?= $application->amount*$setup['interest_rate']/100?>" name="interest">
+                            <input type="hidden" value="<?= $application->amount*$setup['ls_interest_rate']/100?>" name="interest">
                         <?php elseif($application->loan_type == 2) : ?>
-                            <input type="hidden" value="<?= number_format($application->amount*($setup['interest_rate']/100) * $application->duration/12 ) ?>" name="interest">
+                            <input type="hidden" value="<?= number_format($application->amount*($setup['ls_interest_rate']/100) * $application->duration/12 ) ?>" name="interest">
                         <?php else : ?>
-                            <input type="hidden" name="interest" value="<?= number_format($application->amount * ($setup['interest_rate']/100) * $application->duration ) ?>">
+                            <input type="hidden" name="interest" value="<?= number_format($application->amount * ($setup['ls_interest_rate']/100) * $application->duration ) ?>">
                         <?php endif; ?>
 
                     </div>
                     <div class="form-group">
                         <p><strong>Principal Amount: </strong>₦<?=number_format( $application->amount) ?></p>
-                        <p><strong>Interest Rate: </strong><?= $setup['interest_rate'] ?>%</p>
+                        <p><strong>Interest Rate: </strong><?= $setup['ls_interest_rate'] ?>%</p>
                         <?php if($application->loan_type == 1)  : ?> <!-- Flat -->
-                            <p for=""><strong>Interest Amount: </strong>₦<?= number_format(($application->amount*$setup['interest_rate']/100),2 ) ?></p>
+                            <p for=""><strong>Interest Amount: </strong>₦<?= number_format(($application->amount*$setup['ls_interest_rate']/100),2 ) ?></p>
                         <?php elseif($application->loan_type == 2) : ?>
-                            <p for=""><strong>Interest Amount: </strong>₦<?= number_format($application->amount*($setup['interest_rate']/100) * $application->duration/12 ) ?></p>
+                            <p for=""><strong>Interest Amount: </strong>₦<?= number_format($application->amount*($setup['ls_interest_rate']/100) * $application->duration/12 ) ?></p>
                         <?php else : ?>
-                            <p for=""><strong>Interest Amount: </strong>₦<?= number_format($application->amount*($setup['interest_rate']/100) * $application->duration ) ?></p>
+                            <p for=""><strong>Interest Amount: </strong>₦<?= number_format($application->amount*($setup['ls_interest_rate']/100) * $application->duration ) ?></p>
                         <?php endif; ?>
                     </div>
                     <div class="form-group d-flex justify-content-center">
