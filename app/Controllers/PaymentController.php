@@ -225,7 +225,8 @@ class PaymentController extends BaseController
                                 'coop_id'=>$this->request->getVar('coop_id')[$i],
                                 'amount'=>$this->request->getVar('amount')[$i],
                                 'schedule_master_id'=>$masterId,
-                                'transaction_type'=>2//withdraw
+                                'transaction_type'=>2,//withdraw,
+                                'loan_id'=>$this->request->getVar('withdraw_id')[$i]
                             ];
                             $this->schedulemasterdetail->save($detail);
                             $withdraw_id = $this->request->getVar('withdraw_id')[$i];
@@ -234,7 +235,7 @@ class PaymentController extends BaseController
                                 'withdraw_id' => $withdraw_id,
                                 'scheduled' => 1
                             );
-                            
+
                             $this->withdraw->save($data);
                         }
                     }
@@ -374,50 +375,54 @@ class PaymentController extends BaseController
             $scheduledetail = $this->schedulemasterdetail->where('schedule_master_id', 
                 $this->request->getVar('schedule'))->findAll();
             foreach($scheduledetail as $detail){
-                $loan = $this->loan->where('loan_id', $detail['loan_id'])->first();
-                $this->loan->update($loan, ['disburse'=>1, 'disburse_date'=>date('Y-m-d H:i:s')]);
-                #register loan repayment
-               $loan_repayment = [
-                    'lr_staff_id' => $loan['staff_id'],
-                    'lr_loan_id' => $loan['loan_id'],
-                    'lr_month' => date('m', strtotime($loan['created_at'])),
-                    'lr_year' => date('Y', strtotime($loan['created_at'])),
-                    'lr_amount' => $loan['interest'],
-                    'lr_dctype' => 2,
-                    'lr_ref' => substr(sha1(time()),32,40),
-                    'lr_narration' => 'interest on loan type',
-                    'lr_mi' => 0,
-                    'lr_mpr' => 0,
-                    'lr_interest' => 1,
-                    'lr_date' => date('Y-m-d H:i:s'),
-               ];
-               $this->loanrepayment->save($loan_repayment);
+                if($detail['transaction_type'] == 1){ //loan
+                    $loan = $this->loan->where('loan_id', $detail['loan_id'])->first();
+                    $this->loan->update($loan, ['disburse'=>1, 'disburse_date'=>date('Y-m-d H:i:s')]);
+                    #register loan repayment
+                   $loan_repayment = [
+                        'lr_staff_id' => $loan['staff_id'],
+                        'lr_loan_id' => $loan['loan_id'],
+                        'lr_month' => date('m', strtotime($loan['created_at'])),
+                        'lr_year' => date('Y', strtotime($loan['created_at'])),
+                        'lr_amount' => $loan['interest'],
+                        'lr_dctype' => 2,
+                        'lr_ref' => substr(sha1(time()),32,40),
+                        'lr_narration' => 'interest on loan type',
+                        'lr_mi' => 0,
+                        'lr_mpr' => 0,
+                        'lr_interest' => 1,
+                        'lr_date' => date('Y-m-d H:i:s'),
+                   ];
+                   $this->loanrepayment->save($loan_repayment);
+                }elseif($detail['transaction_type'] == 2){ //withdraw
+                    $withdraw_id = $detail['loan_id'];
+                     $data = array(
+                                'withdraw_id' => $withdraw_id,
+                                'disburse'=>1, 
+                                'disburse_date'=>date('Y-m-d H:i:s')
+                            );
+
+                            $this->withdraw->save($data);
+
+                   $withdraw = $this->withdraw->where('withdraw_id', $withdraw_id)->first();
+                    //$this->withdraw->update($withdraw, []);
+                    #register withdraw
+                     $payment_details_array = array(
+                        'pd_staff_id' => $withdraw['withdraw_staff_id'],
+                        'pd_transaction_date' =>'withdraw_date',
+                        'pd_narration' => $withdraw['withdraw_narration'],
+                        'pd_amount' => $withdraw['withdraw_amount'],
+                        'pd_drcrtype' => 2,
+                        'pd_ct_id' => $withdraw['withdraw_ct_id'],
+                        'pd_pg_id' => 1,//$cooperator_payroll_group_id,
+                        'pd_ref_code' => time(),
+                    );
+                    
+                    $v =  $this->paymentdetail->save($payment_details_array);
+
+                }
 
             }
-            #register withdraw
-            /* $payment_details_array = array(
-                'pd_staff_id' => $staff_id,
-                'pd_transaction_date' =>'withdraw_date',
-                'pd_narration' => $withdraw_narration,
-                'pd_amount' => $withdraw_amount,
-                'pd_drcrtype' => 2,
-                'pd_ct_id' => $withdraw_ct_id,
-                'pd_pg_id' => $cooperator_payroll_group_id,
-                'pd_ref_code' => time(),
-            );
-            $v =  $this->pd->save($payment_details_array); */
-            
-            $payment = [
-                    'pd_staff_id'=>$this->request->getVar('staff_id'),
-                    'pd_transaction_date'=>date('Y-m-d H:i:s'),
-                    'pd_narration'=>'Loan approved for disbursed.',
-                    'pd_amount'=>$this->request->getVar('amount'),
-                    'pd_drcrtype'=>1,
-                    'pd_ct_id'=>3,
-                    'pd_pg_id'=>1,
-                    'pd_ref_code'=>substr(sha1(time()), 22,32)
-                ];
-                $this->paymentdetail->save($payment);
             $alert = array(
                 'msg' => 'Success! Payment disbursed.',
                 'type' => 'success',
