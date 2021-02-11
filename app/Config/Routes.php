@@ -136,6 +136,7 @@ $routes->get('/loan/payment-schedules', 'PaymentController::showScheduledPayment
 $routes->get('/loan/verified-payment-schedules', 'PaymentController::showVerifiedScheduledPayments');
 $routes->get('/loan/payment-schedule/(:num)', 'PaymentController::showPaymentScheduleDetail/$1');
 $routes->get('/loan/return-schedule-payment/(:num)', 'PaymentController::returnSchedulePayment/$1');
+//$routes->get('/withdraw/return-schedule-payment/(:num)', 'PaymentController::returnWithdrawSchedulePayment/$1');
 $routes->post('/loan/return-bulk-schedule', 'PaymentController::returnBulkSchedule');
 $routes->post('/loan/verify-schedule', 'PaymentController::verifySchedule');
 $routes->post('/loan/approve-schedule', 'PaymentController::approveSchedule');
@@ -143,6 +144,7 @@ $routes->get('/loan/payables', 'LoanController::showLoandPayables');
 $routes->post('/loan/payable-action', 'LoanController::loanPayableAction');
 $routes->post('/loan/add-payment-to-cart', 'PaymentController::addPaymentToCart');
 $routes->get('/loan/remove-from-cart/(:num)', 'PaymentController::removeFromCart/$1');
+$routes->get('/loan/remove-withdraw-from-cart/(:num)', 'PaymentController::removeWithdrawFromCart/$1');
 
 
 
