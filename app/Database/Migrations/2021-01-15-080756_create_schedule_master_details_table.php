@@ -35,6 +35,11 @@ class CreateScheduleMasterDetailsTable extends Migration
 					'type' => 'INT',
 					'null'=>true,
 				],
+				'transaction_type' =>[
+					'type' => 'INT',
+					'null'=>true,
+					'comment'=>'1=loan,2=withdraw,3=closure'
+				],
 
 
 			]

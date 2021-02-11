@@ -168,6 +168,7 @@ class PaymentController extends BaseController
         helper(['form']);
         $data = [];      
         $masterId = null;
+        //return dd($_POST);
         if($_POST){
             $rules = [
                 'payable_date'=>[
@@ -187,7 +188,7 @@ class PaymentController extends BaseController
             ];
             if($this->validate($rules)){
                 $amount = 0;
-                if(count($this->request->getVar('coop_id')) > 0){
+                if(!is_null($this->request->getVar('coop_id')) ){
                         for($i = 0; $i<count($this->request->getVar('coop_id')); $i++ ){
                             $amount += $this->request->getVar('amount')[$i];
                         }
@@ -202,31 +203,34 @@ class PaymentController extends BaseController
                     
                     $masterId = $this->schedulemaster->insert($data);
                     #Schedule detail
-                    if(count($this->request->getVar('loan_id')) > 0){
+                    if(!is_null($this->request->getVar('loan_id'))){
                         for($i = 0; $i<count($this->request->getVar('loan_id')); $i++ ){
                             $detail = [
                                 'loan_type'=>$this->request->getVar('loan_type')[$i], 
                                 'coop_id'=>$this->request->getVar('coop_id')[$i],
                                 'amount'=>$this->request->getVar('amount')[$i],
                                 'loan_id'=>$this->request->getVar('loan_id')[$i],
-                                'schedule_master_id'=>$masterId
+                                'schedule_master_id'=>$masterId,
+                                'transaction_type'=>1
                             ];
                             $this->schedulemasterdetail->save($detail);
-                            $this->loan->update($this->request->getVar('loan_id'), ['scheduled'=>1]);
+                            $this->loan->update($this->request->getVar('loan_id')[$i], ['scheduled'=>1]);
                         }
                     }
                     #withdraw detail
-                     if($this->request->getVar('withdraws')){
-                        for($i = 0; $i<count($this->request->getVar('withdraw_staff_id')); $i++ ){
+                     if(!is_null($this->request->getVar('withdraw_id'))){
+                        for($i = 0; $i<count($this->request->getVar('withdraw_id')); $i++ ){
                             $detail = [
                                 //'loan_type'=>$this->request->getVar('loan_type')[$i], 
-                                'coop_id'=>$this->request->getVar('withdraw_staff_id')[$i],
-                                'amount'=>$this->request->getVar('withdraw_amount')[$i],
-                                'schedule_master_id'=>$id
+                                'coop_id'=>$this->request->getVar('coop_id')[$i],
+                                'amount'=>$this->request->getVar('amount')[$i],
+                                'schedule_master_id'=>$masterId,
+                                'transaction_type'=>2//withdraw
                             ];
                             $this->schedulemasterdetail->save($detail);
-                            //$loan = $this->loan->where('loan_id', $this->request->getVar('loan_id'))->first()['loan_id'];
-                            $this->withdraw->update($this->request->getVar('withdraw_id'), ['withdraw_status'=>4]);
+                            $val = $this->withdraw->where('withdraw_id', $this->request->getVar('withdraw_id')[$i])->first();
+                            //return dd($val);
+                            $this->withdraw->update($val, ['scheduled'=>1]);
                         }
                     }
             
