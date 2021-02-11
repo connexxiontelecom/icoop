@@ -38,8 +38,7 @@ class Withdrawstable extends Migration
                 'disburse_date' => [
                     'type' => 'DATETIME',
                     'null' => 'true',
-                    'default'=>0
-
+                    
                 ],
 			
 			

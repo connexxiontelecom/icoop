@@ -38,8 +38,11 @@ class PaymentController extends BaseController
          $data = [];
          #approved loans
          $approved_loans = $this->loan->getApprovedLoans();
+         $approved_withdraw = $this->withdraw->getApprovedWithdraws();
          #cart
          $cart = $this->loan->getItemsInCart();
+         $withdraw_cart = $this->withdraw->getWithdrawItemsInCart();
+         //return dd($withdraw_cart);
         #withdraw request
         $withdraws = $this->withdraw->getScheduledWithdrawal(); 
         $coopbank = $this->coopbank->getCoopBanks();
@@ -47,7 +50,9 @@ class PaymentController extends BaseController
             'coopbank'=>$coopbank,
             'withdraws'=>$withdraws,
             'cart'=>$cart,
-            'approved_loans'=>$approved_loans
+	        'withdraw_cart'=>$withdraw_cart,
+            'approved_loans'=>$approved_loans,
+	        //'approved_withdraw'=>$approved_withdraw
         ];
         
         $username = $this->session->user_username;
@@ -134,6 +139,29 @@ class PaymentController extends BaseController
         }
         
     }
+    public function removeWithdrawFromCart($id){
+        
+        $withdraw = $this->withdraw->where('withdraw_id', $id)->first();
+        if(!empty($withdraw)){
+            $this->withdraw->update($withdraw, ['cart'=>0]);
+            $alert = array(
+                'msg' => 'Success! Selection removed from cart',
+                'type' => 'success',
+                'location' => site_url('/loan/new-payment-schedule')
+
+                );
+                return view('pages/sweet-alert', $alert);
+        }else{
+            $alert = array(
+                'msg' => 'Ooops! Something went wrong. Could not remove selection.',
+                'type' => 'error',
+                'location' => site_url('/loan/new-payment-schedule')
+
+            );
+            return view('pages/sweet-alert', $alert);
+        }
+        
+    }
 
 
      public function postNewPaymentSchedule(){
@@ -174,8 +202,8 @@ class PaymentController extends BaseController
                     
                     $masterId = $this->schedulemaster->insert($data);
                     #Schedule detail
-                    if(count($this->request->getVar('coop_id')) > 0){
-                        for($i = 0; $i<count($this->request->getVar('coop_id')); $i++ ){
+                    if(count($this->request->getVar('loan_id')) > 0){
+                        for($i = 0; $i<count($this->request->getVar('loan_id')); $i++ ){
                             $detail = [
                                 'loan_type'=>$this->request->getVar('loan_type')[$i], 
                                 'coop_id'=>$this->request->getVar('coop_id')[$i],
@@ -188,7 +216,7 @@ class PaymentController extends BaseController
                         }
                     }
                     #withdraw detail
-                    /* if($this->request->getVar('withdraws')){
+                     if($this->request->getVar('withdraws')){
                         for($i = 0; $i<count($this->request->getVar('withdraw_staff_id')); $i++ ){
                             $detail = [
                                 //'loan_type'=>$this->request->getVar('loan_type')[$i], 
@@ -200,7 +228,7 @@ class PaymentController extends BaseController
                             //$loan = $this->loan->where('loan_id', $this->request->getVar('loan_id'))->first()['loan_id'];
                             $this->withdraw->update($this->request->getVar('withdraw_id'), ['withdraw_status'=>4]);
                         }
-                    } */
+                    }
             
                     $alert = array(
                         'msg' => 'Success! New payment scheduled',
@@ -284,6 +312,7 @@ class PaymentController extends BaseController
                 return view('pages/sweet-alert', $alert);
             }
     }
+   
     public function returnBulkSchedule(){
         //return dd($_POST);
         if(!is_null($this->request->getVar('schedule_detail'))){
