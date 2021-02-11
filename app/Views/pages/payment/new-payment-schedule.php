@@ -136,7 +136,7 @@ Payment Schedule (Member)
                                                 <td colspan="5" class="text-right"><strong>Total:</strong></td>
                                                 <td class="text-right"><?=number_format($sum,2) ?></td>
                                             </tr>
-                                            <?php if(count($cart)): ?>
+                                            <?php if(count($cart) > 0 || count($withdraw_cart) > 0 ): ?>
                                             <tr>
                                                 <td colspan="7">
                                                     <button type="submit" class="btn btn-sm btn-primary float-right">Add Schedule</button>

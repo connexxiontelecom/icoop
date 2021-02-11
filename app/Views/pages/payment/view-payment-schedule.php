@@ -86,7 +86,7 @@ Payment Schedule
                                                 <td><?= $serial++ ?></td>
                                                 <td><?= $d->cooperator_first_name ?? '' ?> <?= $d->cooperator_last_name ?? '' ?></td>
                                                 <input type="hidden" name="schedule_detail[]" value="<?= $d->schedule_master_detail_id ?>">
-                                                <td><?= $d->loan_description  ?? '' ?> </td>
+                                                <td>jh</td>
                                                 <td><?= $d->bank_name ?? '' ?> </td>
                                                 <td><?= $d->cooperator_account_number ?? '' ?> </td>
                                                 <td class="text-right"><?= number_format($d->amount,2) ?? '' ?> </td>
