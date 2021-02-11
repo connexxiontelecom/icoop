@@ -317,7 +317,7 @@ class LoanController extends BaseController
                 $payment = [
                     'pd_staff_id'=>$this->request->getVar('staff_id'),
                     'pd_transaction_date'=>date('Y-m-d H:i:s'),
-                    'pd_narration'=>'Loan approved for disburs.',
+                    'pd_narration'=>'Loan approved for disbursed.',
                     'pd_amount'=>$this->request->getVar('amount'),
                     'pd_drcrtype'=>1,
                     'pd_ct_id'=>3,
