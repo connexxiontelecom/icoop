@@ -79,7 +79,7 @@ Payment Schedule (Member)
                                             <td>Member ID</td>
                                             <td>Beneficiary</td>
                                             <td>Account No.</td>
-                                            <td>Loan Type</td>
+                                            <td>Payment Type</td>
                                             <td>Amount</td>
                                             <td>Action</td>
                                         </tr>
@@ -100,7 +100,7 @@ Payment Schedule (Member)
                                                     </td>
                                                     <td><?= $car->bank_name ?? '' ?> - <?= $car->cooperator_account_number ?? '' ?></td>
                                                     <td> <?= $car->loan_description ?? '' ?> </td>
-                                                    <td class="text-right"> <?= '₦'.number_format($car->amount,2) ?> 
+                                                    <td class="text-right"> <?=number_format($car->amount,2) ?>
                                                         <input type="hidden" name="amount[]" <?= $sum += $car->amount ?? 0 ?> value="<?= $car->amount ?? 0 ?>">
                                                         <input type="hidden" name="loan_type[]" value="<?= $car->loan_type ?? '' ?>">
                                                     </td>
@@ -109,9 +109,32 @@ Payment Schedule (Member)
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>
+									<?php foreach($withdraw_cart as $wcar) : ?>
+                                                <tr>
+                                                    <td>
+                                                        <?= $i++ ?>
+                                                    </td>
+                                                    <td>
+                                                        <?= $wcar->cooperator_staff_id  ?? '' ?>
+                                                        <input type="hidden" name="withdraw_id[]" value="<?= $wcar->withdraw_id ?? '' ?>" >
+                                                    </td>
+                                                    <td>
+                                                        <?= $wcar->cooperator_first_name ?? '' ?> <?= $wcar->cooperator_last_name ?? '' ?>
+                                                        <input type="hidden" name="coop_id[]" value="<?= $wcar->cooperator_staff_id ?? '' ?>">
+                                                    </td>
+                                                    <td><?= $wcar->bank_name ?? '' ?> - <?= $wcar->cooperator_account_number ?? '' ?></td>
+                                                    <td> Savings Withdrawal </td>
+                                                    <td class="text-right"> <?=number_format($wcar->withdraw_amount,2) ?>
+                                                        <input type="hidden" name="amount[]" <?= $sum += $wcar->withdraw_amount ?? 0 ?> value="<?= $wcar->withdraw_amount ?? 0 ?>">
+                                                    </td>
+                                                    <td>
+                                                        <a href="<?= site_url('/loan/remove-withdraw-from-cart/'.$wcar->withdraw_id) ?>" title="Remove from cart" class="text-danger"><i class="fa fa-trash"></i></a>
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach; ?>
                                             <tr>
                                                 <td colspan="5" class="text-right"><strong>Total:</strong></td>
-                                                <td class="text-right"><?= '₦'.number_format($sum,2) ?></td>
+                                                <td class="text-right"><?=number_format($sum,2) ?></td>
                                             </tr>
                                             <?php if(count($cart)): ?>
                                             <tr>

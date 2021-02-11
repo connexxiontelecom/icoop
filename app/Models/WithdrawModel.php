@@ -41,7 +41,29 @@ class WithdrawModel extends \CodeIgniter\Model
         $builder = $this->db->table('withdraws');
         $builder->join('cooperators', 'cooperators.cooperator_staff_id = withdraws.withdraw_staff_id');
         //$builder->join('loan_setups', 'loans.loan_type = loan_setups.loan_setup_id');
-        $builder->where('withdraws.withdraw_status = 2');
+        $builder->where('withdraws.cart = 0');
+        $builder->where('withdraw_status', 2);
         return $builder->get()->getResultObject();
     }
+	
+	#Items in cart
+	public function getWithdrawItemsInCart(){
+		$builder = $this->db->table('withdraws');
+		$builder->join('cooperators', 'cooperators.cooperator_staff_id = withdraws.withdraw_staff_id');
+		//$builder->join('loan_setups', 'loans.loan_type = loan_setups.loan_setup_id');
+		$builder->join('banks', 'cooperators.cooperator_bank_id = banks.bank_id');
+		$builder->where('withdraws.cart = 1');
+		$builder->where('withdraws.scheduled = 0');
+		return $builder->get()->getResultObject();
+	}
+	
+	#Approved loans
+	public function getApprovedWithdraws(){
+		$builder = $this->db->table('withdraws');
+		$builder->join('cooperators', 'cooperators.cooperator_staff_id = withdraws.withdraw_staff_id');
+		//$builder->join('loan_setups', 'withdraws.loan_type = loan_setups.loan_setup_id');
+		$builder->where('withdraws.cart = 0');
+		return $builder->get()->getResultObject();
+	}
+	
 }
