@@ -386,16 +386,14 @@ class PaymentController extends BaseController
                     #register loan repayment
                     $l_amount = 0;
                     if($loan['loan_type'] == 1){
-                        $l_amount = $loan['amount'];
-                    }elseif($loan['loan_type'] == 2){
-                        $l_amount = $loan['amount'] * $loan['interest_rate'];
+                        
                     }
                    $loan_repayment = [
                         'lr_staff_id' => $loan['staff_id'],
                         'lr_loan_id' => $loan['loan_id'],
                         'lr_month' => date('m', strtotime($loan['created_at'])),
                         'lr_year' => date('Y', strtotime($loan['created_at'])),
-                        'lr_amount' => $l_amount, //only if it is upfront loan
+                        'lr_amount' => $loan['loan_type'] == 1 ? $loan['amount'] * $loan['interest_rate'] : 0, //only if it is upfront loan
                         'lr_dctype' => 2,
                         'lr_ref' => substr(sha1(time()),32,40),
                         'lr_narration' => 'interest on loan type',
