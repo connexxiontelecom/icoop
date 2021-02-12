@@ -354,7 +354,7 @@ class PaymentController extends BaseController
                 'verified'=>1
                 ]);
             $alert = array(
-                'msg' => 'Success! Payment shedule verified.',
+                'msg' => 'Success! Payment schedule verified.',
                 'type' => 'success',
                 'location' => site_url('/loan/payment-schedules')
 

@@ -91,8 +91,8 @@ Payment Schedule
                                                 </td>
                                                 <td><?= $d->bank_name ?? '' ?> </td>
                                                 <td><?= $d->cooperator_account_number ?? '' ?> </td>
-                                                <td class="text-right"><?= number_format($d->amount,2) ?? '' ?> </td>
-                                                <input type="hidden" value="<?= $sum += $d->amount ?? 0?>">
+                                                <td class="text-right"><?= number_format($d->smd_amount,2) ?? '' ?> </td>
+                                                <input type="hidden" value="<?= $sum += $d->smd_amount ?? 0?>">
                                                 <td><a href="<?= site_url('/loan/return-schedule-payment/'.$d->loan_id) ?>">Return</a></td>
                                             </tr>
                                         <?php endforeach; ?>
