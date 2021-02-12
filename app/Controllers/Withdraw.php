@@ -68,11 +68,16 @@ class Withdraw extends BaseController
 
             ]);
             if ($this->validator->withRequest($this->request)->run()):
+	            $withdraw_staff_id = $_POST['withdraw_staff_id'];
+	            $withdraw_staff_id = substr($withdraw_staff_id, 0, strpos($withdraw_staff_id, ','));
+	            
+	            $check_pending_withdrawal = $this->withdraw->where(['withdraw_status <'=> 3, 'disburse' => 0, 'withdraw_staff_id' => $withdraw_staff_id])->findAll();
+	            
+				if(empty($check_pending_withdrawal)):
 
+                         $file = $this->request->getFile('withdraw_file');
 
-            $file = $this->request->getFile('withdraw_file');
-
-            if(!empty($file)):
+                        if(!empty($file)):
 
 		                if($file->isValid() && !$file->hasMoved()):
 
@@ -107,8 +112,7 @@ class Withdraw extends BaseController
 		                            unset($_POST['withdraw_charge']);
 		                            unset($_POST['withdraw_balance']);
 		                            $_POST['withdraw_status'] = 0;
-		                            $withdraw_staff_id = $_POST['withdraw_staff_id'];
-		                            $withdraw_staff_id = substr($withdraw_staff_id, 0, strpos($withdraw_staff_id, ','));
+		                            
 		                            $_POST['withdraw_staff_id'] = $withdraw_staff_id;
 		                            $v =  $this->withdraw->save($_POST);
 
@@ -152,74 +156,76 @@ class Withdraw extends BaseController
 
 		                        
 		                     else:
+			                        $withdraw_balance = $_POST['withdraw_balance'];
+					               $withdraw_amount = $_POST['withdraw_amount'];
 			
-			                     		               $withdraw_balance = $_POST['withdraw_balance'];
-		               $withdraw_amount = $_POST['withdraw_amount'];
-
-		               if($withdraw_amount > $withdraw_balance):
-		                   $data = array(
-		                       'msg' => 'Insufficient Balance',
-		                       'type' => 'error',
-		                       'location' => base_url('new_withdraw')
-
-		                   );
-
-		                   return view('pages/sweet-alert', $data);
-
-
-		               else:
-
-		                   $_POST['withdraw_charges'] = ($_POST['withdraw_charge']/100)*$withdraw_amount;
-		                   unset($_POST['withdraw_charge']);
-		                   unset($_POST['withdraw_balance']);
-		                   $_POST['withdraw_status'] = 0;
-		                   $withdraw_staff_id = $_POST['withdraw_staff_id'];
-		                   $withdraw_staff_id = substr($withdraw_staff_id, 0, strpos($withdraw_staff_id, ','));
-		                   $_POST['withdraw_staff_id'] = $withdraw_staff_id;
-		                   $v =  $this->withdraw->save($_POST);
-
-		                   if($v):
-
-		                       $data = array(
-		                           'msg' => 'Action Successful',
-		                           'type' => 'success',
-		                           'location' => base_url('new_withdraw')
-
-		                       );
-		                       return view('pages/sweet-alert', $data);
-
-		                   else:
-		                       $data = array(
-		                           'msg' => 'An Error Occured',
-		                           'type' => 'error',
-		                           'location' => base_url('new_withdraw')
-
-		                       );
-		                       return view('pages/sweet-alert', $data);
-
-
-		                   endif;
-
-		               endif;
+					               if($withdraw_amount > $withdraw_balance):
+					                   $data = array(
+					                       'msg' => 'Insufficient Balance',
+					                       'type' => 'error',
+					                       'location' => base_url('new_withdraw')
+			
+					                   );
+			
+					                   return view('pages/sweet-alert', $data);
+			
+			
+					               else:
+			
+					                   $_POST['withdraw_charges'] = ($_POST['withdraw_charge']/100)*$withdraw_amount;
+					                   unset($_POST['withdraw_charge']);
+					                   unset($_POST['withdraw_balance']);
+					                   $_POST['withdraw_status'] = 0;
+//					                   $withdraw_staff_id = $_POST['withdraw_staff_id'];
+//					                   $withdraw_staff_id = substr($withdraw_staff_id, 0, strpos($withdraw_staff_id, ','));
+					                   $_POST['withdraw_staff_id'] = $withdraw_staff_id;
+					                   $_POST['withdraw_narration'] = 'Withdraw from Savings';
+					                   $v =  $this->withdraw->save($_POST);
+			
+					                   if($v):
+			
+					                       $data = array(
+					                           'msg' => 'Action Successful',
+					                           'type' => 'success',
+					                           'location' => base_url('new_withdraw')
+			
+					                       );
+					                       return view('pages/sweet-alert', $data);
+			
+					                   else:
+					                       $data = array(
+					                           'msg' => 'An Error Occured',
+					                           'type' => 'error',
+					                           'location' => base_url('new_withdraw')
+			
+					                       );
+					                       return view('pages/sweet-alert', $data);
+			
+			
+					                   endif;
+			
+					               endif;
 		                 
 		                 endif;
 	            
 	       
 		                 
-		            endif;
-	
-//	            if(empty($file)):
-//
-//			           echo "i am without upload";
-//
-//
-//               endif;
-               
-
-
-
-
-
+	    endif;
+	    
+	    
+				else:
+					
+					$data = array(
+						'msg' => 'Staff has Pending Withdrawal',
+						'type' => 'error',
+						'location' => base_url('new_withdraw')
+					
+					);
+					
+					return view('pages/sweet-alert', $data);
+				
+				
+				endif;
 
             else:
 

@@ -84,10 +84,10 @@ New Withdrawal
                                 <input type="hidden"  class="form-control" placeholder="Date" name="withdraw_date" value="<?=date('Y-m-d') ?>" required>
 
 
-                                <div class="form-group">
-                                    <label for="application_address"><b>Narration:</b></label>
-                                    <textarea name="withdraw_narration" id="withdraw_narration"  cols="30" rows="3" placeholder="Narration "  class="form-control no-resize"></textarea>
-                                </div>
+<!--                                <div class="form-group">-->
+<!--                                    <label for="application_address"><b>Narration:</b></label>-->
+<!--                                    <textarea name="withdraw_narration" id="withdraw_narration"  cols="30" rows="3" placeholder="Narration "  class="form-control no-resize"></textarea>-->
+<!--                                </div>-->
 
                                 <div class="form-group">
                                     <label for="application_first_name"><b>File(.PDF):</b></label>
