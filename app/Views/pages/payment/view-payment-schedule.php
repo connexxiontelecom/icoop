@@ -75,7 +75,7 @@ Payment Schedule
                                         <tr>
                                             <td>S/No</td>
                                             <td>Name</td>
-                                            <td>Loan Type</td>
+                                            <td>Payment Type</td>
                                             <td>Bank Name</td>
                                             <td>Account No.</td>
                                             <td>Amount</td>
@@ -86,7 +86,9 @@ Payment Schedule
                                                 <td><?= $serial++ ?></td>
                                                 <td><?= $d->cooperator_first_name ?? '' ?> <?= $d->cooperator_last_name ?? '' ?></td>
                                                 <input type="hidden" name="schedule_detail[]" value="<?= $d->schedule_master_detail_id ?>">
-                                                <td>jh</td>
+                                                <td>
+                                                    <?= $d->transaction_type == 1 ? 'Loan withdrawal' : 'Savings withdrawal' ?>
+                                                </td>
                                                 <td><?= $d->bank_name ?? '' ?> </td>
                                                 <td><?= $d->cooperator_account_number ?? '' ?> </td>
                                                 <td class="text-right"><?= number_format($d->amount,2) ?? '' ?> </td>
