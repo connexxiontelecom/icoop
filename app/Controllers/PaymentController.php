@@ -65,9 +65,10 @@ class PaymentController extends BaseController
          helper(['form']);
         $data = [];
         if($_POST){     
-            if(!empty($this->request->getVar('approved_loans')) || !empty($this->request->getVar('withdraws'))){
-                if(!empty($this->request->getVar('approved_loans'))){
+            if(!is_null($this->request->getVar('approved_loans')) || !empty($this->request->getVar('withdraws'))){
+                if(!is_null($this->request->getVar('approved_loans'))){
                     foreach($this->request->getVar('approved_loans') as $loan){
+                        
                         if(isset($loan)){
                             $detail = [
                                 'bank_id'=>$this->request->getVar('bank'),
@@ -380,14 +381,21 @@ class PaymentController extends BaseController
             foreach($scheduledetail as $detail){
                 if($detail['transaction_type'] == 1){ //loan
                     $loan = $this->loan->where('loan_id', $detail['loan_id'])->first();
+                    //$loan_setup = $this->loansetup->where('loan_id', $detail['loan_id'])->first();
                     $this->loan->update($loan, ['disburse'=>1, 'disburse_date'=>date('Y-m-d H:i:s')]);
                     #register loan repayment
+                    $l_amount = 0;
+                    if($loan['loan_type'] == 1){
+                        $l_amount = $loan['amount'];
+                    }elseif($loan['loan_type'] == 2){
+                        $l_amount = $loan['amount'] * $loan['interest_rate'];
+                    }
                    $loan_repayment = [
                         'lr_staff_id' => $loan['staff_id'],
                         'lr_loan_id' => $loan['loan_id'],
                         'lr_month' => date('m', strtotime($loan['created_at'])),
                         'lr_year' => date('Y', strtotime($loan['created_at'])),
-                        'lr_amount' => $loan['interest'],
+                        'lr_amount' => $l_amount, //only if it is upfront loan
                         'lr_dctype' => 2,
                         'lr_ref' => substr(sha1(time()),32,40),
                         'lr_narration' => 'interest on loan type',
@@ -410,11 +418,11 @@ class PaymentController extends BaseController
                    $withdraw = $this->withdraw->where('withdraw_id', $withdraw_id)->first();
                     //$this->withdraw->update($withdraw, []);
                     #register withdraw
-                    $cooperator = $this->cooperator->where('cooperator_staff_id', $withdraw['withdraw_staff_id'])->first();
+                    $cooperator = $this->coop->where('cooperator_staff_id', $withdraw['withdraw_staff_id'])->first();
                      $payment_details_array = array(
                         'pd_staff_id' => $withdraw['withdraw_staff_id'],
                         'pd_transaction_date' =>$withdraw['withdraw_date'],
-                        'pd_narration' => $withdraw['withdraw_narration'],
+                        'pd_narration' => 'Withdraw from savings',
                         'pd_amount' => $withdraw['withdraw_amount'],
                         'pd_drcrtype' => 2,
                         'pd_ct_id' => $withdraw['withdraw_ct_id'],

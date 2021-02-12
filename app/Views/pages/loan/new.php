@@ -51,6 +51,7 @@
                                                 <option value="<?= $type['loan_setup_id'] ?>"><?= $type['loan_description'] ?></option>
                                             <?php endforeach; ?>
                                         </select>
+                                        <input type="hidden" name="interest_method" id="interest_method">
                                     </div>
                                 </div>
                             </div>
@@ -139,6 +140,7 @@
         var guarantor = null;
         var staff = null;
         var guarantor_2 = null;
+        var interest_method = null;
         $(document).ready(function(){
             $('#guarantor_wrapper_1').hide();
             $('#guarantor_wrapper_2').hide();
@@ -233,6 +235,8 @@
                         var handler = $.parseJSON(html);
                         duration = handler.max_repayment_periods;
                         amount = handler.max_credit_limit;
+                        interest_method = handler.interest_method;
+                        $('#interest_method').val(interest_method);
                         $('#loan_terms').text(handler.loan_terms);
                         $('#duration').val('');
                         $('#amount').val('');

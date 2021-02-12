@@ -15,6 +15,7 @@ class ScheduleMasterModel extends Model{
         $builder->join('coop_banks', 'coop_banks.coop_bank_id = schedule_masters.bank_id');
         $builder->join('banks', 'banks.bank_id = coop_banks.bank_id');
         $builder->where('schedule_masters.verified = 0');
+        $builder->groupby('schedule_masters.schedule_master_id');
         return $builder->get()->getResultObject();
     }
 

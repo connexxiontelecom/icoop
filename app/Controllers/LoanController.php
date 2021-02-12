@@ -72,6 +72,7 @@ class LoanController extends BaseController
 
 	public function storeLoanApplication()
 	{
+        
              
         helper(['form', 'date']);
         $data = [];
@@ -127,7 +128,7 @@ class LoanController extends BaseController
                         'guarantor'=>$this->request->getVar('guarantor_1'),
                         'name'=>substr($this->request->getVar('staff_id'), strlen(current(explode(" ", $this->request->getVar('staff_id'))))),
 						'guarantor_2'=>$this->request->getVar('guarantor_2'),
-						'loan_type'=>$this->request->getVar('loan_type'),
+						'loan_type'=>$this->request->getVar('interest_method'), //this is actually interest method
 						'duration'=>$this->request->getVar('duration'),
                         'amount'=>str_replace(",","",$this->request->getVar('amount')),
                         'applied_date'=>date('Y-m-d H:i:s'),
@@ -136,7 +137,7 @@ class LoanController extends BaseController
                     $alert = array(
                         'msg' => 'Success! Loan application done.',
                         'type' => 'success',
-                        'location' => site_url('/loan/verify')
+                        'location' => site_url('/loan/new')
 
                     );
                     return view('pages/sweet-alert', $alert);
@@ -258,8 +259,9 @@ class LoanController extends BaseController
             'application'=>$app,
             'guarantor'=>$this->loanapp->getGuarantorOne($id),
             'guarantor2'=>$this->loanapp->getGuarantorTwo($id),
-            'setup'=>$this->loansetup->where('loan_setup_id', $app->loan_type)->first()
+            'setup'=>$this->loansetup->where('interest_method', $app->loan_type)->first()
         ];
+        //return dd($data);
         $username = $this->session->user_username;
         $this->authenticate_user($username, 'pages/loan/view-loan-application', $data);
     }
