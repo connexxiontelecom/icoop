@@ -46,8 +46,8 @@ View Contribution Uploads - <?=$payroll_group['pg_name']; ?> For <small><?=$cont
                         <?php $sn = 1; foreach ($temp_pds as $temp_pd): ?>
                             <?php
                             $color = 'white';
-                            if($temp_pd['temp_pd_status'] == 1){ $color = 'red'; }
-                            if($temp_pd['temp_pd_status'] == 2){ $color = 'yellow'; }
+                            if($temp_pd['temp_pd_status'] == 1){ $color = '#ffcccb'; }
+                            if($temp_pd['temp_pd_status'] == 2){ $color = '#f5ea61'; }
                             ?>
                             <tr style="background-color: <?php echo $color; ?>">
 
@@ -69,9 +69,23 @@ View Contribution Uploads - <?=$payroll_group['pg_name']; ?> For <small><?=$cont
 
                     <form method="post" action="<?=base_url('p_contribution_upload') ?>">
                         <?= csrf_field() ?>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-info btn-block">Process Upload</button>
-                        </div>
+						<fieldset>
+							<div class="row clearfix">
+								<div class="col-lg-6 col-md-12 offset-3">
+									<div class="form-group">
+										<div class="form-row">
+											<div class="col-md-6">
+												<button type="submit" class="btn btn-primary btn-block">Process Upload</button>
+											</div>
+											
+											<div class="col-md-6">
+												<button type="button" class="btn btn-danger btn-block">Cancel Upload</button>
+											</div>
+										
+										</div>
+									</div>
+								</div>
+							</div>
                     </form>
                 </div>
             </div>
