@@ -114,7 +114,7 @@ Contribution Types - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
 									<tr>
 										<th><strong># </strong></th>
 										<th><strong>Date</strong></th>
-										<th style="text-align: right"><strong>Narration</strong></th>
+										<th style="text-align: left"><strong>Narration</strong></th>
 										<th style="text-align: right"><strong>Dr</strong></th>
 										<th style="text-align: right"><strong>Cr</strong></th>
 										<th style="text-align: right"><strong>Balance</strong></th>

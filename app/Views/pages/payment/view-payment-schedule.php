@@ -91,7 +91,7 @@ Payment Schedule
                                                 <td><?= $d->cooperator_first_name ?? '' ?> <?= $d->cooperator_last_name ?? '' ?></td>
                                                 <input type="hidden" name="schedule_detail[]" value="<?= $d->schedule_master_detail_id ?>">
                                                 <td>
-                                                    <?= $d->transaction_type == 1 ? 'Loan withdrawal' : 'Savings withdrawal' ?>
+                                                    <?= $d->transaction_type == 1 ? 'Loan Payment' : 'Savings withdrawal' ?>
                                                 </td>
                                                 <td><?= $d->bank_name ?? '' ?> </td>
                                                 <td><?= $d->cooperator_account_number ?? '' ?> </td>
