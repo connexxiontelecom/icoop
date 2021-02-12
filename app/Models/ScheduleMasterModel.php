@@ -5,7 +5,7 @@ use CodeIgniter\Model;
 class ScheduleMasterModel extends Model{
     protected $table = 'schedule_masters';
     protected $primaryKey = 'schedule_master_id';
-    protected $allowedFields = ['bank_id', 'payable_date', 'creation_date', 'loan_id', 'transaction_type','verified', 'amount', 'verified_by', 'date_verified'];
+    protected $allowedFields = ['bank_id', 'payable_date', 'creation_date', 'loan_id', 'transaction_type','verified', 'amount', 'verified_by', 'date_verified','approved','approved_by','approved_date'];
 
     
 
@@ -23,6 +23,7 @@ class ScheduleMasterModel extends Model{
         $builder->join('coop_banks', 'coop_banks.coop_bank_id = schedule_masters.bank_id');
         $builder->join('banks', 'banks.bank_id = coop_banks.bank_id');
         $builder->where('schedule_masters.verified = 1');
+        $builder->where('schedule_masters.approved = 0');
         return $builder->get()->getResultObject();
     }
     public function getScheduleMasterItem($id){

@@ -366,11 +366,14 @@ class PaymentController extends BaseController
         helper(['form']);
         $data = [];
         $username = $this->session->user_username;
+        $name = $this->user->where('email', $username)->first()['first_name'];
         if($_POST){ 
             $this->schedulemaster->update($this->request->getVar('schedule'), 
-                ['verified_by'=>$this->user->where('email', $username)->first()['first_name'],
+                ['verified_by'=>$name,
                 'date_verified'=>date('Y-m-d H:i:s'),
-                'verified'=>2//approved
+                'approved'=>1,//approved
+                'approved_by'=>$name,
+                'approved_date'=>date('Y-m-d')
                 ]);
             $scheduledetail = $this->schedulemasterdetail->where('schedule_master_id', 
                 $this->request->getVar('schedule'))->findAll();
@@ -407,9 +410,10 @@ class PaymentController extends BaseController
                    $withdraw = $this->withdraw->where('withdraw_id', $withdraw_id)->first();
                     //$this->withdraw->update($withdraw, []);
                     #register withdraw
+                    
                      $payment_details_array = array(
                         'pd_staff_id' => $withdraw['withdraw_staff_id'],
-                        'pd_transaction_date' =>'withdraw_date',
+                        'pd_transaction_date' =>$withdraw['withdraw_date'],
                         'pd_narration' => $withdraw['withdraw_narration'],
                         'pd_amount' => $withdraw['withdraw_amount'],
                         'pd_drcrtype' => 2,

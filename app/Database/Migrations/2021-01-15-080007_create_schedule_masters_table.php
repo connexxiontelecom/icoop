@@ -53,6 +53,20 @@ class CreateScheduleMastersTable extends Migration
 					'null'=>true,
 					'default'=>0
 				],
+				'approved' =>[
+					'type' => 'INT',
+					'null'=>true,
+					'default'=>0,
+					'comment'=>'0=not approved, 1=approved'
+				],
+				'approved_date' =>[
+					'type' => 'DATE',
+					'null'=>true,
+				],
+				'approved_by' =>[
+					'type' => 'INT',
+					'null'=>true,
+				],
 
 
 			]

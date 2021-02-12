@@ -59,6 +59,10 @@ Payment Schedule
                                         <td class="text-nowrap">Payment Date</td>
                                         <td><strong><?= date('d-m-Y', strtotime($master->payable_date)) ?? '' ?></strong></td>
                                     </tr>                                    
+                                    <tr>
+                                        <td class="text-nowrap">Amount</td>
+                                        <td><strong><?= number_format($master->amount,2) ?? '' ?></strong></td>
+                                    </tr>                                    
                                 </tbody>
                             </table>
                         </div>
