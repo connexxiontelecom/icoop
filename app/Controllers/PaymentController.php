@@ -407,19 +407,34 @@ class PaymentController extends BaseController
                    $withdraw = $this->withdraw->where('withdraw_id', $withdraw_id)->first();
                     //$this->withdraw->update($withdraw, []);
                     #register withdraw
+	                $ref_code = time();
                      $payment_details_array = array(
                         'pd_staff_id' => $withdraw['withdraw_staff_id'],
-                        'pd_transaction_date' =>'withdraw_date',
+                        'pd_transaction_date' =>$withdraw['withdraw_date'],
                         'pd_narration' => $withdraw['withdraw_narration'],
                         'pd_amount' => $withdraw['withdraw_amount'],
                         'pd_drcrtype' => 2,
                         'pd_ct_id' => $withdraw['withdraw_ct_id'],
                         'pd_pg_id' => 1,//$cooperator_payroll_group_id,
-                        'pd_ref_code' => time(),
+                        'pd_ref_code' =>$ref_code,
                     );
                     
                     $v =  $this->paymentdetail->save($payment_details_array);
-
+	
+	                $payment_details_array = array(
+		                'pd_staff_id' => $withdraw['withdraw_staff_id'],
+		                'pd_transaction_date' =>$withdraw['withdraw_date'],
+		                'pd_narration' => 'Charges on withdrawal',
+		                'pd_amount' => $withdraw['withdraw_charges'],
+		                'pd_drcrtype' => 2,
+		                'pd_ct_id' => $withdraw['withdraw_ct_id'],
+		                'pd_pg_id' => 1,//$cooperator_payroll_group_id,
+		                'pd_ref_code' => $ref_code,
+	                );
+	
+	                $v =  $this->paymentdetail->save($payment_details_array);
+	
+	
                 }
 
             }
