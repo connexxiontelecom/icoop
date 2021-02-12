@@ -354,7 +354,7 @@ class PaymentController extends BaseController
                 'verified'=>1
                 ]);
             $alert = array(
-                'msg' => 'Success! Payment shedule verified.',
+                'msg' => 'Success! Payment schedule verified.',
                 'type' => 'success',
                 'location' => site_url('/loan/payment-schedules')
 
@@ -423,7 +423,21 @@ class PaymentController extends BaseController
                     );
                     
                     $v =  $this->paymentdetail->save($payment_details_array);
-
+	
+	                $payment_details_array = array(
+		                'pd_staff_id' => $withdraw['withdraw_staff_id'],
+		                'pd_transaction_date' =>$withdraw['withdraw_date'],
+		                'pd_narration' => 'Charges on withdrawal',
+		                'pd_amount' => $withdraw['withdraw_charges'],
+		                'pd_drcrtype' => 2,
+		                'pd_ct_id' => $withdraw['withdraw_ct_id'],
+		                'pd_pg_id' => 1,//$cooperator_payroll_group_id,
+		                'pd_ref_code' => $ref_code,
+	                );
+	
+	                $v =  $this->paymentdetail->save($payment_details_array);
+	
+	
                 }
 
             }

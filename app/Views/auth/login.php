@@ -45,7 +45,7 @@
                     </div>
                 <?php endif ?>
 
-                <form class="form-auth-small m-t-20" method="post" action=" ">
+                <form class="form-auth-small m-t-20" method="post" action="<?=base_url('login'); ?>">
                     <div class="form-group">
                         <label for="signin-email" class="control-label sr-only">Email</label>
                         <input type="email" name="email" value="<?= set_value('email') ?>"  class="form-control round" id="signin-email" placeholder="Email">
