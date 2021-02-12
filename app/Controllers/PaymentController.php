@@ -410,7 +410,7 @@ class PaymentController extends BaseController
                    $withdraw = $this->withdraw->where('withdraw_id', $withdraw_id)->first();
                     //$this->withdraw->update($withdraw, []);
                     #register withdraw
-                    
+                    $cooperator = $this->cooperator->where('cooperator_staff_id', $withdraw['withdraw_staff_id'])->first();
                      $payment_details_array = array(
                         'pd_staff_id' => $withdraw['withdraw_staff_id'],
                         'pd_transaction_date' =>$withdraw['withdraw_date'],
@@ -418,7 +418,7 @@ class PaymentController extends BaseController
                         'pd_amount' => $withdraw['withdraw_amount'],
                         'pd_drcrtype' => 2,
                         'pd_ct_id' => $withdraw['withdraw_ct_id'],
-                        'pd_pg_id' => 1,//$cooperator_payroll_group_id,
+                        'pd_pg_id' => $cooperator['cooperator_payroll_group_id'],//$cooperator_payroll_group_id,
                         'pd_ref_code' => time(),
                     );
                     
