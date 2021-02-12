@@ -62,7 +62,10 @@ class BaseController extends ResourceController
 
             else:
 
-                 $this->response->redirect('login');
+                //$this->response->redirect('login', 'refresh');
+           // $this->response->redirect()->to('login');
+	        //return redirect()->to('login', 'refresh');
+	            echo view('auth/login');
 
             endif;
 

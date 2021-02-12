@@ -19,6 +19,7 @@ class ScheduleMasterDetailModel extends Model{
 
     public function getScheduleMasterDetail($id){
         $builder = $this->db->table('schedule_master_details');
+        $builder->select('*, schedule_master_details.amount as smd_amount');
         $builder->join('schedule_masters', 'schedule_master_details.schedule_master_id = schedule_masters.schedule_master_id');
         $builder->join('banks', 'banks.bank_id = schedule_masters.bank_id');
         //$builder->join('loans', 'loans.loan_id = schedule_master_details.loan_id');
