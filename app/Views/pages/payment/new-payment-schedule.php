@@ -203,7 +203,7 @@ Payment Schedule (Member)
                                                     <input type="hidden" name="loan_type[]" value="">
                                                 </td>
                                                 <td>
-                                                    ₦<?= number_format($loan->amount ?? 0,2) ?>
+                                                    <?= number_format($loan->amount ?? 0,2) ?>
                                                     <input type="hidden" name="amount[]" value="<?= $loan->amount ?? 0 ?>">
                                                 </td>
                                             </tr>
@@ -232,17 +232,13 @@ Payment Schedule (Member)
                                                 </td>
                                                 <td><?= $withdraw->cooperator_first_name ?? '' ?> <?= $withdraw->cooperator_last_name ?? '' ?></td>
                                                 <td>
-                                                    <?= $withdraw->withdraw_narration ?? '' ?> 
-                                                    <input type="hidden" name="loan_type[]" value="">
+                                                    Savings Withdrawal
                                                 </td>
                                                 <td>
-                                                    ₦<?= number_format($withdraw->withdraw_amount ?? 0,2) ?>
+                                                    <?= number_format($withdraw->withdraw_amount ?? 0,2) ?>
                                                     <input type="hidden" name="withdraw_amount[]" value="<?= $withdraw->withdraw_amount ?? 0 ?>">
                                                 </td>
-                                                <td>
-                                                    ₦<?= number_format($withdraw->withdraw_amount ?? 0,2) ?>
-                                                    <input type="hidden" name="withdraw_amount[]" value="<?= $withdraw->withdraw_amount ?? 0 ?>">
-                                                </td>
+                                               
                                             </tr>
                                         <?php endforeach; ?>
                                     <?php else : ?>
