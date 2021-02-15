@@ -79,7 +79,7 @@ View Contribution Uploads - <?=$payroll_group['pg_name']; ?> For <small><?=$cont
 											</div>
 											
 											<div class="col-md-6">
-												<button type="button" class="btn btn-danger btn-block">Cancel Upload</button>
+												<button type="button" onclick="location.href='<?php echo base_url('cancel_ct');?>'" class="btn btn-danger btn-block">Cancel Upload</button>
 											</div>
 										
 										</div>

@@ -228,7 +228,7 @@
                                         <li><a href="<?=base_url('new_application') ?>">New Application</a></li>
                                         <li><a href="<?=base_url('verify_application') ?>">Verify Applications</a></li>
                                         <li><a href="<?=base_url('approve_application') ?>">Approve Applications</a></li>
-                                        <li><a href="<?=base_url('cooperators') ?>">Cooperators</a></li>
+                                        <li><a href="<?=base_url('cooperators') ?>">Ledgers</a></li>
 
                                     </ul>
                                 </li>

@@ -32,15 +32,13 @@ Upload Routine
             <div class="body">
 
                 <div class="row clearfix">
-                    <div class="col-lg-3 col-md-6 col-sm-12">
-
-                    </div>
+                 
                     <div class="col-lg-3 col-md-6 col-sm-12">
                         <div class="card w_card3">
                             <div class="body">
-                                <div class="text-center"><i class="fa fa-youtube-square"></i>
-                                    <h5 class="m-t-20 mb-0">Contribution Upload</h5>
-                                    <a href="<?php echo base_url('contribution_upload'); ?>" class="btn btn-success btn-round">Go >></a>
+                                <div class="text-center"><i class="icon-notebook"></i>
+                                    <h5 class="m-t-20 mb-0">Contribution Upload</h5> <br>
+                                    <a href="<?php echo base_url('contribution_upload'); ?>" class="btn btn-primary">Go >></a>
                                 </div>
                             </div>
                         </div>
@@ -48,39 +46,9 @@ Upload Routine
                     <div class="col-lg-3 col-md-6 col-sm-12">
                         <div class="card w_card3">
                             <div class="body">
-                                <div class="text-center"><i class="fa fa-twitter"></i>
-                                    <h5 class="m-t-20 mb-0">Loan Repayment Upload</h5>
-                                    <a href="<?php echo base_url('lr_upload'); ?>" class="btn btn-primary btn-round">Go >></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-12">
-
-                    </div>
-                </div>
-                <div class="row clearfix">
-                    <div class="col-lg-3 col-md-6 col-sm-12">
-
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-12">
-                        <div class="card w_card3">
-                            <div class="body">
-                                <div class="text-center"><i class="fa fa-youtube-square"></i>
-                                    <h5 class="m-t-20 mb-0">813 Point</h5>
-                                    <p class="text-muted">New Subscribe</p>
-                                    <a href="javascript:void(0);" class="btn btn-success btn-round">Find more</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-12">
-                        <div class="card w_card3">
-                            <div class="body">
-                                <div class="text-center"><i class="fa fa-twitter"></i>
-                                    <h5 class="m-t-20 mb-0">3,756</h5>
-                                    <p class="text-muted">New Followers</p>
-                                    <a href="javascript:void(0);" class="btn btn-primary btn-round">Find more</a>
+                                <div class="text-center"><i class="fa fa-bank"></i>
+                                    <h5 class="m-t-20 mb-0">Loan Repayment Upload</h5> <br>
+                                    <a href="<?php echo base_url('lr_upload'); ?>" class="btn btn-primary">Go >></a>
                                 </div>
                             </div>
                         </div>
@@ -89,6 +57,7 @@ Upload Routine
 
                     </div>
                 </div>
+               
 
             </div>
         </div>

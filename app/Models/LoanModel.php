@@ -5,7 +5,7 @@ use CodeIgniter\Model;
 class LoanModel extends Model{
     protected $table = 'loans';
     protected $primaryKey = 'loan_id';
-    protected $allowedFields = ['loan_app_id', 'staff_id', 'schedule_master_id', 'amount', 'interest_rate', 'loan_type', 'interest', 'disburse', 'cart', 'created_at', 'scheduled', 'paid_back'];
+    protected $allowedFields = ['loan_app_id', 'staff_id', 'schedule_master_id', 'amount', 'interest_rate', 'loan_type', 'interest', 'disburse', 'disburse_date', 'cart', 'created_at', 'scheduled', 'paid_back'];
 
 
 
@@ -97,6 +97,17 @@ class LoanModel extends Model{
   
 	}
 	
+	public function get_loanss_staff_id($staff_id, $loan_id){
+		$builder = $this->db->table('loans');
+		$builder->join('loan_setups', 'loan_setups.loan_setup_id = loans.loan_type');
+		$builder->join('loan_applications', 'loan_applications.loan_app_id = loans.loan_app_id');
+		//$builder->join('loan_repayments', 'loan_repayments.lr_loan_id = loans.loan_id');
+		//$builder->where('loan_repayments.lr_loan_id', $loan_id);
+		$builder->where('loans.staff_id', $staff_id);
+		return $builder->get()->getResultObject();
+		
+	}
+	
 	public function get_loan_ledger_past_year($staff_id, $loan_id, $year){
 		$builder = $this->db->table('loans');
 		$builder->join('loan_setups', 'loan_setups.loan_setup_id = loans.loan_type');
@@ -137,7 +148,7 @@ class LoanModel extends Model{
 		$builder = $this->db->table('loans');
 		$builder->join('loan_setups', 'loan_setups.loan_setup_id = loans.loan_type');
 		$builder->join('loan_applications', 'loan_applications.loan_app_id = loans.loan_app_id');
-		$builder->join('loan_repayments', 'loan_repayments.lr_loan_id = loans.loan_id');
+		//$builder->join('loan_repayments', 'loan_repayments.lr_loan_id = loans.loan_id');
 		$builder->where('loans.loan_id', $loan_id);
 		return $builder->get()->getRowArray();
 		
