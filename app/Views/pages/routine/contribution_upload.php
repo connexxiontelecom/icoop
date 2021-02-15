@@ -62,6 +62,30 @@ Contribution Upload
                                     <label for="application_first_name"><b>Date:</b></label>
                                     <input type="date"  class="form-control" placeholder="Date" name="contribution_upload_date" required>
                                 </div>
+	
+								<div class="form-group">
+		
+									<label  for="application_payroll_group_id"> <b> Select Year: </b></label>
+		
+									<select class="custom-select" required name="contribution_upload_year" >
+			
+										<option value="<?=date('Y') ?>"> <?=date('Y') ?></option>
+		
+									</select>
+								</div>
+	
+								<div class="form-group">
+		                            <?php $months = array(1 => 'January', 2 => 'February', 3 => 'March', 4 => 'April', 5 => 'May', 6 => 'June', 7 => 'July', 8 => 'August', 9 => 'September', 10 => 'October', 11 => 'November', 12 => 'December'); ?>
+		
+									<label  for="application_payroll_group_id"> <b> Select Month: </b></label>
+		
+									<select class="custom-select" required name="contribution_upload_month">
+			
+			                            <?php foreach ($months as $key => $month): ?>
+											<option value="<?=$key ?>" <?php  if(date('n') == $key){ echo "selected";}?>> <?=$month; ?></option>
+			                            <?php endforeach; ?>
+									</select>
+								</div>
 
 
                                 <div class="form-group">

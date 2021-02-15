@@ -39,8 +39,9 @@ Outstanding Loans - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
 									<th><strong>S/N </strong> </th>
 									<th><strong>Loan Type </strong></th>
 									<th style="text-align: right"><strong>Principal Amount</strong></th>
+									<th style="text-align: right"><strong>Interest</strong></th>
 									<th style="text-align: right"><strong>Amount Paid</strong></th>
-									<th style="text-align: right"><strong>Interest Paid</strong></th>
+								
 									<th style="text-align: right"><strong>Outstanding</strong></th>
 									<th style="text-align: right"><strong>Encumbered</strong></th>
 									<th style="text-align: right"><strong>View</strong></th>
@@ -56,8 +57,9 @@ Outstanding Loans - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
 										<td><?=$sn; ?></td>
 										<td><?=$ledger['loan_description']; ?></td>
 										<td style="text-align: right"><?=number_format($ledger['loan_principal'], 2); ?></td>
-										<td style="text-align: right"><?=number_format($ledger['loan_total_cr'], 2); ?></td>
 										<td style="text-align: right"><?=number_format($ledger['loan_total_interest'], 2); ?></td>
+										<td style="text-align: right"><?=number_format($ledger['loan_total_cr'], 2); ?></td>
+										
 										<td style="text-align: right"><?=number_format($ledger['loan_balance'], 2); ?>
 										<td style="text-align: right">0.00</td>
 										<td> <form method="post">
