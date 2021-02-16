@@ -27,7 +27,7 @@
                         <h6 class="sub-title p-3  text-uppercase">New Loan Application</h6>
                         <form action="<?= site_url('/loan/new') ?>" autocomplete="off" method="POST" data-parsley-validate="" id="loanSetupForm">
                         <?= csrf_field() ?>
-                            <div class="row bg-info p-2 mb-2">
+                            <div class="row p-2 mb-2" style="background:#2D3541;">
                                 <div class="col-md-12 col-lg-12">
                                     <h6 class="text-uppercase text-white">Staff Details</h6>
                                 </div>
@@ -72,7 +72,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row bg-info p-2 mb-2">
+                            <div class="row p-2 mb-2" style="background:#2D3541;">
                                 <div class="col-md-12 col-lg-12">
                                     <h6 class="text-uppercase text-white">Loan Terms & Conditions</h6>
                                 </div>
@@ -85,7 +85,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row bg-info p-2 mb-2">
+                            <div class="row  p-2 mb-2" style="background:#2D3541;">
                                 <div class="col-md-12 col-lg-12">
                                     <h6 class="text-uppercase text-white">Guarantor & Terms</h6>
                                 </div>

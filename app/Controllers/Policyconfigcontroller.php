@@ -260,7 +260,8 @@ class Policyconfigcontroller extends BaseController
         $data = [];
         $data['accounts'] = $this->coa->where('type',1)->findAll();
         $data['profile'] = $this->policy->first();
-        $data['loansetups'] = $this->loan->findAll();
+        $data['loansetups'] = $this->loan->getLoanSetups();//findAll();
+     
 		return view('pages/policy-config/loan-setup', $data);
 	}
 	public function loanSetup(){

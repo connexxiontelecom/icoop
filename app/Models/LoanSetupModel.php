@@ -11,6 +11,13 @@ class LoanSetupModel extends Model{
         'loan_unearned_int_gl_account_no', 'loan_int_income_gl_account_no', 'loan_terms', 'status', 'payable',
         'created_at', 'interest_charge_type'];
 
+
+      public function getLoanSetups(){
+        $builder = $this->db->table('loan_setups');
+        $builder->join('coas', 'coas.glcode = loan_setups.loan_gl_account_no');
+        return $builder->get()->getResultObject();
+    } 
+
 }
 
 ?>
