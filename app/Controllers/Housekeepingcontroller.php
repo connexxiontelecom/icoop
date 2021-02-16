@@ -13,6 +13,9 @@ class Housekeepingcontroller extends BaseController
     public function __construct(){
 
         $this->session = session();
+        $this->coopbanks = new CoopBankModel;
+        $this->coas = new CoaModel;
+        $this->banks = new Banks;
     }
 
 	public function states()
@@ -207,12 +210,10 @@ class Housekeepingcontroller extends BaseController
 
     public function coopBanks(){
         $data = [];
-        $coopbanks = new CoopBankModel;
-        $coas = new CoaModel;
-        $banks = new Banks;
-        $data['coopbanks'] = $coopbanks->findAll();
-        $data['banks'] = $banks->findAll();
-        $data['coas'] = $coas->findAll();
+
+        $data['coopbanks'] = $this->coopbanks->getCoopBanks();
+        $data['banks'] = $this->banks->findAll();
+        $data['coas'] = $this->coas->where('type',1)->findAll();
         $username = $this->session->user_username;
         $this->authenticate_user($username, 'pages/house-keeping/coop-banks', $data);
 
@@ -271,6 +272,72 @@ class Housekeepingcontroller extends BaseController
                 ];
                 $coop->save($data);
                 $this->coopBanks();
+                
+            }else{
+              $data['validation'] = $this->validator;
+              return view('pages/house-keeping/departments', $data);  
+            }
+        }
+    }
+    public function editCoopBank(){
+        helper(['form']);
+        $data = [];
+
+        if($_POST){
+            $rules = [
+                'account_no'=>[
+                    'rules'=>'required',
+                    'label'=>'Account No.',
+                    'errors'=>[
+                        'required'=>'Account number is required.'
+                    ]
+                    ],
+                'branch'=>[
+                    'rules'=>'required',
+                    'label'=>'Branch',
+                    'errors'=>[
+                        'required'=>'Branch is required.'
+                    ]
+                    ],
+                'description'=>[
+                    'rules'=>'required',
+                    'label'=>'Description',
+                    'errors'=>[
+                        'required'=>'Description is required.'
+                    ]
+                    ],
+                'gl_account'=>[
+                    'rules'=>'required',
+                    'label'=>'GL account',
+                    'errors'=>[
+                        'required'=>'GL account is required.'
+                    ]
+                    ],
+                'bank'=>[
+                    'rules'=>'required',
+                    'label'=>'Bank',
+                    'errors'=>[
+                        'required'=>'Bank is required.'
+                    ]
+                    ],
+            ];
+            if($this->validate($rules)){
+                $data = [
+                    'coop_bank_id'=>$this->request->getVar('editCoop'),
+                    'account_no'=>$this->request->getVar('account_no'),
+                    'branch'=>$this->request->getVar('branch'),
+                    'description'=>$this->request->getVar('description'),
+                    'glcode'=>$this->request->getVar('gl_account'),
+                    'bank_id'=>$this->request->getVar('bank')
+                ];
+                $this->coopbanks->save($data);
+                $alert = array(
+                    'msg' => 'Success! Changes saved.',
+                    'type' => 'success',
+                    'location' => site_url('/coop-banks')
+
+                );
+                return view('pages/sweet-alert', $alert);
                 
             }else{
               $data['validation'] = $this->validator;

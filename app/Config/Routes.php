@@ -60,6 +60,7 @@ $routes->get('/departments', 'Housekeepingcontroller::departments');
 $routes->post('/add-new-department', 'Housekeepingcontroller::addNewDepartment');
 $routes->get('/coop-banks', 'Housekeepingcontroller::coopBanks');
 $routes->post('/coop-bank', 'Housekeepingcontroller::addNewCoopBank');
+$routes->post('/edit-coop-bank', 'Housekeepingcontroller::editCoopBank');
 
 #Policy config routes
 $routes->get('/policy-config', 'Policyconfigcontroller::index');
@@ -135,6 +136,7 @@ $routes->get('/get-loan-type/(:num)', 'LoanController::getLoanType/$1');
 $routes->get('/view-loan-application/(:num)', 'LoanController::viewLoanApplication/$1');
 $routes->get('/loan/approve', 'LoanController::showApproveApplications');
 $routes->post('/loan/approve', 'LoanController::approveLoanApplication');
+$routes->get('/loan/search-cooperator', 'LoanController::searchCooperator');
 #Payment routes
 $routes->get('/loan/new-payment-schedule', 'PaymentController::newPaymentSchedule');
 $routes->post('/loan/new-payment-schedule', 'PaymentController::postNewPaymentSchedule');
@@ -151,6 +153,11 @@ $routes->post('/loan/payable-action', 'LoanController::loanPayableAction');
 $routes->post('/loan/add-payment-to-cart', 'PaymentController::addPaymentToCart');
 $routes->get('/loan/remove-from-cart/(:num)', 'PaymentController::removeFromCart/$1');
 $routes->get('/loan/remove-withdraw-from-cart/(:num)', 'PaymentController::removeWithdrawFromCart/$1');
+#3rd-party payments
+$routes->get('/third-party/payment/entry', 'PaymentController::entry');
+$routes->post('/third-party/payment/entry', 'PaymentController::postThirdpartyPaymentEntry');
+$routes->get('/third-party/new-payment', 'PaymentController::newPayment');
+$routes->post('/third-party/new-payment', 'PaymentController::postNewPayment');
 
 
 

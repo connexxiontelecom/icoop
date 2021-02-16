@@ -208,7 +208,7 @@
                                     <a href="#" class="has-arrow"><i class="fa fa-cogs"></i><span>House Keeping</span></a>
                                     <ul>
                                         <li><a href="<?=base_url('states') ?>">States</a></li>
-                                        <li><a href="#">Bank</a></li>
+                                        <li><a href="<?= base_url('banks') ?>">Bank</a></li>
                                         <li><a href="<?=base_url('departments') ?>">Departments</a></li>
                                         <li><a href="<?= base_url('locations') ?>">Location</a></li>
                                         <li><a href="<?= base_url('coop-banks') ?>">Coop Bank</a></li>
@@ -266,8 +266,8 @@
                                         <li>
                                             <a href="#" class="has-arrow"><span>3rd Party Payments</span></a>
                                             <ul>
-                                                <li><a href="<?=site_url('/loan/new-payment-schedule') ?>">Entry</a></li>
-                                                <li><a href="<?=base_url('upload_routine') ?>">New Payment</a></li>
+                                                <li><a href="<?=site_url('/third-party/payment/entry') ?>">Entry</a></li>
+                                                <li><a href="<?=base_url('/third-party/new-payment') ?>">New Payment</a></li>
                                                 <li><a href="<?=base_url('upload_routine') ?>">Verify</a></li>
                                                 <li><a href="<?=base_url('upload_routine') ?>">Approve</a></li>
 

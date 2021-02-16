@@ -2,15 +2,17 @@
 namespace App\Models;
 use CodeIgniter\Model;
 
-class ScheduleMasterModel extends Model{
-    protected $table = 'schedule_masters';
-    protected $primaryKey = 'schedule_master_id';
-    protected $allowedFields = ['bank_id', 'payable_date', 'creation_date', 'loan_id', 'transaction_type','verified', 'amount', 'verified_by', 'date_verified','approved','approved_by','approved_date'];
+class EntryPaymentMasterModel extends Model{
+    protected $table = 'entry_payment_masters';
+    protected $primaryKey = 'entry_payment_master_id';
+    protected $allowedFields = ['entry_payment_bank_id', 'entry_payment_payable_date', 'entry_payment_cheque_no',
+    'entry_payment_verified', 'entry_payment_amount', 'entry_payment_verified_by', 'entry_payment_date_verified',
+    'entry_payment_approved','entry_payment_approved_by','entry_payment_approved_date'];
 
     
 
 
-    public function getScheduleMaster(){
+    /* public function getScheduleMaster(){
         $builder = $this->db->table('schedule_masters');
         $builder->join('coop_banks', 'coop_banks.coop_bank_id = schedule_masters.bank_id');
         $builder->join('banks', 'banks.bank_id = coop_banks.bank_id');
@@ -34,7 +36,7 @@ class ScheduleMasterModel extends Model{
         $builder->where('schedule_masters.schedule_master_id = '.$id);
         return $builder->get()->getRowObject();
     }
-
+ */
     
 /*     public function getPayableDetails($id){
         $builder = $this->db->table('schedule_masters');

@@ -102,12 +102,30 @@ Loan Application Details
                                         <td class="text-nowrap">Payment Duration</td>
                                         <td><strong><?= $application->duration.' months' ??  '-'  ?></strong></td>
                                     </tr>
+                                    <?php if($application->verify == 1) : ?>
                                     <tr>
-                                        <td class="text-nowrap">Disbursed</td>
-                                        <td><strong><?= $application->ls_interest_rate.'%' ?? '' ?></strong></td>
-                                        <td class="text-nowrap">Disbursed Date</td>
-                                        <td><strong><?= $application->ls_interest_rate.'%' ?? '' ?></strong></td>
+                                        <td class="text-nowrap">Verified By</td>
+                                        <td><strong><?= $application->verified_by ?? '' ?></strong></td>
+                                        <td class="text-nowrap">Date Verified</td>
+                                        <td><strong><?= !is_null($application->verify_date) ? date('d-M-Y', strtotime($application->verify_date)) : '' ?></strong></td>
                                     </tr>
+                                    <tr>
+                                        <td class="text-nowrap">Verify Comment</td>
+                                        <td colspan="3"><?= $application->verify_comment ?? '' ?></td>
+                                    </tr>
+                                    <?php endif; ?>
+                                    <?php if($application->approve == 1) : ?>
+                                    <tr>
+                                        <td class="text-nowrap">Approved By</td>
+                                        <td><strong><?= $application->approved_by ?? '' ?></strong></td>
+                                        <td class="text-nowrap">Date Verified</td>
+                                        <td><strong><?= !is_null($application->approve_date) ? date('d-M-Y', strtotime($application->approve_date)) : '' ?></strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-nowrap">Approve Comment</td>
+                                        <td colspan="3"><?= $application->approve_comment ?? '' ?></td>
+                                    </tr>
+                                    <?php endif; ?>
                                 </tbody>
                             </table>
                         </div>
@@ -172,19 +190,19 @@ Loan Application Details
                                     <tr>
                                         <td class="text-nowrap">Start Date</td>
                                         <td>
-                                            <input type="date" placeholder="d-m-yyy" name="start_date" class="form-control">
+                                            <input type="date" placeholder="d-m-yyy" name="start_date" class="form-control col-md-6">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="text-nowrap">Payment Duration</td>
                                         <td>
-                                            <input type="number" placeholder="Payment Duration (Ex. 3) in months" class="form-control">
+                                            <input type="number" placeholder="Payment Duration (Ex. 3) in months" class="form-control col-md-6">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="text-nowrap">Comment</td>
                                         <td>
-                                            <textarea name="comment" id="comment" placeholder="Comment" class="form-control"></textarea>
+                                            <textarea name="comment" id="comment" placeholder="Comment" class="form-control col-md-6"></textarea>
                                         </td>
                                     </tr>
                                     <tr>
