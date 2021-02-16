@@ -86,6 +86,10 @@ $routes->get('lr_upload', 'Routine::lr_upload');
 $routes->post('lr_upload', 'Routine::process_lr_upload');
 $routes->post('p_lr_upload', 'Routine::p_lr_upload');
 $routes->get('cancel_lr', 'Routine::cancel_lr_upload');
+$routes->get('savings_exception', 'Routine::savings_exception');
+$routes->post('savings_exception', 'Routine::savings_exception');
+$routes->get('lr_exception', 'Routine::lr_exception');
+$routes->post('lr_exception', 'Routine::lr_exception');
 
 
 #chart of accounts

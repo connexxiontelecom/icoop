@@ -63,7 +63,7 @@ Upload Routine
 							<div class="body">
 								<div class="text-center"><i class="icon-ban"></i>
 									<h5 class="m-t-20 mb-0">Contribution Upload Exceptions</h5> <br>
-									<a href="<?php echo base_url('contribution_upload'); ?>" class="btn btn-primary">Go >></a>
+									<a href="<?php echo base_url('savings_exception'); ?>" class="btn btn-primary">Go >></a>
 								</div>
 							</div>
 						</div>
@@ -73,7 +73,7 @@ Upload Routine
 							<div class="body">
 								<div class="text-center"><i class="icon-ban"></i>
 									<h5 class="m-t-20 mb-0">Loan Repayment Upload Exceptions</h5> <br>
-									<a href="<?php echo base_url('lr_upload'); ?>" class="btn btn-primary">Go >></a>
+									<a href="<?php echo base_url('lr_exception'); ?>" class="btn btn-primary">Go >></a>
 								</div>
 							</div>
 						</div>

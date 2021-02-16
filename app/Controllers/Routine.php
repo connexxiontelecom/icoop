@@ -1170,4 +1170,73 @@ class Routine extends BaseController
 		endif;
 	}
 	
+	public function savings_exception(){
+		
+		$method = $this->request->getMethod();
+		
+		if($method == 'post'):
+			$year = $this->request->getPost('year');
+			$month = $this->request->getPost('month');
+				
+				
+				$data['exceptions'] = $this->exception->where(['exception_month' => $month, 'exception_year' => $year])->findAll();
+				$data['check'] = 1;
+				$dateObj   = DateTime::createFromFormat('!m', $month);
+				$monthName = $dateObj->format('F');
+				$data['m'] = $monthName;
+				$username = $this->session->user_username;
+				$data['y'] = $year;
+				$data['years'] = $this->exception->get_years();
+				
+				
+				$this->authenticate_user($username, 'pages/routine/savings_exception', $data);
+			
+		endif;
+		if($method == 'get'):
+			$username = $this->session->user_username;
+			$data['years'] = $this->exception->get_years();
+			$data['check'] = 0;
+			$this->authenticate_user($username, 'pages/routine/savings_exception', $data);
+		
+		endif;
+ 
+	}
+	
+	public function lr_exception(){
+		$method = $this->request->getMethod();
+		
+		if($method == 'post'):
+			$year = $this->request->getPost('year');
+			$month = $this->request->getPost('month');
+			$loan_type = $this->request->getPost('loan_type');
+			
+			$data['loan'] = $this->ls->where(['loan_setup_id' => $loan_type])->first();
+			
+			
+			$data['exceptions'] = $this->le->where(['loan_exception_month' => $month, 'loan_exception_year' => $year, 'loan_exception_loan_type'=> $loan_type])->findAll();
+			$data['check'] = 1;
+			$dateObj   = DateTime::createFromFormat('!m', $month);
+			$monthName = $dateObj->format('F');
+			$data['m'] = $monthName;
+			$username = $this->session->user_username;
+			$data['y'] = $year;
+			$data['years'] = $this->le->get_years();
+			$data['loan_details'] = $this->ls->findAll();
+			
+			
+			$this->authenticate_user($username, 'pages/routine/lr_exception', $data);
+		
+		endif;
+		if($method == 'get'):
+			$username = $this->session->user_username;
+			$data['years'] = $this->le->get_years();
+			$data['check'] = 0;
+			$data['loan_details'] = $this->ls->findAll();
+			$this->authenticate_user($username, 'pages/routine/lr_exception', $data);
+		
+		endif;
+		
+		
+	}
+	
 }
