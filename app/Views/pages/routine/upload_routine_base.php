@@ -32,15 +32,13 @@ Upload Routine
             <div class="body">
 
                 <div class="row clearfix">
-                    <div class="col-lg-3 col-md-6 col-sm-12">
-
-                    </div>
+                 
                     <div class="col-lg-3 col-md-6 col-sm-12">
                         <div class="card w_card3">
                             <div class="body">
-                                <div class="text-center"><i class="fa fa-youtube-square"></i>
-                                    <h5 class="m-t-20 mb-0">Contribution Upload</h5>
-                                    <a href="<?php echo base_url('contribution_upload'); ?>" class="btn btn-success btn-round">Go >></a>
+                                <div class="text-center"><i class="icon-notebook"></i>
+                                    <h5 class="m-t-20 mb-0">Contribution Upload</h5> <br>
+                                    <a href="<?php echo base_url('contribution_upload'); ?>" class="btn btn-primary">Go >></a>
                                 </div>
                             </div>
                         </div>
@@ -48,90 +46,48 @@ Upload Routine
                     <div class="col-lg-3 col-md-6 col-sm-12">
                         <div class="card w_card3">
                             <div class="body">
-                                <div class="text-center"><i class="fa fa-twitter"></i>
-                                    <h5 class="m-t-20 mb-0">Loan Repayment Upload</h5>
-                                    <a href="<?php echo base_url('lr_upload'); ?>" class="btn btn-primary btn-round">Go >></a>
+                                <div class="text-center"><i class="fa fa-bank"></i>
+                                    <h5 class="m-t-20 mb-0">Loan Repayment Upload</h5> <br>
+                                    <a href="<?php echo base_url('lr_upload'); ?>" class="btn btn-primary">Go >></a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6 col-sm-12">
-
-                    </div>
+                    
                 </div>
-                <div class="row clearfix">
-                    <div class="col-lg-3 col-md-6 col-sm-12">
-
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-12">
-                        <div class="card w_card3">
-                            <div class="body">
-                                <div class="text-center"><i class="fa fa-youtube-square"></i>
-                                    <h5 class="m-t-20 mb-0">813 Point</h5>
-                                    <p class="text-muted">New Subscribe</p>
-                                    <a href="javascript:void(0);" class="btn btn-success btn-round">Find more</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-12">
-                        <div class="card w_card3">
-                            <div class="body">
-                                <div class="text-center"><i class="fa fa-twitter"></i>
-                                    <h5 class="m-t-20 mb-0">3,756</h5>
-                                    <p class="text-muted">New Followers</p>
-                                    <a href="javascript:void(0);" class="btn btn-primary btn-round">Find more</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-12">
-
-                    </div>
-                </div>
+	
+				<div class="row clearfix">
+		
+					<div class="col-lg-3 col-md-6 col-sm-12">
+						<div class="card w_card3">
+							<div class="body">
+								<div class="text-center"><i class="icon-ban"></i>
+									<h5 class="m-t-20 mb-0">Contribution Upload Exceptions</h5> <br>
+									<a href="<?php echo base_url('savings_exception'); ?>" class="btn btn-primary">Go >></a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-6 col-sm-12">
+						<div class="card w_card3">
+							<div class="body">
+								<div class="text-center"><i class="icon-ban"></i>
+									<h5 class="m-t-20 mb-0">Loan Repayment Upload Exceptions</h5> <br>
+									<a href="<?php echo base_url('lr_exception'); ?>" class="btn btn-primary">Go >></a>
+								</div>
+							</div>
+						</div>
+					</div>
+	
+				</div>
+               
 
             </div>
         </div>
     </div>
 
 
-    <div class="col-sm-3">
-        <div class="modal fade bd-example-modal-sm" id="newModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-sm">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title h4" id="myLargeModalLabel">New Contribution Type</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form method="post" action="">
-                            <div class="form-group">
-                                <label>Contribution type:</label>
-                                <input class="form-control" name="contribution_type_name" required>
-                            </div>
-
-                            <input type="hidden" name="type" value="1">
-
-                            <?= csrf_field() ?>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-info btn-block">Submit</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-
-
-
-
-
-
-    </div>
+   
 
 </div>
 

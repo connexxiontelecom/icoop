@@ -383,13 +383,18 @@ class PaymentController extends BaseController
                 	//$loan = $this->loan->where('loan_id', $detail['loan_id'])->first();
                 	
                 	$loan = $this->loan->get_loan($detail['loan_id']);
-                	
+	
+	                //print_r($detail);
+//
                 	$loan_array = array(
+                		'loan_id' => $detail['loan_id'],
 		                'disburse'=>1,
 		                'disburse_date'=>date('Y-m-d H:i:s')
 	                );
-                	    
+
                      $this->loan->save($loan_array);
+                     
+                  
                      
                      $interest_method = $loan['interest_method'];
                      $interest_charge_type = $loan['interest_charge_type'];
@@ -400,28 +405,28 @@ class PaymentController extends BaseController
                      
                      if($interest_method == 1){
 	                     #register loan repayment
-	                     
+
 	                     if($interest_charge_type == 1){ #flat interest type
-	                     
+
 	                     	$interest_amount = ($ls_interest_rate/100) * $loan_amount;
-	                     
+
 	                     }
-	
-	
+
+
 	                     if($interest_charge_type == 2){ #fmonthly type
-		
+
 		                     $interest_amount =  $loan_amount * ($ls_interest_rate/100) * $duration;
-		
+
 	                     }
-	
+
 	                     if($interest_charge_type == 3){ #fmonthly type
-		
+
 		                     $interest_amount =  $loan_amount * ($ls_interest_rate/100) * ($duration/12);
-		
+
 	                     }
-	
-	
-	
+
+
+
 	                     $loan_repayment = [
 		                     'lr_staff_id' => $loan['staff_id'],
 		                     'lr_loan_id' => $loan['loan_id'],
@@ -429,7 +434,7 @@ class PaymentController extends BaseController
 		                     'lr_year' => date('Y', strtotime($loan['created_at'])),
 		                     'lr_amount' => $interest_amount,
 		                     'lr_dctype' => 2,
-		                     'lr_ref' => substr(sha1(time()),32,40),
+		                     'lr_ref' => time(),
 		                     'lr_narration' => 'interest on loan type',
 		                     'lr_mi' => 0,
 		                     'lr_mpr' => 0,
@@ -440,13 +445,13 @@ class PaymentController extends BaseController
                      }
                    
                 }elseif($detail['transaction_type'] == 2){ //withdraw
-                	
+//
                 	$masters = $this->schedulemaster->where('schedule_master_id',$this->request->getVar('schedule') )->first();
                 	$payable_date = $masters['payable_date'];
                     $withdraw_id = $detail['loan_id'];
                      $data = array(
                                 'withdraw_id' => $withdraw_id,
-                                'disburse'=>1, 
+                                'disburse'=>1,
                                 'disburse_date'=>date('Y-m-d H:i:s')
                             );
 
@@ -456,7 +461,7 @@ class PaymentController extends BaseController
                     //$this->withdraw->update($withdraw, []);
                     #register withdraw
                     $cooperator = $this->coop->where('cooperator_staff_id', $withdraw['withdraw_staff_id'])->first();
-                    
+
                     $ref_code = time();
                      $payment_details_array = array(
                         'pd_staff_id' => $withdraw['withdraw_staff_id'],
@@ -468,9 +473,9 @@ class PaymentController extends BaseController
                         'pd_pg_id' => $cooperator['cooperator_payroll_group_id'],//$cooperator_payroll_group_id,
                         'pd_ref_code' => $ref_code,
                     );
-                    
+
                     $v =  $this->paymentdetail->save($payment_details_array);
-	
+
 	                $payment_details_array = array(
 		                'pd_staff_id' => $withdraw['withdraw_staff_id'],
 		                'pd_transaction_date' =>$payable_date,
@@ -478,10 +483,10 @@ class PaymentController extends BaseController
 		                'pd_amount' => $withdraw['withdraw_charges'],
 		                'pd_drcrtype' => 2,
 		                'pd_ct_id' => $withdraw['withdraw_ct_id'],
-		                'pd_pg_id' => 1,//$cooperator_payroll_group_id,
+		                'pd_pg_id' => $cooperator['cooperator_payroll_group_id'],//$cooperator_payroll_group_id,
 		                'pd_ref_code' => $ref_code,
 	                );
-	
+
 	                $v =  $this->paymentdetail->save($payment_details_array);
 	
 	

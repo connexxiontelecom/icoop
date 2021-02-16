@@ -4,6 +4,7 @@
 namespace App\Controllers;
 use App\Models\pgTypeModel;
 use App\Models\PayrollGroups;
+use App\Models\CoaModel;
 
 
 
@@ -13,6 +14,7 @@ class PayRollGroup extends BaseController
     public function __construct(){
 
         $this->pg = new PayrollGroups();
+        $this->coa = new CoaModel();
         //$this->session = session();
     }
 
@@ -244,6 +246,7 @@ class PayRollGroup extends BaseController
 
 
             $data['pgs'] = $this->pg->findAll();
+            $data['coas'] = $this->coa->where(['type' => 2])->findAll();
             $username = $this->session->user_username;
             $this->authenticate_user($username, 'pages/control-panel/payroll_group', $data);
 

@@ -181,7 +181,8 @@ Loans - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
 						<?php $sn = 1;
 							$total_cr = 0;
 							$total_dr = 0;
-							
+						
+							if($empty == 0):
 							
 							foreach ($ledgers as $ledger):
 								
@@ -190,6 +191,12 @@ Loans - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
 								$bf = $ledger->amount;
 							
 							endforeach;
+							
+							else:
+								$total_dr = $ledgers[0]->amount;
+								$disbursed_date = $ledgers[0]->disburse_date;
+							
+							endif;
 						
 						?>
 						
@@ -206,7 +213,7 @@ Loans - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
 						
 						
 						
-						<?php    foreach ($ledgers as $ledger): ?>
+						<?php if($empty == 0):    foreach ($ledgers as $ledger): ?>
 							<tr>
 								
 								<td><?=$sn; ?></td>
@@ -254,7 +261,7 @@ Loans - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
 							
 							
 							</tr>
-							<?php $sn++; endforeach; ?>
+							<?php $sn++; endforeach; endif; ?>
 						
 						<tr>
 							<td></td>

@@ -76,6 +76,7 @@ $routes->post('contribution_type', 'ContributionType::contribution_type');
 $routes->get('payroll_group', 'PayRollGroup::payroll_group');
 $routes->post('payroll_group', 'PayRollGroup::payroll_group');
 $routes->get('upload_routine', 'Routine::upload_routine');
+$routes->get('cancel_ct', 'Routine::cancel_ct_upload');
 $routes->get('contribution_upload', 'Routine::contribution_upload');
 $routes->post('contribution_upload', 'Routine::process_contribution_upload');
 $routes->post('p_contribution_upload', 'Routine::p_contribution_upload');
@@ -84,6 +85,11 @@ $routes->post('interest_routine', 'Routine::interest_routine');
 $routes->get('lr_upload', 'Routine::lr_upload');
 $routes->post('lr_upload', 'Routine::process_lr_upload');
 $routes->post('p_lr_upload', 'Routine::p_lr_upload');
+$routes->get('cancel_lr', 'Routine::cancel_lr_upload');
+$routes->get('savings_exception', 'Routine::savings_exception');
+$routes->post('savings_exception', 'Routine::savings_exception');
+$routes->get('lr_exception', 'Routine::lr_exception');
+$routes->post('lr_exception', 'Routine::lr_exception');
 
 
 #chart of accounts

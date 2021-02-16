@@ -91,6 +91,8 @@ class Withdraw extends BaseController
 		                            $_POST['withdraw_doc'] = $file_name;
 
 		                            $file->move('.uploads/withdrawals', $file_name);
+		                            
+		                            $_POST['withdraw_amount'] = (float)str_replace(',', '', $_POST['withdraw_amount']);
 
 		                        $withdraw_balance = $_POST['withdraw_balance'];
 		                        $withdraw_amount = $_POST['withdraw_amount'];
