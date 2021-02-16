@@ -34,11 +34,14 @@ View Loan Repayment Uploads - <?=$loan_type['loan_description']; ?> For <small><
                         <tr>
                             <th>#</th>
                             <th>Staff ID</th>
+							<th>Staff Name</th>
+							<th> Date </th>
+							<th> Narration </th>
                             <th> Amount</th>
-                            <th> Narration </th>
+							<th> Remarks</th>
                             <th> Ref Code</th>
-							<th> Comments</th>
-                            <th> Date </th>
+							
+                           
                         </tr>
                         </thead>
 
@@ -46,33 +49,50 @@ View Loan Repayment Uploads - <?=$loan_type['loan_description']; ?> For <small><
                         <?php $sn = 1; foreach ($temp_lrs as $temp_lr): ?>
                             <?php
                             $color = 'white';
-                            if($temp_lr['temp_lr_status'] == 1){ $color = 'red'; }
-                            if($temp_lr['temp_lr_status'] == 2){ $color = 'yellow'; }
+                            if($temp_lr['temp_lr_status'] == 1){ $color = '#ffcccb'; }
+                            if($temp_lr['temp_lr_status'] == 2){ $color = '#f5ea61'; }
                             ?>
                             <tr style="background-color: <?php echo $color; ?>">
 
                                 <td><?=$sn; ?></td>
                                 <td><?=$temp_lr['temp_lr_staff_id']; ?></td>
+								<td><?=$temp_lr['temp_lr_staff_name']; ?></td>
+								<td><?=$temp_lr['temp_lr_transaction_date']; ?></td>
+								<td><?=$temp_lr['temp_lr_narration']; ?></td>
                                 <td style="text-align: right;"><?=number_format($temp_lr['temp_lr_amount'], 2); ?></td>
-                                <td><?=$temp_lr['temp_lr_narration']; ?></td>
-                                <td><?=$temp_lr['temp_lr_ref_code']; ?></td>
 								<td><?php if($temp_lr['temp_lr_status'] == 1){ echo "Member Does Not Exist"; }
-										if($temp_lr['temp_lr_status'] == 2){ echo "Member does not have an active loan running"; } ?></td>
-                                <td><?=$temp_lr['temp_lr_transaction_date']; ?></td>
-
-
+			                            if($temp_lr['temp_lr_status'] == 2){ echo "Member does not have an active loan running"; } ?></td>
+	
+								<td><?=$temp_lr['temp_lr_ref_code']; ?></td>
+								
                             </tr>
 
                             <?php $sn++; endforeach; ?>
                         </tbody>
                     </table>
+	
+					<form method="post" action="<?=base_url('p_lr_upload') ?>">
+		                <?= csrf_field() ?>
+						<fieldset>
+							<div class="row clearfix">
+								<div class="col-lg-6 col-md-12 offset-3">
+									<div class="form-group">
+										<div class="form-row">
+											<div class="col-md-6">
+												<button type="submit" class="btn btn-primary btn-block">Process Upload</button>
+											</div>
+							
+											<div class="col-md-6">
+												<button type="button" onclick="location.href='<?php echo base_url('cancel_lr');?>'" class="btn btn-danger btn-block">Cancel Upload</button>
+											</div>
+						
+										</div>
+									</div>
+								</div>
+							</div>
+					</form>
 
-                    <form method="post" action="<?=base_url('p_lr_upload') ?>">
-                        <?= csrf_field() ?>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-info btn-block">Process Upload</button>
-                        </div>
-                    </form>
+                
                 </div>
             </div>
         </div>

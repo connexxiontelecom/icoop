@@ -299,8 +299,6 @@ class Routine extends BaseController
 		return view('pages/sweet-alert', $data);
 		
 		else:
-			
-			$this->temp_pd->delete_temp();
 			$data = array(
 				'msg' => 'An Error Occurred',
 				'type' => 'error',
@@ -332,33 +330,56 @@ class Routine extends BaseController
             );
 
            $v =  $this->exception->save($exception_array);
+	        
+//	        print_r($exception_array);
+//	        echo '<br>';
 
             endforeach;
 
         $temp_payments = $this->temp_pd->where(['temp_pd_status' => 3])->findAll();
         foreach ($temp_payments as $temp_payment):
-
-            $payment_details_array = array(
-                'pd_staff_id' => $temp_payment['temp_pd_staff_id'],
-                'pd_transaction_date' => $temp_payment['temp_pd_transaction_date'],
-                'pd_narration' => $temp_payment['temp_pd_narration'],
-                'pd_amount' => $temp_payment['temp_pd_amount'],
-                'pd_drcrtype' => 1,
-                'pd_ct_id' => $temp_payment['temp_pd_ct_id'],
-                'pd_pg_id' => $temp_payment['temp_pd_pg_id'],
-                'pd_ref_code' => $temp_payment['temp_pd_ref_code'],
-	            'pd_month' => $temp_payment['temp_pd_month'],
-	            'pd_year' => $temp_payment['temp_pd_year']
-                );
-
-
-          $v =   $this->pd->save($payment_details_array);
+	        ## check for duplicate upload
+	
+	        $check_duplicate = $this->pd->where(['pd_staff_id' => $temp_payment['temp_pd_staff_id'], 'pd_ct_id' => $temp_payment['temp_pd_ct_id'], 'pd_pg_id' => $temp_payment['temp_pd_pg_id'], 'pd_month' => $temp_payment['temp_pd_month'],
+		        'pd_year' => $temp_payment['temp_pd_year'],  'pd_drcrtype' => 1 ])->findAll();
+	
+	        if(empty($check_duplicate)):
+	
+	            $payment_details_array = array(
+	                'pd_staff_id' => $temp_payment['temp_pd_staff_id'],
+	                'pd_transaction_date' => $temp_payment['temp_pd_transaction_date'],
+	                'pd_narration' => $temp_payment['temp_pd_narration'],
+	                'pd_amount' => $temp_payment['temp_pd_amount'],
+	                'pd_drcrtype' => 1,
+	                'pd_ct_id' => $temp_payment['temp_pd_ct_id'],
+	                'pd_pg_id' => $temp_payment['temp_pd_pg_id'],
+	                'pd_ref_code' => $temp_payment['temp_pd_ref_code'],
+		            'pd_month' => $temp_payment['temp_pd_month'],
+		            'pd_year' => $temp_payment['temp_pd_year']
+	                );
+	
+	
+	          $v =   $this->pd->save($payment_details_array);
+		       
+	
+	        else:
+		
+		        $v = 1;
+	
+	        endif;
 
         endforeach;
 	
 	
 	    $temp_payments = $this->temp_pd->where(['temp_pd_status' => 2])->findAll();
 	    foreach ($temp_payments as $temp_payment):
+		    
+		    ## check for duplicate upload
+		    
+		    $check_duplicate = $this->pd->where(['pd_staff_id' => $temp_payment['temp_pd_staff_id'], 'pd_ct_id' => $temp_payment['temp_pd_ct_id'], 'pd_pg_id' => $temp_payment['temp_pd_pg_id'], 'pd_month' => $temp_payment['temp_pd_month'],
+			    'pd_year' => $temp_payment['temp_pd_year'],  'pd_drcrtype' => 1 ])->findAll();
+	    
+	    if(empty($check_duplicate)):
 		
 		    $payment_details_array = array(
 			    'pd_staff_id' => $temp_payment['temp_pd_staff_id'],
@@ -375,8 +396,17 @@ class Routine extends BaseController
 		
 		
 		    $v =   $this->pd->save($payment_details_array);
+		  
+		    
+		   else:
+			  
+			  $v = 1;
+			  
+			  endif;
 	
 	    endforeach;
+	    
+	    $v = 1;
 
         if($v):
             $this->temp_pd->delete_temp();
@@ -904,22 +934,53 @@ class Routine extends BaseController
 				'loan_exception_month' => $temp_payment['temp_lr_month'],
 				'loan_exception_year' => $temp_payment['temp_lr_year'],
 				'loan_exception_amount' => $temp_payment['temp_lr_amount'],
-				'loan_exception_ref_code' => $temp_payment['temp_lr_ref_code']
+				'loan_exception_ref_code' => $temp_payment['temp_lr_ref_code'],
+				'loan_exception_reason' => "Member does not exist",
+				'loan_exception_loan_type'=> $temp_payment['temp_lr_loan_id']
 			);
 			
 			$v =  $this->le->save($exception_array);
 		
 		endforeach;
 		
+		$temp_payments = $this->temp_lr->where(['temp_lr_status' => 2])->findAll();
+		
+		foreach ($temp_payments as $temp_payment):
+			
+			$exception_array = array(
+				'loan_exception_staff_id' => $temp_payment['temp_lr_staff_id'],
+				'loan_exception_staff_name' => $temp_payment['temp_lr_staff_name'],
+				'loan_exception_transaction_date' => $temp_payment['temp_lr_transaction_date'],
+				'loan_exception_month' => $temp_payment['temp_lr_month'],
+				'loan_exception_year' => $temp_payment['temp_lr_year'],
+				'loan_exception_amount' => $temp_payment['temp_lr_amount'],
+				'loan_exception_ref_code' => $temp_payment['temp_lr_ref_code'],
+				'loan_exception_reason' => "Member does not have existing loan",
+				'loan_exception_loan_type'=> $temp_payment['temp_lr_loan_id']
+			);
+			
+			$v =  $this->le->save($exception_array);
+		
+		endforeach;
+		
+		
 		$temp_payments = $this->temp_lr->where(['temp_lr_status' => 3])->findAll();
+		
 		foreach ($temp_payments as $temp_payment):
 			$staff_id = $temp_payment['temp_lr_staff_id'];
 			$loan_type = $temp_payment['temp_lr_loan_id'];
+			
+			
 			$loans = $this->loan->get_active_loans_staff_id($staff_id, $loan_type);
 			
 			$loan_id = $loans->loan_id;
 			$loan_amount = $loans->amount;
 			
+			# check for duplicate loan repayment upload for a month;
+			
+		$check  = $this->lr->where(['lr_loan_id' => $loan_id, 'lr_month'=>$temp_payment['temp_lr_month'], 'lr_year' => $temp_payment['temp_lr_year'], 'lr_dctype' => $temp_payment['temp_lr_drcrtype'] ])->findAll();
+			
+		if(empty($check)):
 			$loan_ledgers = $this->loan->get_loans_staff_id($staff_id, $loan_id);
 			
 			$total_cr = 0;
@@ -1043,7 +1104,13 @@ class Routine extends BaseController
 			$this->loan->save($loan_array);
 
 			endif;
+			
+		else:
+			
+			$v = 1;
 		
+		
+		endif;
 		
 		endforeach;
 		
@@ -1070,6 +1137,106 @@ class Routine extends BaseController
 			return view('pages/sweet-alert', $data);
 
 		endif;
+	}
+	
+	public function cancel_lr_upload(){
+		
+		$referrer = $this->request->getUserAgent()->getReferrer();
+		
+		if($referrer == base_url('lr_upload')):
+			
+			$this->temp_lr->delete_temp();
+			$data = array(
+				'msg' => 'Action Successful',
+				'type' => 'success',
+				'location' => site_url('lr_upload')
+			
+			);
+			
+			return view('pages/sweet-alert', $data);
+		
+		else:
+			$data = array(
+				'msg' => 'An Error Occurred',
+				'type' => 'error',
+				'location' => site_url()
+			
+			);
+			
+			return view('pages/sweet-alert', $data);
+		
+		
+		
+		endif;
+	}
+	
+	public function savings_exception(){
+		
+		$method = $this->request->getMethod();
+		
+		if($method == 'post'):
+			$year = $this->request->getPost('year');
+			$month = $this->request->getPost('month');
+				
+				
+				$data['exceptions'] = $this->exception->where(['exception_month' => $month, 'exception_year' => $year])->findAll();
+				$data['check'] = 1;
+				$dateObj   = DateTime::createFromFormat('!m', $month);
+				$monthName = $dateObj->format('F');
+				$data['m'] = $monthName;
+				$username = $this->session->user_username;
+				$data['y'] = $year;
+				$data['years'] = $this->exception->get_years();
+				
+				
+				$this->authenticate_user($username, 'pages/routine/savings_exception', $data);
+			
+		endif;
+		if($method == 'get'):
+			$username = $this->session->user_username;
+			$data['years'] = $this->exception->get_years();
+			$data['check'] = 0;
+			$this->authenticate_user($username, 'pages/routine/savings_exception', $data);
+		
+		endif;
+ 
+	}
+	
+	public function lr_exception(){
+		$method = $this->request->getMethod();
+		
+		if($method == 'post'):
+			$year = $this->request->getPost('year');
+			$month = $this->request->getPost('month');
+			$loan_type = $this->request->getPost('loan_type');
+			
+			$data['loan'] = $this->ls->where(['loan_setup_id' => $loan_type])->first();
+			
+			
+			$data['exceptions'] = $this->le->where(['loan_exception_month' => $month, 'loan_exception_year' => $year, 'loan_exception_loan_type'=> $loan_type])->findAll();
+			$data['check'] = 1;
+			$dateObj   = DateTime::createFromFormat('!m', $month);
+			$monthName = $dateObj->format('F');
+			$data['m'] = $monthName;
+			$username = $this->session->user_username;
+			$data['y'] = $year;
+			$data['years'] = $this->le->get_years();
+			$data['loan_details'] = $this->ls->findAll();
+			
+			
+			$this->authenticate_user($username, 'pages/routine/lr_exception', $data);
+		
+		endif;
+		if($method == 'get'):
+			$username = $this->session->user_username;
+			$data['years'] = $this->le->get_years();
+			$data['check'] = 0;
+			$data['loan_details'] = $this->ls->findAll();
+			$this->authenticate_user($username, 'pages/routine/lr_exception', $data);
+		
+		endif;
+		
+		
 	}
 	
 }

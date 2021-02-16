@@ -5,6 +5,7 @@ namespace App\Controllers;
 
 
 use App\Models\ContributionTypeModel;
+use App\Models\CoaModel;
 
 class ContributionType extends BaseController
 {
@@ -12,6 +13,7 @@ class ContributionType extends BaseController
     public function __construct(){
 
         $this->contribution_type = new ContributionTypeModel();
+	    $this->coa = new CoaModel();
         //$this->session = session();
     }
     public function contribution_type () {
@@ -119,10 +121,12 @@ class ContributionType extends BaseController
 
                      $check_contribution = $this->contribution_type->where('contribution_type_name', $_POST['contribution_type_name'])
                          ->findAll();
+                 
+                 $i = false;
 
 
 
-                     if($check_contribution):
+                     if($i):
                          $data = array(
                              'msg' => 'Contribution type already exists',
                              'type' => 'error',
@@ -136,7 +140,8 @@ class ContributionType extends BaseController
 
                          $data = [
                              'contribution_type_id' => $this->request->getVar('contribution_type_id'),
-                             'contribution_type_name' => $this->request->getVar('contribution_type_name')
+                             'contribution_type_name' => $this->request->getVar('contribution_type_name'),
+	                         'contribution_type_glcode' =>$this->request->getVar('contribution_type_glcode')
 
                          ];
 
@@ -220,8 +225,8 @@ class ContributionType extends BaseController
 
 
         else:
-
-
+	
+	        $data['coas'] = $this->coa->where(['type' => 2])->findAll();
             $data['contribution_types'] = $this->contribution_type->findAll();
             $username = $this->session->user_username;
             $this->authenticate_user($username, 'pages/control-panel/contribution_type', $data);

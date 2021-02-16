@@ -37,6 +37,7 @@ Contribution Type
                             <th>#</th>
                             <th>Contribution Type</th>
 							<th>Regular</th>
+							<th>GL Code</th>
                             
                             <th>Action</th>
                         </tr>
@@ -49,7 +50,7 @@ Contribution Type
                                 <td><?=$sn; ?></td>
                                 <td><?=$contribution_type['contribution_type_name']; ?></td>
 								<td><?php if($contribution_type['contribution_type_regular'] == 1): echo "yes"; else: echo "No"; endif; ?></td>
-
+								<td><?=$contribution_type['contribution_type_glcode']; ?></td>
                                 <td>
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal<?=$contribution_type['contribution_type_id'] ?>"><i class="fa fa-pencil-square-o"></i></button>
                                     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal<?=$contribution_type['contribution_type_id'] ?>"> <i class="fa fa-trash-o"></i></button>
@@ -85,12 +86,24 @@ Contribution Type
 							<div class="form-group">
 								
 								<label>Regular?</label>
-								<select class="custom-select" required name="contribution_upload_pg" >
+								<select class="custom-select" required name="contribution_type_regular" >
 									
 									<option value="0"> No </option>
 										<option value="1"> Yes </option>
 									
 								</select>
+							</div>
+	
+							<div class="form-group">
+								<label>GL Code:</label>
+								<select class="custom-select" required name="contribution_type_glcode">
+									<option selected disabled> -- select gl code -- </option>
+			
+			                        <?php foreach ($coas as $coa): ?>
+										<option value="<?=$coa['glcode'] ?>"> <?=$coa['glcode']." (".$coa['account_name'].")"; ?></option>
+			                        <?php endforeach; ?>
+								</select>
+	
 							</div>
 
                             <input type="hidden" name="type" value="1">
@@ -130,12 +143,24 @@ Contribution Type
 							<div class="form-group">
 		
 								<label>Regular?</label>
-								<select class="custom-select" required name="contribution_upload_pg" >
+								<select class="custom-select" required name="contribution_type_regular" >
 			
 									<option value="0" <?php if($contribution_type['contribution_type_regular'] !== 1): echo "selected"; endif; ?>> No </option>
 									<option value="1"  <?php if($contribution_type['contribution_type_regular'] == 1): echo "selected"; endif; ?>> Yes </option>
 		
 								</select>
+							</div>
+	
+							<div class="form-group">
+								<label>GL Code:</label>
+								<select class="custom-select" required name="contribution_type_glcode">
+									<option selected disabled> -- select gl code -- </option>
+			
+			                        <?php foreach ($coas as $coa): ?>
+										<option value="<?=$coa['glcode'] ?>" <?php if($contribution_type['contribution_type_glcode'] == $coa['glcode']){ echo "selected"; } ?>> <?=$coa['glcode']." (".$coa['account_name'].")"; ?></option>
+			                        <?php endforeach; ?>
+								</select>
+	
 							</div>
 	
 							<?= csrf_field() ?>
