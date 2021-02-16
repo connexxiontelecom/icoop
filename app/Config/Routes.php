@@ -60,6 +60,7 @@ $routes->get('/departments', 'Housekeepingcontroller::departments');
 $routes->post('/add-new-department', 'Housekeepingcontroller::addNewDepartment');
 $routes->get('/coop-banks', 'Housekeepingcontroller::coopBanks');
 $routes->post('/coop-bank', 'Housekeepingcontroller::addNewCoopBank');
+$routes->post('/edit-coop-bank', 'Housekeepingcontroller::editCoopBank');
 
 #Policy config routes
 $routes->get('/policy-config', 'Policyconfigcontroller::index');
