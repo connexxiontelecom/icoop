@@ -62,7 +62,7 @@ New Withdrawal
                                 <div class="form-group">
 
                                     <label  for="application_payroll_group_id"> <b> Amount: </b></label>
-                                    <input type="text" class="form-control"  required  name="withdraw_amount" id="withdraw_amount"  placeholder="Enter Amount">
+                                    <input type="text" class="number form-control"  required  name="withdraw_amount" id="withdraw_amount"  placeholder="Enter Amount">
 
 
 
@@ -148,13 +148,19 @@ New Withdrawal
         $('#withdraw_warning').hide();
         $('#charge_warning').hide();
 
+
+       
+        
+
         $(function () {
             $("#search_account").autocomplete({
                 source: "<?php echo base_url('search_cooperator'); ?>",
             });
 
             $("#withdraw_amount").keyup(function () {
-                let withdraw_amount = parseFloat($(this).val());
+                // entered_principal = entered_principal.replace(/,/g, '');
+                // entered_principal = parseFloat(entered_principal);
+                let withdraw_amount = parseFloat($(this).val().replace(/,/g, ''));
                 let withdraw_charge = parseFloat($('#withdraw_charge').val());
                 let withdraw_balance = parseFloat($('#withdraw_balance').val());
                 let charge = (withdraw_charge/100)*withdraw_amount;

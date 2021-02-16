@@ -130,7 +130,7 @@ Saving Exceptions
 												<td><?=$exception['exception_staff_id']; ?></td>
 												<td><?=$exception['exception_staff_name']; ?></td>
 												<td><?=$exception['exception_transaction_date']; ?></td>
-												<td style="text-align: right"><?=number_format($exception['exception_amount']); ?></td>
+												<td style="text-align: right"><?=number_format($exception['exception_amount'], 2); ?></td>
 												<td><?=$exception['exception_reason']; ?></td>
 											
 											

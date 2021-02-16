@@ -142,7 +142,7 @@ Loan Repayment Exceptions
 												<td><?=$exception['loan_exception_staff_name']; ?></td>
 												<td><?=$loan['loan_description']; ?></td>
 												<td><?=$exception['loan_exception_transaction_date']; ?></td>
-												<td style="text-align: right"><?=number_format($exception['loan_exception_amount']); ?></td>
+												<td style="text-align: right"><?=number_format($exception['loan_exception_amount'], 2); ?></td>
 												<td><?=$exception['loan_exception_reason']; ?></td>
 											
 											
