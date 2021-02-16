@@ -145,6 +145,11 @@ $routes->post('/loan/payable-action', 'LoanController::loanPayableAction');
 $routes->post('/loan/add-payment-to-cart', 'PaymentController::addPaymentToCart');
 $routes->get('/loan/remove-from-cart/(:num)', 'PaymentController::removeFromCart/$1');
 $routes->get('/loan/remove-withdraw-from-cart/(:num)', 'PaymentController::removeWithdrawFromCart/$1');
+#3rd-party payments
+$routes->get('/third-party/payment/entry', 'PaymentController::entry');
+$routes->post('/third-party/payment/entry', 'PaymentController::postThirdpartyPaymentEntry');
+$routes->get('/third-party/new-payment', 'PaymentController::newPayment');
+$routes->post('/third-party/new-payment', 'PaymentController::postNewPayment');
 
 
 

@@ -19,7 +19,7 @@ class Policyconfigcontroller extends BaseController
         $data = [];
         //$states = new StateModel;
 		//$data['states'] = $states->findAll();
-        $data['accounts'] = $this->coa->findAll();
+        $data['accounts'] = $this->coa->where('type',1)->findAll();
         $data['profile'] = $this->policy->first();
 		return view('pages/policy-config/index', $data);
 	}
@@ -258,7 +258,7 @@ class Policyconfigcontroller extends BaseController
     public function showLoanSetupForm()
 	{
         $data = [];
-        $data['accounts'] = $this->coa->findAll();
+        $data['accounts'] = $this->coa->where('type',1)->findAll();
         $data['profile'] = $this->policy->first();
         $data['loansetups'] = $this->loan->findAll();
 		return view('pages/policy-config/loan-setup', $data);

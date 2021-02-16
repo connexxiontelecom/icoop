@@ -11,6 +11,10 @@ use \App\Models\ScheduleMasterDetailModel;
 use \App\Models\PaymentDetailsModel;
 use \App\Models\PaymentCartModel;
 use \App\Models\LoanRepaymentModel;
+use App\Models\CoaModel; 
+use App\Models\ThirdPartyPaymentEntryModel; 
+use App\Models\EntryPaymentMasterModel; 
+use App\Models\EntryPaymentDetailModel; 
 
 class PaymentController extends BaseController
 {
@@ -29,6 +33,10 @@ class PaymentController extends BaseController
         $this->paymentdetail = new PaymentDetailsModel();
         $this->paymentcart = new PaymentCartModel();
         $this->loanrepayment = new LoanRepaymentModel();
+        $this->coa = new CoaModel();
+        $this->thirpartypaymententry = new ThirdPartyPaymentEntryModel();
+        $this->entrypaymentmaster = new EntryPaymentMasterModel();
+        $this->entrypaymentdetail = new EntryPaymentDetailModel();
         $this->session = session();
     }
 
@@ -42,7 +50,6 @@ class PaymentController extends BaseController
          #cart
          $cart = $this->loan->getItemsInCart();
          $withdraw_cart = $this->withdraw->getWithdrawItemsInCart();
-         //return dd($withdraw_cart);
         #withdraw request
         $withdraws = $this->withdraw->getScheduledWithdrawal(); 
         $coopbank = $this->coopbank->getCoopBanks();
@@ -493,6 +500,101 @@ class PaymentController extends BaseController
                 'msg' => 'Success! Payment disbursed.',
                 'type' => 'success',
                 'location' => site_url('/loan/payment-schedules')
+
+            );
+            return view('pages/sweet-alert', $alert);
+        }
+    }
+
+
+
+    public function entry(){
+        $coopbank = $this->coopbank->getCoopBanks();
+        $coas =  $this->coa->where('type',1)->findAll();
+        $data = [
+            'coopbank'=>$coopbank,
+            'coas'=>$coas
+        ];
+        $username = $this->session->user_username;
+        $this->authenticate_user($username, 'pages/payment/entry', $data); 
+    }
+
+    public function postThirdpartyPaymentEntry(){
+         helper(['form']);
+        $data = [];
+
+        if($_POST){
+            $data = [
+            'entry_payment_date' => $this->request->getVar('payable_date'),
+            'entry_bank_id'=>$this->request->getVar('bank'), 
+            'entry_amount'=>$this->request->getVar('amount'), 
+            'entry_gl_account_no'=>$this->request->getVar('gl_account'),
+            'entry_reference_no'=>$this->request->getVar('reference_no'), 
+            'entry_narration'=>$this->request->getVar('narration'), 
+            'entry_payee_name'=>$this->request->getVar('payee_name'), 
+            'entry_payee_bank'=>$this->request->getVar('payee_bank'),
+            'entry_bank_account_no'=>$this->request->getVar('bank_account_no'),
+            'entry_sort_code'=>$this->request->getVar('sort_code')
+            ];
+            $this->thirpartypaymententry->save($data);
+            
+            $alert = array(
+                'msg' => 'Success! New payment entry done.',
+                'type' => 'success',
+                'location' => site_url('/third-party/payment/entry')
+
+            );
+            return view('pages/sweet-alert', $alert);
+        }
+    }
+
+    public function newPayment(){
+        $coopbank = $this->coopbank->getCoopBanks();
+        $coas =  $this->coa->where('type',1)->findAll();
+        $entries = $this->thirpartypaymententry->getEntries();
+        $data = [
+            'coopbank'=>$coopbank,
+            'coas'=>$coas,
+            'entries'=>$entries
+        ];
+        
+        $username = $this->session->user_username;
+        $this->authenticate_user($username, 'pages/payment/new-payment', $data); 
+    }
+
+    public function postNewPayment(){
+        if($_POST){
+            //return dd($_POST);
+            $amount = 0;
+            $masterId = null;
+                $masterdata = [
+                    'entry_payment_bank_id'=>$this->request->getVar('bank'), 
+                    'entry_payment_payable_date'=>$this->request->getVar('payable_date'), 
+                    'entry_payment_cheque_no'=>$this->request->getVar('cheque_no'),
+                    'entry_payment_amount'=>$amount, 
+                ];
+                $masterId = $this->entrypaymentmaster->save($masterdata);
+               if(!empty($this->request->getVar('entries'))){
+                 for($i=0; $i<count($this->request->getVar('entries')); $i++){
+                     $detail = [
+                        'entry_payment_d_master_id'=> $masterId, 
+                        'entry_payment_d_payee_bank'=>$this->request->getVar('payee_bank')[$i], 
+                        'entry_payment_d_payee_name'=>$this->request->getVar('payee_name')[$i],
+                        'entry_payment_d_amount'=>$this->request->getVar('entry_amount')[$i], 
+                        'entry_payment_d_bank_name' =>$this->request->getVar('bank_name')[$i], 
+                        'entry_payment_d_account_no'=>$this->request->getVar('account_no')[$i], 
+                        'entry_payment_d_reference_no'=>$this->request->getVar('reference_no')[$i],
+                        'entry_payment_d_gl_account_no'=>$this->request->getVar('gl_account_no')[$i]
+                     ];
+                     $this->entrypaymentdetail->save($detail);
+                     $this->thirpartypaymententry->save(['third_party_payment_entry_id'=>$this->request->getVar('entry_id')[$i],
+                     'cart'=>1]);
+                 } 
+                }  
+            $alert = array(
+                'msg' => 'Success! Payment added to cart.',
+                'type' => 'success',
+                'location' => site_url('/third-party/new-payment')
 
             );
             return view('pages/sweet-alert', $alert);
