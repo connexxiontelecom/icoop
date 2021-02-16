@@ -218,22 +218,22 @@ Loan Setup
                                 <?php foreach($loansetups as $setup) : ?>
                                     <tr>
                                         <td scope="col"><?= $serial++ ?></td>
-                                        <td scope="col"><?= $setup['loan_description'] ?></td>
-                                        <td scope="col"><?= $setup['age_qualification'] ?> month(s)</td>
-                                        <td scope="col">₦<?= number_format($setup['min_credit_limit'],2) ?></td>
-                                        <td scope="col">₦<?= number_format($setup['max_credit_limit'],2) ?></td>
-                                        <td scope="col"><?= $setup['max_repayment_periods'] ?></td>
-                                        <td scope="col"><?= $setup['ls_interest_rate'] ?>%</td>
-                                        <td scope="col"><?php if($setup['interest_method'] == 1){ echo "Flat"; }else if($setup['interest_method'] == 2){ echo "Monthly"; }else{ echo "Yearly"; }?></td>
-                                        <td scope="col"><?= $setup['status'] == 1 ? 'Active' : 'Blocked' ?></td>
-                                        <td scope="col"><?= $setup['payable'] == 1 ? 'Cash' : 'Vendor' ?></td>
-                                        <td scope="col"><?= $setup['loan_gl_account_no'] ?></td>
-                                        <td scope="col"><?= $setup['loan_unearned_int_gl_account_no'] ?></td>
-                                        <td scope="col"><?= $setup['loan_int_income_gl_account_no'] ?></td>
-                                        <td scope="col"><?= $setup['loan_terms'] ?></td>
+                                        <td scope="col"><?= $setup->loan_description ?></td>
+                                        <td scope="col"><?= $setup->age_qualification ?> month(s)</td>
+                                        <td scope="col">₦<?= number_format($setup->min_credit_limit,2) ?></td>
+                                        <td scope="col">₦<?= number_format($setup->max_credit_limit,2) ?></td>
+                                        <td scope="col"><?= $setup->max_repayment_periods ?></td>
+                                        <td scope="col"><?= $setup->ls_interest_rate ?>%</td>
+                                        <td scope="col"><?php if($setup->interest_method == 1){ echo "Flat"; }else if($setup->interest_method == 2){ echo "Monthly"; }else{ echo "Yearly"; }?></td>
+                                        <td scope="col"><?= $setup->status == 1 ? 'Active' : 'Blocked' ?></td>
+                                        <td scope="col"><?= $setup->payable == 1 ? 'Cash' : 'Vendor' ?></td>
+                                        <td scope="col"><?= $setup->loan_gl_account_no ?> - <?= $setup->account_name ?? '' ?></td>
+                                        <td scope="col"><?= $setup->loan_unearned_int_gl_account_no ?> - <?= $setup->account_name ?? '' ?></td>
+                                        <td scope="col"><?= $setup->loan_int_income_gl_account_no ?> - <?= $setup->account_name ?? '' ?></td>
+                                        <td scope="col"><?= $setup->loan_terms ?></td>
                                         <td>
-                                            <a href="javascript:void(0);" data-toggle="modal" data-target="#loanSetup<?= $setup['loan_setup_id'] ?>" class="btn btn-sm btn-warning text-white">Edit</a>
-                                            <div class="modal fade" id="loanSetup<?= $setup['loan_setup_id'] ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                            <a href="javascript:void(0);" data-toggle="modal" data-target="#loanSetup<?= $setup->loan_setup_id ?>" class="btn btn-sm btn-primary text-white"><i class="fa fa-pencil-square-o"></i></a>
+                                            <div class="modal fade" id="loanSetup<?= $setup->loan_setup_id ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
@@ -249,14 +249,14 @@ Loan Setup
                                                                     <div class="col-md-6 col-lg-6 col-sm-6">
                                                                         <div class="form-group">
                                                                             <label for="">Loan Description</label>
-                                                                            <input required type="text" name="loan_description" value="<?= $setup['loan_description'] ?? '' ?>" placeholder="Loan Description"  class="form-control">
+                                                                            <input required type="text" name="loan_description" value="<?= $setup->loan_description ?? '' ?>" placeholder="Loan Description"  class="form-control">
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-6 col-lg-6 col-sm-6">
                                                                         <div class="form-group">
                                                                             <label for="">Qualification Age</label>
                                                                         <div class="input-group mb-3">
-                                                                            <input required type="number" class="form-control" value="<?= $setup['age_qualification'] ?? '' ?>" placeholder="Qualification Age" name="qualification_age"  >
+                                                                            <input required type="number" class="form-control" value="<?= $setup->age_qualification ?? '' ?>" placeholder="Qualification Age" name="qualification_age"  >
                                                                             <div class="input-group-append">
                                                                                 <span class="input-group-text">months</span>
                                                                             </div>
@@ -268,7 +268,7 @@ Loan Setup
                                                                     <div class="col-md-6 col-lg-6 col-sm-6">
                                                                         <div class="form-group">
                                                                         <div class="fancy-checkbox">
-                                                                            <label><input type="checkbox" name="psr" <?= $setup['psr'] == 1 ? 'checked' : '' ?> value="<?= $setup['psr'] ?? '' ?>" id="psr"><span>PSR?</span></label>
+                                                                            <label><input type="checkbox" name="psr" <?= $setup->psr == 1 ? 'checked' : '' ?> value="<?= $setup->psr ?? '' ?>" id="edit_psr"><span>PSR?</span></label>
                                                                         </div>
                                                                         </div>
                                                                     </div>
@@ -276,7 +276,7 @@ Loan Setup
                                                                         <div class="form-group">
                                                                             <label for="">PSR Value</label>
                                                                             <div class="input-group mb-3">
-                                                                                <input type="number" step="0.01" <?= $setup['psr'] != 1 ? 'disabled' : '' ?> value="<?= $setup['psr_value'] ?? '' ?>" class="form-control" placeholder="PSR Value" id="psr_value" name="psr_value" >
+                                                                                <input type="number" step="0.01" <?= $setup->psr != 1 ? 'disabled' : '' ?> value="<?= $setup->psr_value ?? '' ?>" class="form-control" placeholder="PSR Value" id="edit_psr_value" name="psr_value" >
                                                                                 <div class="input-group-append">
                                                                                     <span class="input-group-text">(%)</span>
                                                                                 </div>
@@ -288,13 +288,13 @@ Loan Setup
                                                                     <div class="col-md-6 col-lg-6 col-sm-6">
                                                                         <div class="form-group">
                                                                             <label for="">Min. Credit Limit</label>
-                                                                            <input type="number" required step="0.01" value="<?= $setup['min_credit_limit'] ?? '' ?>" name="min_credit_limit" placeholder="Min. Credit Limit"  class="form-control">
+                                                                            <input type="number" required step="0.01" value="<?= $setup->min_credit_limit ?? '' ?>" name="min_credit_limit" placeholder="Min. Credit Limit"  class="form-control">
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-6 col-lg-6 col-sm-6">
                                                                         <div class="form-group">
                                                                             <label for="">Max. Credit Limit</label>
-                                                                            <input type="number" value="<?= $setup['max_credit_limit'] ?? '' ?>" required step="0.01" name="max_credit_limit" placeholder="Max. Credit Limit"  class="form-control">
+                                                                            <input type="number" value="<?= $setup->max_credit_limit ?? '' ?>" required step="0.01" name="max_credit_limit" placeholder="Max. Credit Limit"  class="form-control">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -302,14 +302,14 @@ Loan Setup
                                                                     <div class="col-md-6 col-lg-6 col-sm-6">
                                                                         <div class="form-group">
                                                                             <label for="">Max. Repayment Periods</label>
-                                                                            <input type="number" required value="<?= $setup['max_repayment_periods'] ?? '' ?>"  name="max_repayment_periods" placeholder="Max. Repayment Periods"  class="form-control">
+                                                                            <input type="number" required value="<?= $setup->max_repayment_periods ?? '' ?>"  name="max_repayment_periods" placeholder="Max. Repayment Periods"  class="form-control">
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-6 col-lg-6 col-sm-6">
                                                                         <div class="form-group">
                                                                             <label for="">Interest Rate</label>
                                                                             <div class="input-group mb-3">
-                                                                                <input type="number" required step="0.01" value="<?= $setup['ls_interest_rate'] ?? '' ?>" class="form-control" placeholder="Interest Rate" name="interest_rate" >
+                                                                                <input type="number" required step="0.01" value="<?= $setup->ls_interest_rate ?? '' ?>" class="form-control" placeholder="Interest Rate" name="interest_rate" >
                                                                                 <div class="input-group-append">
                                                                                     <span class="input-group-text">(%)</span>
                                                                                 </div>
@@ -331,12 +331,12 @@ Loan Setup
                                                                     </div>
                                                                     <div class="col-md-6 col-lg-6 col-sm-6">
                                                                         <div class="fancy-checkbox">
-                                                                            <label><input type="checkbox" <?= $setup['commitment'] == 1 ? 'checked' : ''  ?>  name="commitment" id="commitment"><span>Commitment?</span></label>
+                                                                            <label><input type="checkbox" <?= $setup->commitment == 1 ? 'checked' : ''  ?>  name="commitment" id="commitment"><span>Commitment?</span></label>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="">Commitment Value</label>
                                                                             <div class="input-group mb-3">
-                                                                                <input type="number" <?= $setup['commitment'] != 1 ? 'disabled' : ''  ?> value="<?= $setup['commitment_value'] ?? '' ?>"  step="0.01"  class="form-control" placeholder="Commitment Value" name="commitment_value" id="commitment_value">
+                                                                                <input type="number" <?= $setup->commitment != 1 ? 'disabled' : ''  ?> value="<?= $setup->commitment_value ?? '' ?>"  step="0.01"  class="form-control" placeholder="Commitment Value" name="commitment_value" id="commitment_value">
                                                                                 <div class="input-group-append">
                                                                                     <span class="input-group-text">(%)</span>
                                                                                 </div>
@@ -373,7 +373,7 @@ Loan Setup
                                                                             <select required name="loan_gl_account_number" id="loan_gl_account_number" class="form-control js-example-basic-single" >
                                                                                 <option disabled selected>Select Loan GL Account No.</option>
                                                                                 <?php foreach($accounts as $account) : ?>
-                                                                                    <option <?= $setup['loan_gl_account_no'] == $account['glcode'] ? 'selected' : ''  ?> value="<?= $account['glcode'] ?>"><?= $account['account_name'] ?> - (<?= $account['glcode'] ?>)</option>
+                                                                                    <option <?= $setup->loan_gl_account_no == $account['glcode'] ? 'selected' : ''  ?> value="<?= $account['glcode'] ?>"><?= $account['account_name'] ?> - (<?= $account['glcode'] ?>)</option>
                                                                                 <?php endforeach; ?>
                                                                             </select>
                                                                         </div>
@@ -384,7 +384,7 @@ Loan Setup
                                                                             <select required name="loan_unearned_int_gl_account_no" id="loan_unearned_int_gl_account_no" class="form-control js-example-basic-single" >
                                                                                 <option disabled selected>Select Loan Unearned Int. GL Account No</option>
                                                                                 <?php foreach($accounts as $account) : ?>
-                                                                                    <option <?= $setup['loan_unearned_int_gl_account_no'] == $account['glcode'] ? 'selected' : ''  ?> value="<?= $account['glcode'] ?>"><?= $account['account_name'] ?> - (<?= $account['glcode'] ?>)</option>
+                                                                                    <option <?= $setup->loan_unearned_int_gl_account_no == $account['glcode'] ? 'selected' : ''  ?> value="<?= $account['glcode'] ?>"><?= $account['account_name'] ?> - (<?= $account['glcode'] ?>)</option>
                                                                                 <?php endforeach; ?>
                                                                             </select>
                                                                         </div>
@@ -397,7 +397,7 @@ Loan Setup
                                                                             <select required name="loan_int_income_gl_account_no" id="loan_int_income_gl_account_no" class="form-control js-example-basic-single">
                                                                                 <option disabled selected>Select Loan Int. Income GL Account No.</option>
                                                                                 <?php foreach($accounts as $account) : ?>
-                                                                                    <option <?= $setup['loan_int_income_gl_account_no'] == $account['glcode'] ? 'selected' : ''  ?> value="<?= $account['glcode'] ?>"><?= $account['account_name'] ?> - (<?= $account['glcode'] ?>)</option>
+                                                                                    <option <?= $setup->loan_int_income_gl_account_no == $account['glcode'] ? 'selected' : ''  ?> value="<?= $account['glcode'] ?>"><?= $account['account_name'] ?> - (<?= $account['glcode'] ?>)</option>
                                                                                 <?php endforeach; ?>
                                                                             </select>
                                                                         </div>
@@ -405,8 +405,8 @@ Loan Setup
                                                                     <div class="col-md-6 col-lg-6 col-sm-6">
                                                                         <div class="form-group">
                                                                             <label for="">Loan Terms</label>
-                                                                            <input type="hidden" value="<?= $setup['loan_setup_id'] ?>" name="loan_id">
-                                                                            <textarea name="loan_terms" id="loan_terms" class="form-control" style="resize:none;" placeholder="Loan Terms"><?= $setup['loan_terms'] ?? '' ?></textarea>
+                                                                            <input type="hidden" value="<?= $setup->loan_setup_id ?>" name="loan_id">
+                                                                            <textarea name="loan_terms" id="loan_terms" class="form-control" style="resize:none;" placeholder="Loan Terms"><?= $setup->loan_terms ?? '' ?></textarea>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -446,6 +446,14 @@ Loan Setup
                     $('#psr_value').prop('required',true);
                 }else {
                     $('#psr_value').prop("disabled", true);
+                }
+            });
+            $("#edit_psr").on('change', function() {
+                if ($("#edit_psr").is(':checked')){
+                    $('#edit_psr_value').prop("disabled", false);
+                    $('#edit_psr_value').prop('required',true);
+                }else {
+                    $('#edit_psr_value').prop("disabled", true);
                 }
             });
             $("#commitment").on('change', function() {

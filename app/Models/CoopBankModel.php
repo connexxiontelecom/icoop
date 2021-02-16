@@ -4,11 +4,13 @@ use CodeIgniter\Model;
 
 class CoopBankModel extends Model{
     protected $table = 'coop_banks';
+    protected $primaryKey = 'coop_bank_id';
     protected $allowedFields = ['bank_id','branch', 'account_no', 'description', 'glcode', 'created_at'];
 
     public function getCoopBanks(){
         $builder = $this->db->table('coop_banks');
         $builder->join('banks', 'coop_banks.bank_id = banks.bank_id');
+        $builder->join('coas', 'coas.glcode = coop_banks.glcode');
         return $builder->get()->getResultObject();
     }
 }

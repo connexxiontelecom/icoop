@@ -10,6 +10,7 @@ use \App\Models\ScheduleMasterModel;
 use \App\Models\ScheduleMasterDetailModel;
 use \App\Models\PaymentDetailsModel;
 use \App\Models\PaymentCartModel;
+use \App\Models\ContributionTypeModel;
 
 class LoanController extends BaseController
 {
@@ -27,6 +28,7 @@ class LoanController extends BaseController
         $this->user = new UserModel();
         $this->paymentdetail = new PaymentDetailsModel();
         $this->paymentcart = new PaymentCartModel();
+        $this->ct = new ContributionTypeModel();
         $this->session = session();
     }
 
@@ -39,6 +41,7 @@ class LoanController extends BaseController
         $username = $this->session->user_username;
         $this->authenticate_user($username, 'pages/loan/new', $data);
     }
+    
     
    /*  public function getCooperator($id){
         $cooperator = $this->coop->where('cooperator_staff_id', $id)->first();
@@ -58,6 +61,22 @@ class LoanController extends BaseController
         echo json_encode($data);
         
     }
+    public function searchCooperator()
+    {
+        $value = $_GET['term'];
+        if(empty($value)){
+            redirect('home/error_404');
+        }
+        else {
+            $cooperators = $this->coop->search_cooperators($value);
+            foreach ($cooperators as $cooperator) {
+                $data[] = $cooperator->cooperator_staff_id . ', ' . $cooperator->cooperator_first_name . ' ' . $cooperator->cooperator_last_name;
+
+            }
+            echo json_encode($data);
+            die;
+        }
+    }
     public function getGuarantor($id){
         $cooperator = $this->coop->where('cooperator_staff_id', $id)->first();
         $data = [
@@ -72,6 +91,7 @@ class LoanController extends BaseController
 
 	public function storeLoanApplication()
 	{
+        
              
         helper(['form', 'date']);
         $data = [];
@@ -124,22 +144,72 @@ class LoanController extends BaseController
             if($this->validate($rules)){
 					$data = [
 						'staff_id'=>current(explode(",", $this->request->getVar('staff_id'))),
-                        'guarantor'=>$this->request->getVar('guarantor_1'),
+                        'guarantor'=>current(explode(",", $this->request->getVar('guarantor_1'))),
                         'name'=>substr($this->request->getVar('staff_id'), strlen(current(explode(" ", $this->request->getVar('staff_id'))))),
-						'guarantor_2'=>$this->request->getVar('guarantor_2'),
-						'loan_type'=>$this->request->getVar('loan_type'),
+						'guarantor_2'=>current(explode(",", $this->request->getVar('guarantor_2'))),
+						'loan_type'=>$this->request->getVar('loan_type'), 
 						'duration'=>$this->request->getVar('duration'),
                         'amount'=>str_replace(",","",$this->request->getVar('amount')),
                         'applied_date'=>date('Y-m-d H:i:s'),
-					];
-                    $this->loanapp->save($data);
-                    $alert = array(
-                        'msg' => 'Success! Loan application done.',
-                        'type' => 'success',
-                        'location' => site_url('/loan/verify')
+                    ];
+                    // check loan type details with $loan_type
+                    $loan_setups = $this->loansetup->where(['loan_setup_id'=> $this->request->getVar('loan_type')])->first();
+                    if($loan_setups['psr'] == 1){
+                        $psr = $loan_setups['psr_value'];
+                        $staff_id = $this->request->getVar('staff_id');
+                        $ct = $this->ct->where(['contribution_type_regular' => 1])->first();
+                       $ct_id = $ct['contribution_type_id'];
+                        $ledgers =  $this->paymentdetail->where(['pd_staff_id' => $staff_id, 'pd_ct_id' => $ct_id])                 
+                        ->findAll();
 
-                    );
-                    return view('pages/sweet-alert', $alert);
+                        $bf = 0;
+                        if(!empty($ledgers)){
+                        foreach ($ledgers as $ledger):
+                                if($ledger['pd_drcrtype'] == 2):
+                                    $dr = $ledger['pd_amount'];
+                                    $cr = 0;
+
+                                endif;
+                                    if($ledger['pd_drcrtype'] == 1):
+                                        $cr = $ledger['pd_amount'];
+                                            $dr = 0;
+                                            endif;
+
+                                $bf = ($bf + $cr) - $dr;
+                        endforeach;
+
+                        }else{
+
+                            $bf = 0;
+                        }
+                        $psr_amount = ($psr/100)*(float)str_replace(",","",$this->request->getVar('amount'));
+
+                        if($psr_amount >= $bf){
+                            //loan verification can go through
+                            $this->loanapp->save($data);
+                            $alert = array(
+                                'msg' => 'Success! Loan application done.',
+                                'type' => 'success',
+                                'location' => site_url('/loan/new')
+                    
+                            );
+                            return view('pages/sweet-alert', $alert);
+                        }       
+
+                    }else{
+                        $this->loanapp->save($data);
+                            $alert = array(
+                                'msg' => 'Success! Loan application done.',
+                                'type' => 'success',
+                                'location' => site_url('/loan/new')
+                    
+                            );
+                            return view('pages/sweet-alert', $alert);
+                    }
+
+
+
+
 				
             }else{
                 return $this->response->redirect(site_url('/loan/new'));
@@ -258,8 +328,9 @@ class LoanController extends BaseController
             'application'=>$app,
             'guarantor'=>$this->loanapp->getGuarantorOne($id),
             'guarantor2'=>$this->loanapp->getGuarantorTwo($id),
-            'setup'=>$this->loansetup->where('loan_setup_id', $app->loan_type)->first()
+            'setup'=>$this->loansetup->where('interest_method', $app->loan_type)->first()
         ];
+        //return dd($data);
         $username = $this->session->user_username;
         $this->authenticate_user($username, 'pages/loan/view-loan-application', $data);
     }

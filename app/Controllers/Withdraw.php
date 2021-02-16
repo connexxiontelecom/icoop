@@ -278,7 +278,6 @@ class Withdraw extends BaseController
 
     public function compute_balance(){
         $policy_configs = $this->policy->first();
-
         $staff_id = $_POST['staff_id'];
         $ct_id = $_POST['ct_id'];
 

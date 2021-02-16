@@ -109,7 +109,7 @@ Payment Schedule (Member)
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>
-									<?php foreach($withdraw_cart as $wcar) : ?>
+									        <?php foreach($withdraw_cart as $wcar) : ?>
                                                 <tr>
                                                     <td>
                                                         <?= $i++ ?>
