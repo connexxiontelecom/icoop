@@ -53,10 +53,33 @@ Upload Routine
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6 col-sm-12">
-
-                    </div>
+                    
                 </div>
+	
+				<div class="row clearfix">
+		
+					<div class="col-lg-3 col-md-6 col-sm-12">
+						<div class="card w_card3">
+							<div class="body">
+								<div class="text-center"><i class="icon-ban"></i>
+									<h5 class="m-t-20 mb-0">Contribution Upload Exceptions</h5> <br>
+									<a href="<?php echo base_url('contribution_upload'); ?>" class="btn btn-primary">Go >></a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-6 col-sm-12">
+						<div class="card w_card3">
+							<div class="body">
+								<div class="text-center"><i class="icon-ban"></i>
+									<h5 class="m-t-20 mb-0">Loan Repayment Upload Exceptions</h5> <br>
+									<a href="<?php echo base_url('lr_upload'); ?>" class="btn btn-primary">Go >></a>
+								</div>
+							</div>
+						</div>
+					</div>
+	
+				</div>
                
 
             </div>
@@ -64,43 +87,7 @@ Upload Routine
     </div>
 
 
-    <div class="col-sm-3">
-        <div class="modal fade bd-example-modal-sm" id="newModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-sm">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title h4" id="myLargeModalLabel">New Contribution Type</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form method="post" action="">
-                            <div class="form-group">
-                                <label>Contribution type:</label>
-                                <input class="form-control" name="contribution_type_name" required>
-                            </div>
-
-                            <input type="hidden" name="type" value="1">
-
-                            <?= csrf_field() ?>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-info btn-block">Submit</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-
-
-
-
-
-
-    </div>
+   
 
 </div>
 

@@ -84,7 +84,14 @@ Payroll Groups
 
                             <div class="form-group">
                                 <label>GL Code:</label>
-                                <input class="form-control" name="pg_gl_code" required>
+								<select class="custom-select" required name="pg_gl_code">
+									<option selected disabled> -- select gl code -- </option>
+		
+		                            <?php foreach ($coas as $coa): ?>
+										<option value="<?=$coa['glcode'] ?>"> <?=$coa['glcode']." (".$coa['account_name'].")"; ?></option>
+		                            <?php endforeach; ?>
+								</select>
+                            
                             </div>
 
                             <input type="hidden" name="type" value="1">
@@ -119,7 +126,12 @@ Payroll Groups
 
                                 <div class="form-group">
                                     <label>GL Code:</label>
-                                    <input class="form-control" value="<?=$pg['pg_gl_code']; ?>" name="pg_gl_code" required>
+									<select class="custom-select" required name="pg_gl_code">
+		
+		                                <?php foreach ($coas as $coa): ?>
+											<option value="<?=$coa['glcode'] ?>" <?php if($pg['pg_gl_code'] == $coa['glcode']){ echo "selected"; } ?>> <?=$coa['glcode']." (".$coa['account_name'].")"; ?></option>
+		                                <?php endforeach; ?>
+									</select>
                                 </div>
 
                                 <input type="hidden" name="type" value="2">

@@ -85,6 +85,7 @@ $routes->post('interest_routine', 'Routine::interest_routine');
 $routes->get('lr_upload', 'Routine::lr_upload');
 $routes->post('lr_upload', 'Routine::process_lr_upload');
 $routes->post('p_lr_upload', 'Routine::p_lr_upload');
+$routes->get('cancel_lr', 'Routine::cancel_lr_upload');
 
 
 #chart of accounts
