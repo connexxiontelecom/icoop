@@ -573,7 +573,7 @@ class PaymentController extends BaseController
             $amount = 0;
             $masterId = null;
                 $masterdata = [
-                    'entry_payment_bank_id'=>$this->request->getVar('bank'), 
+                    'entry_payment_bank_id'=>$this->request->getVar('coop_bank'), 
                     'entry_payment_payable_date'=>$this->request->getVar('payable_date'), 
                     'entry_payment_cheque_no'=>$this->request->getVar('cheque_no'),
                     'entry_payment_amount'=>$amount, 

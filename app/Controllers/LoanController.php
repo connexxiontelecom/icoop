@@ -152,6 +152,7 @@ class LoanController extends BaseController
                         'amount'=>str_replace(",","",$this->request->getVar('amount')),
                         'applied_date'=>date('Y-m-d H:i:s'),
                     ];
+                     $file = $this->request->getFile('attachment');
                     // check loan type details with $loan_type
                     $loan_setups = $this->loansetup->where(['loan_setup_id'=> $this->request->getVar('loan_type')])->first();
                     if($loan_setups['psr'] == 1){

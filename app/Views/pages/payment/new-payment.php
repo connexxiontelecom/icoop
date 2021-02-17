@@ -52,11 +52,11 @@ New Payment
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="">Bank</label>
-                                    <select required name="bank" id="bank" class="form-control ">
+                                    <label for="">Coop Bank</label>
+                                    <select required name="coop_bank" id="coop_bank" class="form-control ">
                                         <option selected disabled>--Select bank--</option>
                                         <?php foreach($coopbank as $bank) : ?>
-                                            <option value="<?= $bank->bank_id ?>"><?= $bank->bank_name ?? '' ?> - (<?= $bank->account_no ?? '' ?>)</option>
+                                            <option value="<?= $bank->coop_bank_id ?>"><?= $bank->bank_name ?? '' ?> - (<?= $bank->account_no ?? '' ?>)</option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
@@ -65,8 +65,8 @@ New Payment
                     <div class="row">
                         <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="">Cheque No.</label>
-                                    <input type="text" required name="cheque_no" id="cheque_no" placeholder="Cheque No." class=" form-control">
+                                    <label for="">Reference No.</label>
+                                    <input type="text" required name="cheque_no" id="cheque_no" placeholder="Reference No." class=" form-control">
                                 </div>
                             </div>
                     </div>

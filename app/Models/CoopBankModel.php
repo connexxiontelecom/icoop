@@ -11,6 +11,7 @@ class CoopBankModel extends Model{
         $builder = $this->db->table('coop_banks');
         $builder->join('banks', 'coop_banks.bank_id = banks.bank_id');
         $builder->join('coas', 'coas.glcode = coop_banks.glcode');
+        $builder->groupby('coop_banks.coop_bank_id');
         return $builder->get()->getResultObject();
     }
 }
