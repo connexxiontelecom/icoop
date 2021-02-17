@@ -185,22 +185,25 @@
                                     <ul>
                                         <li><a href="<?=base_url('contribution_type') ?>">Contribution Type</a></li>
                                         <li><a href="<?=base_url('payroll_group') ?>">Payroll Group</a></li>
-
+										<li class="header">Routines</li>
+										<li><a href="<?=base_url('upload_routine') ?>">Upload Routine</a></li>
+										<li><a href="<?=base_url('interest_routine') ?>">Interest Routine</a></li>
                                     </ul>
 
                                <ul>
 
 <!--                                   <li class="header">Routine</li>-->
 
-                                   <li>
-                                    <a href="#" class="has-arrow"><span>Routines</span></a>
-                                    <ul>
-                                        <li><a href="<?=base_url('upload_routine') ?>">Upload Routine</a></li>
-										<li><a href="<?=base_url('interest_routine') ?>">Interest Routine</a></li>
-
-                                    </ul>
-
-                                </li>
+<!--                                   <li>-->
+<!--								 -->
+<!--                                    <a href="#" class=" header has-arrow"><span>Routines</span></a>-->
+<!--                                    <ul>-->
+<!--										<li><span><a href="--><?//=base_url('upload_routine') ?><!--">Upload Routine</a></span></li>-->
+<!--										<li><span><a href="--><?//=base_url('interest_routine') ?><!--">Interest Routine</a></span></li>-->
+<!---->
+<!--                                    </ul>-->
+<!---->
+<!--                                </li>-->
                                </ul>
 
                                 </li>
@@ -251,32 +254,32 @@
                                     <a href="javascript:void(0);" class="has-arrow"><i class="fa fa-money"></i><span>Payments</span></a>
                                     
                                     <ul>
-                                        <li>
-                                            <a href="#" class="has-arrow"><span>Member Payments</span></a>
-                                            <ul>
-                                                <li><a href="<?=site_url('/loan/new-payment-schedule') ?>" class="text-white">Payment Schedule</a></li>
-                                                <li><a href="<?=base_url('/loan/payment-schedules') ?>">Verify</a></li>
-                                                <li><a href="<?=base_url('/loan/verified-payment-schedules') ?>">Approve</a></li>
-
-                                            </ul>
-
-                                        </li>
+										<li class="header">Member Payments</li>
+										<li><a href="<?=site_url('/loan/new-payment-schedule') ?>">Payment Schedule</a></li>
+										<li><a href="<?=base_url('/loan/payment-schedules') ?>">Verify</a></li>
+										<li><a href="<?=base_url('/loan/verified-payment-schedules') ?>">Approve</a></li>
+										<li class="header">3rd Party Payments</li>
+										<li><a href="<?=site_url('/third-party/payment/entry') ?>">Entry</a></li>
+										<li><a href="<?=base_url('/third-party/new-payment') ?>">New Payment</a></li>
+										<li><a href="<?=base_url('upload_routine') ?>">Verify</a></li>
+										<li><a href="<?=base_url('upload_routine') ?>">Approve</a></li>
                                     </ul>
-                                    <ul>
-                                        <li>
-                                            <a href="#" class="has-arrow"><span>3rd Party Payments</span></a>
-                                            <ul>
-                                                <li><a href="<?=site_url('/third-party/payment/entry') ?>">Entry</a></li>
-                                                <li><a href="<?=base_url('/third-party/new-payment') ?>">New Payment</a></li>
-                                                <li><a href="<?=base_url('upload_routine') ?>">Verify</a></li>
-                                                <li><a href="<?=base_url('upload_routine') ?>">Approve</a></li>
-
-                                            </ul>
-
-                                        </li>
-                                    </ul>
+                                    
                                 </li>
-                                <li><a href="#"><i class="fa fa-arrow-down"></i><span>Receivables</span></a></li>
+                                <li><a href="#" class="has-arrow"><i class="fa fa-arrow-down"></i><span>Receipts</span></a>
+									<ul>
+										<li class="header">Member</li>
+										<li><a href="<?=base_url('new_receipt') ?>">New</a></li>
+										<li><a href="<?=base_url('payroll_group') ?>">Verify</a></li>
+										<li><a href="<?=base_url('payroll_group') ?>">Approve</a></li>
+										<li class="header">Third Party</li>
+										<li><a href="<?=base_url('upload_routine') ?>">Upload Routine</a></li>
+										<li><a href="<?=base_url('interest_routine') ?>">Interest Routine</a></li>
+									</ul>
+								
+								
+								</li>
+								
                                 <li>
 
 
