@@ -61,7 +61,7 @@ New Receipt
 								
 								<div class="form-group">
 									
-									<label  for="application_payroll_group_id"> <b> Payment Method: </b></label>
+									<label> <b> Payment Method: </b></label>
 									
 									<select class="custom-select"  required name="withdraw_ct_id">
 										<option disabled selected> -- Select payment method --</option>
@@ -71,7 +71,7 @@ New Receipt
 								
 								<div class="form-group">
 									
-									<label  for="application_payroll_group_id"> <b> Coop Banks: </b></label>
+									<label> <b> Coop Banks: </b></label>
 									
 									<select class="custom-select" id="ct_id" required name="withdraw_ct_id">
 										<option disabled selected> -- Select bank --</option>
@@ -81,11 +81,12 @@ New Receipt
 									</select>
 						
 								</div>
-								
-								<div id="payments">
+								<?= csrf_field() ?>
+<div id="payments">
 									<br>
 									<b><hr></b>
-									<div id="payment_details">
+									
+				<div id="payment_details1">
 						
 						
 					
@@ -96,36 +97,50 @@ New Receipt
 								
 								<div class="form-group">
 									
-									<label  for="application_payroll_group_id"> <b> Amount: </b></label>
-									<input type="text" class="number form-control"  required  name="withdraw_amount" id="withdraw_amount"  placeholder="Enter Amount">
+									<label> <b> Amount: </b></label>
+									<input type="text" class="number form-control"  required  name="payment_amount[]" id="payment_amount1"  placeholder="Enter Amount">
 								
 								
 								</div>
 								<div class="form-group">
 									
-									<label  for="application_payroll_group_id"> <b> Payment Type: </b></label>
+									<label> <b> Payment Type: </b></label>
 									
-									<select class="custom-select" id="ct_id" required name="withdraw_ct_id">
+									<select class="custom-select" id="payment_type1"  name="payment_type[]" required >
 										<option> -- Payment Type --</option>
 										<option value="1"> Loan </option>
 										<option value="2"> Savings </option>
 									</select>
 								</div>
+					
+					
+					<div class="form-group">
 						
-							
-								
-								<?= csrf_field() ?>
+						<label> <b> Target: </b></label>
 						
+						<select class="custom-select" id="temp_id1" name="temp_id[]"  required>
 						
+						</select>
+					</div>
+				
+				
+				
+				
+				
+				
+				
+				
+				</div>
+					
+					
+					
+					<div class="form-group" id="clone_button" style="float: right">
+					
+						<button type="button" onclick="clone_div(this)"   class="btn btn-success"><i class="fa fa-plus-square"> </i></button>
+								
 						
-						</div>
-										<div class="form-group" id="clone_button" style="float: right">
-									<button type="button" onclick="clone_div(this)"   class="btn btn-success"><i class="fa fa-plus-square"> </i></button>
-								
-								
-								</div>
-								
-								</div>
+					</div>
+</div>
 								
 								<div class="form-group">
 									<button type="submit"  class="btn btn-info btn-block">Submit</button>
@@ -171,7 +186,10 @@ New Receipt
 <script src="assets/vendor/jquery-datatable/buttons/buttons.print.min.js"></script>
 <script>
 
+    let clones_id = [1];
     $(document).ready(function() {
+
+        
         $('#balance_warning').hide();
         $('#withdraw_submit').hide();
         $('#withdraw_warning').hide();
@@ -221,50 +239,121 @@ New Receipt
 
 
     function clone_div() {
-        let elem = document.getElementById('payment_details');
-        if (elem.style.display == 'none') {
+        let elem = document.getElementById('payment_details1');
+        if (elem.style.display === 'none') {
             elem.style.display = 'block';
         } else {
             // Create a copy of it
             let clone = elem.cloneNode(true);
             // Update the ID and add a class
-            clone.id = 'payment_details1';
+			let count_clones = clones_id.length;
+			let count_cloness = count_clones + 1;
+
+            let n = clones_id.includes(count_cloness);
+            
+            while(n === true){
+              count_cloness = count_cloness + 1;
+                 n = clones_id.includes(count_cloness);
+			}
+			
+			clone.id = 'payment_details'+count_cloness;
             // document.getElementById('work_experiences').appendChild(clone);
             let payments = document.getElementById('payments');
 
             let clone_button = document.getElementById('clone_button');
             //clone.insertBefore(work_experience_button);
-            payments.insertBefore(clone,clone_button)
-            // Inject it into the DOM
-            elem.after(clone);
+            payments.insertBefore(clone, clone_button)
+            clones_id.push(count_cloness)
+			
+            let new_elem = document.getElementById('payment_details'+count_clones);
+			// Inject it into the DOM
+           
+
+            // inputs = elem.getElementsByTagName('textarea');
+            // for (index = 0; index < inputs.length; ++index) {
+            //     // if(inputs[index].type == 'textarea')
+            //     inputs[index].value = '';
+            // }
+            // var textarea = elem.getElementsByTagName('textarea');
+            // textarea.value = '';
+			
+           // console.log(new_elems);
+            elem.after(new_elem);
+            
+            
+            //document.getElementById('temp_id').id = "target"+count_cloness ;
+            //document.getElementById('payment_type1').id = "payment_type"+count_cloness ;
+            //console.log(clones_id);
+
+           
+            
+            let new_id = 'payment_details'+count_cloness;
+
+            let inputs = $("#" + new_id).find("select, input");
+            let index;
+            for (index = 0; index < inputs.length; ++index) {
+                if (inputs[index].name === 'temp_id[]') {
+                   // console.log('i changed target');
+                    inputs[index].id = "target" + count_cloness;
+                    inputs[index].value = '';
+                }
+
+            }
+
+            for (index = 0; index < inputs.length; ++index) {
+                if (inputs[index].name === 'payment_type[]') {
+                    //console.log('i changed payment type');
+                    inputs[index].value = '';
+                }
+            }
+
+            for (index = 0; index < inputs.length; ++index) {
+                if (inputs[index].name === 'payment_amount[]') {
+                    inputs[index].id = "payment_amount" + count_cloness;
+                    inputs[index].value = '';
+                }
+            }
+            
+          
+            
         }
     }
 
     function delete_div(e) {
         let id = e.parentElement.id;
-        if (id == 'payment_details1') {
-            let elem = document.getElementById('payment_details1');
-            let inputs = elem.getElementsByTagName('input');
-            let index;
-            for (index = 0; index < inputs.length; ++index) {
-                if (inputs[index].type == 'text')
-                    inputs[index].value = '';
-            }
-            inputs = elem.getElementsByTagName('input');
-            for (index = 0; index < inputs.length; ++index) {
-                if (inputs[index].type == 'date')
-                    inputs[index].value = '';
-            }
-
-            inputs = elem.getElementsByTagName('textarea');
-            for (index = 0; index < inputs.length; ++index) {
-                // if(inputs[index].type == 'textarea')
-                inputs[index].value = '';
-            }
-            // var textarea = elem.getElementsByTagName('textarea');
-            // textarea.value = '';
-            elem.style.display = 'none';
+        if (id === 'payment_details1') {
+            // let elem = document.getElementById('payment_details1');
+            // let inputs = elem.getElementsByTagName('input');
+            // let index;
+            // for (index = 0; index < inputs.length; ++index) {
+            //     if (inputs[index].type == 'text')
+            //         inputs[index].value = '';
+            // }
+            // inputs = elem.getElementsByTagName('input');
+            // for (index = 0; index < inputs.length; ++index) {
+            //     if (inputs[index].type == 'date')
+            //         inputs[index].value = '';
+            // }
+			//
+            // inputs = elem.getElementsByTagName('textarea');
+            // for (index = 0; index < inputs.length; ++index) {
+            //     // if(inputs[index].type == 'textarea')
+            //     inputs[index].value = '';
+            // }
+            // // var textarea = elem.getElementsByTagName('textarea');
+            // // textarea.value = '';
+            // elem.style.display = 'none';
+			alert('cannot remove');
         } else {
+
+            let id_array = id.replace( /^\D+/g, '');
+            id_array = parseInt(id_array);
+           // alert(id_array)
+            const index = clones_id.indexOf(id_array);
+            if (index > -1) {
+                clones_id.splice(index, 1);
+            }
+			console.log(clones_id);
             e.parentElement.remove();
         }
     }
