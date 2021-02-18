@@ -137,6 +137,8 @@ $routes->get('/view-loan-application/(:num)', 'LoanController::viewLoanApplicati
 $routes->get('/loan/approve', 'LoanController::showApproveApplications');
 $routes->post('/loan/approve', 'LoanController::approveLoanApplication');
 $routes->get('/loan/search-cooperator', 'LoanController::searchCooperator');
+$routes->post('get_al', 'LoanController::get_active_loan');
+
 #Payment routes
 $routes->get('/loan/new-payment-schedule', 'PaymentController::newPaymentSchedule');
 $routes->post('/loan/new-payment-schedule', 'PaymentController::postNewPaymentSchedule');

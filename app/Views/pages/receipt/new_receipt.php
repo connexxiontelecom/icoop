@@ -37,7 +37,7 @@ New Receipt
 								<div class="form-group">
 									
 									<label  for="application_payroll_group_id"> <b> Staff ID or Name: </b></label>
-									<input type="text" class="form-control"  id="search_account"  onblur="get_ct()"   required  name="withdraw_staff_id" placeholder="Enter staff ID or  name">
+									<input type="text" class="form-control"  id="search_account"    required  name="withdraw_staff_id" placeholder="Enter staff ID or  name">
 								
 								
 								
@@ -106,7 +106,7 @@ New Receipt
 									
 									<label> <b> Payment Type: </b></label>
 									
-									<select class="custom-select" id="payment_type1"  name="payment_type[]" required >
+									<select class="custom-select" id="payment_type1" onchange="get_ct(this)"  name="payment_type[]" required >
 										<option> -- Payment Type --</option>
 										<option value="1"> Loan </option>
 										<option value="2"> Savings </option>
@@ -118,7 +118,7 @@ New Receipt
 						
 						<label> <b> Target: </b></label>
 						
-						<select class="custom-select" id="temp_id1" name="temp_id[]"  required>
+						<select class="custom-select" id="target1" name="target[]"  required>
 						
 						</select>
 					</div>
@@ -292,7 +292,7 @@ New Receipt
             let inputs = $("#" + new_id).find("select, input");
             let index;
             for (index = 0; index < inputs.length; ++index) {
-                if (inputs[index].name === 'temp_id[]') {
+                if (inputs[index].name === 'target[]') {
                    // console.log('i changed target');
                     inputs[index].id = "target" + count_cloness;
                     inputs[index].value = '';
@@ -303,6 +303,7 @@ New Receipt
             for (index = 0; index < inputs.length; ++index) {
                 if (inputs[index].name === 'payment_type[]') {
                     //console.log('i changed payment type');
+                    inputs[index].id = "payment_type" + count_cloness;
                     inputs[index].value = '';
                 }
             }
@@ -353,7 +354,7 @@ New Receipt
             if (index > -1) {
                 clones_id.splice(index, 1);
             }
-			console.log(clones_id);
+			//console.log(clones_id);
             e.parentElement.remove();
         }
     }
@@ -386,25 +387,64 @@ New Receipt
 
     }
 
-    function get_ct(){
+    function get_ct(e){
         let t_staff_id =  $("#search_account").val();
+        
         let staff_id = t_staff_id.split(',')[0];
-        $.ajax({
-            url: '<?php echo site_url('get_ct') ?>',
-            type: 'post',
-            data: {
-                'staff_id': staff_id,
-            },
-            dataType: 'json',
-            success:function(response){
-                $("#ct_id").empty();
-                $("#ct_id").append('<option> -- Select Contribution Type --</option>');
-                for (var i=0; i<response.length; i++) {
-                    $("#ct_id").append('<option value="' + response[i].contribution_type_id + '">' + response[i].contribution_type_name + '</option>');
+        
+        let element_id = e.id;
+
+        element_id = element_id.replace( /^\D+/g, '');
+        
+        let payment_type = parseInt(e.value);
+        
+        //console.log(element_id);
+        
+        if(payment_type === 1){ //loan type
+            $.ajax({
+                url: '<?php echo site_url('get_al') ?>',
+                type: 'post',
+                data: {
+                    'staff_id': staff_id,
+                },
+                dataType: 'json',
+                success:function(response){
+                    //console.log(response);
+                    let target_id = "target"+element_id
+                    $("#"+target_id).empty();
+                    $("#"+target_id).append('<option> -- Select Active Loans --</option>');
+                    for (var i=0; i<response.length; i++) {
+                        $("#"+target_id).append('<option value="' + response[i].loan_id + '">' + response[i].loan_description + '</option>');
+                    }
+
                 }
-                // console.log(response);
-            }
-        });
+            });
+        
+		}
+
+        if(payment_type === 2){ //savings type
+            $.ajax({
+                url: '<?php echo site_url('get_ct') ?>',
+                type: 'post',
+                data: {
+                    'staff_id': staff_id,
+                },
+                dataType: 'json',
+                success:function(response){
+                    console.log(response);
+                    let target_id = "target"+element_id
+                    $("#"+target_id).empty();
+                    $("#"+target_id).append('<option> -- Select Contribution Type --</option>');
+                    for (var i=0; i<response.length; i++) {
+                        $("#"+target_id).append('<option value="' + response[i].contribution_type_id + '">' + response[i].contribution_type_name + '</option>');
+                    }
+                   
+                }
+            });
+
+        }
+      
+     
 
     }
     
