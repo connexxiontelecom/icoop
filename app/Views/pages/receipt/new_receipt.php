@@ -251,12 +251,13 @@ New Receipt
 
                         if(payment_amount === master_amount){
                             if(master_amount !== 0){
-                                $("#receipt_form").submit();
-                              }else{
+                  				//using jquery to submit the form here, would cause a recursive error. test at your peril.
+                                document.getElementById("receipt_form").submit();
+                            }else{
                                 alert('Master amount cannot be 0')
                                	}
                            }
-                        if(payment_amount < master_amount){
+                        if((payment_amount < master_amount) && (master_amount !== 0)){
                             alert('Sum of detail amount must equal master amount')
                         }
                         if(payment_amount > master_amount){
