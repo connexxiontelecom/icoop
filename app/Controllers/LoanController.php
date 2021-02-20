@@ -413,6 +413,17 @@ class LoanController extends BaseController
             }
         }
     }
+    
+    public function get_active_loan(){
+	    $staff_id = $_POST['staff_id'];
+	    $ledgers = $this->loan->get_active_loans_staffid($staff_id);
+	    $i = 0;
+	    foreach ($ledgers as $ledger):
+		    $data[$i] = $ledger;
+		    $i++;
+	    endforeach;
+	    echo json_encode($data);
+    }
 
    
 }

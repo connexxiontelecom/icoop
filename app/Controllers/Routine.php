@@ -1024,7 +1024,7 @@ class Routine extends BaseController
 			
 			$total_mi = $total_cr_mi - $total_dr_mi;
 			
-			$interest_unpaid = $total_mi = $total_interest;
+			$interest_unpaid = $total_interest - $total_mi;
 			
 			if($interest_unpaid >= $temp_payment['temp_lr_amount']):
 				

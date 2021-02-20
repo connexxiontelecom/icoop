@@ -137,6 +137,8 @@ $routes->get('/view-loan-application/(:num)', 'LoanController::viewLoanApplicati
 $routes->get('/loan/approve', 'LoanController::showApproveApplications');
 $routes->post('/loan/approve', 'LoanController::approveLoanApplication');
 $routes->get('/loan/search-cooperator', 'LoanController::searchCooperator');
+$routes->post('get_al', 'LoanController::get_active_loan');
+
 #Payment routes
 $routes->get('/loan/new-payment-schedule', 'PaymentController::newPaymentSchedule');
 $routes->post('/loan/new-payment-schedule', 'PaymentController::postNewPaymentSchedule');
@@ -179,6 +181,15 @@ $routes->post('verify_withdrawal', 'Withdraw::verify_withdrawal');
 $routes->get('verify_withdrawal', 'Withdraw::verify_withdrawal');
 $routes->post('approve_withdrawal', 'Withdraw::approve_withdrawal');
 $routes->get('approve_withdrawal', 'Withdraw::approve_withdrawal');
+
+
+### Receipt Routes
+$routes->post('new_receipt', 'Receipt::new_receipt');
+$routes->get('new_receipt', 'Receipt::new_receipt');
+$routes->post('verify_receipt', 'Receipt::verify_receipt');
+$routes->get('verify_receipt', 'Receipt::verify_receipt');
+$routes->post('approve_receipt', 'Receipt::approve_receipt');
+$routes->get('approve_receipt', 'Receipt::approve_receipt');
 
 
 
