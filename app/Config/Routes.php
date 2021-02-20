@@ -186,6 +186,10 @@ $routes->get('approve_withdrawal', 'Withdraw::approve_withdrawal');
 ### Receipt Routes
 $routes->post('new_receipt', 'Receipt::new_receipt');
 $routes->get('new_receipt', 'Receipt::new_receipt');
+$routes->post('verify_receipt', 'Receipt::verify_receipt');
+$routes->get('verify_receipt', 'Receipt::verify_receipt');
+$routes->post('approve_receipt', 'Receipt::approve_receipt');
+$routes->get('approve_receipt', 'Receipt::approve_receipt');
 
 
 

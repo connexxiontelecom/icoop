@@ -270,11 +270,11 @@
 									<ul>
 										<li class="header">Member</li>
 										<li><a href="<?=base_url('new_receipt') ?>">New</a></li>
-										<li><a href="<?=base_url('payroll_group') ?>">Verify</a></li>
-										<li><a href="<?=base_url('payroll_group') ?>">Approve</a></li>
+										<li><a href="<?=base_url('verify_receipt') ?>">Verify</a></li>
+										<li><a href="<?=base_url('approve_receipt') ?>">Approve</a></li>
 										<li class="header">Third Party</li>
-										<li><a href="<?=base_url('upload_routine') ?>">Upload Routine</a></li>
-										<li><a href="<?=base_url('interest_routine') ?>">Interest Routine</a></li>
+										<li><a href="<?=base_url('new_third') ?>">New</a></li>
+										<li><a href="<?=base_url('verify_third') ?>">Verify</a></li>
 									</ul>
 								
 								
