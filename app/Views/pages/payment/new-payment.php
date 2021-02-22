@@ -40,7 +40,7 @@ New Payment
                 
                 <div class="row clearfix">
                     <div class="col-lg-12 col-md-12">
-                <form  action="<?= site_url('/third-party/new-payment') ?>" id="thirdPartyPaymentEntryForm" autocomplete="off" method="POST" data-parsley-validate="">
+                <form enctype="multipart/form-data"  action="<?= site_url('/third-party/new-payment') ?>" id="thirdPartyPaymentEntryForm" autocomplete="off" method="POST" data-parsley-validate="">
                         <?= csrf_field() ?>
                         <div class="row">
                             <div class="col-md-4">

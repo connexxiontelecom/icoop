@@ -158,6 +158,11 @@ $routes->get('/third-party/payment/entry', 'PaymentController::entry');
 $routes->post('/third-party/payment/entry', 'PaymentController::postThirdpartyPaymentEntry');
 $routes->get('/third-party/new-payment', 'PaymentController::newPayment');
 $routes->post('/third-party/new-payment', 'PaymentController::postNewPayment');
+$routes->get('/third-party/verify-payment-entry', 'PaymentController::verifyPaymentEntry');
+$routes->get('/third-party/view-verify-payment-entry/(:num)', 'PaymentController::viewVerifyPaymentEntry/$1');
+$routes->post('/third-party/view-verify-payment-entry', 'PaymentController::postVerifyPaymentEntry');
+$routes->get('/third-party/approve-payment-entry', 'PaymentController::approvePaymentEntry');
+$routes->post('/third-party/approved-payment-entry', 'PaymentController::postApprovedPaymentEntry');
 
 
 

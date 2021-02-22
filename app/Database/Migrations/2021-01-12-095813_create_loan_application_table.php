@@ -100,6 +100,10 @@ class CreateLoanApplicationTable extends Migration
 						'type' => 'TEXT',
 						'null'=>true
 					],
+					'attachment'=>[
+					'type'=>'TEXT',
+					'null'=>true
+				]
 
 
 

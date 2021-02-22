@@ -89,6 +89,10 @@ class Thirdpartypaymententry extends Migration
 					'null'=>true,
 					'comment'=>'0=not,1=in cart'
 				],
+				'entry_attachment' =>[
+					'type' => 'TEXT',
+					'null'=>true
+				],
 				
 
 			]

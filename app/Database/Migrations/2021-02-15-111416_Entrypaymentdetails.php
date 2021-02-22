@@ -20,6 +20,10 @@ class Entrypaymentdetails extends Migration
 					'type' => 'INT',
 					'null'=>true,
 				],
+				'third_party_payment_entry_id' =>[
+					'type' => 'INT',
+					'null'=>true,
+				],
 				'entry_payment_d_payee_bank' =>[
 					'type' => 'INT',
 					'null'=>true,

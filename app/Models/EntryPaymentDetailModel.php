@@ -7,11 +7,18 @@ class EntryPaymentDetailModel extends Model{
     protected $primaryKey = 'entry_payment_d_detail_id';
     protected $allowedFields = ['entry_payment_d_master_id', 'entry_payment_d_payee_bank', 'entry_payment_d_payee_name',
     'entry_payment_d_amount', 'entry_payment_d_bank_name', 'entry_payment_d_account_no', 'entry_payment_d_reference_no',
-    'entry_payment_d_gl_account_no'];
+    'entry_payment_d_gl_account_no', 'third_party_payment_entry_id'];
 
     
 
-
+    public function getEntryDetailById($id){
+        $builder = $this->db->table('entry_payment_details');
+        $builder->join('entry_payment_masters', 'entry_payment_details.entry_payment_d_master_id = entry_payment_masters.entry_payment_master_id');
+        //$builder->join('coop_banks', 'coop_banks.coop_bank_id = entry_payment_masters.entry_payment_master_id');
+        $builder->join('coop_banks', 'coop_banks.coop_bank_id = entry_payment_details.entry_payment_d_payee_bank');
+        $builder->where('entry_payment_details.entry_payment_d_master_id = '.$id);
+        return $builder->get()->getResultObject();
+    }
     /* public function getScheduleMaster(){
         $builder = $this->db->table('schedule_masters');
         $builder->join('coop_banks', 'coop_banks.coop_bank_id = schedule_masters.bank_id');

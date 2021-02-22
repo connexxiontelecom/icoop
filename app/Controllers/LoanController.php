@@ -142,7 +142,20 @@ class LoanController extends BaseController
 					],
             ];
             if($this->validate($rules)){
-					$data = [
+                $filename = null;
+					
+                     $file = $this->request->getFile('attachment');
+                     if(!empty($file)){
+                         if($file->isValid() && !$file->hasMoved()){
+                            $extension = $file->guessExtension();
+                            $extension = strtolower($extension);
+                            if($extension == 'pdf'){
+		                            $filename = $file->getRandomName();
+                                    $file->move('.uploads/withdrawals', $filename);
+                            }
+                         }
+                     }
+                     $data = [
 						'staff_id'=>current(explode(",", $this->request->getVar('staff_id'))),
                         'guarantor'=>current(explode(",", $this->request->getVar('guarantor_1'))),
                         'name'=>substr($this->request->getVar('staff_id'), strlen(current(explode(" ", $this->request->getVar('staff_id'))))),
@@ -151,8 +164,8 @@ class LoanController extends BaseController
 						'duration'=>$this->request->getVar('duration'),
                         'amount'=>str_replace(",","",$this->request->getVar('amount')),
                         'applied_date'=>date('Y-m-d H:i:s'),
+                        'attachment'=>$filename
                     ];
-                     $file = $this->request->getFile('attachment');
                     // check loan type details with $loan_type
                     $loan_setups = $this->loansetup->where(['loan_setup_id'=> $this->request->getVar('loan_type')])->first();
                     if($loan_setups['psr'] == 1){
@@ -303,7 +316,6 @@ class LoanController extends BaseController
                         'amount'=>$application['amount'],
                         'interest'=>$this->request->getVar('interest'),
                         'interest_rate'=>$this->request->getVar('interest_rate'),
-                        //'amount'=>$this->request->getVar('principal_amount'),
                         'created_at'=>date('Y-m-d H:i:s'),
                         'disburse'=>0,
                         'scheduled'=>0,

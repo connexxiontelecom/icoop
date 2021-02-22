@@ -12,29 +12,37 @@ class EntryPaymentMasterModel extends Model{
     
 
 
-    /* public function getScheduleMaster(){
-        $builder = $this->db->table('schedule_masters');
-        $builder->join('coop_banks', 'coop_banks.coop_bank_id = schedule_masters.bank_id');
+    public function getEntryMaster(){
+        $builder = $this->db->table('entry_payment_masters');
+        $builder->join('coop_banks', 'coop_banks.coop_bank_id = entry_payment_masters.entry_payment_bank_id');
         $builder->join('banks', 'banks.bank_id = coop_banks.bank_id');
-        $builder->where('schedule_masters.verified = 0');
-        $builder->groupby('schedule_masters.schedule_master_id');
+        $builder->where('entry_payment_masters.entry_payment_verified = 0');
+        return $builder->get()->getResultObject();
+    }
+    public function getVerifiedEntryMaster(){
+        $builder = $this->db->table('entry_payment_masters');
+        $builder->join('coop_banks', 'coop_banks.coop_bank_id = entry_payment_masters.entry_payment_bank_id');
+        $builder->join('banks', 'banks.bank_id = coop_banks.bank_id');
+        $builder->where('entry_payment_masters.entry_payment_verified = 1');
+        $builder->where('entry_payment_masters.entry_payment_approved = 0');
         return $builder->get()->getResultObject();
     }
 
-    public function getVerifiedScheduleMaster(){
+    public function getEntryMasterById($id){
+        $builder = $this->db->table('entry_payment_masters');
+        $builder->join('coop_banks', 'coop_banks.coop_bank_id = entry_payment_masters.entry_payment_bank_id');
+        $builder->join('banks', 'banks.bank_id = coop_banks.bank_id');
+        $builder->where('entry_payment_masters.entry_payment_master_id = '.$id);
+        return $builder->get()->getRowObject();
+    }
+   
+    /*public function getVerifiedScheduleMaster(){
         $builder = $this->db->table('schedule_masters');
         $builder->join('coop_banks', 'coop_banks.coop_bank_id = schedule_masters.bank_id');
         $builder->join('banks', 'banks.bank_id = coop_banks.bank_id');
         $builder->where('schedule_masters.verified = 1');
         $builder->where('schedule_masters.approved = 0');
         return $builder->get()->getResultObject();
-    }
-    public function getScheduleMasterItem($id){
-        $builder = $this->db->table('schedule_masters');
-        $builder->join('coop_banks', 'coop_banks.coop_bank_id = schedule_masters.bank_id');
-        $builder->join('banks', 'banks.bank_id = coop_banks.bank_id');
-        $builder->where('schedule_masters.schedule_master_id = '.$id);
-        return $builder->get()->getRowObject();
     }
  */
     

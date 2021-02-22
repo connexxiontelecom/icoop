@@ -102,6 +102,14 @@ Loan Application Details
                                         <td class="text-nowrap">Payment Duration</td>
                                         <td><strong><?= $application->duration.' months' ??  '-'  ?></strong></td>
                                     </tr>
+                                    <?php if(!empty($application->attachment)): ?>
+                                        <tr>
+                                            <td class="text-nowrap">Attachment</td>
+                                            <td>
+                                                <a href="<?= base_url().'/upload/withdraw/'.$application->attachment ?? '' ?>"></a>
+                                            </td>
+                                        </tr>
+                                    <?php endif; ?>
                                     <?php if($application->verify == 1) : ?>
                                     <tr>
                                         <td class="text-nowrap">Verified By</td>

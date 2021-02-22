@@ -15,6 +15,7 @@ use App\Models\CoaModel;
 use App\Models\ThirdPartyPaymentEntryModel; 
 use App\Models\EntryPaymentMasterModel; 
 use App\Models\EntryPaymentDetailModel; 
+use App\Models\GlModel; 
 
 class PaymentController extends BaseController
 {
@@ -37,6 +38,7 @@ class PaymentController extends BaseController
         $this->thirpartypaymententry = new ThirdPartyPaymentEntryModel();
         $this->entrypaymentmaster = new EntryPaymentMasterModel();
         $this->entrypaymentdetail = new EntryPaymentDetailModel();
+        $this->gl = new GlModel();
         $this->session = session();
     }
 
@@ -529,9 +531,22 @@ class PaymentController extends BaseController
         $data = [];
 
         if($_POST){
+            $filename = null;
+					
+            $file = $this->request->getFile('attachment');
+            if(!empty($file)){
+                if($file->isValid() && !$file->hasMoved()){
+                $extension = $file->guessExtension();
+                $extension = strtolower($extension);
+                    if($extension == 'pdf'){
+                            $filename = $file->getRandomName();
+                            $file->move('.uploads/withdrawals', $filename);
+                    }
+                }
+            }
             $data = [
             'entry_payment_date' => $this->request->getVar('payable_date'),
-            'entry_bank_id'=>$this->request->getVar('bank'), 
+            //'entry_bank_id'=>$this->request->getVar('bank'), 
             'entry_amount'=>$this->request->getVar('amount'), 
             'entry_gl_account_no'=>$this->request->getVar('gl_account'),
             'entry_reference_no'=>$this->request->getVar('reference_no'), 
@@ -539,7 +554,8 @@ class PaymentController extends BaseController
             'entry_payee_name'=>$this->request->getVar('payee_name'), 
             'entry_payee_bank'=>$this->request->getVar('payee_bank'),
             'entry_bank_account_no'=>$this->request->getVar('bank_account_no'),
-            'entry_sort_code'=>$this->request->getVar('sort_code')
+            'entry_sort_code'=>$this->request->getVar('sort_code'),
+            'entry_attachment'=>$filename
             ];
             $this->thirpartypaymententry->save($data);
             
@@ -569,7 +585,6 @@ class PaymentController extends BaseController
 
     public function postNewPayment(){
         if($_POST){
-            //return dd($_POST);
             $amount = 0;
             $masterId = null;
                 $masterdata = [
@@ -589,7 +604,8 @@ class PaymentController extends BaseController
                         'entry_payment_d_bank_name' =>$this->request->getVar('bank_name')[$i], 
                         'entry_payment_d_account_no'=>$this->request->getVar('account_no')[$i], 
                         'entry_payment_d_reference_no'=>$this->request->getVar('reference_no')[$i],
-                        'entry_payment_d_gl_account_no'=>$this->request->getVar('gl_account_no')[$i]
+                        'entry_payment_d_gl_account_no'=>$this->request->getVar('gl_account_no')[$i],
+                        'third_party_payment_entry_id'=>$this->request->getVar('entry_id')[$i]
                      ];
                      $this->entrypaymentdetail->save($detail);
                      $this->thirpartypaymententry->save(['third_party_payment_entry_id'=>$this->request->getVar('entry_id')[$i],
@@ -606,4 +622,114 @@ class PaymentController extends BaseController
         }
     }
 
+    public function verifyPaymentEntry(){
+        $data = [
+            'entry_master'=>$this->entrypaymentmaster->getEntryMaster(),
+        ];
+        $username = $this->session->user_username;
+        $this->authenticate_user($username, 'pages/payment/verify-payment-entry', $data); 
+    }
+
+
+    public function viewVerifyPaymentEntry($id){
+        $data = [
+            'entry_master'=>$this->entrypaymentmaster->getEntryMasterById($id),
+            'entry_detail'=>$this->entrypaymentdetail->getEntryDetailById($id)
+        ];
+        //return dd($data);
+        $username = $this->session->user_username;
+        $this->authenticate_user($username, 'pages/payment/view-verify-payment-entry', $data); 
+    }
+
+
+    public function postVerifyPaymentEntry(){
+        if($_POST){
+           
+            //if($this->validate($rules)){
+                $username = $this->session->user_username;
+                //for($i=0; $i<count($this->request->getVar('thirdpartyentry')); $i++){
+
+					$data = [
+                        'entry_payment_master_id'=>$this->request->getVar('entry_master'),
+                        'entry_payment_verified'=>1,
+                        'entry_payment_date_verified'=>$this->request->getVar('date_verified'),
+                        'entry_payment_verified_by'=> $this->user->where('email', $username)->first()['user_id'],
+                        ];
+                        
+                    $this->entrypaymentmaster->save($data);
+                //}
+                $alert = array(
+                    'msg' => 'Success! Payment entry verified.',
+                    'type' => 'success',
+                    'location' => site_url('/third-party/verify-payment-entry')
+                );
+                return view('pages/sweet-alert', $alert);
+				
+            /* }else{
+                return $this->response->redirect(site_url('/loan/verify'));
+            } */
+        }
+    }
+
+    public function approvePaymentEntry(){
+        $data = [
+            'entry_master'=>$this->entrypaymentmaster->getVerifiedEntryMaster(),
+        ];
+        $username = $this->session->user_username;
+        $this->authenticate_user($username, 'pages/payment/approve-payment-entry', $data); 
+    }
+    
+    public function postApprovedPaymentEntry(){
+        if($_POST){
+           
+            //if($this->validate($rules)){
+                $username = $this->session->user_username;
+                //for($i=0; $i<count($this->request->getVar('thirdpartyentry')); $i++){
+
+					$data = [
+                        'entry_payment_master_id'=>$this->request->getVar('entry_master'),
+                        'entry_payment_approved'=>1,
+                        'entry_payment_approved_date'=>$this->request->getVar('date_verified'),
+                        'entry_payment_approved_by'=> $this->user->where('email', $username)->first()['user_id'],
+                        ];
+                    $this->entrypaymentmaster->save($data);
+                    $entry_payment = $this->entrypaymentmaster->where('entry_payment_master_id',$this->request->getVar('entry_master'))->first();
+                    $entry_payment_detail = $this->entrypaymentdetail->where('entry_payment_d_master_id',$this->request->getVar('entry_master'))->first();
+                   
+                    #gl details
+                     $dr = [
+                        'glcode'=>$entry_payment_detail['entry_payment_d_gl_account_no'],
+                        'posted_by'=> $this->user->where('email', $username)->first()['user_id'],
+                        'dr_amount'=>0,
+                        'bank'=>0,
+                        'ob'=>0,
+                        'cr_amount'=>$entry_payment_detail['entry_payment_d_amount'],
+                        'ref_no'=>time(),
+                        'created_at'=>$this->request->getVar('date_verified')
+                    ];
+                    $this->gl->save($dr); 
+                    $cr = [
+                        'glcode'=>$entry_payment['entry_payment_bank_id'],
+                        'posted_by'=> $this->user->where('email', $username)->first()['user_id'],
+                        'cr_amount'=>0,
+                        'bank'=>0,
+                        'ob'=>0,
+                        'dr_amount'=>$entry_payment['entry_payment_amount'],
+                        'ref_no'=>time(),
+                        'created_at'=>$this->request->getVar('date_verified')
+                    ];
+                    $this->gl->save($cr); 
+                //}
+                $alert = array(
+                    'msg' => 'Success! Payment entry approved.',
+                    'type' => 'success',
+                    'location' => site_url('/third-party/approve-payment-entry')
+                );
+                return view('pages/sweet-alert', $alert);
+				
+            /* }else{
+                return $this->response->redirect(site_url('/loan/verify'));
+            } */
+        }
+    }
 }

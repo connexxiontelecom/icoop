@@ -40,7 +40,7 @@ Payment Entry Voucher
                 
                 <div class="row clearfix">
                     <div class="col-lg-12 col-md-12">
-                <form   action="<?= site_url('/third-party/payment/entry') ?>" id="thirdPartyPaymentEntryForm" autocomplete="off" method="POST" data-parsley-validate="">
+                <form enctype="multipart/form-data"  action="<?= site_url('/third-party/payment/entry') ?>" id="thirdPartyPaymentEntryForm" autocomplete="off" method="POST" data-parsley-validate="">
                         <?= csrf_field() ?>
                         <div class="row">
                             <div class="col-md-4">
@@ -80,12 +80,7 @@ Payment Entry Voucher
                                     <input class="form-control" placeholder="Narration" name="narration" id="narration">
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="">Payee Name</label>
-                                    <input type="text" required name="payee_name" id="payee_name" placeholder="Payee Name" class=" form-control">
-                                </div>
-                            </div>
+                            
                     </div>
                     <div class="row p-2 mb-2" style="background:#2D3541;">
                         <div class="col-md-12 col-lg-12">
@@ -93,6 +88,12 @@ Payment Entry Voucher
                         </div>
                     </div>
                     <div class="row">
+                    <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="">Payee Name</label>
+                                    <input type="text" required name="payee_name" id="payee_name" placeholder="Payee Name" class=" form-control">
+                                </div>
+                            </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="">Payee Bank</label>
@@ -116,15 +117,13 @@ Payment Entry Voucher
                                     <input class="form-control" placeholder="Sort Code" name="sort_code" id="sort_code">
                                 </div>
                             </div>
-                    </div>
-                        <div class="row"> 
-                         <div class="col-md-12 col-lg-12 col-sm-12 response">
+                            <div class="col-md-4 col-lg-4 col-sm-4 response">
                             <div class="form-group">
                                 <strong for="">File (.PDF) - <small>Optional</small></strong>
                                 <input type="file"  name="attachment" id="attachment" >
                             </div>
-                        </div> 
                         </div>
+                    </div>
                         <hr>
                         <div class="row">
                             <div class="col-md-12 d-flex justify-content-center col-sm-12 col-lg-12">
