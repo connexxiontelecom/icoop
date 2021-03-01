@@ -139,6 +139,9 @@ $routes->get('/view-loan-application/(:num)', 'LoanController::viewLoanApplicati
 $routes->get('/loan/approve', 'LoanController::showApproveApplications');
 $routes->post('/loan/approve', 'LoanController::approveLoanApplication');
 $routes->get('/loan/search-cooperator', 'LoanController::searchCooperator');
+
+$routes->post('/cooperator/account-status', 'LoanController::getCooperatorAccountStatus');
+
 $routes->post('get_al', 'LoanController::get_active_loan');
 
 #Payment routes
@@ -162,6 +165,23 @@ $routes->get('/third-party/payment/entry', 'PaymentController::entry');
 $routes->post('/third-party/payment/entry', 'PaymentController::postThirdpartyPaymentEntry');
 $routes->get('/third-party/new-payment', 'PaymentController::newPayment');
 $routes->post('/third-party/new-payment', 'PaymentController::postNewPayment');
+$routes->get('/third-party/verify-payment-entry', 'PaymentController::verifyPaymentEntry');
+$routes->get('/third-party/view-verify-payment-entry/(:num)', 'PaymentController::viewVerifyPaymentEntry/$1');
+$routes->post('/third-party/view-verify-payment-entry', 'PaymentController::postVerifyPaymentEntry');
+$routes->get('/third-party/approve-payment-entry', 'PaymentController::approvePaymentEntry');
+$routes->post('/third-party/approved-payment-entry', 'PaymentController::postApprovedPaymentEntry');
+
+#Third-party receivable routes
+$routes->get('/third-party/receivable/customer-setup', 'ThirdpartyReceivableController::showCustomerSetupForm');
+$routes->post('/third-party/receivable/customer-setup', 'ThirdpartyReceivableController::storeCustomerSetup');
+$routes->get('/third-party/receivable/customer-setup-list', 'ThirdpartyReceivableController::customerSetupList');
+$routes->post('/third-party/receivable/edit-customer-setup', 'ThirdpartyReceivableController::editCustomerSetup');
+#New receivable
+$routes->get('/third-party/receivable/new', 'ThirdpartyReceivableController::showNewReceivableForm');
+$routes->post('/third-party/receivable/new', 'ThirdpartyReceivableController::storeNewCustomerReceivable');
+$routes->get('/third-party/receivable/unverified', 'ThirdpartyReceivableController::showUnverifiedReceivable');
+$routes->get('/third-party/receivable/verified', 'ThirdpartyReceivableController::showVerifiedReceivable');
+$routes->post('/third-party/receivable/approve-decline-receivable', 'ThirdpartyReceivableController::approveDeclineReceivable');
 
 
 
