@@ -123,6 +123,8 @@ $routes->post('ledger/(:any)', 'Cooperators::ledger/$1');
 $routes->get('view_ledger/(:num)/(:any)', 'Cooperators::view_ledger/$1/$2');
 $routes->get('loan_ledger/(:any)', 'Cooperators::loan_ledger/$1');
 $routes->post('loan_ledger/(:any)', 'Cooperators::loan_ledger/$1');
+$routes->get('freeze', 'Cooperators::freeze');
+$routes->post('freeze', 'Cooperators::freeze');
 
 #Loan routes
 $routes->get('/loan/new', 'LoanController::showLoanApplicationForm');

@@ -232,6 +232,7 @@
                                         <li><a href="<?=base_url('verify_application') ?>">Verify Applications</a></li>
                                         <li><a href="<?=base_url('approve_application') ?>">Approve Applications</a></li>
                                         <li><a href="<?=base_url('cooperators') ?>">Ledgers</a></li>
+										<li><a href="<?=base_url('freeze') ?>">Freeze/Unfreeze</a></li>
 
                                     </ul>
                                 </li>
