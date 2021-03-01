@@ -89,6 +89,27 @@ class LoanController extends BaseController
         return json_encode($setup);
     }
 
+    public function getCooperatorAccountStatus(){
+        $value = $this->request->getVar('term');
+        if(empty($value)){
+            redirect('home/error_404');
+        }
+        else {
+            $cooperatorId = current(explode(",", $value));
+            $cooperator = $this->coop->get_active_cooperator($cooperatorId);
+            
+            if(!empty($cooperator)){
+                $data['cooperator'] = $cooperator; //$cooperator->cooperator_staff_id . ', ' . $cooperator->cooperator_first_name . ' ' . $cooperator->cooperator_last_name;
+                echo json_encode($data);
+                die;
+            }else{
+                $data = [];
+                echo json_encode($data);
+                die;
+            }
+        }
+    }
+
 	public function storeLoanApplication()
 	{
         

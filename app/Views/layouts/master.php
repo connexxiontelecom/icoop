@@ -276,7 +276,16 @@
                                         </li>
                                     </ul>
                                 </li>
-                                <li><a href="#"><i class="fa fa-arrow-down"></i><span>Receivables</span></a></li>
+                                <li>
+                                    <a href="#" class="has-arrow"><i class="fa fa-money"></i><span>Receivables</span></a>
+                                    <ul>
+                                        <li><a href="<?=site_url('/third-party/receivable/customer-setup') ?>">Customer Setup</a></li>
+                                        <li><a href="<?=site_url('/third-party/receivable/customer-setup-list') ?>">Customer Setup List</a></li>
+                                        <li><a href="<?=site_url('/third-party/receivable/new') ?>">New Receivable</a></li>
+                                        <li><a href="<?=site_url('/third-party/receivable/unverified') ?>">Verify</a></li>
+                                        <li><a href="<?=site_url('/third-party/receivable/verified') ?>">Approve</a></li>
+                                    </ul>
+                                </li>
                                 <li>
 
 

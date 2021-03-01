@@ -111,7 +111,7 @@
                                     </div>
                                     
                                     <hr>
-                                    <div class="form-group d-flex justify-content-center">
+                                    <div class="form-group d-flex justify-content-center" id="submitBtnWrapper">
                                         <button class="btn btn-sm btn-primary" id="submitLoanBtn"><i class="ti-check mr-2"></i>Submit</button>
                                     </div>
                                 
@@ -260,6 +260,32 @@
 
             $("#search_account").autocomplete({
                 source: "<?php echo base_url('/loan/search-cooperator'); ?>",
+                select: function( event , ui ) {
+                   axios.post('/cooperator/account-status', {term:ui.item.label})
+                   .then(res=>{
+                        var data = res.data.cooperator;
+                        if(data.cooperator_status == 2){
+                            $('#submitLoanBtn').show();
+                        }else{
+                            $('#submitLoanBtn').hide();
+                            Toastify({
+                            text: "Ooop! This account is frozen.",
+                            duration: 3000,
+                            newWindow: true,
+                            close: true,
+                            gravity: "top", 
+                            position: "right", 
+                            backgroundColor: "linear-gradient(to right, #FF0000, #FFE8AC)",
+                            stopOnFocus: true, 
+                            onClick: function(){} 
+                            }).showToast();
+
+                        }
+                   })
+                   .catch(error=>{
+                        $('#submitLoanBtn').attr('disabled','true');
+                   });
+                }
             });
             $("#guarantor_1").autocomplete({
                 source: "<?php echo base_url('/loan/search-cooperator'); ?>",
