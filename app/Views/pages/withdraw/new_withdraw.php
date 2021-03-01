@@ -59,51 +59,55 @@ New Withdrawal
                                     <i class="fa fa-warning"></i> <span id="b_t"></span>
                                 </div>
 
-                                <div class="form-group">
-
-                                    <label  for="application_payroll_group_id"> <b> Amount: </b></label>
-                                    <input type="text" class="number form-control"  required  name="withdraw_amount" id="withdraw_amount"  placeholder="Enter Amount">
-
-
-
-
-                                    <input type="hidden" id="withdraw_balance" name="withdraw_balance" >
-
-                                    <input type="hidden" id="withdraw_charge" name="withdraw_charge" value="<?=$policy_configs['savings_withdrawal_charge']; ?>" >
-
-                                </div>
-
-                                <div class="alert alert-warning alert-dismissible" role="alert" id="charge_warning">
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <i class="fa fa-warning"></i> <span id="c_t"></span>
-                                </div>
-<!--                                <div class="form-group">-->
-<!--                                    <label for="application_first_name"><b>Date:</b></label>-->
-<!--                                    <input type="date"  class="form-control" placeholder="Date" name="withdraw_date" required>-->
-<!--                                </div>-->
-                                <input type="hidden"  class="form-control" placeholder="Date" name="withdraw_date" value="<?=date('Y-m-d') ?>" required>
-
-
-<!--                                <div class="form-group">-->
-<!--                                    <label for="application_address"><b>Narration:</b></label>-->
-<!--                                    <textarea name="withdraw_narration" id="withdraw_narration"  cols="30" rows="3" placeholder="Narration "  class="form-control no-resize"></textarea>-->
-<!--                                </div>-->
-
-                                <div class="form-group">
-                                    <label for="application_first_name"><b>File(.PDF):</b></label>
-                                    <input type="file"  class="form-control"  name="withdraw_file">
-                                </div>
-
-
-                                <?= csrf_field() ?>
-                                <div class="form-group">
-                                    <button type="submit" id="withdraw_submit" class="btn btn-info btn-block">Submit</button>
-                                    <div class="alert alert-danger alert-dismissible" role="alert" id="withdraw_warning">
-                                        <!--                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
-                                        <i class="fa fa-warning"></i> Withdraw Amount is Greater than Withdrawable Amount
-                                    </div>
-
-                                </div>
+								<div id="freeze">
+									
+									<div class="form-group">
+										
+										<label  for="application_payroll_group_id"> <b> Amount: </b></label>
+										<input type="text" class="number form-control"  required  name="withdraw_amount" id="withdraw_amount"  placeholder="Enter Amount">
+										
+										
+										
+										
+										<input type="hidden" id="withdraw_balance" name="withdraw_balance" >
+										
+										<input type="hidden" id="withdraw_charge" name="withdraw_charge" value="<?=$policy_configs['savings_withdrawal_charge']; ?>" >
+									
+									</div>
+									
+									<div class="alert alert-warning alert-dismissible" role="alert" id="charge_warning">
+										<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+										<i class="fa fa-warning"></i> <span id="c_t"></span>
+									</div>
+									<!--                                <div class="form-group">-->
+									<!--                                    <label for="application_first_name"><b>Date:</b></label>-->
+									<!--                                    <input type="date"  class="form-control" placeholder="Date" name="withdraw_date" required>-->
+									<!--                                </div>-->
+									<input type="hidden"  class="form-control" placeholder="Date" name="withdraw_date" value="<?=date('Y-m-d') ?>" required>
+									
+									
+									<!--                                <div class="form-group">-->
+									<!--                                    <label for="application_address"><b>Narration:</b></label>-->
+									<!--                                    <textarea name="withdraw_narration" id="withdraw_narration"  cols="30" rows="3" placeholder="Narration "  class="form-control no-resize"></textarea>-->
+									<!--                                </div>-->
+									
+									<div class="form-group">
+										<label for="application_first_name"><b>File(.PDF):</b></label>
+										<input type="file"  class="form-control"  name="withdraw_file">
+									</div>
+									
+									
+									<?= csrf_field() ?>
+									<div class="form-group">
+										<button type="submit" id="withdraw_submit" class="btn btn-info btn-block">Submit</button>
+										<div class="alert alert-danger alert-dismissible" role="alert" id="withdraw_warning">
+											<!--                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+											<i class="fa fa-warning"></i> Withdraw Amount is Greater than Withdrawable Amount
+										</div>
+									
+									</div>
+								</div>
+                            
                             </div>
 
 
@@ -207,10 +211,20 @@ New Withdrawal
             },
             dataType: 'json',
             success:function(response){
-                $("#balance_warning").show();
-                $("#b_t").append(response.note);
-                $("#withdraw_balance").val(response.balance);
-                console.log(response)
+                if(response.balance == 'fr'){
+                    $('#withdraw_submit').hide();
+                    $("#balance_warning").show();
+                    $("#b_t").append(response.note);
+                    $('#freeze').hide();
+				}else{
+                    $('#freeze').show();
+                    $("#balance_warning").show();
+                    $("#b_t").append(response.note);
+                    $("#withdraw_balance").val(response.balance);
+                    console.log(response)
+                    
+				}
+            
             }
         });
 
