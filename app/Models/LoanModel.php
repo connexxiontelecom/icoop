@@ -146,6 +146,18 @@ class LoanModel extends Model{
 		
 	}
 	
+	
+	public function get_active_loans_staffid($staff_id){
+		$builder = $this->db->table('loans');
+		$builder->join('loan_setups', 'loan_setups.loan_setup_id = loans.loan_type');
+		$builder->join('loan_applications', 'loan_applications.loan_app_id = loans.loan_app_id');
+		$builder->where('loans.disburse', 1);
+		$builder->where('loans.paid_back', 0);
+		$builder->where('loans.staff_id', $staff_id);
+		return $builder->get()->getResultObject();
+		
+	}
+	
 	public function get_loan($loan_id){
 		$builder = $this->db->table('loans');
 		$builder->join('loan_setups', 'loan_setups.loan_setup_id = loans.loan_type');
