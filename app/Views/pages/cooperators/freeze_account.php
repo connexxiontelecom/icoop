@@ -60,7 +60,7 @@ Freeze and Unfreeze Accounts
 											<input type="hidden" name="cooperator_id" value="<?=$cooperator->cooperator_id; ?>">
 											<input type="hidden" name="cooperator_status" value="0">
 											<?= csrf_field() ?>
-											<button type="button"  onclick="fre_unfre(this)" id="<?=$cooperator->cooperator_id; ?>" class="btn btn-icon icon-left btn-danger"><i class="fa fa-lock"></i> Freeze </button>
+											<button type="button"  onclick="fre(this)" id="<?=$cooperator->cooperator_id; ?>" class="btn btn-icon icon-left btn-danger"><i class="fa fa-lock"></i> Freeze </button>
 											
 										</form>
 										<?php endif; ?>
@@ -71,7 +71,7 @@ Freeze and Unfreeze Accounts
 											<input type="hidden" name="cooperator_id" value="<?=$cooperator->cooperator_id; ?>">
 											<input type="hidden" name="cooperator_status" value="2">
 			                                <?= csrf_field() ?>
-											<button onclick="fre_unfre(this)" id="<?=$cooperator->cooperator_id; ?>"   class="btn btn-icon icon-left btn-success"><i class="fa fa-unlock"></i> Unfreeze </button>
+											<button onclick="unfre(this)" id="<?=$cooperator->cooperator_id; ?>"   class="btn btn-icon icon-left btn-success"><i class="fa fa-unlock"></i> Unfreeze </button>
 		
 										</form>
 								   <?php endif; ?>
@@ -115,7 +115,7 @@ Freeze and Unfreeze Accounts
       
     });
 
-    function fre_unfre(e) {
+    function fre(e) {
    		 e.preventDefault;
 		let form_id = e.id;
 		form_id = 'form'+form_id;
@@ -126,6 +126,28 @@ Freeze and Unfreeze Accounts
             showCancelButton: true,
             confirmButtonColor: "#dc3545",
             confirmButtonText: "Yes, freeze!",
+            cancelButtonText: "No, cancel!",
+
+        }).then((willDelete) => {
+            if (willDelete) {
+                $("#"+form_id).submit();
+            } else {
+                swal('Action Canceled!', { icon: 'error' });
+            }
+        });
+    }
+
+    function unfre(e) {
+        e.preventDefault;
+        let form_id = e.id;
+        form_id = 'form'+form_id;
+        swal({
+            title: "Are you sure?",
+            text: "You are about to unfreeze an account",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#dc3545",
+            confirmButtonText: "Yes, unfreeze!",
             cancelButtonText: "No, cancel!",
 
         }).then((willDelete) => {
