@@ -5,7 +5,8 @@ use CodeIgniter\Model;
 class LoanModel extends Model{
     protected $table = 'loans';
     protected $primaryKey = 'loan_id';
-    protected $allowedFields = ['loan_app_id', 'staff_id', 'schedule_master_id', 'amount', 'interest_rate', 'loan_type', 'interest', 'disburse', 'disburse_date', 'cart', 'created_at', 'scheduled', 'paid_back'];
+	protected $allowedFields = ['loan_app_id', 'staff_id', 'schedule_master_id', 'amount', 'interest_rate', 'loan_type', 
+	'interest', 'disburse', 'disburse_date', 'cart', 'created_at', 'scheduled', 'paid_back'];
 
 
 
@@ -142,6 +143,18 @@ class LoanModel extends Model{
 		$builder->where('loan_setups.loan_setup_id', $lt_id);
 		$builder->where('loans.staff_id', $staff_id);
 		return $builder->get()->getRowObject();
+		
+	}
+	
+	
+	public function get_active_loans_staffid($staff_id){
+		$builder = $this->db->table('loans');
+		$builder->join('loan_setups', 'loan_setups.loan_setup_id = loans.loan_type');
+		$builder->join('loan_applications', 'loan_applications.loan_app_id = loans.loan_app_id');
+		$builder->where('loans.disburse', 1);
+		$builder->where('loans.paid_back', 0);
+		$builder->where('loans.staff_id', $staff_id);
+		return $builder->get()->getResultObject();
 		
 	}
 	

@@ -72,7 +72,7 @@ class CreateLoansTable extends Migration
 				'created_at'=>[
 					'type'=>'DATETIME',
 					'null'=>true
-				],
+				]
 
 
 			]

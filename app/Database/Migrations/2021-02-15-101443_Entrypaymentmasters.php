@@ -19,6 +19,7 @@ class Entrypaymentmasters extends Migration
 				'entry_payment_bank_id' =>[
 					'type' => 'INT',
 					'null'=>true,
+					'comment'=>'this is coop_bank_id'
 				],
 				'entry_payment_payable_date' =>[
 					'type' => 'DATETIME',

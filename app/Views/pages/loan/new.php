@@ -25,7 +25,7 @@
                 <div class="row m-b-30">
                     <div class="col-lg-7 col-md-12 col-xl-7">
                         <h6 class="sub-title p-3  text-uppercase">New Loan Application</h6>
-                        <form action="<?= site_url('/loan/new') ?>" autocomplete="off" method="POST" data-parsley-validate="" id="loanSetupForm">
+                        <form enctype="multipart/form-data" action="<?= site_url('/loan/new') ?>" autocomplete="off" method="POST" data-parsley-validate="" id="loanSetupForm">
                                 <?= csrf_field() ?>
                                     <div class="row p-2 mb-2" style="background:#2D3541;">
                                         <div class="col-md-12 col-lg-12">
@@ -111,7 +111,7 @@
                                     </div>
                                     
                                     <hr>
-                                    <div class="form-group d-flex justify-content-center">
+                                    <div class="form-group d-flex justify-content-center" id="submitBtnWrapper">
                                         <button class="btn btn-sm btn-primary" id="submitLoanBtn"><i class="ti-check mr-2"></i>Submit</button>
                                     </div>
                                 
@@ -260,6 +260,32 @@
 
             $("#search_account").autocomplete({
                 source: "<?php echo base_url('/loan/search-cooperator'); ?>",
+                select: function( event , ui ) {
+                   axios.post('/cooperator/account-status', {term:ui.item.label})
+                   .then(res=>{
+                        var data = res.data.cooperator;
+                        if(data.cooperator_status == 2){
+                            $('#submitLoanBtn').show();
+                        }else{
+                            $('#submitLoanBtn').hide();
+                            Toastify({
+                            text: "Ooop! This account is frozen.",
+                            duration: 3000,
+                            newWindow: true,
+                            close: true,
+                            gravity: "top", 
+                            position: "right", 
+                            backgroundColor: "linear-gradient(to right, #FF0000, #FFE8AC)",
+                            stopOnFocus: true, 
+                            onClick: function(){} 
+                            }).showToast();
+
+                        }
+                   })
+                   .catch(error=>{
+                        $('#submitLoanBtn').attr('disabled','true');
+                   });
+                }
             });
             $("#guarantor_1").autocomplete({
                 source: "<?php echo base_url('/loan/search-cooperator'); ?>",

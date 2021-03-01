@@ -89,6 +89,27 @@ class LoanController extends BaseController
         return json_encode($setup);
     }
 
+    public function getCooperatorAccountStatus(){
+        $value = $this->request->getVar('term');
+        if(empty($value)){
+            redirect('home/error_404');
+        }
+        else {
+            $cooperatorId = current(explode(",", $value));
+            $cooperator = $this->coop->get_active_cooperator($cooperatorId);
+            
+            if(!empty($cooperator)){
+                $data['cooperator'] = $cooperator; //$cooperator->cooperator_staff_id . ', ' . $cooperator->cooperator_first_name . ' ' . $cooperator->cooperator_last_name;
+                echo json_encode($data);
+                die;
+            }else{
+                $data = [];
+                echo json_encode($data);
+                die;
+            }
+        }
+    }
+
 	public function storeLoanApplication()
 	{
         
@@ -142,7 +163,20 @@ class LoanController extends BaseController
 					],
             ];
             if($this->validate($rules)){
-					$data = [
+                $filename = null;
+					
+                     $file = $this->request->getFile('attachment');
+                     if(!empty($file)){
+                         if($file->isValid() && !$file->hasMoved()){
+                            $extension = $file->guessExtension();
+                            $extension = strtolower($extension);
+                            if($extension == 'pdf'){
+		                            $filename = $file->getRandomName();
+                                    $file->move('.uploads/withdrawals', $filename);
+                            }
+                         }
+                     }
+                     $data = [
 						'staff_id'=>current(explode(",", $this->request->getVar('staff_id'))),
                         'guarantor'=>current(explode(",", $this->request->getVar('guarantor_1'))),
                         'name'=>substr($this->request->getVar('staff_id'), strlen(current(explode(" ", $this->request->getVar('staff_id'))))),
@@ -151,6 +185,7 @@ class LoanController extends BaseController
 						'duration'=>$this->request->getVar('duration'),
                         'amount'=>str_replace(",","",$this->request->getVar('amount')),
                         'applied_date'=>date('Y-m-d H:i:s'),
+                        'attachment'=>$filename
                     ];
                     // check loan type details with $loan_type
                     $loan_setups = $this->loansetup->where(['loan_setup_id'=> $this->request->getVar('loan_type')])->first();
@@ -302,7 +337,6 @@ class LoanController extends BaseController
                         'amount'=>$application['amount'],
                         'interest'=>$this->request->getVar('interest'),
                         'interest_rate'=>$this->request->getVar('interest_rate'),
-                        //'amount'=>$this->request->getVar('principal_amount'),
                         'created_at'=>date('Y-m-d H:i:s'),
                         'disburse'=>0,
                         'scheduled'=>0,
@@ -412,6 +446,17 @@ class LoanController extends BaseController
                     return view('pages/sweet-alert', $alert);
             }
         }
+    }
+    
+    public function get_active_loan(){
+	    $staff_id = $_POST['staff_id'];
+	    $ledgers = $this->loan->get_active_loans_staffid($staff_id);
+	    $i = 0;
+	    foreach ($ledgers as $ledger):
+		    $data[$i] = $ledger;
+		    $i++;
+	    endforeach;
+	    echo json_encode($data);
     }
 
    
