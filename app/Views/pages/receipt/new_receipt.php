@@ -485,7 +485,7 @@ New Receipt
                     $("#"+target_id).empty();
                     $("#"+target_id).append('<option> -- Select Active Loans --</option>');
                     for (var i=0; i<response.length; i++) {
-                        $("#"+target_id).append('<option value="' + response[i].loan_id + '">' + response[i].loan_description +' (Principal: '+ response[i].loan_principal +', Outstanding: '+ response[i].loan_balance + ')'+ '</option>');
+                        $("#"+target_id).append('<option value="' + response[i].loan_id + '">' + response[i].loan_description +' (Principal: '+ response[i].loan_principal +',  Outstanding: '+ response[i].loan_balance + ')'+ '</option>');
 
                         //$("#"+target_id).append('<option value="' + response[i].loan_id + '">' + response[i].loan_description + '</option>');
                     }

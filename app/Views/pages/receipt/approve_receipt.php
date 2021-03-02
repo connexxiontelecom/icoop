@@ -103,7 +103,7 @@ Approve Receipts
 								
 								
 								<div class="row clearfix">
-									<div class="col-lg-4 col-md-4">
+									<div class="col-lg-6 col-md-6">
 								
 										<div class="form-group">
 											<label>Receipt Amount:</label>
@@ -111,13 +111,7 @@ Approve Receipts
 										</div>
 									</div>
 									
-									<div class="col-lg-2 col-md-2">
-										
-										<div class="form-group">
-											<label>Date:</label>
-											<input class="form-control" value="<?=$rm['rm_date']; ?>" disabled readonly>
-										</div>
-									</div>
+									
 									
 									<div class="col-lg-6 col-md-6">
 										
@@ -127,6 +121,21 @@ Approve Receipts
 										</div>
 									</div>
 									
+								</div>
+								
+								<div class="row clearfix">
+							
+									
+									<div class="col-lg-6 col-md-6">
+										
+										<div class="form-group">
+											<label>Transaction Date:</label>
+											<input class="form-control" value="<?=$rm['rm_date']; ?>" disabled readonly>
+										</div>
+									</div>
+									
+									
+								
 								</div>
 								
 								<div class="row clearfix">
@@ -181,6 +190,17 @@ Approve Receipts
 									</div>
 									
 									
+								
+								</div>
+								<div class="row clearfix">
+									<div class="col-lg-6 col-md-12">
+										<div class="header">
+											<p> <small><b>Received By:</b> <?=$rm['rm_by']; ?></small></p>
+											<p><small><b>Receipt Date:</b> <?=$rm['rm_a_date']; ?></small></p>
+										</div>
+									</div>
+								
+								
 								
 								</div>
 								<div class="row clearfix">
