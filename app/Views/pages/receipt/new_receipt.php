@@ -66,6 +66,8 @@ New Receipt
 									<select class="custom-select"  required name="payment_method">
 										<option disabled selected> -- Select payment method --</option>
 										<option value="1"> Cheque </option>
+										<option value="2"> Transfer </option>
+										<option value="3"> Draft </option>
 									</select>
 								</div>
 								
@@ -430,31 +432,31 @@ New Receipt
         }
     }
     
-    function get_account_balance(){
-        $("#balance_warning").hide();
-        $("#withdraw_balance").val(0);
-        $("#b_t").empty()
-        let t_staff_id =  $("#search_account").val();
-        let ct_id = $("#ct_id").val();
-        let staff_id = t_staff_id.split(',')[0];
-
-        $.ajax({
-            url: '<?php echo site_url('compute_balance') ?>',
-            type: 'post',
-            data: {
-                'staff_id': staff_id,
-                'ct_id': ct_id
-            },
-            dataType: 'json',
-            success:function(response){
-                $("#balance_warning").show();
-                $("#b_t").append(response.note);
-                $("#withdraw_balance").val(response.balance);
-                console.log(response)
-            }
-        });
-
-    }
+    //function get_account_balance(){
+    //    $("#balance_warning").hide();
+    //    $("#withdraw_balance").val(0);
+    //    $("#b_t").empty()
+    //    let t_staff_id =  $("#search_account").val();
+    //    let ct_id = $("#ct_id").val();
+    //    let staff_id = t_staff_id.split(',')[0];
+	//
+    //    $.ajax({
+    //        url: '<?php //echo site_url('compute_balance') ?>//',
+    //        type: 'post',
+    //        data: {
+    //            'staff_id': staff_id,
+    //            'ct_id': ct_id
+    //        },
+    //        dataType: 'json',
+    //        success:function(response){
+    //            $("#balance_warning").show();
+    //            $("#b_t").append(response.note);
+    //            $("#withdraw_balance").val(response.balance);
+    //            console.log(response)
+    //        }
+    //    });
+	//
+    //}
 
     function get_ct(e){
         let t_staff_id =  $("#search_account").val();
@@ -483,7 +485,9 @@ New Receipt
                     $("#"+target_id).empty();
                     $("#"+target_id).append('<option> -- Select Active Loans --</option>');
                     for (var i=0; i<response.length; i++) {
-                        $("#"+target_id).append('<option value="' + response[i].loan_id + '">' + response[i].loan_description + '</option>');
+                        $("#"+target_id).append('<option value="' + response[i].loan_id + '">' + response[i].loan_description +' (Principal: '+ response[i].loan_principal +', Outstanding: '+ response[i].loan_balance + ')'+ '</option>');
+
+                        //$("#"+target_id).append('<option value="' + response[i].loan_id + '">' + response[i].loan_description + '</option>');
                     }
 
                 }
@@ -500,7 +504,7 @@ New Receipt
                 },
                 dataType: 'json',
                 success:function(response){
-                    console.log(response);
+                    //console.log(response);
                     let target_id = "target"+element_id
                     $("#"+target_id).empty();
                     $("#"+target_id).append('<option> -- Select Contribution Type --</option>');
