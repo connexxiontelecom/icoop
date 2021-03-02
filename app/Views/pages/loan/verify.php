@@ -63,7 +63,7 @@ Verify
                                     <td><?= $app->staff_id ?? '' ?></td>
                                     <td><?= $app->cooperator_first_name ?? '' ?> <?= $app->cooperator_last_name ?? '' ?></td>
                                     <td><?= $app->loan_description ?? '' ?> </td>
-                                    <td>₦<?= number_format($app->amount ?? 0) ?></td>
+                                    <td class="text-right"><?= number_format($app->amount ?? 0) ?></td>
                                     <td><?= number_format($app->duration ?? 0) ?> months</td>
                                     <td><?= date('d M, Y', strtotime($app->applied_date)) ?> </td>
                                     <td>

@@ -362,9 +362,8 @@ class LoanController extends BaseController
             'application'=>$app,
             'guarantor'=>$this->loanapp->getGuarantorOne($id),
             'guarantor2'=>$this->loanapp->getGuarantorTwo($id),
-            'setup'=>$this->loansetup->where('interest_method', $app->loan_type)->first()
+            'setup'=>$this->loansetup->where('loan_setup_id', $app->loan_type)->first()
         ];
-        //return dd($data);
         $username = $this->session->user_username;
         $this->authenticate_user($username, 'pages/loan/view-loan-application', $data);
     }
@@ -453,7 +452,59 @@ class LoanController extends BaseController
 	    $ledgers = $this->loan->get_active_loans_staffid($staff_id);
 	    $i = 0;
 	    foreach ($ledgers as $ledger):
+		
+		    $total_cr = 0;
+		    $total_dr = 0;
+		    $cr = 0;
+		    $dr = 0;
+		
+		    $total_interest = 0;
+		
+		    $loan_ledgers = $this->loan->get_loans_staff_id($staff_id, $ledger->loan_id);
+		
+		    if(!empty($loan_ledgers)):
+			
+			    foreach ($loan_ledgers as$loan_ledger):
+				
+				    if($loan_ledger->lr_dctype == 1):
+					    $cr = $loan_ledger->lr_amount;
+					    $total_cr = $total_cr + $cr;
+				    endif;
+				
+				    if($loan_ledger->lr_dctype == 2):
+					    $dr = $loan_ledger->lr_amount;
+					    $total_dr = $total_dr + $dr;
+				    endif;
+				
+				    if($loan_ledger->lr_interest == 1):
+					    $total_interest = $total_interest + $loan_ledger->lr_amount;
+				    endif;
+			
+			    endforeach;
+		
+		    else:
+			
+			    $loan_ledgers = $this->loan->get_loanss_staff_id($staff_id, $ledger->loan_id);
+		
+		    endif;
+//
+//		    $data['ledgers'][$i]  = array(
+//			    'loan_description' => $loan_ledgers[0]->loan_description,
+//			    'loan_principal' => $loan_ledgers[0]->amount,
+//			    'loan_total_interest' => $total_interest,
+//			    'loan_total_cr' => $total_cr,
+//			    'loan_total_dr' => $total_dr,
+//			    'loan_balance' => $loan_ledgers[0]->amount + ($total_dr - $total_cr),
+//			    'loan_type' => $ledger->loan_id
+//
+//		    );
+//
+		    
 		    $data[$i] = $ledger;
+		    $data[$i]->loan_principal = number_format($loan_ledgers[0]->amount, 2);
+		    $data[$i]->loan_balance = number_format($loan_ledgers[0]->amount + ($total_dr - $total_cr), 2);
+		   
+			   
 		    $i++;
 	    endforeach;
 	    echo json_encode($data);

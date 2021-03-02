@@ -584,8 +584,12 @@ class PaymentController extends BaseController
     }
 
     public function postNewPayment(){
+        
         if($_POST){
             $amount = 0;
+            for($n = 0; $n < count($this->request->getVar('entries')); $n++){
+                     $amount += $this->request->getVar('entry_amount')[$n];
+                 } 
             $masterId = null;
                 $masterdata = [
                     'entry_payment_bank_id'=>$this->request->getVar('coop_bank'), 
@@ -627,6 +631,7 @@ class PaymentController extends BaseController
             'entry_master'=>$this->entrypaymentmaster->getEntryMaster(),
         ];
         $username = $this->session->user_username;
+        
         $this->authenticate_user($username, 'pages/payment/verify-payment-entry', $data); 
     }
 

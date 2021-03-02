@@ -63,12 +63,7 @@
                                                     <div class="modal-body">
                                                        <form enctype="multipart/form-data" action="<?= site_url('/third-party/receivable/edit-customer-setup') ?>" autocomplete="off" method="POST" data-parsley-validate="" id="loanSetupForm">
                                                             <?= csrf_field() ?>
-                                                                <div class="row p-2 mb-2" style="background:#2D3541;">
-                                                                    <div class="col-md-12 col-lg-12">
-                                                                        <h6 class="text-uppercase text-white">Details</h6>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row bg-light">
+                                                                <div class="row">
                                                                     <div class="col-md-6 col-lg-6 col-sm-6">
                                                                         <div class="form-group">
                                                                             <strong for="">Customer/Debtor Name </strong>
@@ -82,7 +77,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="row bg-light">
+                                                                <div class="row">
                                                                     <div class="col-md-6 col-lg-6 col-sm-6 response">
                                                                         <div class="form-group">
                                                                             <strong for="">Email</strong>
@@ -97,7 +92,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="row bg-light">
+                                                                <div class="row ">
                                                                     <div class="col-md-6 col-lg-6 col-sm-6 response">
                                                                         <div class="form-group">
                                                                             <strong for="">GL Account Code</strong>
@@ -113,8 +108,8 @@
                                                                 </div>
                                                                 <input type="hidden" name="customer_id" value="<?= $app->customer_setup_id ?>">
                                                                 <hr>
-                                                                <div class="row d-flex justify-content-end">
-                                                                    <div class="col-md-12 ">
+                                                                <div class="row mb-4">
+                                                                    <div class="col-md-12 d-flex justify-content-center">
                                                                         <button class="btn btn-sm btn-primary" type="submit" id="submitLoanBtn"><i class="ti-check mr-2"></i>Save changes</button>
                                                                     </div>
                                                                 </div>

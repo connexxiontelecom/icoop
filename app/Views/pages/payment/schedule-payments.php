@@ -60,7 +60,7 @@ Approve Loan Application
                                     <td><?= $i++ ?></td>
                                     <td><?= $app['staff_id'] ?></td>
                                     <td><?= $app['name'] ?></td>
-                                    <td>₦<?= number_format($app['amount']) ?></td>
+                                    <td class="text-right"><?= number_format($app['amount']) ?></td>
                                     <td><?= number_format($app['duration']) ?> months</td>
                                     <td><?= $app['loan_type'] ?> </td>
                                     <td>

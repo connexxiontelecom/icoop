@@ -105,7 +105,7 @@ Payment Schedule (Member)
                                                         <input type="hidden" name="loan_type[]" value="<?= $car->loan_type ?? '' ?>">
                                                     </td>
                                                     <td> 
-                                                        <a href="<?= site_url('/loan/remove-from-cart/'.$car->loan_id) ?>" title="Remove from cart" class="text-danger"><i class="fa fa-trash"></i></a>
+                                                        <a href="<?= site_url('/loan/remove-from-cart/'.$car->loan_id) ?>"  title="Remove from cart" class="btn btn-danger"><i class="fa fa-trash"></i></a>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>
