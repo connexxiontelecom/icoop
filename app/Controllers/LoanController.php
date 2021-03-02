@@ -362,9 +362,8 @@ class LoanController extends BaseController
             'application'=>$app,
             'guarantor'=>$this->loanapp->getGuarantorOne($id),
             'guarantor2'=>$this->loanapp->getGuarantorTwo($id),
-            'setup'=>$this->loansetup->where('interest_method', $app->loan_type)->first()
+            'setup'=>$this->loansetup->where('loan_setup_id', $app->loan_type)->first()
         ];
-        //return dd($data);
         $username = $this->session->user_username;
         $this->authenticate_user($username, 'pages/loan/view-loan-application', $data);
     }

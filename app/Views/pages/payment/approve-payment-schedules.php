@@ -37,7 +37,7 @@ Payment Schedules
         </div>
         <div class="body">
             <div class="table-responsive">
-                <table class="table table-hover" id="scheduledPaymentTable">
+                <table class="table table-hover table-bordered" id="scheduledPaymentTable">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -53,7 +53,7 @@ Payment Schedules
                                 <td><?= $i++ ?></td>
                                 <td><?= date('d M, Y', strtotime($schedule->payable_date)) ?></td>
                                 <td><?= $schedule->bank_name ?? '' ?> - (<?= $schedule->account_no ?? '' ?>)</td>
-                                <td><?= '₦'.number_format($schedule->amount,2) ?? '' ?> </td>
+                                <td class="text-right"><?= number_format($schedule->amount,2) ?? '' ?> </td>
                                 <td>
                                     <a href="<?= site_url('/loan/payment-schedule/'.$schedule->schedule_master_id) ?>" class="btn btn-primary btn-sm">View</a>
                                 </td>

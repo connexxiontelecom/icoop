@@ -46,8 +46,8 @@
                                     <td><?= $app->customer_name ?? '' ?></td>
                                     <td class="text-right"><?= number_format($app->cr_amount,2) ?? '' ?> </td>
                                     <td><?= date('d-M-Y', strtotime($app->cr_transaction_date)) ?? '' ?> </td>
-                                    <td><?= $app->cr_coop_bank_id ?? '' ?> </td>
-                                    <td><?= $app->cr_gl_cr ?? '' ?> </td>
+                                    <td><?= $app->cr_coop_bank_id ?? '' ?> - <?= $app->description ?? '' ?> </td>
+                                    <td><?= $app->cr_gl_cr ?? '' ?> - <?= $app->account_name ?? '' ?></td>
                                     <td>
                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal<?= $app->coa_id ?? '' ?>"><i class="fa fa-pencil-square-o"></i></button>
                                         <div class="modal fade" id="editModal<?= $app->coa_id ?? '' ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -62,41 +62,36 @@
                                                     <div class="modal-body">
                                                        <form enctype="multipart/form-data" action="<?= site_url('/third-party/receivable/approve-decline-receivable') ?>" autocomplete="off" method="POST" data-parsley-validate="" id="loanSetupForm">
                                                             <?= csrf_field() ?>
-                                                                <div class="row p-2 mb-2" style="background:#2D3541;">
-                                                                    <div class="col-md-12 col-lg-12">
-                                                                        <h6 class="text-uppercase text-white">Details</h6>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row bg-light">
+                                                                <div class="row">
                                                                     <div class="col-md-6 col-lg-6 col-sm-6">
                                                                         <div class="form-group">
                                                                             <strong for="">Customer/Debtor Name </strong>
-                                                                            <input required type="text" name="customer_name" value="<?= $app->customer_name ?? '' ?>"   placeholder="Customer Name"  class="form-control">
+                                                                            <input required disabled type="text" name="customer_name" value="<?= $app->customer_name ?? '' ?>"   placeholder="Customer Name"  class="form-control">
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-6 col-lg-6 col-sm-6 response">
                                                                         <div class="form-group">
                                                                             <strong for="">Amount</strong>
-                                                                            <input type="text" name="amount" value="<?= $app->cr_amount ?? '' ?>" class="form-control" placeholder="Amount">
+                                                                            <input type="text" disabled name="amount" value="<?= $app->cr_amount ?? '' ?>" class="form-control" placeholder="Amount">
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="row bg-light">
+                                                                <div class="row ">
                                                                     <div class="col-md-6 col-lg-6 col-sm-6 response">
                                                                         <div class="form-group">
                                                                             <strong for="">Transaction Date</strong>
-                                                                            <input type="text" required class="form-control" placeholder="Transaction Date" value="<?= date('d-M-Y', strtotime($app->cr_transaction_date)) ?? '' ?> " name="transaction_date" >
+                                                                            <input type="text" disabled required class="form-control" placeholder="Transaction Date" value="<?= date('d-M-Y', strtotime($app->cr_transaction_date)) ?? '' ?> " name="transaction_date" >
                                                                             
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-6 col-lg-6 col-sm-6 response">
                                                                         <div class="form-group">
                                                                             <strong for="">Phone No.</strong>
-                                                                            <input type="text" required  name="phone_no" value="<?= $app->phone_no ?? '' ?>" placeholder="Phone Number"  class="form-control">
+                                                                            <input type="text" disabled required  name="phone_no" value="<?= $app->phone_no ?? '' ?>" placeholder="Phone Number"  class="form-control">
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="row bg-light">
+                                                                <div class="row ">
                                                                     <div class="col-md-6 col-lg-6 col-sm-6 response">
                                                                         <div class="form-group">
                                                                             <strong for="">GL Account Code</strong>
@@ -105,10 +100,11 @@
                                                                     </div>
                                                                     
                                                                 </div>
-                                                                <div class="row">
-                                                                    <div class="col-md-12">
-                                                                <input type="hidden" name="customer_receivable" value="<?= $app->customer_receivable_id ?>">
-                                                                <input type="hidden" name="receivable_status" value="verified">
+                                                                <hr>
+                                                                <div class="row p-3">
+                                                                    <div class="col-md-12 d-flex justify-content-center">
+                                                                        <input type="hidden" name="customer_receivable" value="<?= $app->customer_receivable_id ?>">
+                                                                        <input type="hidden" name="receivable_status" value="verified">
                                                                         <div class="btn-group">
                                                                             <button class="btn-sm btn btn-warning text-white" type="submit">Verify</button>
                                                                         </div>

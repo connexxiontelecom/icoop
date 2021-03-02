@@ -52,7 +52,7 @@ class LoanModel extends Model{
     public function getApprovedLoans(){
         $builder = $this->db->table('loans');
         $builder->join('cooperators', 'cooperators.cooperator_staff_id = loans.staff_id');
-        $builder->join('loan_setups', 'loans.loan_type = loan_setups.interest_method');
+        $builder->join('loan_setups', 'loans.loan_type = loan_setups.loan_setup_id');
         $builder->where('loans.cart = 0');
         return $builder->get()->getResultObject();
     }
@@ -60,7 +60,7 @@ class LoanModel extends Model{
     public function getItemsInCart(){
         $builder = $this->db->table('loans');
         $builder->join('cooperators', 'cooperators.cooperator_staff_id = loans.staff_id');
-        $builder->join('loan_setups', 'loans.loan_type = loan_setups.interest_method');
+        $builder->join('loan_setups', 'loans.loan_type = loan_setups.loan_setup_id');
         $builder->join('banks', 'cooperators.cooperator_bank_id = banks.bank_id');
         $builder->where('loans.cart = 1');
 		$builder->where('loans.scheduled = 0');

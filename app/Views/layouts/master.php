@@ -255,8 +255,6 @@
                                     <a href="javascript:void(0);" class="has-arrow"><i class="fa fa-money"></i><span>Payments</span></a>
                                     
                                     <ul>
-
-
 										<li class="header">Member Payments</li>
 										<li><a href="<?=site_url('/loan/new-payment-schedule') ?>">Payment Schedule</a></li>
 										<li><a href="<?=base_url('/loan/payment-schedules') ?>">Verify</a></li>
@@ -264,22 +262,10 @@
 										<li class="header">3rd Party Payments</li>
 										<li><a href="<?=site_url('/third-party/payment/entry') ?>">Entry</a></li>
 										<li><a href="<?=base_url('/third-party/new-payment') ?>">New Payment</a></li>
-										<li><a href="<?=base_url('upload_routine') ?>">Verify</a></li>
-										<li><a href="<?=base_url('upload_routine') ?>">Approve</a></li>
-
+										<li><a href="<?=base_url('/third-party/verify-payment-entry') ?>">Verify</a></li>
+										<li><a href="<?=base_url('/third-party/approve-payment-entry') ?>">Approve</a></li>
                                     </ul>
                                     
-                                </li>
-
-                                <li>
-                                    <a href="#" class="has-arrow"><i class="fa fa-money"></i><span>Receivables</span></a>
-                                    <ul>
-                                        <li><a href="<?=site_url('/third-party/receivable/customer-setup') ?>">Customer Setup</a></li>
-                                        <li><a href="<?=site_url('/third-party/receivable/customer-setup-list') ?>">Customer Setup List</a></li>
-                                        <li><a href="<?=site_url('/third-party/receivable/new') ?>">New Receivable</a></li>
-                                        <li><a href="<?=site_url('/third-party/receivable/unverified') ?>">Verify</a></li>
-                                        <li><a href="<?=site_url('/third-party/receivable/verified') ?>">Approve</a></li>
-                                    </ul>
                                 </li>
 
                                 <li><a href="#" class="has-arrow"><i class="fa fa-arrow-down"></i><span>Receipts</span></a>
@@ -289,8 +275,11 @@
 										<li><a href="<?=base_url('verify_receipt') ?>">Verify</a></li>
 										<li><a href="<?=base_url('approve_receipt') ?>">Approve</a></li>
 										<li class="header">Third Party</li>
-										<li><a href="<?=base_url('new_third') ?>">New</a></li>
-										<li><a href="<?=base_url('verify_third') ?>">Verify</a></li>
+										<li><a href="<?=site_url('/third-party/receivable/customer-setup') ?>">Customer Setup</a></li>
+                                        <li><a href="<?=site_url('/third-party/receivable/customer-setup-list') ?>">Customer Setup List</a></li>
+                                        <li><a href="<?=site_url('/third-party/receivable/new') ?>">New Receivable</a></li>
+                                        <li><a href="<?=site_url('/third-party/receivable/unverified') ?>">Verify</a></li>
+                                        <li><a href="<?=site_url('/third-party/receivable/verified') ?>">Approve</a></li>
 									</ul>
 								
 								
