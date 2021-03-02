@@ -22,6 +22,12 @@ class JournalVoucher extends BaseController
     
 	public function create(){
         $username = $this->session->user_username;
+        $jv_entry = "JV".rand(10,100);
+        while($this->jv->find(['ref_no' => $jv_entry])):
+	        $jv_entry = "JV".rand(10,100);
+	        
+	        endwhile;
+	     $data['jv_entry'] = $jv_entry;
         $data['accounts'] = $this->coa->findAll();
         $this->authenticate_user($username, 'pages/jv/create',$data);
     }
