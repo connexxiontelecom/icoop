@@ -27,35 +27,11 @@
                         <h6 class="sub-title p-3  text-uppercase"> New Receivable</h6>
                         <form enctype="multipart/form-data" action="<?= site_url('/third-party/receivable/new') ?>" autocomplete="off" method="POST" data-parsley-validate="" id="loanSetupForm">
                                 <?= csrf_field() ?>
-                                    <div class="row bg-light">
-                                        <div class="col-md-6 col-lg-6 col-sm-6">
-                                            <div class="form-group">
-                                                <strong for="">Payer/Customer</strong>
-                                                <select name="customer"  id="customer" class="form-control">
-                                                    <option disabled selected>--Select payer/customer--</option>
-                                                    <?php foreach($customers as $customer) : ?>
-                                                        <option value="<?= $customer['customer_setup_id']  ?? '' ?>"><?= $customer['customer_name'] ?? '' ?> </option>
-                                                    <?php endforeach; ?>
-                                                </select>
-                                            </div>
-                                        </div>
+                                    <div class="row">
                                         <div class="col-md-6 col-lg-6 col-sm-6">
                                             <div class="form-group">
                                                 <strong for="">Transaction Date</strong>
                                                 <input name="transaction_date" required id="transaction_date" type="date" class="form-control">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row bg-light">
-                                        <div class="col-md-6 col-lg-6 col-sm-6">
-                                            <div class="form-group">
-                                                <strong for="">Bank</strong>
-                                                <select name="coop_bank" id="coop_bank" class="form-control">
-                                                    <option selected disabled>--Select bank--</option>
-                                                    <?php foreach($coopbanks as $bank): ?>
-                                                        <option value="<?= $bank->coop_bank_id ?? '' ?>"><?= $bank->account_no ?? '' ?> - <?= $bank->bank_name ?? '' ?> </option>
-                                                    <?php endforeach; ?>
-                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-md-6 col-lg-6 col-sm-6">
@@ -64,8 +40,30 @@
                                                 <input type="text" required  name="amount" id="amount" placeholder="Amount"  class="number form-control">
                                             </div>
                                         </div>
+                                       
+                                        
                                     </div>
-                                    <div class="row bg-light">
+                                    <div class="row ">
+                                        <div class="col-md-6 col-lg-6 col-sm-6">
+                                            <div class="form-group">
+                                                <strong for="">Coop Bank</strong>
+                                                <select name="coop_bank" id="coop_bank" class="form-control">
+                                                    <option selected disabled>--Select bank--</option>
+                                                    <?php foreach($coopbanks as $bank): ?>
+                                                        <option value="<?= $bank->coop_bank_id ?? '' ?>"><?= $bank->account_no ?? '' ?> - <?= $bank->bank_name ?? '' ?> </option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                         <div class="col-md-6 col-lg-6 col-sm-6">
+                                            <div class="form-group">
+                                                <strong for="">Purpose</strong>
+                                                <textarea name="purpose" id="purpose" placeholder="Purpose" style="resize:none;" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="row ">
                                         <div class="col-md-6 col-lg-6 col-sm-6">
                                             <div class="form-group">
                                                 <strong for="">GL CR.</strong>
@@ -79,12 +77,16 @@
                                         </div>
                                         <div class="col-md-6 col-lg-6 col-sm-6">
                                             <div class="form-group">
-                                                <strong for="">Purpose</strong>
-                                                <textarea name="purpose" id="purpose" placeholder="Purpose" style="resize:none;" class="form-control"></textarea>
+                                                <strong for="">Payer/Customer</strong>
+                                                <select name="customer"  id="customer" class="form-control">
+                                                    <option disabled selected>--Select payer/customer--</option>
+                                                    <?php foreach($customers as $customer) : ?>
+                                                        <option value="<?= $customer['customer_setup_id']  ?? '' ?>"><?= $customer['customer_name'] ?? '' ?> </option>
+                                                    <?php endforeach; ?>
+                                                </select>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row bg-light">
+                                       
                                     </div>
                                     </div>
                                     

@@ -204,7 +204,7 @@ Loan Application Details
                                     <tr>
                                         <td class="text-nowrap">Payment Duration</td>
                                         <td>
-                                            <input type="number" placeholder="Payment Duration (Ex. 3) in months" class="form-control col-md-6">
+                                            <input type="number" value="<?php $application->verify == 1 ? $application->duration : '' ?>" placeholder="Payment Duration (Ex. 3) in months" class="form-control col-md-6">
                                         </td>
                                     </tr>
                                     <tr>
