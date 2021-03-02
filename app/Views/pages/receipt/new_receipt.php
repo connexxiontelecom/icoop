@@ -293,95 +293,94 @@ New Receipt
         for (index = 0; index < master_inputs.length; ++index) {
             if (master_inputs[index].name === 'payment_amount[]') {
                 // console.log('i changed target');
-
                 payment_amount =  parseFloat(master_inputs[index].value.replace(/,/g, '')) + payment_amount;
+              }
+        }
 
-                if(payment_amount >= master_amount){
-                    alert('Cannot add new fields detail sum already equal to master sum ')
-                   
-                } else{
-                    let elem = document.getElementById('payment_details1');
-                    if (elem.style.display === 'none') {
-                        elem.style.display = 'block';
+        if(payment_amount >= master_amount){
+            alert('Cannot add new fields detail sum already equal to master sum ')
+
+        }
+        if(payment_amount < master_amount){
+            let elem = document.getElementById('payment_details1');
+            if (elem.style.display === 'none') {
+                elem.style.display = 'block';
+            }
+            else {
+                // Create a copy of it
+                let clone = elem.cloneNode(true);
+                // Update the ID and add a class
+                let count_clones = clones_id.length;
+                let count_cloness = count_clones + 1;
+
+                let n = clones_id.includes(count_cloness);
+
+                while(n === true){
+                    count_cloness = count_cloness + 1;
+                    n = clones_id.includes(count_cloness);
+                }
+
+                clone.id = 'payment_details'+count_cloness;
+                // document.getElementById('work_experiences').appendChild(clone);
+                let payments = document.getElementById('payments');
+
+                let clone_button = document.getElementById('clone_button');
+                //clone.insertBefore(work_experience_button);
+                payments.insertBefore(clone, clone_button)
+                clones_id.push(count_cloness)
+
+                let new_elem = document.getElementById('payment_details'+count_clones);
+                // Inject it into the DOM
+
+
+                // inputs = elem.getElementsByTagName('textarea');
+                // for (index = 0; index < inputs.length; ++index) {
+                //     // if(inputs[index].type == 'textarea')
+                //     inputs[index].value = '';
+                // }
+                // var textarea = elem.getElementsByTagName('textarea');
+                // textarea.value = '';
+
+                // console.log(new_elems);
+                elem.after(new_elem);
+
+
+                //document.getElementById('temp_id').id = "target"+count_cloness ;
+                //document.getElementById('payment_type1').id = "payment_type"+count_cloness ;
+                //console.log(clones_id);
+
+
+
+                let new_id = 'payment_details'+count_cloness;
+
+                let inputs = $("#" + new_id).find("select, input");
+                let index;
+                for (index = 0; index < inputs.length; ++index) {
+                    if (inputs[index].name === 'target[]') {
+                        // console.log('i changed target');
+                        inputs[index].id = "target" + count_cloness;
+                        inputs[index].value = '';
                     }
-                    else {
-                        // Create a copy of it
-                        let clone = elem.cloneNode(true);
-                        // Update the ID and add a class
-                        let count_clones = clones_id.length;
-                        let count_cloness = count_clones + 1;
 
-                        let n = clones_id.includes(count_cloness);
+                }
 
-                        while(n === true){
-                            count_cloness = count_cloness + 1;
-                            n = clones_id.includes(count_cloness);
-                        }
-
-                        clone.id = 'payment_details'+count_cloness;
-                        // document.getElementById('work_experiences').appendChild(clone);
-                        let payments = document.getElementById('payments');
-
-                        let clone_button = document.getElementById('clone_button');
-                        //clone.insertBefore(work_experience_button);
-                        payments.insertBefore(clone, clone_button)
-                        clones_id.push(count_cloness)
-
-                        let new_elem = document.getElementById('payment_details'+count_clones);
-                        // Inject it into the DOM
-
-
-                        // inputs = elem.getElementsByTagName('textarea');
-                        // for (index = 0; index < inputs.length; ++index) {
-                        //     // if(inputs[index].type == 'textarea')
-                        //     inputs[index].value = '';
-                        // }
-                        // var textarea = elem.getElementsByTagName('textarea');
-                        // textarea.value = '';
-
-                        // console.log(new_elems);
-                        elem.after(new_elem);
-
-
-                        //document.getElementById('temp_id').id = "target"+count_cloness ;
-                        //document.getElementById('payment_type1').id = "payment_type"+count_cloness ;
-                        //console.log(clones_id);
-
-
-
-                        let new_id = 'payment_details'+count_cloness;
-
-                        let inputs = $("#" + new_id).find("select, input");
-                        let index;
-                        for (index = 0; index < inputs.length; ++index) {
-                            if (inputs[index].name === 'target[]') {
-                                // console.log('i changed target');
-                                inputs[index].id = "target" + count_cloness;
-                                inputs[index].value = '';
-                            }
-
-                        }
-
-                        for (index = 0; index < inputs.length; ++index) {
-                            if (inputs[index].name === 'payment_type[]') {
-                                //console.log('i changed payment type');
-                                inputs[index].id = "payment_type" + count_cloness;
-                                inputs[index].value = '';
-                            }
-                        }
-
-                        for (index = 0; index < inputs.length; ++index) {
-                            if (inputs[index].name === 'payment_amount[]') {
-                                inputs[index].id = "payment_amount" + count_cloness;
-                                inputs[index].value = '';
-                            }
-                        }
-
-
-
+                for (index = 0; index < inputs.length; ++index) {
+                    if (inputs[index].name === 'payment_type[]') {
+                        //console.log('i changed payment type');
+                        inputs[index].id = "payment_type" + count_cloness;
+                        inputs[index].value = '';
                     }
-                    
-				}
+                }
+
+                for (index = 0; index < inputs.length; ++index) {
+                    if (inputs[index].name === 'payment_amount[]') {
+                        inputs[index].id = "payment_amount" + count_cloness;
+                        inputs[index].value = '';
+                    }
+                }
+
+
+
             }
 
         }
@@ -538,13 +537,42 @@ New Receipt
                if(payment_amount > master_amount){
 					alert('Detail sum amount exceeds master amount ')
                    master_inputs[index].value = '';
+			   }else{
+
+                   var currentVal =  master_inputs[index].value;
+                   var testDecimal = testDecimals(currentVal);
+                   if (testDecimal.length > 1) {
+                       //console.log("You cannot enter more than one decimal point");
+                       currentVal = currentVal.slice(0, -1);
+                   }
+                   master_inputs[index].value = replaceCommas(currentVal);
+                   
+                   
+                   //master_inputs[index].value = 'aaaaa';
+                   //console.log(master_inputs[index].value.toLocaleString());
 			   }
             }
 
         }
         //console.log(payment_amount);
 	}
-    
+
+    function testDecimals(currentVal) {
+        var count;
+        currentVal.match(/\./g) === null ? count = 0 : count = currentVal.match(/\./g);
+        return count;
+    }
+
+    function replaceCommas(yourNumber) {
+        var components = yourNumber.toString().split(".");
+        if (components.length === 1)
+            components[0] = yourNumber;
+        components[0] = components[0].replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+        if (components.length === 2)
+            components[1] = components[1].replace(/\D/g, "");
+        return components.join(".");
+    }
     
     
 

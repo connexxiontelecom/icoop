@@ -100,6 +100,8 @@
 				$rm['rm_status'] = 0;
 				$x = 0;
 				$total_amount = 0;
+				$rm['rm_a_date'] = date("Y-m-d");
+				$rm['rm_by'] = $this->session->user_username;
 				$payment_amounts = $_POST['payment_amount'];
 				foreach ($payment_amounts as $payment_amount):
 					$payment_amount= str_replace(',', '', $payment_amount);
@@ -115,7 +117,7 @@
 						$target = $_POST['target'];
 						
 						// do the computation here
-						//if any of this computation fails, it means  someone tampered the js on the fronten
+						//if any of this computation fails, it means  someone tampered the js on the frontend
 						
 						$rm_id = $this->rm->insert($rm);
 						
