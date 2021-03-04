@@ -28,6 +28,12 @@ class CustomerReceivableModel extends Model{
             return $builder->get()->getResultObject();
      }
 
+      public function getCustomer($id){
+        $builder = $this->db->table('customer_receivables');
+        $builder->where('customer_receivable_id = '.$id);
+        return $builder->get()->getRowObject();
+    }
+
 }
 
 ?>

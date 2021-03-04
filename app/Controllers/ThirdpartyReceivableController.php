@@ -26,6 +26,7 @@ class ThirdpartyReceivableController extends BaseController
         $this->session = session();
         $this->coa = new CoaModel;
         $this->coopbank = new CoopBankModel;
+        $this->gl = new GlModel;
         $this->customersetup = new CustomerSetupModel;
         $this->customerreceivable = new CustomerReceivableModel;
     }
@@ -158,6 +159,26 @@ class ThirdpartyReceivableController extends BaseController
                     'cr_date_approve'=>date('Y-m-d H:i:s'),
                     'cr_approved_by'=>'Joseph' 
                 ];
+                #customer
+                $customer = $this->customerreceivable->getCustomer($this->request->getVar('customer_receivable'));
+                $bank = $this->coopbank->getBank($customer->cr_coop_bank_id);
+                $ref = time();
+                $glcr = [
+                    'glcode'=>$customer->cr_gl_cr,
+                    'cr_amount'=>$customer->cr_amount,
+                    'dr_amount'=>0,
+                    'ref_no'=>$ref,
+                    'narration'=>'receipt approved',
+                ];
+                $this->gl->save($glcr);
+                $gldr = [
+                    'glcode'=>$bank->glcode,
+                    'dr_amount'=>$customer->cr_amount,
+                    'cr_amount'=>0,
+                    'ref_no'=>$ref,
+                    'narration'=>'receipt approved',
+                ];
+                $this->gl->save($gldr);
             }
 					$this->customerreceivable->save($data);
 					$alert = array(

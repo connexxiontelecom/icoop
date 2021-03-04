@@ -280,6 +280,9 @@
                                         <li><a href="<?=site_url('/third-party/receivable/new') ?>">New Receivable</a></li>
                                         <li><a href="<?=site_url('/third-party/receivable/unverified') ?>">Verify</a></li>
                                         <li><a href="<?=site_url('/third-party/receivable/verified') ?>">Approve</a></li>
+										<li class="header">Report</li>
+										<li><a href="<?=site_url('/third-party/receivable/customer-setup') ?>">Report</a></li>
+                                        
 									</ul>
 								
 								

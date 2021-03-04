@@ -1,42 +1,46 @@
 <?= $this->extend('layouts/master') ?>
 
 <?= $this->section('title') ?>
-    Approve Receivables 
+    Approve Receipt 
 <?= $this->endSection() ?>
 <?= $this->section('current_page') ?>
-   Approve Receivables 
+   Approve Receipt 
 <?= $this->endSection() ?>
 
 <?= $this->section('page_crumb') ?>
-    Approve Receivables 
+    Approve Receipt 
 <?= $this->endSection() ?>
 
 <?= $this->section('extra-styles') ?>
     <link href="/assets/css/parsley.min.css" rel="stylesheet">
     <link href="/assets/css/toastify.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/vendor/sweetalert/sweetalert.css"/>
+    <link rel="stylesheet" href="/assets/css/toastify.min.css"/>
+    <link rel="stylesheet" href="/assets/css/datatable.min.css"/>
 <?= $this->endSection() ?>
 
 
 <?= $this->section('content') ?>
 
     <div class="card">
-        <div class="card-block">
-            <div class="container">
-                <div class="row m-b-30">
+        <div class="card-body">
+                <div class="row ">
                     <div class="col-lg-12 col-md-12 col-xl-12">
-                        <h6 class="sub-title p-3  text-uppercase">Approve Receivables </h6>
+                        <h6 class="sub-title p-3  text-uppercase">Approve Receipt </h6>
                         <div class="table-responsive">
-                    <table class="table table-bordered dataTable js-exportable simpletable" id="stateTable">
+                    <table class="table table-hover table-bordered" id="scheduledPaymentTable">
+                        <thead>
+                            <tr>
+                                <td>#</td>
+                                <td>Customer Name</td>
+                                <td>Amount</td>
+                                <td>Date</td>
+                                <td>Bank</td>
+                                <td>GL Account</td>
+                                <td>Action</td>
+                            </tr>
                         
-                        <tr>
-                            <th>#</th>
-                            <th>Customer Name</th>
-                            <th>Amount</th>
-                            <th>Date</th>
-                            <th>Bank</th>
-                            <th>GL Account</th>
-                            <th>Action</th>
-                        </tr>
+                        </thead>
 
                         <tbody>
                         
@@ -54,7 +58,7 @@
                                         <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">Action</h5>
+                                                        <h5 class="modal-title" id="exampleModalLabel">Receipt Detail</h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
@@ -125,14 +129,22 @@
                     </table>
                 </div>
                 </div>
-            </div>
         </div>
     </div>
 
 <?= $this->endSection() ?>
 
 <?= $this->section('extra-scripts') ?>
+<script src="/assets/bundles/vendorscripts.bundle.js"></script>
+
+<script src="/assets/vendor/sweetalert/sweetalert.min.js"></script><!-- SweetAlert Plugin Js -->
+<script src="/assets/js/common.js"></script>
     <script src="/assets/js/parsley.min.js"></script>
     <script src="/assets/js/toastify.min.js"></script>
-    
+    <script src="/assets/js/datatables.min.js"></script>
+<script>
+$(document).ready(function(){
+    $('#scheduledPaymentTable').DataTable();
+});
+</script>
 <?= $this->endSection() ?>
