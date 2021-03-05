@@ -153,7 +153,7 @@ Approve Receipts
 												<tr>
 													<th>#</th>
 													<th>Target</th>
-													<th>Amount</th>
+													<th style="text-align: right">Amount</th>
 												</tr>
 												</thead>
 												<tbody>
@@ -166,7 +166,7 @@ Approve Receipts
 												<tr>
 													<td scope="row"><?=$t; ?></td>
 													<td><?=$target['loan_description']; ?></td>
-													<td><?=number_format($target['rd_amount'], 2); ?></td>
+													<td style="text-align: right"><?=number_format($target['rd_amount'], 2); ?></td>
 													
 												</tr>
 												<?php  endif;
@@ -177,7 +177,7 @@ Approve Receipts
 													<tr>
 														<td scope="row"><?=$t; ?></td>
 														<td><?=$target['contribution_type_name']; ?></td>
-														<td><?=number_format($target['rd_amount'], 2); ?></td>
+														<td style="text-align: right"><?=number_format($target['rd_amount'], 2); ?></td>
 													
 													</tr>
 												<?php endif;?>
