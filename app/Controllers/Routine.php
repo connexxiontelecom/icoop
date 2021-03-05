@@ -2,6 +2,7 @@
 
 
 namespace App\Controllers;
+use App\Models\GlModel;
 use App\Models\PayrollGroups;
 use App\Models\ContributionTypeModel;
 use DateTime;
@@ -17,6 +18,8 @@ use App\Models\LoanRepaymentModel;
 use App\Models\LoanExceptionModel;
 use App\Models\TempLoanRepaymentModel;
 use App\Models\LoanSetupModel;
+use App\Models\CoaModel;
+
 
 
 class Routine extends BaseController
@@ -35,6 +38,8 @@ class Routine extends BaseController
         $this->le = new LoanExceptionModel();
         $this->temp_lr = new TempLoanRepaymentModel();
         $this->ls = new LoanSetupModel();
+	    $this->gl = new GlModel();
+	    $this->coa = new CoaModel();
 
     }
     
@@ -359,7 +364,42 @@ class Routine extends BaseController
 	                );
 	
 	
-	          $v =   $this->pd->save($payment_details_array);
+	            $v =   $this->pd->save($payment_details_array);
+		       
+		        $wt = $this->contribution_type->where('contribution_type_id', $temp_payment['temp_pd_ct_id'])->first();
+		        $account = $this->coa->where('glcode', $wt['contribution_type_glcode'])->first();
+		        
+		        $bankGl = array(
+			        'glcode' => $wt['contribution_type_glcode'],
+			        'posted_by' => $this->session->user_username,
+			        'narration' => $temp_payment['temp_pd_narration'],
+			        'dr_amount' => 0,
+			        'cr_amount' => $temp_payment['temp_pd_amount'],
+			        'ref_no' =>$temp_payment['temp_pd_ref_code'],
+			        'bank' => $account['bank'],
+			        'ob' => 0,
+			        'posted' => 1,
+			        'created_at' =>  date('Y-m-d'),
+		        );
+		        $this->gl->save($bankGl);
+		
+				//debit payroll
+		        //$wt = $this->ct->where('contribution_type_id', $temp_payment['temp_pd_ct_id'])->first();
+		        $account = $this->coa->where('glcode', $wt['payroll_code'])->first();
+		
+		        $bankGl = array(
+			        'glcode' => $wt['payroll_code'],
+			        'posted_by' => $this->session->user_username,
+			        'narration' => $temp_payment['temp_pd_narration'],
+			        'dr_amount' => $temp_payment['temp_pd_amount'],
+			        'cr_amount' => 0,
+			        'ref_no' =>$temp_payment['temp_pd_ref_code'],
+			        'bank' => $account['bank'],
+			        'ob' => 0,
+			        'posted' => 1,
+			        'created_at' =>  date('Y-m-d'),
+		        );
+		        $this->gl->save($bankGl);
 		       
 	
 	        else:
@@ -549,8 +589,41 @@ class Routine extends BaseController
 								
 								
 								);
-								
 								$j = $this->lr->save($lr_array);
+								
+								//debit loan account
+								$account = $this->coa->where('glcode', $active_loan->loan_gl_account_no)->first();
+								$bankGl = array(
+									'glcode' => $active_loan->loan_gl_account_no,
+									'posted_by' => $this->session->user_username,
+									'narration' => 'Interest Due for '.$monthName.', '.$year. 'for '.$active_loan->loan_description,
+									'dr_amount' => $interest_amount,
+									'cr_amount' => 0,
+									'ref_no' => $ref_code,
+									'bank' => $account['bank'],
+									'ob' => 0,
+									'posted' => 1,
+									'created_at' => $date,
+								);
+								  $this->gl->save($bankGl);
+								
+								//credit interest account
+								$account = $this->coa->where('glcode', $active_loan->loan_int_income_gl_account_no)->first();
+								$bankGl = array(
+									'glcode' => $active_loan->loan_int_income_gl_account_no,
+									'posted_by' => $this->session->user_username,
+									'narration' => 'Interest Due for '.$monthName.', '.$year. 'for '.$active_loan->loan_description,
+									'dr_amount' => 0,
+									'cr_amount' => $interest_amount,
+									'ref_no' => $ref_code,
+									'bank' => $account['bank'],
+									'ob' => 0,
+									'posted' => 1,
+									'created_at' => $date,
+								);
+								 $this->gl->save($bankGl);
+								
+								
 								
 								$loan_details = $this->loan->where(['loan_id' => $active_loan->loan_id])->first();
 								$loan_interest_amount = $loan_details['interest'] + $interest_amount;
@@ -592,6 +665,37 @@ class Routine extends BaseController
 								);
 								
 								$j = $this->lr->save($lr_array);
+								
+								$account = $this->coa->where('glcode', $active_loan->loan_gl_account_no)->first();
+								$bankGl = array(
+									'glcode' => $active_loan->loan_gl_account_no,
+									'posted_by' => $this->session->user_username,
+									'narration' => 'Interest Due for '.$monthName.', '.$year. 'for '.$active_loan->loan_description,
+									'dr_amount' => $interest_amount,
+									'cr_amount' => 0,
+									'ref_no' => $ref_code,
+									'bank' => $account['bank'],
+									'ob' => 0,
+									'posted' => 1,
+									'created_at' => $date,
+								);
+								$this->gl->save($bankGl);
+								
+								//credit interest account
+								$account = $this->coa->where('glcode', $active_loan->loan_int_income_gl_account_no)->first();
+								$bankGl = array(
+									'glcode' => $active_loan->loan_int_income_gl_account_no,
+									'posted_by' => $this->session->user_username,
+									'narration' => 'Interest Due for '.$monthName.', '.$year. 'for '.$active_loan->loan_description,
+									'dr_amount' => 0,
+									'cr_amount' => $interest_amount,
+									'ref_no' => $ref_code,
+									'bank' => $account['bank'],
+									'ob' => 0,
+									'posted' => 1,
+									'created_at' => $date,
+								);
+								$this->gl->save($bankGl);
 								
 								$loan_details = $this->loan->where(['loan_id' => $active_loan->loan_id])->first();
 								$loan_interest_amount = $loan_details['interest'] + $interest_amount;
@@ -1057,6 +1161,38 @@ class Routine extends BaseController
 			
 			
 			$v =   $this->lr->save($loan_repayment);
+			
+			$account = $this->coa->where('glcode', $loans->payroll_gl)->first();
+			$bankGl = array(
+				'glcode' => $loans->payroll_gl,
+				'posted_by' => $this->session->user_username,
+				'narration' => $temp_payment['temp_lr_narration'],
+				'dr_amount' => $temp_payment['temp_lr_amount'],
+				'cr_amount' => 0,
+				'ref_no' =>$temp_payment['temp_lr_ref_code'],
+				'bank' => $account['bank'],
+				'ob' => 0,
+				'posted' => 1,
+				'created_at' => $temp_payment['temp_lr_transaction_date'],
+			);
+			$this->gl->save($bankGl);
+			
+			//credit interest account
+			$account = $this->coa->where('glcode', $loans->loan_gl_account_no)->first();
+			$bankGl = array(
+				'glcode' => $loans->loan_gl_account_no,
+				'posted_by' => $this->session->user_username,
+				'narration' => $temp_payment['temp_lr_narration'],
+				'dr_amount' => 0,
+				'cr_amount' => $temp_payment['temp_lr_amount'],
+				'ref_no' =>$temp_payment['temp_lr_ref_code'],
+				'bank' => $account['bank'],
+				'ob' => 0,
+				'posted' => 1,
+				'created_at' => $temp_payment['temp_lr_transaction_date'],
+			);
+			$this->gl->save($bankGl);
+			
 			
 			$loan_ledgers = $this->loan->get_loans_staff_id($staff_id, $loan_id);
 			
