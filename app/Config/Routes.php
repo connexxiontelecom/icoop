@@ -182,6 +182,10 @@ $routes->post('/third-party/receivable/new', 'ThirdpartyReceivableController::st
 $routes->get('/third-party/receivable/unverified', 'ThirdpartyReceivableController::showUnverifiedReceivable');
 $routes->get('/third-party/receivable/verified', 'ThirdpartyReceivableController::showVerifiedReceivable');
 $routes->post('/third-party/receivable/approve-decline-receivable', 'ThirdpartyReceivableController::approveDeclineReceivable');
+$routes->get('/third-party/receivable/report', 'ThirdpartyReceivableController::report');
+$routes->post('/third-party/receivable/report', 'ThirdpartyReceivableController::generateReport');
+$routes->get('/third-party/receivable/member-report', 'ThirdpartyReceivableController::memberReport');
+$routes->post('/third-party/receivable/member-report', 'ThirdpartyReceivableController::generateMemberReport');
 
 
 

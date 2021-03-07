@@ -34,6 +34,27 @@ class CustomerReceivableModel extends Model{
         return $builder->get()->getRowObject();
     }
 
+
+    public function generateThirdPartyReport($from, $to){
+        /* $builder = $this->db->table('customer_receivables');
+        $builder->where('cr_approve = 1');
+        $builder->where('cr_date_approved >= ', $from);
+        $builder->where('cr_date_approved <= ', $to);
+        return $builder->get()->getResultObject(); */
+
+        $builder = $this->db->table('customer_receivables');
+        $builder->join('coop_banks', 'customer_receivables.cr_coop_bank_id = coop_banks.coop_bank_id');
+        $builder->join('coas', 'coas.glcode = coop_banks.glcode');
+        $builder->join('customer_setups', 'customer_receivables.cr_customer_setup_id = customer_setups.customer_setup_id');
+        $builder->where('customer_receivables.cr_approve = 1');
+        $builder->where('customer_receivables.cr_date_approved >= ', $from);
+        $builder->where('customer_receivables.cr_date_approved <= ', $to);
+        return $builder->get()->getResultObject();
+
+
+
+    }
+
 }
 
 ?>

@@ -64,11 +64,17 @@ New Payment
                     </div>
                     <div class="row">
                         <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="">Reference No.</label>
-                                    <input type="text" required name="cheque_no" id="cheque_no" placeholder="Reference No." class=" form-control">
-                                </div>
+                            <div class="form-group">
+                                <label for="">Reference No.</label>
+                                <input type="text" required name="cheque_no" id="cheque_no" placeholder="Reference No." class=" form-control">
                             </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="">Attachment (PDF)</label>
+                                <input type="file" required name="attachment" class=" form-control-file">
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="row">

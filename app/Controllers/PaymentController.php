@@ -197,18 +197,33 @@ class PaymentController extends BaseController
 				],
             ];
             if($this->validate($rules)){
+                $filename = null;
+					
+                     $file = $this->request->getFile('attachment');
+                     if(!empty($file)){
+                         if($file->isValid() && !$file->hasMoved()){
+                            $extension = $file->guessExtension();
+                            $extension = strtolower($extension);
+                            if($extension == 'pdf'){
+		                            $filename = $file->getRandomName();
+                                    $file->move('.uploads/withdrawals', $filename);
+                            }
+                         }
+                     }
+
                 $amount = 0;
                 if(!is_null($this->request->getVar('coop_id')) ){
                         for($i = 0; $i<count($this->request->getVar('coop_id')); $i++ ){
                             $amount += $this->request->getVar('amount')[$i];
                         }
                     }
-                    //return dd($amount);
+                
 					$data = [
                         'payable_date'=>$this->request->getVar('payable_date'),
                         'bank_id'=>$this->request->getVar('bank'),
                         'creation_date'=>date('Y-m-d H:i:s'),
-                        'amount'=>$amount
+                        'amount'=>$amount,
+                        'attachment'=>$filename
 					];
                     
                     $masterId = $this->schedulemaster->insert($data);

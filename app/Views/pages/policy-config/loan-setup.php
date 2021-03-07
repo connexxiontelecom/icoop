@@ -220,8 +220,8 @@ Loan Setup
                                         <td scope="col"><?= $serial++ ?></td>
                                         <td scope="col"><?= $setup->loan_description ?></td>
                                         <td scope="col"><?= $setup->age_qualification ?> month(s)</td>
-                                        <td scope="col">₦<?= number_format($setup->min_credit_limit,2) ?></td>
-                                        <td scope="col">₦<?= number_format($setup->max_credit_limit,2) ?></td>
+                                        <td scope="col" class="text-right"><?= number_format($setup->min_credit_limit,2) ?></td>
+                                        <td scope="col" class="text-right"><?= number_format($setup->max_credit_limit,2) ?></td>
                                         <td scope="col"><?= $setup->max_repayment_periods ?></td>
                                         <td scope="col"><?= $setup->ls_interest_rate ?>%</td>
                                         <td scope="col"><?php if($setup->interest_method == 1){ echo "Flat"; }else if($setup->interest_method == 2){ echo "Monthly"; }else{ echo "Yearly"; }?></td>

@@ -109,6 +109,7 @@
                                                                     <input type="hidden" name="customer_receivable" value="<?= $app->customer_receivable_id ?>">
                                                                     <input type="hidden" name="receivable_status" value="verified">
                                                                     <div class="btn-group">
+                                                                        <button class="btn btn-danger btn-sm">Return</button>
                                                                         <button class="btn-sm btn btn-warning text-white" type="submit">Verify</button>
                                                                     </div>
                                                                 </div>
