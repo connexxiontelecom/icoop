@@ -302,8 +302,8 @@
 
                                     <ul>
                                         <li><a href="<?=base_url('chart-of-accounts') ?>">Chart of Accounts</a></li>
-                                        <li><a href="<?=base_url('journal-voucher') ?>">Journal Voucher</a></li>
-                                        <li><a href="<?=base_url('approve_application') ?>">Posting</a></li>
+                                        <li><a href="<?=base_url('new-journal-voucher') ?>">Journal Voucher</a></li>
+                                        <li><a href="<?=base_url('journal-voucher') ?>">Posting</a></li>
                                         <li><a href="<?=base_url('state') ?>">Location</a></li>
                                         <li><a href="#">Coop</a></li>
                                     </ul>

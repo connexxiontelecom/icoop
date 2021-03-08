@@ -15,7 +15,8 @@ use App\Models\CoaModel;
 use App\Models\ThirdPartyPaymentEntryModel; 
 use App\Models\EntryPaymentMasterModel; 
 use App\Models\EntryPaymentDetailModel; 
-use App\Models\GlModel; 
+use App\Models\GlModel;
+use App\Models\ContributionTypeModel;
 
 class PaymentController extends BaseController
 {
@@ -40,6 +41,8 @@ class PaymentController extends BaseController
         $this->entrypaymentdetail = new EntryPaymentDetailModel();
         $this->gl = new GlModel();
         $this->session = session();
+        $this->ct = new ContributionTypeModel();
+        $this->coa = new CoaModel();
     }
 
 
@@ -485,7 +488,27 @@ class PaymentController extends BaseController
                     );
 
                     $v =  $this->paymentdetail->save($payment_details_array);
-
+                    
+                    $wt = $this->ct->where('contribution_type_id', $withdraw['withdraw_ct_id'])->first();
+					
+                    //dr contribution type gl amount
+	                $account = $this->coa->where('glcode', $wt['contribution_type_glcode'])->first();
+	                $bankGl = array(
+		                'glcode' => $wt['contribution_type_glcode'],
+		                'posted_by' => $this->session->user_username,
+		                'narration' => $withdraw['withdraw_narration'],
+		                'dr_amount' => $withdraw['withdraw_amount'],
+		                'cr_amount' => 0,
+		                'ref_no' =>$ref_code,
+		                'bank' => $account['bank'],
+		                'ob' => 0,
+		                'posted' => 1,
+		                'created_at' => $payable_date,
+	                );
+	                $this->gl->save($bankGl);
+	
+	           
+	#########################################################-----------##########################
 	                $payment_details_array = array(
 		                'pd_staff_id' => $withdraw['withdraw_staff_id'],
 		                'pd_transaction_date' =>$payable_date,
@@ -500,6 +523,53 @@ class PaymentController extends BaseController
 	                $v =  $this->paymentdetail->save($payment_details_array);
 	
 	
+	                $wt = $this->ct->where('contribution_type_id', $withdraw['withdraw_ct_id'])->first();
+	
+	                //dr contribution type gl chargea=s
+	                $account = $this->coa->where('glcode', $wt['contribution_type_glcode'])->first();
+	                $bankGl = array(
+		                'glcode' => $wt['contribution_type_glcode'],
+		                'posted_by' => $this->session->user_username,
+		                'narration' => 'Charges on withdrawal',
+		                'dr_amount' => $withdraw['withdraw_charges'],
+		                'cr_amount' => 0,
+		                'ref_no' =>$ref_code,
+		                'bank' => $account['bank'],
+		                'ob' => 0,
+		                'posted' => 1,
+		                'created_at' => $payable_date,
+	                );
+	                $this->gl->save($bankGl);
+	
+	                
+	                //credit bank
+	                $bankGl = array(
+		                'glcode' => $bank->gl_code,
+		                'posted_by' => $this->session->user_username,
+		                'narration' => $withdraw['withdraw_narration'],
+		                'dr_amount' => 0,
+		                'cr_amount' => $withdraw['withdraw_amount'],
+		                'ref_no' =>$ref_code,
+		                'bank' => $account['bank'],
+		                'ob' => 0,
+		                'posted' => 1,
+		                'created_at' => $payable_date,
+	                );
+	                $this->gl->save($bankGl);
+	                
+	                $bankGl = array(
+		                'glcode' => $bank->gl_code,
+		                'posted_by' => $this->session->user_username,
+		                'narration' => 'Charges on withdrawal',
+		                'dr_amount' => 0,
+		                'cr_amount' => $withdraw['withdraw_charges'],
+		                'ref_no' =>$ref_code,
+		                'bank' => $account['bank'],
+		                'ob' => 0,
+		                'posted' => 1,
+		                'created_at' => $payable_date,
+	                );
+	                $this->gl->save($bankGl);
                 }
 
             }
