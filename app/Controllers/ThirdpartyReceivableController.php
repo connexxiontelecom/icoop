@@ -26,6 +26,7 @@ class ThirdpartyReceivableController extends BaseController
         $this->session = session();
         $this->coa = new CoaModel;
         $this->coopbank = new CoopBankModel;
+        $this->gl = new GlModel;
         $this->customersetup = new CustomerSetupModel;
         $this->customerreceivable = new CustomerReceivableModel;
     }
@@ -155,9 +156,29 @@ class ThirdpartyReceivableController extends BaseController
                 $data = [
                     'customer_receivable_id'=>$this->request->getVar('customer_receivable'),
                     'cr_approve'=>1,
-                    'cr_date_approve'=>date('Y-m-d H:i:s'),
+                    'cr_date_approved'=>date('Y-m-d H:i:s'),
                     'cr_approved_by'=>'Joseph' 
                 ];
+                #customer
+                $customer = $this->customerreceivable->getCustomer($this->request->getVar('customer_receivable'));
+                $bank = $this->coopbank->getBank($customer->cr_coop_bank_id);
+                $ref = time();
+                $glcr = [
+                    'glcode'=>$customer->cr_gl_cr,
+                    'cr_amount'=>$customer->cr_amount,
+                    'dr_amount'=>0,
+                    'ref_no'=>$ref,
+                    'narration'=>'receipt approved',
+                ];
+                $this->gl->save($glcr);
+                $gldr = [
+                    'glcode'=>$bank->glcode,
+                    'dr_amount'=>$customer->cr_amount,
+                    'cr_amount'=>0,
+                    'ref_no'=>$ref,
+                    'narration'=>'receipt approved',
+                ];
+                $this->gl->save($gldr);
             }
 					$this->customerreceivable->save($data);
 					$alert = array(
@@ -166,6 +187,68 @@ class ThirdpartyReceivableController extends BaseController
                             'location' => site_url('/third-party/receivable/customer-setup-list')
                         );
             return view('pages/sweet-alert', $alert);
+        }
+    }
+
+    public function report(){
+        $from = date('Y-m-d');
+        $to =   date('Y-m-d');
+         $data = [
+          'result'=>$this->customerreceivable->generateThirdPartyReport($from, $to),
+          'from'=>$from,
+          'to'=>$to,
+          'accounts'=> $this->coa->where('type',1)->findAll()
+        ];
+        $username = $this->session->user_username;
+        $this->authenticate_user($username, 'pages/receivables/3rd-party-report', $data);
+    }
+
+
+
+    public function generateReport(){
+        helper(['form']);
+        $data = [];
+        $from = $this->request->getVar('from') ?? date('Y-m-d');
+        $to =  $this->request->getVar('to') ?? date('Y-m-d');
+        if($_POST){
+            $data = [
+                'result'=>$this->customerreceivable->generateThirdPartyReport($from, $to),
+                'from'=>$from,
+                'to'=>$to,
+                'accounts'=> $this->coa->where('type',1)->findAll()
+            ];
+            $username = $this->session->user_username;
+        $this->authenticate_user($username, 'pages/receivables/3rd-party-report', $data);
+        }
+    }
+
+    public function memberReport(){
+        $from = date('Y-m-d');
+        $to =   date('Y-m-d');
+         $data = [
+          'result'=>$this->customerreceivable->generateThirdPartyReport($from, $to),
+          'from'=>$from,
+          'to'=>$to,
+          'accounts'=> $this->coa->where('type',1)->findAll()
+        ];
+        $username = $this->session->user_username;
+        $this->authenticate_user($username, 'pages/receivables/member-report', $data);
+    }
+
+    public function generateMemberReport(){
+        helper(['form']);
+        $data = [];
+        $from = $this->request->getVar('from') ?? date('Y-m-d');
+        $to =  $this->request->getVar('to') ?? date('Y-m-d');
+        if($_POST){
+            $data = [
+                'result'=>$this->customerreceivable->generateThirdPartyReport($from, $to),
+                'from'=>$from,
+                'to'=>$to,
+                'accounts'=> $this->coa->where('type',1)->findAll()
+            ];
+            $username = $this->session->user_username;
+        $this->authenticate_user($username, 'pages/receivables/member-report', $data);
         }
     }
     

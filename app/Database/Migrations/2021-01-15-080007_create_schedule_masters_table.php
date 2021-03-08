@@ -67,6 +67,10 @@ class CreateScheduleMastersTable extends Migration
 					'type' => 'INT',
 					'null'=>true,
 				],
+				'attachment' =>[
+					'type' => 'TEXT',
+					'null'=>true,
+				],
 
 
 			]

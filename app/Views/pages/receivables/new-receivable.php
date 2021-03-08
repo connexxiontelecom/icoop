@@ -1,14 +1,14 @@
 <?= $this->extend('layouts/master') ?>
 
 <?= $this->section('title') ?>
-    New Receivable
+    New Receipt
 <?= $this->endSection() ?>
 <?= $this->section('current_page') ?>
-    New Receivable
+    New Receipt
 <?= $this->endSection() ?>
 
 <?= $this->section('page_crumb') ?>
-     New Receivable
+     New Receipt
 <?= $this->endSection() ?>
 
 <?= $this->section('extra-styles') ?>
@@ -34,16 +34,6 @@
                                     </div>
                                     <div class="col-md-6 col-lg-6 col-sm-6">
                                         <div class="form-group">
-                                            <strong for="">Amount</strong>
-                                            <input type="text"  required  name="amount" id="amount" placeholder="Amount"  class="number form-control">
-                                        </div>
-                                    </div>
-                                    
-                                    
-                                </div>
-                                <div class="row ">
-                                    <div class="col-md-6 col-lg-6 col-sm-6">
-                                        <div class="form-group">
                                             <strong for="">Coop Bank</strong>
                                             <select name="coop_bank" id="coop_bank" class="form-control">
                                                 <option selected disabled>--Select bank--</option>
@@ -53,15 +43,25 @@
                                             </select>
                                         </div>
                                     </div>
+                                    
+                                    
+                                </div>
+                                <div class="row ">
+                                    
+                                    <div class="col-md-12 col-lg-12 col-sm-12">
+                                        <div class="form-group">
+                                            <strong for="">Amount</strong>
+                                            <input type="text"  required  name="amount" id="amount" placeholder="Amount"  class="number form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
                                         <div class="col-md-6 col-lg-6 col-sm-6">
                                         <div class="form-group">
                                             <strong for="">Purpose</strong>
                                             <textarea name="purpose" id="purpose" placeholder="Purpose" style="resize:none;" class="form-control"></textarea>
                                         </div>
                                     </div>
-                                    
-                                </div>
-                                <div class="row ">
                                     <div class="col-md-6 col-lg-6 col-sm-6">
                                         <div class="form-group">
                                             <strong for="">GL CR.</strong>
@@ -73,6 +73,9 @@
                                             </select>
                                         </div>
                                     </div>
+                                    
+                                </div>
+                                <div class="row ">
                                     <div class="col-md-6 col-lg-6 col-sm-6">
                                         <div class="form-group">
                                             <strong for="">Payer/Customer</strong>

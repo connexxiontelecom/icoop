@@ -5,7 +5,7 @@ use CodeIgniter\Model;
 class ScheduleMasterModel extends Model{
     protected $table = 'schedule_masters';
     protected $primaryKey = 'schedule_master_id';
-    protected $allowedFields = ['bank_id', 'payable_date', 'creation_date', 'loan_id', 'transaction_type','verified', 'amount', 'verified_by', 'date_verified','approved','approved_by','approved_date'];
+    protected $allowedFields = ['bank_id', 'payable_date', 'creation_date', 'attachment', 'loan_id', 'transaction_type','verified', 'amount', 'verified_by', 'date_verified','approved','approved_by','approved_date'];
 
     
 
