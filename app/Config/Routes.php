@@ -102,9 +102,12 @@ $routes->get('/get-parent-account', 'ChartOfAccountController::getParentAccount'
 $routes->get('/journal-voucher', 'JournalVoucher::index');
 $routes->get('/new-journal-voucher', 'JournalVoucher::create');
 $routes->post('/new-journal-voucher', 'JournalVoucher::store');
-$routes->get('/view-journal-voucher/(:num)', 'JournalVoucher::view/$1');
-$routes->get('/post-journal-voucher/(:num)', 'JournalVoucher::post/$1');
-$routes->get('/decline-journal-voucher/(:num)', 'JournalVoucher::decline/$1');
+$routes->get('/view-journal-voucher/(:any)', 'JournalVoucher::view/$1');
+//$routes->get('/post-journal-voucher/(:num)', 'JournalVoucher::post/$1');
+
+$routes->post('post-journal-voucher', 'JournalVoucher::post');
+//$routes->get('/decline-journal-voucher/(:num)', 'JournalVoucher::decline/$1');
+$routes->post('decline-journal-voucher', 'JournalVoucher::decline');
 
 
 #cooperators routes

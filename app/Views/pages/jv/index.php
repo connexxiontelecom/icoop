@@ -1,14 +1,14 @@
 <?= $this->extend('layouts/master') ?>
 
 <?= $this->section('title') ?>
-Journal Voucher
+Post Journal Voucher
 <?= $this->endSection() ?>
 
 <?= $this->section('current_page') ?>
-Journal Voucher 
+Post Journal Voucher
 <?= $this->endSection() ?>
 <?= $this->section('page_crumb') ?>
-Journal Voucher
+Post Journal Voucher
 <?= $this->endSection() ?>
 
 <?= $this->section('extra-styles') ?>
@@ -41,18 +41,16 @@ Journal Voucher
             <div class="header">
                 <h2>Journal Voucher</h2>
             </div>
-            <a href="<?= site_url('/new-journal-voucher') ?>" class="btn btn-sm btn-primary float-right mb-3">Add New Account</a>
             <div class="body">
-            <div class="dt-responsive table-responsive">
-                <table id="simpletable" class="table table-bordered nowrap">
-                    <thead>
+				<div class="table-responsive">
+					<table class="table table-hover js-basic-example dataTable simpletable table-custom spacing5">
+		
+					<thead>
                     <tr>
                         <th>#</th>
-                        <th>Account</th>
-                        <th>Narration</th>
+						<th> Ref. No.</th>
                         <th> DR Amount</th>
                         <th> CR Amount</th>
-                        <th> Ref. No.</th>
                         <th> JV Date</th>
                         <th>Entry By</th>
                         <th>Entry Date</th>
@@ -66,34 +64,20 @@ Journal Voucher
                     <?php foreach($entries as $entry): ?>
                         <tr>
                             <td><?= $serial++ ?></td>
-                            <td><?= $entry['account_name'] ?? '' ?> - (<?= $entry['glcode']?>)</td>
-                            <td><?= $entry['narration'] ?? ''?></td>
-                            <td>N<?= number_format($entry['dr_amount'],2) ?? '' ?></td>
-                            <td>N<?= number_format($entry['cr_amount'],2) ?? '' ?></td>
-                            <td><?= $entry['ref_no'] ?? '' ?></td>
+							<td><?= $entry['ref_no'] ?? '' ?></td>
+                            <td><?= number_format($entry['total_debit'],2) ?? '' ?></td>
+                            <td><?= number_format($entry['total_credit'],2) ?? '' ?></td>
+                           
                             <td><?= !is_null($entry['jv_date'] ) ? date('d F, Y', strtotime($entry['jv_date'] )) : '-'?></td>
                             <td><?= $entry['first_name'] ?? '' ?> <?= $entry->surname ?? ''?></td>
                             <td><?= !is_null($entry['entry_date'] ) ? date('d F, Y', strtotime($entry['entry_date'] )) : '-'?></td>
                             <td>
-                                <a href="<?= site_url('view-journal-voucher/'.$entry['journal_id']) ?>" class="btn btn-mini btn-info">Learn more</a>
+                                <a href="<?= site_url('view-journal-voucher/'.$entry['ref_no']) ?>" class="btn btn-mini btn-info">Learn more</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
-                    <tfoot>
-                    <tr>
-                        <th>#</th>
-                        <th>Account</th>
-                        <th>Narration</th>
-                        <th> DR Amount</th>
-                        <th> CR Amount</th>
-                        <th> Ref. No.</th>
-                        <th> JV Date</th>
-                        <th>Entry By</th>
-                        <th>Entry Date</th>
-                        <th>Action</th>
-                    </tr>
-                    </tfoot>
+                   
                 </table>
             </div>
         </div>

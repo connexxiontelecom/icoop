@@ -42,81 +42,80 @@ View Journal Voucher
                 <h2>View  Journal Voucher</h2>
             </div>
             <div class="body">
-            <form action="#" method="post">
+	
+				<div class="table-responsive">
+					<table class="table table-hover js-basic-example dataTable simpletable table-custom spacing5">
+			
+						<thead>
+						<tr>
+							<th>#</th>
+							<th> Account</th>
+							<th>Narration</th>
+							<th style="text-align: right"> DR Amount</th>
+							<th style="text-align: right">CR Amount</th>
+							
+						</tr>
+						</thead>
+						<tbody>
+			            <?php
+				            $serial = 1;
+				            $total_credit = 0;
+				            $total_debit = 0;
+			            ?>
+			            <?php foreach($entries as $entry): ?>
+							<tr>
+								<td><?= $serial++ ?></td>
+								<td><?= $entry['glcode'] ?? '' ?></td>
+								<td><?=$entry['narration']; ?></td>
+								<td style="text-align: right"><?= number_format($entry['dr_amount'],2) ?? '' ?></td>
+								<td style="text-align: right"><?= number_format($entry['cr_amount'],2) ?? '' ?></td>
+								<?php
+								$total_debit = $total_debit + $entry['dr_amount'];
+								$total_credit = $total_credit + $entry['cr_amount'];
+								?>
+					
+								
+							</tr>
+			            <?php endforeach; ?>
+						<tr>
+							<td><b>Total: </b> </td>
+							<td> </td>
+							<td> </td>
+							<td style="text-align: right"><?= number_format($total_debit,2) ?? '' ?></td>
+							<td style="text-align: right"><?= number_format($total_credit,2) ?? '' ?></td>
+				   
+			
+						</tr>
+						</tbody>
+		
+					</table>
+				</div>
+		<div class="col-sm-12 d-flex justify-content-center">
+			<div class="btn-group">
+            <form action="<?=site_url('decline-journal-voucher') ?>" method="post">
                     <?= csrf_field() ?>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h5 class="sub-title">Journal Entry Details</h5>
-                                <div class="form-group">
-                                    <strong for="">Account</strong>
-                                    <p><?= $entry['account_name'] ?? ''?> - (<?= $entry['glcode'] ?? ''?>)</p>
-                                </div>
-                                <div class="form-group">
-                                    <strong for="">Amount</strong>
-                                    <p>N<?= $entry['dr_amount'] > 0 ? number_format($entry['dr_amount'],2) : number_format($entry['cr_amount'],2)?></p>
-
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <strong for="">Date</strong>
-                                            <p><?= !is_null($entry['jv_date']) ? date('d F, Y', strtotime($entry['jv_date'])) : '-' ?></p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <strong for="">Reference #</strong>
-                                            <p><?= $entry['ref_no'] ?? '-'?></p>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 col-sm-6 col-lg-6">
-                                <div class="form-group">
-                                    <strong for="">Name</strong>
-                                    <p><?= $entry['name'] ?? '-' ?></p>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-sm-6 col-lg-6">
-                                <div class="form-group">
-                                    <strong for="">Narration</strong>
-                                    <p><?= $entry['narration'] ?? '-' ?></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <table class="table table-responsive invoice-table invoice-total">
-                                    <tbody>
-                                    <tr class="text-info">
-                                        <td>
-                                            <hr>
-                                            <h5 class="text-primary">Total :</h5>
-                                        </td>
-                                        <td>
-                                            <hr>
-                                            <h5 class="text-primary total">N<?= $entry['dr_amount'] > 0 ? number_format($entry['dr_amount'],2) : number_format($entry['cr_amount'],2) ?></h5>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <hr>
-                            <div class="col-sm-12 d-flex justify-content-center">
-                                <div class="btn-group">
-                                    <a href="<?= site_url('decline-journal-voucher/'.$entry['journal_id']) ?>" class="btn btn-mini btn-danger"><i class="ti-close mr-2"></i>Decline Journal Voucher</a>
-                                    <a href="<?= site_url('post-journal-voucher/'.$entry['journal_id']) ?>" class="btn btn-primary btn-mini"><i class="ti-check mr-2"> Post Journal Voucher</i></a>
-                                </div>
-                            </div>
-                        </div>
+				<input type="hidden" name="trash" value="1">
+				<input type="hidden" name="ref_no" value="<?=$entry['ref_no']; ?>">
+                               
+                                    <button type="submit" class="btn btn-mini btn-danger"><i class="ti-close mr-2"></i>Decline Journal Voucher</button>
+                                   
+                          
+                   
                     </form>
+				
+				<form action="<?=site_url('post-journal-voucher') ?>" method="post">
+					<?= csrf_field() ?>
+					
+					<input type="hidden" name="posted" value="1">
+					<input type="hidden" name="ref_no" value="<?=$entry['ref_no']; ?>">
+					
+				<button type="submit" class="btn btn-primary btn-mini"><i class="ti-check mr-2"> Post Journal Voucher</i></button>
+				
+				
+				
+				</form>
+		</div>
+			</div>
             </div>
         </div>
     </div>

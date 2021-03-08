@@ -17,6 +17,7 @@
 	use App\Models\ReceiptDetailModel;
 	use App\Models\LoanModel;
 	use App\Models\LoanRepaymentModel;
+	use App\Models\CoaModel;
 
 	
 	
@@ -37,6 +38,7 @@
 			$this->loan = new LoanModel();
 			$this->cooperator = new Cooperators();
 			$this->lr = new LoanRepaymentModel();
+			$this->coa = new CoaModel();
 			
 		}
 		
@@ -398,7 +400,7 @@
 					foreach ($rds as $rd):
 						if($rd['rd_type'] == 1): //loan
 							$loan_id = $rd['rd_target'];
-							//$loan_data = $this->loan->get_loan($loan_id);
+							
 							
 							
 							$loan_ledgers = $this->loan->get_loans_staff_id($staff_id, $loan_id);
@@ -476,6 +478,37 @@
 
 
 							$v =   $this->lr->save($loan_repayment);
+							$loan_s = $this->loan->get_loan($loan_id);
+							
+							$account = $this->coa->where('glcode', $loan_s['loan_gl_account_no'])->first();
+							$bankGl = array(
+								'glcode' => $loan_s->loan_gl_account_no,
+								'posted_by' => $this->session->user_username,
+								'narration' => 'Loan repayment from external receipt',
+								'dr_amount' => 0,
+								'cr_amount' => $rd['rd_amount'],
+								'ref_no' =>$ref_code,
+								'bank' => $account['bank'],
+								'ob' => 0,
+								'posted' => 1,
+								'created_at' => date('Y-m-d'),
+							);
+							$this->gl->save($bankGl);
+							
+							$account = $this->coa->where('glcode', $loan_s['loan_gl_account_no'])->first();
+							$bankGl = array(
+								'glcode' => $loan_s->bank_gl_code,
+								'posted_by' => $this->session->user_username,
+								'narration' => 'Loan repayment from external receipt',
+								'dr_amount' => $rd['rd_amount'],
+								'cr_amount' => 0,
+								'ref_no' =>$ref_code,
+								'bank' => $account['bank'],
+								'ob' => 0,
+								'posted' => 1,
+								'created_at' => date('Y-m-d'),
+							);
+							$this->gl->save($bankGl);
 							
 							
 						endif;
@@ -498,6 +531,47 @@
 							
 							
 							$v =   $this->pd->save($payment_details_array);
+							
+							
+							
+							$wt = $this->contribution_type->where(['contribution_type_id' => $ct_id])->first();
+							
+							
+							//cr contribution type gl amount
+							$account = $this->coa->where('glcode', $wt['contribution_type_glcode'])->first();
+							$bankGl = array(
+								'glcode' => $wt['contribution_type_glcode'],
+								'posted_by' => $this->session->user_username,
+								'narration' => 'External receipt contribution',
+								'dr_amount' => 0,
+								'cr_amount' => $rd['rd_amount'],
+								'ref_no' =>$ref_code,
+								'bank' => $account['bank'],
+								'ob' => 0,
+								'posted' => 1,
+								'created_at' =>  date('Y-m-d'),
+							);
+							$this->gl->save($bankGl);
+							
+							
+							//debit bank gl
+							// bank gl_code should be entered here
+							$account = $this->coa->where('glcode', $wt['contribution_type_glcode'])->first();
+							$bankGl = array(
+								'glcode' => $wt['contribution_type_glcode'],
+								'posted_by' => $this->session->user_username,
+								'narration' => 'External receipt contribution',
+								'dr_amount' => $rd['rd_amount'],
+								'cr_amount' => 0,
+								'ref_no' =>$ref_code,
+								'bank' => $account['bank'],
+								'ob' => 0,
+								'posted' => 1,
+								'created_at' =>  date('Y-m-d'),
+							);
+							$this->gl->save($bankGl);
+							
+							
 							
 							$loan_ledgers = $this->loan->get_loans_staff_id($staff_id, $loan_id);
 							
