@@ -14,22 +14,25 @@ Verify
 <?= $this->section('extra-styles') ?>
     <style>
         td.details-control {
-            background: url('assets/images/details_open.png') no-repeat center center;
+            background: url('<?=site_url() ?>assets/images/details_open.png') no-repeat center center;
             cursor: pointer;
         }
         tr.shown td.details-control {
-            background: url('assets/images/details_close.png') no-repeat center center;
+            background: url('<?=site_url() ?>assets/images/details_close.png') no-repeat center center;
         }
     </style>
 
 
-<link rel="stylesheet" href="assets/vendor/jquery-datatable/dataTables.bootstrap4.min.css">
-<link rel="stylesheet" href="assets/vendor/jquery-datatable/fixedeader/dataTables.fixedcolumns.bootstrap4.min.css">
-<link rel="stylesheet" href="assets/vendor/jquery-datatable/fixedeader/dataTables.fixedheader.bootstrap4.min.css">
-<link rel="stylesheet" href="assets/vendor/sweetalert/sweetalert.css"/>
-<link rel="stylesheet" href="assets/css/toastify.min.css"/>
+<link rel="stylesheet" href="<?=site_url() ?>assets/vendor/jquery-datatable/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="<?=site_url() ?>assets/vendor/jquery-datatable/fixedeader/dataTables.fixedcolumns.bootstrap4.min.css">
+<link rel="stylesheet" href="<?=site_url() ?>assets/vendor/jquery-datatable/fixedeader/dataTables.fixedheader.bootstrap4.min.css">
+<link rel="stylesheet" href="<?=site_url() ?>assets/vendor/sweetalert/sweetalert.css"/>
 
-<!--<link rel="stylesheet" type="text/css" href="/assets/css/datatable.min.css"> -->
+<link rel="stylesheet" href="<?=site_url() ?>assets/vendor/jquery-datatable/fixedeader/dataTables.fixedcolumns.bootstrap4.min.css">
+<link rel="stylesheet" href="<?=site_url() ?>assets/vendor/jquery-datatable/fixedeader/dataTables.fixedheader.bootstrap4.min.css">
+<link rel="stylesheet" href="<?=site_url() ?>assets/css/toastify.min.css"/>
+
+<!--<link rel="stylesheet" type="text/css" href="/<?=site_url() ?>assets/css/datatable.min.css"> -->
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
@@ -42,7 +45,7 @@ Verify
             </div>
             <div class="body">
                 <div class="table-responsive">
-                    <table class="table table-bordered dataTable js-exportable simpletable" id="stateTable">
+					<table class="simpletable table table-striped table-hover dataTable js-exportable">
                         
                         <tr>
                             <th>#</th>
@@ -72,7 +75,7 @@ Verify
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
-                        </tfoot>
+                      
                     </table>
                 </div>
             </div>
@@ -86,63 +89,28 @@ Verify
 <?= $this->endSection() ?>
 
 <?= $this->section('extra-scripts') ?>
-<script src="assets/bundles/vendorscripts.bundle.js"></script>
+<script src="<?=site_url() ?>assets/bundles/datatablescripts.bundle.js"></script>
+<script src="<?=site_url() ?>assets/bundles/vendorscripts.bundle.js"></script>
 
-<script src="assets/vendor/sweetalert/sweetalert.min.js"></script><!-- SweetAlert Plugin Js -->
-<script src="assets/js/common.js"></script>
-<script src="assets/js/pages/tables/jquery-datatable.js"></script>
-<script src="assets/js/axios.min.js"></script>
-<script src="assets/js/toastify.min.js"></script>
+<script src="<?=site_url() ?>assets/vendor/sweetalert/sweetalert.min.js"></script><!-- SweetAlert Plugin Js -->
+<script src="<?=site_url() ?>assets/js/common.js"></script>
+<script src="<?=site_url() ?>assets/js/pages/tables/jquery-datatable.js"></script>
+<script src="<?=site_url() ?>assets/js/axios.min.js"></script>
+<script src="<?=site_url() ?>assets/js/toastify.min.js"></script>
 
 
-<script src="assets/bundles/datatablescripts.bundle.js"></script>
-<script src="assets/vendor/jquery-datatable/buttons/dataTables.buttons.min.js"></script>
-<script src="assets/vendor/jquery-datatable/buttons/buttons.bootstrap4.min.js"></script>
-<script src="assets/vendor/jquery-datatable/buttons/buttons.colVis.min.js"></script>
-<script src="assets/vendor/jquery-datatable/buttons/buttons.html5.min.js"></script>
-<script src="assets/vendor/jquery-datatable/buttons/buttons.print.min.js"></script>
+
+
+<script src="<?=site_url() ?>assets/vendor/jquery-datatable/buttons/dataTables.buttons.min.js"></script>
+<script src="<?=site_url() ?>assets/vendor/jquery-datatable/buttons/buttons.bootstrap4.min.js"></script>
+<script src="<?=site_url() ?>assets/vendor/jquery-datatable/buttons/buttons.colVis.min.js"></script>
+<script src="<?=site_url() ?>assets/vendor/jquery-datatable/buttons/buttons.html5.min.js"></script>
+<script src="<?=site_url() ?>assets/vendor/jquery-datatable/buttons/buttons.print.min.js"></script>
 
     <script>
         $(document).ready(function(){
             $('.simpletable').DataTable();
 
-            $('.error-wrapper').hide();
-            addNewStateForm.onsubmit = async (e) => {
-                e.preventDefault();
-
-                axios.post('/add-new-state',new FormData(addNewStateForm))
-                .then(response=>{
-                    Toastify({
-                        text: "Success! New state saved.",
-                        duration: 3000,
-                        newWindow: true,
-                        close: true,
-                        gravity: "top",
-                        position: 'right',
-                        backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-                        stopOnFocus: true,
-                        onClick: function(){}
-                    }).showToast();
-                    $("#stateTable").load(location.href + " #stateTable");
-                    $('#state_name').val('');
-                })
-                .catch(error=>{
-                        $.each(error.response.data.errors, function(key, value){
-                            Toastify({
-                            text: 'Error',
-                            duration: 3000,
-                            newWindow: true,
-                            close: true,
-                            gravity: "top",
-                            position: 'right',
-                            backgroundColor: "linear-gradient(to right, #FF0000, #FE0000)",
-                            stopOnFocus: true,
-                            onClick: function(){}
-                        }).showToast();
-                        
-                    });
-                });
-            };
         });
     </script>
 <?= $this->endSection() ?>
