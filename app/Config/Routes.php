@@ -68,6 +68,7 @@ $routes->post('/update-profile', 'Policyconfigcontroller::updateProfile');
 $routes->post('/savings-rate', 'Policyconfigcontroller::savingsRate');
 $routes->post('/savings-gl-config', 'Policyconfigcontroller::savingGlConfig');
 $routes->get('/policy-config/loan-setup', 'Policyconfigcontroller::showLoanSetupForm');
+$routes->get('/policy-config/new-loan-setup', 'Policyconfigcontroller::new_loan_setup');
 $routes->post('/loan-setup', 'Policyconfigcontroller::loanSetup');
 $routes->post('/edit-loan-setup', 'Policyconfigcontroller::editLoanSetup');
 
