@@ -65,8 +65,9 @@ Locations
             </div>
             <div class="body">
                 <div class="table-responsive">
-                    <table class="table table-striped table-hover dataTable js-exportable simpletable" id="locationTable">
-                        <thead>
+					<table class="table table-hover js-basic-example dataTable simpletable table-custom spacing5">
+	
+					<thead>
                         <tr>
                             <th>#</th>
                             <th>Location Name</th>

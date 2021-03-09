@@ -222,6 +222,7 @@
                                     <ul>
                                         <li><a href="<?= base_url('/policy-config') ?>">Policy Config</a></li>
                                         <li><a href="<?= base_url('/policy-config/loan-setup') ?>">Loan Setup</a></li>
+										<li><a href="<?= base_url('/policy-config/new-loan-setup') ?>">New Loan Setup</a></li>
                                     </ul>
                                 </li>
                                 

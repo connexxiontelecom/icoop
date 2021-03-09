@@ -162,6 +162,7 @@ class Policyconfigcontroller extends BaseController
         }
 
 	}
+	
 	public function savingGlConfig(){
 		helper(['form']);
         $data = [];
@@ -264,6 +265,16 @@ class Policyconfigcontroller extends BaseController
      
 		return view('pages/policy-config/loan-setup', $data);
 	}
+	
+	public function new_loan_setup(){
+		$data = [];
+		$data['accounts'] = $this->coa->where('type',1)->findAll();
+		$data['profile'] = $this->policy->first();
+		$data['loansetups'] = $this->loan->getLoanSetups();//findAll();
+		
+		return view('pages/policy-config/new-loan-setup', $data);
+	}
+	
 	public function loanSetup(){
 		helper(['form']);
         $data = [];
@@ -385,6 +396,7 @@ class Policyconfigcontroller extends BaseController
         }
 
 	}
+	
 	public function editLoanSetup(){
 		helper(['form']);
         $data = [];

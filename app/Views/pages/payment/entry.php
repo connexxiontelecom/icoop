@@ -26,6 +26,11 @@ Payment Entry Voucher
 <link href="/assets/css/parsley.min.css" rel="stylesheet">
     <link href="/assets/css/toastify.min.css" rel="stylesheet">
     <link href="/assets/css/select2.min.css" rel="stylesheet">
+<style>
+	label{
+		font-weight: bold;
+	}
+</style>
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
@@ -82,7 +87,7 @@ Payment Entry Voucher
                             </div>
                             
                     </div>
-                    <div class="row p-2 mb-2" style="background:#2D3541;">
+                    <div class="row p-2 mb-2" style="background:#2D3541; margin-left: 0.3%; margin-right: 0.3%; margin-top: 1%">
                         <div class="col-md-12 col-lg-12">
                             <h6 class="text-uppercase text-white">Payee Details</h6>
                         </div>

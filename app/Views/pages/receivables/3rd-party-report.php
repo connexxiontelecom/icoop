@@ -53,7 +53,7 @@
                 <div class="row mt-5">
                     <div class="col-md-12 col-sm-12">
                          <div class="table-responsive">
-                                <table class="table table-hover table-bordered" id="scheduledPaymentTable">
+							 <table class="table table-hover js-basic-example dataTable simpletable table-custom spacing5">
                                     <thead>
                                         <tr>
                                             <th>#</th>
@@ -171,7 +171,7 @@
   <script src="/assets/js/datatables.min.js"></script>
 <script>
 $(document).ready(function(){
-    $('#scheduledPaymentTable').DataTable();
+    $('.simpletable').DataTable();
 });
 </script>
 <?= $this->endSection() ?>
