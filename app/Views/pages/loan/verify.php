@@ -33,7 +33,7 @@ Verify
 <!--<link rel="stylesheet" href="--><?//=site_url() ?><!--assets/vendor/jquery-datatable/fixedeader/dataTables.fixedheader.bootstrap4.min.css">-->
 <!--<link rel="stylesheet" href="--><?//=site_url() ?><!--assets/css/toastify.min.css"/>-->
 
-<!--<link rel="stylesheet" type="text/css" href="/<?=site_url() ?>assets/css/datatable.min.css"> -->
+<link rel="stylesheet" type="text/css" href="<?=site_url() ?>assets/css/datatable.min.css">
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
