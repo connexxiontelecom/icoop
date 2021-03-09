@@ -74,8 +74,8 @@ Add New Account
                                 <label for="">Type</label>
                                 <select name="type" id="type" class="form-control">
                                     <option disabled selected>Select type</option>
-                                    <option value="1">General</option>
-                                    <option value="2">Detail</option>
+                                    <option value="0">General</option>
+                                    <option value="1">Detail</option>
                                 </select>
                             </div>
                         </div>

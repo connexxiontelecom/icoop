@@ -48,7 +48,7 @@ class ChartOfAccountController extends BaseController
             ],
         ]; 
     }
-        $data = [
+        $data = array(
             'account_name'=>$this->request->getVar('account_name'),
             'account_type'=>$this->request->getVar('account_type'),
             'bank'=>$this->request->getVar('bank'),
@@ -56,9 +56,19 @@ class ChartOfAccountController extends BaseController
             'parent_account'=>$this->request->getVar('parent_account'),
             'type'=>$this->request->getVar('type'),
             'note'=>$this->request->getVar('note')
-        ];
-        $this->coa->save($data);
-        return $this->response->redirect(site_url('/chart-of-accounts'));
+        );
+        try{
+
+            $this->coa->save($data);
+            $alert = array(
+                    'msg' => 'Success! New account added.',
+                    'type' => 'success',
+                    'location' => site_url('/add-new-chart-of-account')
+                );
+            return view('pages/sweet-alert', $alert);
+        }catch(Exception $ex){
+            print_r($ex);
+        }
     }
 
 }
