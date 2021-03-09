@@ -73,11 +73,14 @@ Chart of Accounts
                         <tr role="row" class="odd">
                             <td class="sorting_1" colspan="3"><strong style="font-size:16px; text-transform:uppercase;">Liability</strong></td>
                         </tr>
+                         <?php
+                            $b = 1;
+                        ?>
                         <?php foreach ($charts as $report): ?>
                             <?php if($report['account_type'] == 2 ) : ?>
                                     <?php if($report['glcode'] != 2) : ?>
                                         <tr role="row" class="odd">
-                                            <td class="text-left"><?= $a++ ?></td>
+                                            <td class="text-left"><?= $b++ ?></td>
                                             <td class="sorting_1 text-left"><?= $report['glcode'] ?? '' ?></td>
                                             <td class="text-left"><?= $report['account_name'] ?? '' ?></td>
                                         </tr>
@@ -88,11 +91,14 @@ Chart of Accounts
                         <tr role="row" class="odd">
                             <td class="sorting_1" colspan="3"><strong style="font-size:16px; text-transform:uppercase;">Equity</strong></td>
                         </tr>
+                         <?php
+                            $c = 1;
+                        ?>
                         <?php foreach ($charts as $report): ?>
                             <?php if($report['account_type'] == 3 ) : ?>
                                     <?php if($report['glcode'] != 3) : ?>
                                         <tr role="row" class="odd">
-                                            <td class="text-left"><?= $a++ ?></td>
+                                            <td class="text-left"><?= $c++ ?></td>
                                             <td class="sorting_1 text-left"><?= $report['glcode'] ?? '' ?></td>
                                             <td class="text-left"><?= $report['account_name'] ?? '' ?></td>
                                         </tr>
@@ -102,11 +108,14 @@ Chart of Accounts
                         <tr role="row" class="odd">
                             <td class="sorting_1" colspan="3"><strong style="font-size:16px; text-transform:uppercase;">Revenue</strong></td>
                         </tr>
+                         <?php
+                            $d = 1;
+                        ?>
                         <?php foreach ($charts as $report): ?>
                             <?php if($report['account_type'] == 4 ) : ?>
                                     <?php if($report['glcode'] != 4) : ?>
                                         <tr role="row" class="odd">
-                                            <td class="text-left"><?= $a++ ?></td>
+                                            <td class="text-left"><?= $d++ ?></td>
                                             <td class="sorting_1 text-left"><?= $report['glcode'] ?? '' ?></td>
                                             <td class="text-left"><?= $report['account_name'] ?? '' ?></td>
                                         </tr>
@@ -117,11 +126,14 @@ Chart of Accounts
                         <tr role="row" class="odd">
                             <td class="sorting_1" colspan="3"><strong style="font-size:16px; text-transform:uppercase;">Expenses</strong></td>
                         </tr>
+                         <?php
+                            $e = 1;
+                        ?>
                         <?php foreach ($charts as $report): ?>
                             <?php if($report['account_type'] == 5 ) : ?>
                                     <?php if($report['glcode'] != 5) : ?>
                                         <tr role="row" class="odd">
-                                            <td class="text-left"><?= $a++ ?></td>
+                                            <td class="text-left"><?= $e++ ?></td>
                                             <td class="sorting_1 text-left"><?= $report['glcode'] ?? '' ?></td>
                                             <td class="text-left"><?= $report['account_name'] ?? '' ?></td>
                                         </tr>
