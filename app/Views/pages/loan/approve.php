@@ -42,7 +42,8 @@ Approve Loan Application
             </div>
             <div class="body">
                 <div class="table-responsive">
-                    <table class="table table-bordered dataTable js-exportable simpletable" id="stateTable">
+					<table class="table table-hover js-basic-example dataTable simpletable table-custom spacing5">
+						<thead>
                         
                         <tr>
                             <th>#</th>
@@ -54,6 +55,7 @@ Approve Loan Application
                             <th>Application Date</th>
                             <th>Action</th>
                         </tr>
+						</thead>
 
                         <tbody>
                         
@@ -86,6 +88,10 @@ Approve Loan Application
 <?= $this->endSection() ?>
 
 <?= $this->section('extra-scripts') ?>
+<script>
+    $('.simpletable').DataTable();
+	
+</script>
 <script src="assets/bundles/vendorscripts.bundle.js"></script>
 
 <script src="assets/bundles/datatablescripts.bundle.js"></script>

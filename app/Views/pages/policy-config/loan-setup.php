@@ -35,23 +35,26 @@ Loan Setup
 	
 						<div class="table-responsive">
 							<table class="table table-hover js-basic-example dataTable simpletable table-custom spacing5">
-                                    <tr>
-										<th scope="col">#</th>
-										<th scope="col">Loan Description</th>
-										<th scope="col">Qualification Age</th>
-										<th scope="col">Min. Credit Limit.</th>
-										<th scope="col">Max. Credit Limit.</th>
-										<th scope="col">Max. Repayment Periods</th>
-										<th scope="col">Interest Rate</th>
-										<th scope="col">Interest Method</th>
-										<th scope="col">Status</th>
-										<th scope="col">Payable</th>
-										<th scope="col">Loan GL Account No.</th>
-										<th scope="col">Loan Unearned Int. GL Account No.</th>
-										<th scope="col">Loan Int. Income GL Account No.</th>
-										<th scope="col">Loan Terms</th>
-										<th scope="col">Action</th>
-                                    </tr>
+                                <thead>
+								<tr>
+									<th scope="col">#</th>
+									<th scope="col">Loan Description</th>
+									<th scope="col">Qualification Age</th>
+									<th scope="col">Min. Credit Limit.</th>
+									<th scope="col">Max. Credit Limit.</th>
+									<th scope="col">Max. Repayment Periods</th>
+									<th scope="col">Interest Rate</th>
+									<th scope="col">Interest Method</th>
+									<th scope="col">Status</th>
+									<th scope="col">Payable</th>
+									<th scope="col">Loan GL Account No.</th>
+									<th scope="col">Loan Unearned Int. GL Account No.</th>
+									<th scope="col">Loan Int. Income GL Account No.</th>
+									<th scope="col">Loan Terms</th>
+									<th scope="col">Action</th>
+								</tr>
+								</thead>
+							
                                 <tbody>
                                 <?php $serial = 1; ?>
                                 <?php foreach($loansetups as $setup) : ?>
