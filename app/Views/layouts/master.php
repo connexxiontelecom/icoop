@@ -281,7 +281,7 @@
                                         <li><a href="<?=site_url('/third-party/receivable/unverified') ?>">Verify</a></li>
                                         <li><a href="<?=site_url('/third-party/receivable/verified') ?>">Approve</a></li>
 										<li class="header">Report</li>
-										<li><a href="<?=site_url('/third-party/receivable/report') ?>">Member Report</a></li>
+										<li><a href="<?=site_url('/third-party/receivable/member-report') ?>">Member Report</a></li>
 										<li><a href="<?=site_url('/third-party/receivable/report') ?>">3<sup>rd</sup> Party Report</a></li>
                                         
 									</ul>
