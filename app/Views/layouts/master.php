@@ -222,6 +222,7 @@
                                     <ul>
                                         <li><a href="<?= base_url('/policy-config') ?>">Policy Config</a></li>
                                         <li><a href="<?= base_url('/policy-config/loan-setup') ?>">Loan Setup</a></li>
+										<li><a href="<?= base_url('/policy-config/new-loan-setup') ?>">New Loan Setup</a></li>
                                     </ul>
                                 </li>
                                 
@@ -277,9 +278,13 @@
 										<li class="header">Third Party</li>
 										<li><a href="<?=site_url('/third-party/receivable/customer-setup') ?>">Customer Setup</a></li>
                                         <li><a href="<?=site_url('/third-party/receivable/customer-setup-list') ?>">Customer Setup List</a></li>
-                                        <li><a href="<?=site_url('/third-party/receivable/new') ?>">New Receivable</a></li>
+                                        <li><a href="<?=site_url('/third-party/receivable/new') ?>">New Receipt</a></li>
                                         <li><a href="<?=site_url('/third-party/receivable/unverified') ?>">Verify</a></li>
                                         <li><a href="<?=site_url('/third-party/receivable/verified') ?>">Approve</a></li>
+										<li class="header">Report</li>
+										<li><a href="<?=site_url('/third-party/receivable/report') ?>">Member Report</a></li>
+										<li><a href="<?=site_url('/third-party/receivable/report') ?>">3<sup>rd</sup> Party Report</a></li>
+                                        
 									</ul>
 								
 								

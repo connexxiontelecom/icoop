@@ -68,6 +68,7 @@ $routes->post('/update-profile', 'Policyconfigcontroller::updateProfile');
 $routes->post('/savings-rate', 'Policyconfigcontroller::savingsRate');
 $routes->post('/savings-gl-config', 'Policyconfigcontroller::savingGlConfig');
 $routes->get('/policy-config/loan-setup', 'Policyconfigcontroller::showLoanSetupForm');
+$routes->get('/policy-config/new-loan-setup', 'Policyconfigcontroller::new_loan_setup');
 $routes->post('/loan-setup', 'Policyconfigcontroller::loanSetup');
 $routes->post('/edit-loan-setup', 'Policyconfigcontroller::editLoanSetup');
 
@@ -185,6 +186,10 @@ $routes->post('/third-party/receivable/new', 'ThirdpartyReceivableController::st
 $routes->get('/third-party/receivable/unverified', 'ThirdpartyReceivableController::showUnverifiedReceivable');
 $routes->get('/third-party/receivable/verified', 'ThirdpartyReceivableController::showVerifiedReceivable');
 $routes->post('/third-party/receivable/approve-decline-receivable', 'ThirdpartyReceivableController::approveDeclineReceivable');
+$routes->get('/third-party/receivable/report', 'ThirdpartyReceivableController::report');
+$routes->post('/third-party/receivable/report', 'ThirdpartyReceivableController::generateReport');
+$routes->get('/third-party/receivable/member-report', 'ThirdpartyReceivableController::memberReport');
+$routes->post('/third-party/receivable/member-report', 'ThirdpartyReceivableController::generateMemberReport');
 
 
 

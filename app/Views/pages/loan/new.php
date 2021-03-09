@@ -22,62 +22,72 @@
     <div class="card">
         <div class="card-block">
             <div class="container">
-                <div class="row m-b-30">
-                    <div class="col-lg-7 col-md-12 col-xl-7">
-                        <h6 class="sub-title p-3  text-uppercase">New Loan Application</h6>
-                        <form enctype="multipart/form-data" action="<?= site_url('/loan/new') ?>" autocomplete="off" method="POST" data-parsley-validate="" id="loanSetupForm">
-                                <?= csrf_field() ?>
+				
+				
+					<h6 class="sub-title p-3  text-uppercase">New Loan Application</h6>
+			
+					<form enctype="multipart/form-data" action="<?= site_url('/loan/new') ?>" autocomplete="off" method="POST" data-parsley-validate="" id="loanSetupForm">
+						<div class="row clearfix">
+					<div class="col-lg-6 col-md-12 col-xl-6">
+                              <?= csrf_field() ?>
                                     <div class="row p-2 mb-2" style="background:#2D3541;">
                                         <div class="col-md-12 col-lg-12">
                                             <h6 class="text-uppercase text-white">Staff Details</h6>
                                         </div>
                                     </div>
+						
+									<div class="form-group">
+										<strong for="">Staff ID</strong>
+										<input required type="text" name="staff_id" id="search_account"  onblur="getSavings()" placeholder="Enter staff ID or  name"  class="form-control">
+									
+									</div>
+						
+						<div class="form-group response">
+							<strong for="">Loan Type</strong>
+							<select name="loan_type" required id="loan_type" class="form-control">
+								<option selected disabled>--Select loan type--</option>
+								<?php foreach($loan_types as $type) : ?>
+									<option value="<?= $type['loan_setup_id'] ?>"><?= $type['loan_description'] ?></option>
+								<?php endforeach; ?>
+							</select>
+							<input type="hidden" name="interest_method" id="interest_method">
+						</div>
+						
+<!--                                    <div class="row bg-light">-->
+<!--                                        <div class="col-md-12 col-lg-12 col-sm-12">-->
+<!--                                        -->
+<!--                                        </div>-->
+<!--                                    </div>-->
+						
+						<div class="form-group">
+							<strong for="">Duration (months)</strong>
+							<input type="number" required class="form-control" placeholder="Duration" id="duration" name="duration" >
+						
+						</div>
+						
+						<div class="form-group">
+							<strong for="">Amount</strong>
+							<input type="text" required  name="amount" id="amount" placeholder="Amount"  class="number form-control">
+						</div>
+						
+						<div class="form-group">
+							<strong for="">File (.PDF)</strong>
+							<input type="file"  name="attachment" id="attachment" >
+						</div>
+                                 
                                     <div class="row bg-light">
-                                        <div class="col-md-12 col-lg-12 col-sm-12">
-                                            <div class="form-group">
-                                                <strong for="">Staff ID</strong>
-                                                <input required type="text" name="staff_id" id="search_account"  onblur="getSavings()" placeholder="Enter staff ID or  name"  class="form-control">
-                                                
-                                            </div>
+                                        <div class="col-md-12 col-lg-12 col-sm-12 response">
+                                        
                                         </div>
                                     </div>
                                     <div class="row bg-light">
                                         <div class="col-md-12 col-lg-12 col-sm-12 response">
-                                            <div class="form-group">
-                                                <strong for="">Loan Type</strong>
-                                                <select name="loan_type" required id="loan_type" class="form-control">
-                                                    <option selected disabled>--Select loan type--</option>
-                                                    <?php foreach($loan_types as $type) : ?>
-                                                        <option value="<?= $type['loan_setup_id'] ?>"><?= $type['loan_description'] ?></option>
-                                                    <?php endforeach; ?>
-                                                </select>
-                                                <input type="hidden" name="interest_method" id="interest_method">
-                                            </div>
+                                        
                                         </div>
                                     </div>
                                     <div class="row bg-light">
                                         <div class="col-md-12 col-lg-12 col-sm-12 response">
-                                            <div class="form-group">
-                                                <strong for="">Duration (months)</strong>
-                                                <input type="number" required class="form-control" placeholder="Duration" id="duration" name="duration" >
-                                                
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row bg-light">
-                                        <div class="col-md-12 col-lg-12 col-sm-12 response">
-                                            <div class="form-group">
-                                                <strong for="">Amount</strong>
-                                                <input type="text" required  name="amount" id="amount" placeholder="Amount"  class="number form-control">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row bg-light">
-                                        <div class="col-md-12 col-lg-12 col-sm-12 response">
-                                            <div class="form-group">
-                                                <strong for="">File (.PDF)</strong>
-                                                <input type="file"  name="attachment" id="attachment" >
-                                            </div>
+                                        
                                         </div>
                                     </div>
                                     <div class="row  p-2 mb-2" style="background:#2D3541;">
@@ -85,27 +95,33 @@
                                             <h6 class="text-uppercase text-white">Guarantor & Terms</h6>
                                         </div>
                                     </div>
+						<div class="form-group">
+							<strong for="">Guarantor ID <small>(1)</small></strong>
+							<input type="text" required  name="guarantor_1" id="guarantor_1" placeholder="Guarantor ID 1"  class="form-control">
+							<small class="float-right" id="guarantor_wrapper_1"><label for="" class="badge badge-info" id="guarantor_badge_1">Guarantor</label></small>
+						</div>
+						<div class="form-group">
+							<strong for="">Guarantor ID <small>(2)</small> </strong>
+							<input type="text" required  name="guarantor_2" id="guarantor_2" placeholder="Guarantor ID 2"  class="form-control">
+							<small class="float-right" id="guarantor_wrapper_2"><label for="" class="badge badge-info" id="guarantor_badge_2">Guarantor</label></small>
+						</div>
+						
+						<div class="form-group">
+							<div class="fancy-checkbox" style="margin-top:30px;">
+								<label><input type="checkbox" required name="terms_conditions"><span>Agree to terms and condition</span></label>
+							</div>
+						</div>
                                     <div class="row bg-light">
                                         <div class="col-md-6 col-lg-6 col-sm-6 response">
-                                            <div class="form-group">
-                                                <strong for="">Guarantor ID <small>(1)</small></strong>
-                                                <input type="text" required  name="guarantor_1" id="guarantor_1" placeholder="Guarantor ID 1"  class="form-control">
-                                                <small class="float-right" id="guarantor_wrapper_1"><label for="" class="badge badge-info" id="guarantor_badge_1">Guarantor</label></small>
-                                            </div>
+                                        
                                         </div>
                                         <div class="col-md-6 col-lg-6 col-sm-6 response">
-                                        <div class="form-group">
-                                            <strong for="">Guarantor ID <small>(2)</small> </strong>
-                                            <input type="text" required  name="guarantor_2" id="guarantor_2" placeholder="Guarantor ID 2"  class="form-control">
-                                            <small class="float-right" id="guarantor_wrapper_2"><label for="" class="badge badge-info" id="guarantor_badge_2">Guarantor</label></small>
-                                        </div>
+                                        
 
                                     </div>
                                     <div class="row ">
                                             <div class="col-md-12 col-sm-12 col-lg-12 response ">
-                                                <div class="fancy-checkbox" style="margin-top:30px;">
-                                                    <label><input type="checkbox" required name="terms_conditions"><span>Agree to terms and condition</span></label>
-                                                </div>
+                                            
                                             </div>
                                     </div>
                                     </div>
@@ -116,17 +132,23 @@
                                     </div>
                                 
                             </div>
-                            <div class="col-lg-5 col-md-12 col-xl-5">
-                                <div class="row p-2 mt-5" style="background:#2D3541;">
-                                    <div class="col-md-12 col-lg-12">
-                                        <h6 class="text-uppercase text-white">Loan Terms</h6>
-                                    </div>
-                                </div>
-                                <p id="loan_terms">
-                                </p>
+                    <div class="col-lg-5 offset-1 col-md-12 col-xl-5 offset-1">
+	
+						<div class="row p-2 mb-2" style="background:#2D3541;">
+							<div class="col-md-12 col-lg-12">
+								<h6 class="text-uppercase text-white">Loan Terms</h6>
+							</div>
+						</div>
+						<p id="loan_terms">
+						</p>
+                            
+                               
                             </div>
-                        </form>
-                </div>
+				</div>
+					</form>
+					
+            
+				
             </div>
         </div>
     </div>

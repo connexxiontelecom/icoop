@@ -1,14 +1,14 @@
 <?= $this->extend('layouts/master') ?>
 
 <?= $this->section('title') ?>
-    Customer Setup List
+    3rd Party Report
 <?= $this->endSection() ?>
 <?= $this->section('current_page') ?>
-   Customer Setup List
+  3rd Party Report
 <?= $this->endSection() ?>
 
 <?= $this->section('page_crumb') ?>
-    Customer Setup List
+    3rd Party Report 
 <?= $this->endSection() ?>
 
 <?= $this->section('extra-styles') ?>
@@ -23,15 +23,37 @@
 <?= $this->section('content') ?>
 
     <div class="card">
-        <div class="card-block">
-                <div class="row m-b-30">
+        <div class="card-body">
+                <div class="row ">
                     <div class="col-lg-12 col-md-12 col-xl-12">
-                        <h6 class="sub-title p-3  text-uppercase">Customer Setup List</h6>
-                        <a href="<?= site_url('/third-party/receivable/customer-setup') ?>" class=" ml-3 btn btn-sm btn-primary">Customer Setup</a>
-                        <div class="body">
-                        
-                            <div class="table-responsive">
-								<table class="table table-hover js-basic-example dataTable simpletable table-custom spacing5">
+                        <h6 class="sub-title p-3  text-uppercase">3rd Party Report</h6>
+                        <form action="<?= site_url('/third-party/receivable/report') ?>" method="post" class="form-inline">
+                            <?= csrf_field() ?>
+                            <div class="form-group">
+                                <label for="">From</label>
+                                <input type="date" class="form-control ml-2 mr-2" placeholder="dd/mm/yyyy" name="from">
+                                
+                            </div>
+                            <div class="form-group">
+                                <label for=""> To</label>
+                                <input type="date" class="form-control ml-2" placeholder="dd/mm/yyyy" name="to">
+                                
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-sm btn-primary ml-2">Generate Report</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-xl-12 mt-5">
+                        <p>
+                            Third-party Report from <label for="" class="badge badge-info"><?= date('d-m-y', strtotime($from)) ?></label> to <label for="" class="badge badge-danger"><?= date('d-m-y', strtotime($to)) ?></label>
+                        </p>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-md-12 col-sm-12">
+                         <div class="table-responsive">
+							 <table class="table table-hover js-basic-example dataTable simpletable table-custom spacing5">
                                     <thead>
                                         <tr>
                                             <th>#</th>
@@ -47,7 +69,7 @@
 
                                     <tbody>
                                     
-                                        <?php $i = 1; foreach($customer_setups as $app) : ?>
+                                       <?php $i = 1; foreach($result as $app) : ?>
                                             <tr>
                                                 <td><?= $i++ ?></td>
                                                 <td><?= $app->customer_name ?? '' ?></td>
@@ -61,7 +83,7 @@
                                                     <div class="modal-dialog" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <h5 class="modal-title" id="exampleModalLabel">Edit Customer Setup</h5>
+                                                                    <h5 class="modal-title" id="exampleModalLabel">Report Details</h5>
                                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                         <span aria-hidden="true">&times;</span>
                                                                     </button>
@@ -73,13 +95,13 @@
                                                                                 <div class="col-md-6 col-lg-6 col-sm-6">
                                                                                     <div class="form-group">
                                                                                         <strong for="">Customer/Debtor Name </strong>
-                                                                                        <input required type="text" name="customer_name" value="<?= $app->customer_name ?? '' ?>"   placeholder="Customer Name"  class="form-control">
+                                                                                        <input required disabled type="text" name="customer_name" value="<?= $app->customer_name ?? '' ?>"   placeholder="Customer Name"  class="form-control">
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="col-md-6 col-lg-6 col-sm-6 response">
                                                                                     <div class="form-group">
                                                                                         <strong for="">Contact Person</strong>
-                                                                                        <input type="text" name="contact_person" value="<?= $app->contact_person ?? '' ?>" class="form-control" placeholder="Contact Person">
+                                                                                        <input type="text" disabled name="contact_person" value="<?= $app->contact_person ?? '' ?>" class="form-control" placeholder="Contact Person">
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -87,14 +109,14 @@
                                                                                 <div class="col-md-6 col-lg-6 col-sm-6 response">
                                                                                     <div class="form-group">
                                                                                         <strong for="">Email</strong>
-                                                                                        <input type="text" required class="form-control" placeholder="Email Address" value="<?= $app->email ?? '' ?> " name="email" >
+                                                                                        <input type="text" disabled required class="form-control" placeholder="Email Address" value="<?= $app->email ?? '' ?> " name="email" >
                                                                                         
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="col-md-6 col-lg-6 col-sm-6 response">
                                                                                     <div class="form-group">
                                                                                         <strong for="">Phone No.</strong>
-                                                                                        <input type="text" required  name="phone_no" value="<?= $app->phone_no ?? '' ?>" placeholder="Phone Number"  class="form-control">
+                                                                                        <input type="text" disabled required  name="phone_no" value="<?= $app->phone_no ?? '' ?>" placeholder="Phone Number"  class="form-control">
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -102,7 +124,7 @@
                                                                                 <div class="col-md-6 col-lg-6 col-sm-6 response">
                                                                                     <div class="form-group">
                                                                                         <strong for="">GL Account Code</strong>
-                                                                                        <select name="gl_account_code"  class="form-control">
+                                                                                        <select name="gl_account_code" disabled  class="form-control">
                                                                                             <option selected disabled>--Select GL Account Code--</option>
                                                                                             <?php foreach($accounts as $account) : ?>
                                                                                                 <option value="<?= $account['glcode'] ?? '' ?>" <?= $account['glcode'] == $app->gl_account_code ? 'selected' : '' ?> ><?= $account['account_name'] ?? '' ?> - <?= $account['glcode'] ?? '' ?></option>
@@ -116,7 +138,7 @@
                                                                             <hr>
                                                                             <div class="row mb-4">
                                                                                 <div class="col-md-12 d-flex justify-content-center">
-                                                                                    <button class="btn btn-sm btn-primary" type="submit" ><i class="ti-check mr-2"></i>Save changes</button>
+                                                                                    <button class="btn btn-sm btn-primary" type="button" data-dismiss="modal" ><i class="ti-check mr-2"></i>Dismiss</button>
                                                                                 </div>
                                                                             </div>
                                                                     </div>
@@ -132,8 +154,8 @@
                                     </tfoot>
                                 </table>
                             </div>
-                        </div>
                     </div>
+                </div>
         </div>
     </div>
 
@@ -146,8 +168,7 @@
 <script src="/assets/js/common.js"></script>
     <script src="/assets/js/parsley.min.js"></script>
     <script src="/assets/js/toastify.min.js"></script>
-
-<script src="/assets/js/datatables.min.js"></script>
+  <script src="/assets/js/datatables.min.js"></script>
 <script>
 $(document).ready(function(){
     $('.simpletable').DataTable();

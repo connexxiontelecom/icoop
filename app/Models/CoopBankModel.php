@@ -14,6 +14,11 @@ class CoopBankModel extends Model{
         $builder->groupby('coop_banks.coop_bank_id');
         return $builder->get()->getResultObject();
     }
+    public function getBank($id){
+        $builder = $this->db->table('coop_banks');
+        $builder->where('coop_bank_id = '.$id);
+        return $builder->get()->getRowObject();
+    }
 }
 
 ?>
