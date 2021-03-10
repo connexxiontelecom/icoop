@@ -482,7 +482,7 @@
 							
 							$account = $this->coa->where('glcode', $loan_s['loan_gl_account_no'])->first();
 							$bankGl = array(
-								'glcode' => $loan_s->loan_gl_account_no,
+								'glcode' => $loan_s['loan_gl_account_no'],
 								'posted_by' => $this->session->user_username,
 								'narration' => 'Loan repayment from external receipt',
 								'dr_amount' => 0,
@@ -495,9 +495,10 @@
 							);
 							$this->gl->save($bankGl);
 							
-							$account = $this->coa->where('glcode', $loan_s['loan_gl_account_no'])->first();
+							$coop_bank = $this->coopbank->where('coop_bank_id', $rm['rm_coop_bank'])->first();
+							$account = $this->coa->where('glcode', $coop_bank['glcode'])->first();
 							$bankGl = array(
-								'glcode' => $loan_s->bank_gl_code,
+								'glcode' => $coop_bank['glcode'],
 								'posted_by' => $this->session->user_username,
 								'narration' => 'Loan repayment from external receipt',
 								'dr_amount' => $rd['rd_amount'],
@@ -556,9 +557,12 @@
 							
 							//debit bank gl
 							// bank gl_code should be entered here
-							$account = $this->coa->where('glcode', $wt['contribution_type_glcode'])->first();
+							
+							$coop_bank = $this->coopbank->where('coop_bank_id', $rm['rm_coop_bank'])->first();
+							$account = $this->coa->where('glcode', $coop_bank['glcode'])->first();
+							
 							$bankGl = array(
-								'glcode' => $wt['contribution_type_glcode'],
+								'glcode' => $coop_bank['glcode'],
 								'posted_by' => $this->session->user_username,
 								'narration' => 'External receipt contribution',
 								'dr_amount' => $rd['rd_amount'],
