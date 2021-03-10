@@ -405,7 +405,19 @@ class PaymentController extends BaseController
                 ]);
             $scheduledetail = $this->schedulemasterdetail->where('schedule_master_id', 
                 $this->request->getVar('schedule'))->findAll();
+	       
+	        $sm = $this->schedulemaster->where('schedule_master_id', $this->request->getVar('schedule'))->first();
+	       
+	        
+	        ## getting bank gl code
+	        $cb_id = $sm['bank_id'];
+	        $cb = $this->coopbank->where('coop_bank_id', $cb_id)->first();
+	        $b_gl = $cb['glcode'];
+	        
             foreach($scheduledetail as $detail){
+	
+	            $ref_code = time();
+            	
                 if($detail['transaction_type'] == 1){ //loan
                  
                 	//$loan = $this->loan->where('loan_id', $detail['loan_id'])->first();
@@ -414,63 +426,126 @@ class PaymentController extends BaseController
 	
 	                //print_r($detail);
 //
+	                $p_d = date('Y-m-d H:i:s');
                 	$loan_array = array(
                 		'loan_id' => $detail['loan_id'],
 		                'disburse'=>1,
-		                'disburse_date'=>date('Y-m-d H:i:s')
+		                'disburse_date'=>$p_d
 	                );
 
                      $this->loan->save($loan_array);
+	
+	                $interest_method = $loan['interest_method'];
+	                $interest_charge_type = $loan['interest_charge_type'];
+	                $ls_interest_rate = $loan['ls_interest_rate'];
+	                $interest_amount = 0;
+	                $loan_amount = $loan['amount'];
+	                $duration = $loan['duration'];
+	
+	                if($interest_method == 1){
+		                #register loan repayment
+		
+		                if($interest_charge_type == 1){ #flat interest type
+			
+			                $interest_amount = ($ls_interest_rate/100) * $loan_amount;
+			
+		                }
+		
+		
+		                if($interest_charge_type == 2){ #fmonthly type
+			
+			                $interest_amount =  $loan_amount * ($ls_interest_rate/100) * $duration;
+			
+		                }
+		
+		                if($interest_charge_type == 3){ #fmonthly type
+			
+			                $interest_amount =  $loan_amount * ($ls_interest_rate/100) * ($duration/12);
+			
+		                }
+		
+		
+		
+		                $loan_repayment = [
+			                'lr_staff_id' => $loan['staff_id'],
+			                'lr_loan_id' => $loan['loan_id'],
+			                'lr_month' => date('m', strtotime($loan['created_at'])),
+			                'lr_year' => date('Y', strtotime($loan['created_at'])),
+			                'lr_amount' => $interest_amount,
+			                'lr_dctype' => 2,
+			                'lr_ref' => $ref_code,
+			                'lr_narration' => 'interest on loan type',
+			                'lr_mi' => 0,
+			                'lr_mpr' => 0,
+			                'lr_interest' => 1,
+			                'lr_date' => date('Y-m-d H:i:s'),
+		                ];
+		                $this->loanrepayment->save($loan_repayment);
+		
+		
+		
+		
+		
+		                //disbursed loan entering GL
+	                }
                      
-                  
-                     
-                     $interest_method = $loan['interest_method'];
-                     $interest_charge_type = $loan['interest_charge_type'];
-                     $ls_interest_rate = $loan['ls_interest_rate'];
-                     $interest_amount = 0;
-                     $loan_amount = $loan['amount'];
-                     $duration = $loan['duration'];
-                     
-                     if($interest_method == 1){
-	                     #register loan repayment
-
-	                     if($interest_charge_type == 1){ #flat interest type
-
-	                     	$interest_amount = ($ls_interest_rate/100) * $loan_amount;
-
-	                     }
-
-
-	                     if($interest_charge_type == 2){ #fmonthly type
-
-		                     $interest_amount =  $loan_amount * ($ls_interest_rate/100) * $duration;
-
-	                     }
-
-	                     if($interest_charge_type == 3){ #fmonthly type
-
-		                     $interest_amount =  $loan_amount * ($ls_interest_rate/100) * ($duration/12);
-
-	                     }
-
-
-
-	                     $loan_repayment = [
-		                     'lr_staff_id' => $loan['staff_id'],
-		                     'lr_loan_id' => $loan['loan_id'],
-		                     'lr_month' => date('m', strtotime($loan['created_at'])),
-		                     'lr_year' => date('Y', strtotime($loan['created_at'])),
-		                     'lr_amount' => $interest_amount,
-		                     'lr_dctype' => 2,
-		                     'lr_ref' => time(),
-		                     'lr_narration' => 'interest on loan type',
-		                     'lr_mi' => 0,
-		                     'lr_mpr' => 0,
-		                     'lr_interest' => 1,
-		                     'lr_date' => date('Y-m-d H:i:s'),
-	                     ];
-	                     $this->loanrepayment->save($loan_repayment);
-                     }
+                     //credit bank --
+	
+	                $account = $this->coa->where('glcode', $b_gl)->first();
+	                $bankGl = array(
+		                'glcode' => $b_gl,
+		                'posted_by' => $this->session->user_username,
+		                'narration' => $loan->loan_description.' disbursement for'. $loan->name,
+		                'dr_amount' => 0,
+		                'cr_amount' => $loan['amount'],
+		                'ref_no' =>$ref_code,
+		                'bank' => $account['bank'],
+		                'ob' => 0,
+		                'posted' => 1,
+		                'created_at' => $p_d,
+	                );
+	                $this->gl->save($bankGl);
+	
+	                //  debit loan
+	                
+	                $account = $this->coa->where('glcode', $loan->loan_gl_account_no)->first();
+	                $bankGl = array(
+		                'glcode' => $loan->loan_gl_account_no,
+		                'posted_by' => $this->session->user_username,
+		                'narration' => $loan->loan_description.' disbursement for'. $loan->name,
+		                'dr_amount' => $loan['amount'] + $interest_amount,
+		                'cr_amount' => 0,
+		                'ref_no' =>$ref_code,
+		                'bank' => $account['bank'],
+		                'ob' => 0,
+		                'posted' => 1,
+		                'created_at' => $p_d,
+	                );
+	                $this->gl->save($bankGl);
+	                
+	                // check for upfront interest
+	                
+	                if($interest_amount > 0):
+		                $account = $this->coa->where('glcode', $loan->loan_unearned_int_gl_account)->first();
+		                $bankGl = array(
+			                'glcode' => $loan->loan_unearned_int_gl_account,
+			                'posted_by' => $this->session->user_username,
+			                'narration' => $loan->loan_description.' disbursement for'. $loan->name,
+			                'dr_amount' => 0,
+			                'cr_amount' => $interest_amount,
+			                'ref_no' =>$ref_code,
+			                'bank' => $account['bank'],
+			                'ob' => 0,
+			                'posted' => 1,
+			                'created_at' => $p_d,
+		                );
+		                $this->gl->save($bankGl);
+		                
+		                endif;
+	
+	
+	
+	               
                    
                 }elseif($detail['transaction_type'] == 2){ //withdraw
 //
@@ -558,8 +633,9 @@ class PaymentController extends BaseController
 	
 	                
 	                //credit bank
+	                $account = $this->coa->where('glcode', $b_gl)->first();
 	                $bankGl = array(
-		                'glcode' => $bank->gl_code,
+		                'glcode' => $b_gl,
 		                'posted_by' => $this->session->user_username,
 		                'narration' => $withdraw['withdraw_narration'],
 		                'dr_amount' => 0,
@@ -573,7 +649,7 @@ class PaymentController extends BaseController
 	                $this->gl->save($bankGl);
 	                
 	                $bankGl = array(
-		                'glcode' => $bank->gl_code,
+		                'glcode' => $b_gl,
 		                'posted_by' => $this->session->user_username,
 		                'narration' => 'Charges on withdrawal',
 		                'dr_amount' => 0,

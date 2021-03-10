@@ -347,9 +347,13 @@ class Routine extends BaseController
 	
 	        $check_duplicate = $this->pd->where(['pd_staff_id' => $temp_payment['temp_pd_staff_id'], 'pd_ct_id' => $temp_payment['temp_pd_ct_id'], 'pd_pg_id' => $temp_payment['temp_pd_pg_id'], 'pd_month' => $temp_payment['temp_pd_month'],
 		        'pd_year' => $temp_payment['temp_pd_year'],  'pd_drcrtype' => 1 ])->findAll();
+        
+          
 	
 	        if(empty($check_duplicate)):
-	
+		
+		        $pg_d = $this->pg->where('pg_id', $temp_payment['temp_pd_pg_id'])->first();
+	        
 	            $payment_details_array = array(
 	                'pd_staff_id' => $temp_payment['temp_pd_staff_id'],
 	                'pd_transaction_date' => $temp_payment['temp_pd_transaction_date'],
@@ -366,6 +370,7 @@ class Routine extends BaseController
 	
 	            $v =   $this->pd->save($payment_details_array);
 		       
+	            // credit contribution_type
 		        $wt = $this->contribution_type->where('contribution_type_id', $temp_payment['temp_pd_ct_id'])->first();
 		        $account = $this->coa->where('glcode', $wt['contribution_type_glcode'])->first();
 		        
@@ -384,11 +389,11 @@ class Routine extends BaseController
 		        $this->gl->save($bankGl);
 		
 				//debit payroll
-		        //$wt = $this->ct->where('contribution_type_id', $temp_payment['temp_pd_ct_id'])->first();
-		        $account = $this->coa->where('glcode', $wt['payroll_code'])->first();
+		   
+		        $account = $this->coa->where('glcode', $pg_d['pg_gl_code'])->first();
 		
 		        $bankGl = array(
-			        'glcode' => $wt['payroll_code'],
+			        'glcode' => $pg_d['pg_gl_code'],
 			        'posted_by' => $this->session->user_username,
 			        'narration' => $temp_payment['temp_pd_narration'],
 			        'dr_amount' => $temp_payment['temp_pd_amount'],
@@ -420,7 +425,8 @@ class Routine extends BaseController
 			    'pd_year' => $temp_payment['temp_pd_year'],  'pd_drcrtype' => 1 ])->findAll();
 	    
 	    if(empty($check_duplicate)):
-		
+		    $pg_d = $this->pg->where('pg_id', $temp_payment['temp_pd_pg_id'])->first();
+	    
 		    $payment_details_array = array(
 			    'pd_staff_id' => $temp_payment['temp_pd_staff_id'],
 			    'pd_transaction_date' => $temp_payment['temp_pd_transaction_date'],
@@ -436,7 +442,41 @@ class Routine extends BaseController
 		
 		
 		    $v =   $this->pd->save($payment_details_array);
-		  
+		
+		    $wt = $this->contribution_type->where('contribution_type_id', $temp_payment['temp_pd_ct_id'])->first();
+		    $account = $this->coa->where('glcode', $wt['contribution_type_glcode'])->first();
+		
+		    $bankGl = array(
+			    'glcode' => $wt['contribution_type_glcode'],
+			    'posted_by' => $this->session->user_username,
+			    'narration' => $temp_payment['temp_pd_narration'],
+			    'dr_amount' => 0,
+			    'cr_amount' => $temp_payment['temp_pd_amount'],
+			    'ref_no' =>$temp_payment['temp_pd_ref_code'],
+			    'bank' => $account['bank'],
+			    'ob' => 0,
+			    'posted' => 1,
+			    'created_at' =>  date('Y-m-d'),
+		    );
+		    $this->gl->save($bankGl);
+		
+		    //debit payroll
+		
+		    $account = $this->coa->where('glcode', $pg_d['pg_gl_code'])->first();
+		
+		    $bankGl = array(
+			    'glcode' => $pg_d['pg_gl_code'],
+			    'posted_by' => $this->session->user_username,
+			    'narration' => $temp_payment['temp_pd_narration'],
+			    'dr_amount' => $temp_payment['temp_pd_amount'],
+			    'cr_amount' => 0,
+			    'ref_no' =>$temp_payment['temp_pd_ref_code'],
+			    'bank' => $account['bank'],
+			    'ob' => 0,
+			    'posted' => 1,
+			    'created_at' =>  date('Y-m-d'),
+		    );
+		    $this->gl->save($bankGl);
 		    
 		   else:
 			  
@@ -665,7 +705,7 @@ class Routine extends BaseController
 								);
 								
 								$j = $this->lr->save($lr_array);
-								
+								//debit loan
 								$account = $this->coa->where('glcode', $active_loan->loan_gl_account_no)->first();
 								$bankGl = array(
 									'glcode' => $active_loan->loan_gl_account_no,
@@ -1162,9 +1202,18 @@ class Routine extends BaseController
 			
 			$v =   $this->lr->save($loan_repayment);
 			
-			$account = $this->coa->where('glcode', $loans->payroll_gl)->first();
+			
+			//debit payroll
+			$coop = $this->cooperator->where('cooperator_staff_id', $staff_id)->first();
+			
+			$coop_pg = $coop['cooperator_payroll_group_id'];
+			
+			$pg_details = $this->pg->where('pg_id', $coop_pg)->first();
+			
+			
+			$account = $this->coa->where('glcode', $pg_details['pg_gl_code'])->first();
 			$bankGl = array(
-				'glcode' => $loans->payroll_gl,
+				'glcode' => $pg_details['pg_gl_code'],
 				'posted_by' => $this->session->user_username,
 				'narration' => $temp_payment['temp_lr_narration'],
 				'dr_amount' => $temp_payment['temp_lr_amount'],
@@ -1177,7 +1226,7 @@ class Routine extends BaseController
 			);
 			$this->gl->save($bankGl);
 			
-			//credit interest account
+			//credit loan
 			$account = $this->coa->where('glcode', $loans->loan_gl_account_no)->first();
 			$bankGl = array(
 				'glcode' => $loans->loan_gl_account_no,

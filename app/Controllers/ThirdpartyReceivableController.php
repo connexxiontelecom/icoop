@@ -18,6 +18,7 @@ use App\Models\EntryPaymentDetailModel;
 use App\Models\GlModel; 
 use App\Models\CustomerSetupModel; 
 use App\Models\CustomerReceivableModel; 
+use App\Models\ReceiptMasterModel; 
 
 class ThirdpartyReceivableController extends BaseController
 {
@@ -29,6 +30,7 @@ class ThirdpartyReceivableController extends BaseController
         $this->gl = new GlModel;
         $this->customersetup = new CustomerSetupModel;
         $this->customerreceivable = new CustomerReceivableModel;
+        $this->receiptmaster = new ReceiptMasterModel;
     }
 
     public function showCustomerSetupForm(){
@@ -226,11 +228,10 @@ class ThirdpartyReceivableController extends BaseController
         $from = date('Y-m-d');
         $to =   date('Y-m-d');
          $data = [
-          'result'=>$this->customerreceivable->generateThirdPartyReport($from, $to),
+          'result'=>$this->receiptmaster->generateMemberReport($from, $to),
           'from'=>$from,
-          'to'=>$to,
-          'accounts'=> $this->coa->where('type',1)->findAll()
-        ];
+          'to'=>$to
+        ];        
         $username = $this->session->user_username;
         $this->authenticate_user($username, 'pages/receivables/member-report', $data);
     }
@@ -242,7 +243,7 @@ class ThirdpartyReceivableController extends BaseController
         $to =  $this->request->getVar('to') ?? date('Y-m-d');
         if($_POST){
             $data = [
-                'result'=>$this->customerreceivable->generateThirdPartyReport($from, $to),
+                'result'=>$this->receiptmaster->generateMemberReport($from, $to),
                 'from'=>$from,
                 'to'=>$to,
                 'accounts'=> $this->coa->where('type',1)->findAll()

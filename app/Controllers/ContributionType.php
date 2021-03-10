@@ -226,7 +226,7 @@ class ContributionType extends BaseController
 
         else:
 	
-	        $data['coas'] = $this->coa->where(['type' => 2])->findAll();
+	        $data['coas'] = $this->coa->where(['type' => 1])->findAll();
             $data['contribution_types'] = $this->contribution_type->findAll();
             $username = $this->session->user_username;
             $this->authenticate_user($username, 'pages/control-panel/contribution_type', $data);
