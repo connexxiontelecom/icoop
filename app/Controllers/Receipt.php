@@ -18,6 +18,8 @@
 	use App\Models\LoanModel;
 	use App\Models\LoanRepaymentModel;
 	use App\Models\CoaModel;
+	use App\Models\GlModel;
+	
 
 	
 	
@@ -39,6 +41,8 @@
 			$this->cooperator = new Cooperators();
 			$this->lr = new LoanRepaymentModel();
 			$this->coa = new CoaModel();
+			$this->gl = new GlModel();
+			
 			
 		}
 		
@@ -495,7 +499,7 @@
 							);
 							$this->gl->save($bankGl);
 							
-							$coop_bank = $this->coopbank->where('coop_bank_id', $rm['rm_coop_bank'])->first();
+							$coop_bank = $this->cb->where('coop_bank_id', $r_m['rm_coop_bank'])->first();
 							$account = $this->coa->where('glcode', $coop_bank['glcode'])->first();
 							$bankGl = array(
 								'glcode' => $coop_bank['glcode'],
@@ -558,7 +562,7 @@
 							//debit bank gl
 							// bank gl_code should be entered here
 							
-							$coop_bank = $this->coopbank->where('coop_bank_id', $rm['rm_coop_bank'])->first();
+							$coop_bank = $this->cb->where('coop_bank_id', $r_m['rm_coop_bank'])->first();
 							$account = $this->coa->where('glcode', $coop_bank['glcode'])->first();
 							
 							$bankGl = array(
