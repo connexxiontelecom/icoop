@@ -246,7 +246,7 @@ class PayRollGroup extends BaseController
 
 
             $data['pgs'] = $this->pg->findAll();
-            $data['coas'] = $this->coa->where(['type' => 2])->findAll();
+            $data['coas'] = $this->coa->where(['type' => 1])->findAll();
             $username = $this->session->user_username;
             $this->authenticate_user($username, 'pages/control-panel/payroll_group', $data);
 
