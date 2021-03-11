@@ -40,9 +40,8 @@
                             <td>Action</td>
                         </tr>
                     </thead>
-
-                    <tbody>
                     
+                    <tbody>
                         <?php $i = 1; foreach($receivables as $app) : ?>
                             <tr>
                                 <td><?= $i++ ?></td>
@@ -52,8 +51,8 @@
                                 <td><?= $app->cr_coop_bank_id ?? '' ?> - <?= $app->description ?? '' ?> </td>
                                 <td><?= $app->cr_gl_cr ?? '' ?> - <?= $app->account_name ?? '' ?></td>
                                 <td>
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal<?= $app->coa_id ?? '' ?>"><i class="fa fa-pencil-square-o"></i></button>
-                                    <div class="modal fade" id="editModal<?= $app->coa_id ?? '' ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal<?= $app->customer_setup_id ?? '' ?>"><i class="fa fa-pencil-square-o"></i></button>
+                                    <div class="modal fade" id="editModal<?= $app->customer_setup_id ?? '' ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -98,7 +97,7 @@
                                                                 <div class="col-md-6 col-lg-6 col-sm-6 response">
                                                                     <div class="form-group">
                                                                         <strong for="">GL Account Code</strong>
-                                                                        
+                                                                        <input type="text" disabled value="<?= $app->cr_gl_cr ?? '' ?> - <?= $app->account_name ?? '' ?>" class="form-control">
                                                                     </div>
                                                                 </div>
                                                                 

@@ -53,7 +53,7 @@ New Payment
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="">Coop Bank</label>
-                                    <select required name="coop_bank" id="coop_bank" class="form-control ">
+                                    <select required name="coop_bank" id="coop_bank" class="form-control js-example-basic-single">
                                         <option selected disabled>--Select bank--</option>
                                         <?php foreach($coopbank as $bank) : ?>
                                             <option value="<?= $bank->coop_bank_id ?>"><?= $bank->bank_name ?? '' ?> - (<?= $bank->account_no ?? '' ?>)</option>
@@ -67,12 +67,6 @@ New Payment
                             <div class="form-group">
                                 <label for="">Reference No.</label>
                                 <input type="text" required name="cheque_no" id="cheque_no" placeholder="Reference No." class=" form-control">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="">Attachment (PDF)</label>
-                                <input type="file" required name="attachment" class=" form-control-file">
                             </div>
                         </div>
                     </div>
@@ -92,7 +86,6 @@ New Payment
                                         <tr class="bg-info">
                                             <td class="text-nowrap">S/No</td>
                                             <td>Payee Name</td>
-                                            <td>Payee Bank</td>
                                             <td>Bank</td>
                                             <td>Bank Account No.</td>
                                             <td>Reference No.</td>
@@ -100,6 +93,7 @@ New Payment
                                             <td>GL Account No.</td>
                                             <td>Action</td>
                                         </tr>
+                                        
                                         <?php $i = 1; foreach($entries as $entry) : ?>
                                             <tr>
                                                 <td>
@@ -110,9 +104,8 @@ New Payment
                                                 <td><?= $entry->entry_payee_name ?? '' ?>
                                                     <input type="hidden" name="payee_name[]" value="<?= $entry->entry_payee_name ?? '' ?>" >
                                                 </td>
-                                                <td><?= $entry->entry_payee_bank ?? '' ?>
                                                     <input type="hidden" name="payee_bank[]" value="<?= $entry->entry_payee_bank ?? '' ?>" >
-                                                </td>
+                                                
                                                 <td><?= $entry->bank_name ?? '' ?>
                                                     <input type="hidden" name="bank_name[]" value="<?= $entry->bank_name ?? '' ?>" >
                                                 </td>
@@ -126,10 +119,10 @@ New Payment
                                                     <input type="hidden" name="entry_amount[]" value="<?= $entry->entry_amount ?? '' ?>" >
                                                 </td>
                                                 <td><?= $entry->entry_gl_account_no ?? '' ?>
-                                                    <input type="hidden" name="gl_account_no[]" value="<?= $entry->entry_gl_account_no ?? '' ?>" >
+                                                    <input type="hidden" name="gl_account_no[]" value="<?= $entry->entry_gl_account_no ?? '' ?> - <?= $entry->account_name ?? '' ?>" >
                                                     <input type="hidden" name="entry_id[]" value="<?= $entry->third_party_payment_entry_id ?? '' ?>">
                                                 </td>
-                                                <td> <a href="">Return </a> </td>
+                                                <td> <a href="<?= site_url('/third-party/return-payment/'.$entry->third_party_payment_entry_id) ?>">Return </a> </td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </table>

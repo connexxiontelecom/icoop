@@ -14,8 +14,13 @@ class EntryPaymentDetailModel extends Model{
     public function getEntryDetailById($id){
         $builder = $this->db->table('entry_payment_details');
         $builder->join('entry_payment_masters', 'entry_payment_details.entry_payment_d_master_id = entry_payment_masters.entry_payment_master_id');
-        //$builder->join('coop_banks', 'coop_banks.coop_bank_id = entry_payment_masters.entry_payment_master_id');
-        $builder->join('coop_banks', 'coop_banks.coop_bank_id = entry_payment_details.entry_payment_d_payee_bank');
+        $builder->join('banks', 'banks.bank_id = entry_payment_details.entry_payment_d_payee_bank');
+        $builder->groupBy('banks.bank_id');
+        $builder->where('entry_payment_details.entry_payment_d_master_id = '.$id);
+        return $builder->get()->getResultObject();
+    }
+    public function getPaymentDetailsByMasterId($id){
+        $builder = $this->db->table('entry_payment_details');
         $builder->where('entry_payment_details.entry_payment_d_master_id = '.$id);
         return $builder->get()->getResultObject();
     }

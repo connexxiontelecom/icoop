@@ -174,6 +174,9 @@ $routes->get('/third-party/view-verify-payment-entry/(:num)', 'PaymentController
 $routes->post('/third-party/view-verify-payment-entry', 'PaymentController::postVerifyPaymentEntry');
 $routes->get('/third-party/approve-payment-entry', 'PaymentController::approvePaymentEntry');
 $routes->post('/third-party/approved-payment-entry', 'PaymentController::postApprovedPaymentEntry');
+$routes->get('/third-party/return-payment/(:num)', 'PaymentController::returnPayment/$1');
+$routes->get('/third-party/payment-list', 'PaymentController::paymentList');
+$routes->get('/third-party/payment-entry/(:num)', 'PaymentController::getThirdpartyEntry/$1');
 
 #Third-party receivable routes
 $routes->get('/third-party/receivable/customer-setup', 'ThirdpartyReceivableController::showCustomerSetupForm');

@@ -265,6 +265,7 @@
 										<li><a href="<?=base_url('/third-party/new-payment') ?>">New Payment</a></li>
 										<li><a href="<?=base_url('/third-party/verify-payment-entry') ?>">Verify</a></li>
 										<li><a href="<?=base_url('/third-party/approve-payment-entry') ?>">Approve</a></li>
+										<li><a href="<?=base_url('/third-party/payment-list') ?>">Payment List</a></li>
                                     </ul>
                                     
                                 </li>

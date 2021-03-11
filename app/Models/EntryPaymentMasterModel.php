@@ -17,6 +17,7 @@ class EntryPaymentMasterModel extends Model{
         $builder->join('coop_banks', 'coop_banks.coop_bank_id = entry_payment_masters.entry_payment_bank_id');
         $builder->join('banks', 'banks.bank_id = coop_banks.bank_id');
         $builder->where('entry_payment_masters.entry_payment_verified = 0');
+        $builder->orderBy('entry_payment_masters.entry_payment_master_id', 'DESC');
         return $builder->get()->getResultObject();
     }
     public function getVerifiedEntryMaster(){
@@ -36,6 +37,17 @@ class EntryPaymentMasterModel extends Model{
         return $builder->get()->getRowObject();
     }
    
+
+    public function getPaymentEntries(){
+        $builder = $this->db->table('entry_payment_masters');
+        $builder->join('coop_banks', 'coop_banks.coop_bank_id = entry_payment_masters.entry_payment_bank_id');
+        $builder->join('banks', 'banks.bank_id = coop_banks.bank_id');
+        $builder->join('third_party_payment_entries', 'third_party_payment_entries.entry_bank_id = banks.bank_id');
+        $builder->groupby('third_party_payment_entries.third_party_payment_entry_id');
+        $builder->orderBy('third_party_payment_entries.third_party_payment_entry_id', 'DESC');
+        return $builder->get()->getResultObject();
+    }
+
     /*public function getVerifiedScheduleMaster(){
         $builder = $this->db->table('schedule_masters');
         $builder->join('coop_banks', 'coop_banks.coop_bank_id = schedule_masters.bank_id');

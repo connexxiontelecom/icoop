@@ -70,6 +70,9 @@ View Payment Entry
                                     <tr>
                                         <td class="text-nowrap">Sort Code</td>
                                         <td><strong><?= $entry_master->sort_code ?? '' ?></strong></td>
+                                        <input type="hidden" name="gl" value="<?= $entry_master->glcode ?>">
+                                        <input type="hidden" name="master_amount" value="<?= $entry_master->entry_payment_amount ?>">
+                                        <input type="hidden" name="bank" value="<?= $entry_master->bank_id ?>">
                                     </tr>                                    
                                 </tbody>
                             </table>
@@ -85,50 +88,45 @@ View Payment Entry
                                     <tr>
                                         <td>S/No</td>
                                         <td>Payee Name</td>
-                                        <td>Payee Bank</td>
+                                        <td>Bank</td>
                                         <td>Reference No.</td>
-                                        <td>Payable Date</td>
                                         <td>Payment Amount</td>
                                         <td>Action</td>
                                     </tr>
+                                    
                                     <?php $serial = 1; $sum = 0; foreach($entry_detail as $d) : ?>
                                         <tr>
                                             <td><?= $serial++ ?></td>
                                             <td><?= $d->entry_payment_d_payee_name ?? '' ?></td>
                                             <td>
-                                                <?= $d->entry_payment_d_payee_bank ?? '' ?>
+                                                <?= $d->bank_name ?? '' ?>
                                             </td>
                                             <td><?= $d->entry_payment_d_reference_no ?? '' ?> </td>
-                                            <td><?= date('d F, Y', strtotime($d->entry_payment_payable_date)) ?? '' ?> </td>
                                             <td class="text-right"><?= number_format($d->entry_payment_d_amount,2) ?? '' ?> </td>
                                             <input type="hidden" name="sum" value="<?= $sum += $d->entry_payment_d_amount ?? 0?>">
                                             <input type="hidden" name="entry_master" value="<?= $d->entry_payment_master_id ?? ''  ?>">
-                                            <td><a href="= site_url('/loan/return-schedule-payment/'.$d->loan_id) ?>">Return</a></td>
+                                            <td><a href="<?= site_url('/third-party/view-verify-payment-entry/'.$d->entry_payment_master_id) ?>">Return</a></td>
                                         </tr>
                                     <?php endforeach; ?>
                                     <tr>
-                                        <td colspan="6" class="text-right">
+                                        <td colspan="5" class="text-right">
                                             <strong>Total:</strong>
                                         </td>
-                                        <td><?= '₦'.number_format($sum,2) ?></td>
+                                        <td class="text-right"><?=number_format($sum,2) ?></td>
                                     </tr>
                                    
                                     <tr>
                                         <td colspan="7">
-                                            <div class="form-group">
-                                                <label for="">Date</label>
-                                                <input type="date" name="date_verified" required placeholder="dd-mm-yyyy" class="form-control col-md-4">
-                                                
-                                            </div>
                                              <?php if(count($entry_detail) > 0) : ?>
                                                     <div class="d-flex justify-content-center">
-                                                        <?php if($entry_master->entry_payment_verified == 0) : ?>
+                                                        <?php if($entry_master->entry_payment_verified == 0 && $entry_master->entry_payment_approved == 0) : ?>
                                                             <div class="btn-group">
                                                                 <button class="btn btn-danger btn-sm" type="submit" >Return Entry</button>
                                                                 <button class="btn btn-primary btn-sm text-right"  type="submit">Verify Entry</button>
                                                             </div>
 
-                                                        <?php else : ?>
+                                                        <?php endif; ?>
+                                                        <?php if($entry_master->entry_payment_verified == 1 && $entry_master->entry_payment_approved == 0) : ?>
                                                             <div class="btn-group">
                                                                 <button class="btn btn-danger btn-sm" type="submit" >Return Entry</button>
                                                                 <button class="btn btn-primary btn-sm text-right"  type="submit">Approve Entry</button>

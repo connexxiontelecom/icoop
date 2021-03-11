@@ -70,7 +70,7 @@ Coop Banks
                            <select name="gl_account" required id="gl_account" class="form-control js-example-basic-multiple">
                               <option disabled selected>Select GL Account</option>
                               <?php foreach($coas as $coa) : ?>
-                                <option value="<?= $coa['glcode']?>"><?= $coa['account_name'] ?></option>
+                                <option value="<?= $coa['glcode']?>"><?= $coa['glcode'] ?? '' ?> - <?= $coa['account_name'] ?></option>
                               <?php endforeach ?>
                            </select>
                         </div>
@@ -159,7 +159,7 @@ Coop Banks
                                                                         <select name="gl_account" required id="gl_account" class="form-control js-example-basic-multiple">
                                                                             <option disabled selected>Select GL Account</option>
                                                                             <?php foreach($coas as $coa) : ?>
-                                                                                <option value="<?= $coa['glcode']?>" <?= ($coa['glcode'] == $coop->glcode) ? 'selected' : '' ?> ><?= $coa['account_name'] ?></option>
+                                                                                <option value="<?= $coa['glcode']?>" <?= ($coa['glcode'] == $coop->glcode) ? 'selected' : '' ?> ><?= $coa['glcode'] ?? '' ?> - <?= $coa['account_name'] ?></option>
                                                                             <?php endforeach ?>
                                                                         </select>
                                                                     </div>
