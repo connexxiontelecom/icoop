@@ -37,7 +37,7 @@ New Journal Transfer
 								<div class="form-group">
 									
 									<label> <b> Staff ID or Name: </b></label>
-									<input type="text" class="form-control"  id="search_account"  onblur="get_cts()"   required  name="withdraw_staff_id" placeholder="Enter staff ID or  name">
+									<input type="text" class="form-control"  id="search_account"  onblur="get_cts()"   required  name="staff_id" placeholder="Enter staff ID or  name">
 								
 								
 								
@@ -47,7 +47,7 @@ New Journal Transfer
 									
 									<label> <b> Contribution Type: </b></label>
 									
-									<select class="custom-select" id="ct_id" required name="withdraw_ct_id" onchange="get_account_balance()">
+									<select class="custom-select" id="ct_id" required name="ct_id" onchange="get_account_balance()">
 										<option> -- Select Contribution Type --</option>
 									
 									</select>
@@ -69,7 +69,7 @@ New Journal Transfer
 									<div class="form-group">
 										
 										<label  > <b> Amount: </b></label>
-										<input type="text" class="number form-control"  required  name="withdraw_amount" id="withdraw_amount"  placeholder="Enter Amount">
+										<input type="text" class="number form-control"  required  name="master_amount" id="withdraw_amount"  placeholder="Enter Amount">
 										
 										
 										
@@ -115,7 +115,7 @@ New Journal Transfer
 						<div class="row clearfix">
 							<div class="col-lg-7 col-md-12">
 								
-								<?= csrf_field() ?>
+							
 								
 <div id="payments">
 									<br>

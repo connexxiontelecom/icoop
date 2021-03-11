@@ -19,6 +19,8 @@
 	use App\Models\LoanRepaymentModel;
 	use App\Models\CoaModel;
 	use App\Models\GlModel;
+	use App\Models\JournalTransferMasterModel;
+	use App\Models\JournalTransferdetailModel;
 	
 
 	
@@ -42,6 +44,8 @@
 			$this->lr = new LoanRepaymentModel();
 			$this->coa = new CoaModel();
 			$this->gl = new GlModel();
+			$this->jtm = new JournalTransferMasterModel();
+			$this->jtd = new JournalTransferdetailModel();
 			
 			
 		}
@@ -731,29 +735,24 @@
 						]
 					],
 					
-					'payment_method'=>[
-						'rules'=>'required',
-						'errors'=>[
-							'required'=>'Enter an amount'
-						]
-					],
+				
 				
 				
 				]);
 				
 				if ($this->validator->withRequest($this->request)->run()):
 					
-					$rm['rm_staff_id'] = substr($_POST['staff_id'], 0, strpos($_POST['staff_id'], ','));
-					$rm['rm_date'] = $_POST['date'];
-					$rm['rm_amount'] = str_replace(',', '', $_POST['master_amount']);
+					$jtm['jtm_staff_id'] = substr($_POST['staff_id'], 0, strpos($_POST['staff_id'], ','));
+					$jtm['jtm_date'] = $_POST['date'];
+					$jtm['jtm_amount'] = str_replace(',', '', $_POST['master_amount']);
 					$master_amount = str_replace(',', '', $_POST['master_amount']);
-					$rm['rm_payment_method'] = $_POST['payment_method'];
-					$rm['rm_coop_bank'] = $_POST['coop_bank'];
-					$rm['rm_status'] = 0;
+					
+					$jtm['jtm_ct_id'] = $_POST['ct_id'];
+					$jtm['jtm_status'] = 0;
 					$x = 0;
 					$total_amount = 0;
-					$rm['rm_a_date'] = date("Y-m-d");
-					$rm['rm_by'] = $this->session->user_username;
+					$jtm['jtm_a_date'] = date("Y-m-d");
+					$jtm['jtm_by'] = $this->session->user_username;
 					$payment_amounts = $_POST['payment_amount'];
 					foreach ($payment_amounts as $payment_amount):
 						$payment_amount= str_replace(',', '', $payment_amount);
@@ -771,18 +770,18 @@
 							// do the computation here
 							//if any of this computation fails, it means  someone tampered the js on the frontend
 							
-							$rm_id = $this->rm->insert($rm);
+							$jtm_id = $this->jtm->insert($jtm);
 							
 							foreach ($payment_amounts as $payment_amount):
 								
 								$payment_amount= str_replace(',', '', $payment_amount);
 								
-								$rd['rd_rm_id'] = $rm_id;
-								$rd['rd_amount'] = $payment_amount;
-								$rd['rd_type'] = $payment_type[$x];
-								$rd['rd_target'] = $target[$x];
+								$jtd['jtd_jtm_id'] = $jtm_id;
+								$jtd['jtd_amount'] = $payment_amount;
+								$jtd['jtd_type'] = $payment_type[$x];
+								$jtd['jtd_target'] = $target[$x];
 								
-								$this->rd->save($rd);
+								$this->jtd->save($jtd);
 								
 								$x++;
 							
@@ -793,14 +792,14 @@
 								$data = array(
 									'msg' => 'Action Successful',
 									'type' => 'success',
-									'location' => base_url('new_receipt')
+									'location' => base_url('new_transfer')
 								);
 								return view('pages/sweet-alert', $data);
 							else:
 								$data = array(
 									'msg' => 'An Error Occurred',
 									'type' => 'error',
-									'location' => base_url('new_receipt')
+									'location' => base_url('new_transfer')
 								);
 								return view('pages/sweet-alert', $data);
 							
@@ -813,7 +812,7 @@
 							$data = array(
 								'msg' => 'master was greater',
 								'type' => 'error',
-								'location' => base_url('new_receipt')
+								'location' => base_url('new_transfer')
 							);
 							return view('pages/sweet-alert', $data);
 						
@@ -824,7 +823,7 @@
 							$data = array(
 								'msg' => 'master was less',
 								'type' => 'error',
-								'location' => base_url('new_receipt')
+								'location' => base_url('new_transfer')
 							);
 							return view('pages/sweet-alert', $data);
 						
@@ -836,7 +835,7 @@
 						$data = array(
 							'msg' => 'master was zero',
 							'type' => 'error',
-							'location' => base_url('new_receipt')
+							'location' => base_url('new_transfer')
 						);
 						return view('pages/sweet-alert', $data);
 					
@@ -848,7 +847,7 @@
 					$data = array(
 						'msg' => implode(", ", $arr),
 						'type' => 'error',
-						'location' => base_url('new_receipt')
+						'location' => base_url('new_transfer')
 					
 					);
 					
@@ -865,64 +864,64 @@
 			
 			if($method == 'get'):
 				//did lots of array manipulation here, before editing please ensure you are smart.
-				//$rms = $this->rm->where(['rm_status' => 0])->findAll();
-				$rms = $this->rm->get_receipts(0);
+				//$jtms = $this->jtm->where(['jtm_status' => 0])->findAll();
+				$jtms = $this->jtm->get_receipts(0);
 				$x = 0;
-				$rm_data = array();
-				foreach ($rms as $rm):
+				$jtm_data = array();
+				foreach ($jtms as $jtm):
 					
-					$rm_id = $rm['rm_id'];
+					$jtm_id = $jtm['jtm_id'];
 					
-					$rds = $this->rd->where(['rd_rm_id' => $rm_id])->findAll();
+					$jtds = $this->jtd->where(['jtd_jtm_id' => $jtm_id])->findAll();
 					
 					$y = 0;
-					$rd_data = array();
-					foreach ($rds as $rd):
-						if($rd['rd_type'] == 1): //loan
-							$loan_id = $rd['rd_target'];
+					$jtd_data = array();
+					foreach ($jtds as $jtd):
+						if($jtd['jtd_type'] == 1): //loan
+							$loan_id = $jtd['jtd_target'];
 							$loan_data = $this->loan->get_loan($loan_id);
-							$rd_data['target'][$y] = $rd + $loan_data;
+							$jtd_data['target'][$y] = $jtd + $loan_data;
 						endif;
-						if($rd['rd_type'] == 2): //savings
-							$ct_id = $rd['rd_target'];
+						if($jtd['jtd_type'] == 2): //savings
+							$ct_id = $jtd['jtd_target'];
 							$ct_data = $this->contribution_type->where(['contribution_type_id' => $ct_id])->first();
-							$rd_data['target'][$y] = $rd + $ct_data;
+							$jtd_data['target'][$y] = $jtd + $ct_data;
 						endif;
 						
 						$y++;
 					endforeach;
 					
-					$rm_data[$x] = $rm + $rd_data;
+					$jtm_data[$x] = $jtm + $jtd_data;
 					
 					$x++;
 				endforeach;
 				
-				$data['rms'] = $rm_data;
+				$data['jtms'] = $jtm_data;
 				
-				//dd($rm_data);
+				//dd($jtm_data);
 				
 				$username = $this->session->user_username;
-				$this->authenticate_user($username, 'pages/receipt/verify_receipt', $data);
+				$this->authenticate_user($username, 'pages/receipt/verify_transfer', $data);
 			
 			endif;
 			
 			if($method == 'post'):
 				
-				$rm_status = $_POST['rm_status'];
+				$jtm_status = $_POST['jtm_status'];
 				
-				if($rm_status == 1):
+				if($jtm_status == 1):
 					
-					$rm['rm_status'] = $rm_status;
-					$rm['rm_verify_comment'] = $_POST['rm_verify_comment'];
-					$rm['rm_verify_date'] = date('Y-m-d');
-					$rm['rm_verify_by'] = $this->session->user_first_name." ".$this->session->user_last_name;
-					$rm['rm_id'] = $_POST['rm_id'];
+					$jtm['jtm_status'] = $jtm_status;
+					$jtm['jtm_verify_comment'] = $_POST['jtm_verify_comment'];
+					$jtm['jtm_verify_date'] = date('Y-m-d');
+					$jtm['jtm_verify_by'] = $this->session->user_first_name." ".$this->session->user_last_name;
+					$jtm['jtm_id'] = $_POST['jtm_id'];
 					
-					$check = $this->rm->save($rm);
+					$check = $this->jtm->save($jtm);
 					
 					if($check):
 						$data = array(
-							'msg' => 'Receipt Verified',
+							'msg' => 'Journal Transfer Verified',
 							'type' => 'success',
 							'location' => base_url('verify_receipt')
 						);
@@ -942,19 +941,19 @@
 				endif;
 				
 				
-				if($rm_status == 3):
+				if($jtm_status == 3):
 					
-					$rm['rm_status'] = $rm_status;
-					$rm['rm_discard_comment'] = $_POST['rm_discard_comment'];
-					$rm['rm_discard_date'] = date('Y-m-d');
-					$rm['rm_discard_by'] = $this->session->user_first_name." ".$this->session->user_last_name;
-					$rm['rm_id'] = $_POST['rm_id'];
+					$jtm['jtm_status'] = $jtm_status;
+					$jtm['jtm_discard_comment'] = $_POST['jtm_discard_comment'];
+					$jtm['jtm_discard_date'] = date('Y-m-d');
+					$jtm['jtm_discard_by'] = $this->session->user_first_name." ".$this->session->user_last_name;
+					$jtm['jtm_id'] = $_POST['jtm_id'];
 					
-					$check = $this->rm->save($rm);
+					$check = $this->jtm->save($jtm);
 					
 					if($check):
 						$data = array(
-							'msg' => 'Receipt Disqualified',
+							'msg' => 'Journal Transfer Disqualified',
 							'type' => 'success',
 							'location' => base_url('verify_receipt')
 						);
@@ -984,41 +983,41 @@
 			
 			if($method == 'get'):
 				//did lots of array manipulation here, before editing please ensure you are smart.
-				//$rms = $this->rm->where(['rm_status' => 0])->findAll();
-				$rms = $this->rm->get_receipts(1);
+				//$jtms = $this->jtm->where(['jtm_status' => 0])->findAll();
+				$jtms = $this->jtm->get_receipts(1);
 				$x = 0;
-				$rm_data = array();
-				foreach ($rms as $rm):
+				$jtm_data = array();
+				foreach ($jtms as $jtm):
 					
-					$rm_id = $rm['rm_id'];
+					$jtm_id = $jtm['jtm_id'];
 					
-					$rds = $this->rd->where(['rd_rm_id' => $rm_id])->findAll();
+					$jtds = $this->jtd->where(['jtd_jtm_id' => $jtm_id])->findAll();
 					
 					$y = 0;
-					$rd_data = array();
-					foreach ($rds as $rd):
-						if($rd['rd_type'] == 1): //loan
-							$loan_id = $rd['rd_target'];
+					$jtd_data = array();
+					foreach ($jtds as $jtd):
+						if($jtd['jtd_type'] == 1): //loan
+							$loan_id = $jtd['jtd_target'];
 							$loan_data = $this->loan->get_loan($loan_id);
-							$rd_data['target'][$y] = $rd + $loan_data;
+							$jtd_data['target'][$y] = $jtd + $loan_data;
 						endif;
-						if($rd['rd_type'] == 2): //savings
-							$ct_id = $rd['rd_target'];
+						if($jtd['jtd_type'] == 2): //savings
+							$ct_id = $jtd['jtd_target'];
 							$ct_data = $this->contribution_type->where(['contribution_type_id' => $ct_id])->first();
-							$rd_data['target'][$y] = $rd + $ct_data;
+							$jtd_data['target'][$y] = $jtd + $ct_data;
 						endif;
 						
 						$y++;
 					endforeach;
 					
-					$rm_data[$x] = $rm + $rd_data;
+					$jtm_data[$x] = $jtm + $jtd_data;
 					
 					$x++;
 				endforeach;
 				
-				$data['rms'] = $rm_data;
+				$data['jtms'] = $jtm_data;
 				
-				//dd($rm_data);
+				//dd($jtm_data);
 				
 				$username = $this->session->user_username;
 				$this->authenticate_user($username, 'pages/receipt/approve_receipt', $data);
@@ -1027,29 +1026,64 @@
 			
 			if($method == 'post'):
 				
-				$rm_status = $_POST['rm_status'];
+				$jtm_status = $_POST['jtm_status'];
 				
-				if($rm_status == 2):
+				if($jtm_status == 2):
 					
-					$rm['rm_status'] = $rm_status;
-					$rm['rm_approve_comment'] = $_POST['rm_approve_comment'];
-					$rm['rm_approve_date'] = date('Y-m-d');
-					$rm['rm_approve_by'] = $this->session->user_first_name." ".$this->session->user_last_name;
-					$rm['rm_id'] = $_POST['rm_id'];
-					$rm_id = $rm['rm_id'];
+					$jtm['jtm_status'] = $jtm_status;
+					$jtm['jtm_approve_comment'] = $_POST['jtm_approve_comment'];
+					$jtm['jtm_approve_date'] = date('Y-m-d');
+					$jtm['jtm_approve_by'] = $this->session->user_first_name." ".$this->session->user_last_name;
+					$jtm['jtm_id'] = $_POST['jtm_id'];
+					$jtm_id = $jtm['jtm_id'];
 					
-					$check = $this->rm->save($rm);
+					$check = $this->jtm->save($jtm);
 					
-					$r_m = $this->rm->where(['rm_id' => $rm_id])->first();
-					$staff_id = $r_m['rm_staff_id'];
+					$jt_m = $this->jtm->where(['jtm_id' => $jtm_id])->first();
+					$staff_id = $jt_m['jtm_staff_id'];
+				
 					$ref_code = time();
-					$rds = $this->rd->where(['rd_rm_id' => $rm_id])->findAll();
+					$jtds = $this->jtd->where(['jtd_jtm_id' => $jtm_id])->findAll();
 					$cooperator = $this->cooperator->get_cooperator_staff_id($staff_id);
 					
+					$cts= $this->contribution_type->where('contribution_type_id', $jt_m['jtm_ct_id'])->first();
+					$account = $this->coa->where('glcode', $cts['contribution_type_glcode'])->first();
+					$bankGl = array(
+						'glcode' => $cts['glcode'],
+						'posted_by' => $this->session->user_username,
+						'narration' => 'Journal Transfer',
+						'dr_amount' => $jt_m['jtm_amount'],
+						'cr_amount' => 0,
+						'ref_no' =>$ref_code,
+						'bank' => $account['bank'],
+						'ob' => 0,
+						'posted' => 1,
+						'created_at' => date('Y-m-d'),
+					);
+					$this->gl->save($bankGl);
 					
-					foreach ($rds as $rd):
-						if($rd['rd_type'] == 1): //loan
-							$loan_id = $rd['rd_target'];
+					
+					$payment_details_array = array(
+						'pd_staff_id' => $staff_id,
+						'pd_transaction_date' => $jt_m['jtm_date'],
+						'pd_narration' => 'Journal transfer',
+						'pd_amount' => $jt_m['jtm_amount'],
+						'pd_drcrtype' => 2,
+						'pd_ct_id' => $ct_id,
+						'pd_pg_id' => $cooperator->cooperator_payroll_group_id,
+						'pd_ref_code' => $ref_code,
+						'pd_month' => date('n'),
+						'pd_year' => date('Y')
+					);
+					
+					
+					$v =   $this->pd->save($payment_details_array);
+					
+					foreach ($jtds as $jtd):
+						
+						
+						if($jtd['jtd_type'] == 1): //loan
+							$loan_id = $jtd['jtd_target'];
 							
 							
 							
@@ -1098,16 +1132,16 @@
 							
 							$interest_unpaid = $total_interest - $total_mi;
 							
-							if($interest_unpaid >= $rd['rd_amount']):
+							if($interest_unpaid >= $jtd['jtd_amount']):
 								
 								
-								$mi = $rd['rd_amount'];
+								$mi = $jtd['jtd_amount'];
 								$mpr = 0;
 							
 							else:
 								
 								$mi =$interest_unpaid;
-								$mpr = $rd['rd_amount'] - $interest_unpaid;
+								$mpr = $jtd['jtd_amount'] - $interest_unpaid;
 							
 							endif;
 							
@@ -1116,14 +1150,14 @@
 								'lr_loan_id' => $loan_id,
 								'lr_month' => date('n'),
 								'lr_year' => date('Y'),
-								'lr_amount' => $rd['rd_amount'],
+								'lr_amount' => $jtd['jtd_amount'],
 								'lr_dctype' => 1,
 								'lr_ref' => $ref_code,
-								'lr_narration' => 'Loan repayment from external receipt',
+								'lr_narration' => 'Loan repayment from journal transfer',
 								'lr_mi' => $mi,
 								'lr_mpr' => $mpr,
 								'lr_interest' => 0,
-								'lr_date' => date('Y-m-d'),
+								'lr_date' => $jt_m['jtm_date'],
 							);
 							
 							
@@ -1134,9 +1168,9 @@
 							$bankGl = array(
 								'glcode' => $loan_s['loan_gl_account_no'],
 								'posted_by' => $this->session->user_username,
-								'narration' => 'Loan repayment from external receipt',
+								'narration' => 'Loan repayment from journal transfer',
 								'dr_amount' => 0,
-								'cr_amount' => $rd['rd_amount'],
+								'cr_amount' => $jtd['jtd_amount'],
 								'ref_no' =>$ref_code,
 								'bank' => $account['bank'],
 								'ob' => 0,
@@ -1145,33 +1179,19 @@
 							);
 							$this->gl->save($bankGl);
 							
-							$coop_bank = $this->cb->where('coop_bank_id', $r_m['rm_coop_bank'])->first();
-							$account = $this->coa->where('glcode', $coop_bank['glcode'])->first();
-							$bankGl = array(
-								'glcode' => $coop_bank['glcode'],
-								'posted_by' => $this->session->user_username,
-								'narration' => 'Loan repayment from external receipt',
-								'dr_amount' => $rd['rd_amount'],
-								'cr_amount' => 0,
-								'ref_no' =>$ref_code,
-								'bank' => $account['bank'],
-								'ob' => 0,
-								'posted' => 1,
-								'created_at' => date('Y-m-d'),
-							);
-							$this->gl->save($bankGl);
+							
 						
 						
 						endif;
-						if($rd['rd_type'] == 2): //savings
-							$ct_id = $rd['rd_target'];
+						if($jtd['jtd_type'] == 2): //savings
+							$ct_id = $jtd['jtd_target'];
 							$ct_data = $this->contribution_type->where(['contribution_type_id' => $ct_id])->first();
 							
 							$payment_details_array = array(
 								'pd_staff_id' => $staff_id,
-								'pd_transaction_date' => date('Y-m-d'),
-								'pd_narration' => 'External receipt contribution',
-								'pd_amount' => $rd['rd_amount'],
+								'pd_transaction_date' => $jt_m['jtm_date'],
+								'pd_narration' => 'Contribution via journal transfer',
+								'pd_amount' => $jtd['jtd_amount'],
 								'pd_drcrtype' => 1,
 								'pd_ct_id' => $ct_id,
 								'pd_pg_id' => $cooperator->cooperator_payroll_group_id,
@@ -1193,9 +1213,9 @@
 							$bankGl = array(
 								'glcode' => $wt['contribution_type_glcode'],
 								'posted_by' => $this->session->user_username,
-								'narration' => 'External receipt contribution',
+								'narration' => 'Contribution via journal transfer',
 								'dr_amount' => 0,
-								'cr_amount' => $rd['rd_amount'],
+								'cr_amount' => $jtd['jtd_amount'],
 								'ref_no' =>$ref_code,
 								'bank' => $account['bank'],
 								'ob' => 0,
@@ -1208,24 +1228,7 @@
 							//debit bank gl
 							// bank gl_code should be entered here
 							
-							$coop_bank = $this->cb->where('coop_bank_id', $r_m['rm_coop_bank'])->first();
-							$account = $this->coa->where('glcode', $coop_bank['glcode'])->first();
-							
-							$bankGl = array(
-								'glcode' => $coop_bank['glcode'],
-								'posted_by' => $this->session->user_username,
-								'narration' => 'External receipt contribution',
-								'dr_amount' => $rd['rd_amount'],
-								'cr_amount' => 0,
-								'ref_no' =>$ref_code,
-								'bank' => $account['bank'],
-								'ob' => 0,
-								'posted' => 1,
-								'created_at' =>  date('Y-m-d'),
-							);
-							$this->gl->save($bankGl);
-							
-							
+						
 							
 							$loan_ledgers = $this->loan->get_loans_staff_id($staff_id, $loan_id);
 							
@@ -1276,7 +1279,7 @@
 							endif;
 
 
-//							$rd_data['target'][$y] = $rd + $ct_data;
+//							$jtd_data['target'][$y] = $jtd + $ct_data;
 						endif;
 					
 					
@@ -1284,7 +1287,7 @@
 					
 					if($v):
 						$data = array(
-							'msg' => 'Receipt Approved',
+							'msg' => 'Journal Transfer Approved',
 							'type' => 'success',
 							'location' => base_url('approve_receipt')
 						);
@@ -1304,18 +1307,18 @@
 				endif;
 				
 				
-				if($rm_status == 3):
-					$rm['rm_status'] = $rm_status;
-					$rm['rm_discard_comment'] = $_POST['rm_discard_comment'];
-					$rm['rm_discard_date'] = date('Y-m-d');
-					$rm['rm_discard_by'] = $this->session->user_first_name." ".$this->session->user_last_name;
-					$rm['rm_id'] = $_POST['rm_id'];
+				if($jtm_status == 3):
+					$jtm['jtm_status'] = $jtm_status;
+					$jtm['jtm_discard_comment'] = $_POST['jtm_discard_comment'];
+					$jtm['jtm_discard_date'] = date('Y-m-d');
+					$jtm['jtm_discard_by'] = $this->session->user_first_name." ".$this->session->user_last_name;
+					$jtm['jtm_id'] = $_POST['jtm_id'];
 					
-					$check = $this->rm->save($rm);
+					$check = $this->jtm->save($jtm);
 					
 					if($check):
 						$data = array(
-							'msg' => 'Receipt Disqualified',
+							'msg' => 'Journal Transfer Disqualified',
 							'type' => 'success',
 							'location' => base_url('approve_receipt')
 						);
