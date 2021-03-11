@@ -533,6 +533,7 @@ New Journal Transfer
         element_id = element_id.replace( /^\D+/g, '');
         
         let payment_type = parseInt(e.value);
+        let ct_id = $("#ct_id").val();
         
         //console.log(element_id);
         
@@ -542,6 +543,7 @@ New Journal Transfer
                 type: 'post',
                 data: {
                     'staff_id': staff_id,
+					
                 },
                 dataType: 'json',
                 success:function(response){
@@ -565,7 +567,7 @@ New Journal Transfer
                 url: '<?php echo site_url('get_ct') ?>',
                 type: 'post',
                 data: {
-                    'staff_id': staff_id,
+                    'staff_id': staff_id, 'ct_id': ct_id
                 },
                 dataType: 'json',
                 success:function(response){
@@ -574,7 +576,9 @@ New Journal Transfer
                     $("#"+target_id).empty();
                     $("#"+target_id).append('<option> -- Select Contribution Type --</option>');
                     for (var i=0; i<response.length; i++) {
-                        $("#"+target_id).append('<option value="' + response[i].contribution_type_id + '">' + response[i].contribution_type_name + '</option>');
+                        if (response[i].contribution_type_id !== ct_id) {
+                            $("#" + target_id).append('<option value="' + response[i].contribution_type_id + '">' + response[i].contribution_type_name + '</option>');
+                        }
                     }
                    
                 }

@@ -1180,8 +1180,6 @@
 							$this->gl->save($bankGl);
 							
 							
-						
-						
 						endif;
 						if($jtd['jtd_type'] == 2): //savings
 							$ct_id = $jtd['jtd_target'];
