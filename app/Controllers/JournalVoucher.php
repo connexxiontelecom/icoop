@@ -54,7 +54,7 @@ class JournalVoucher extends BaseController
 	        
 	        endwhile;
 	     $data['jv_entry'] = $jv_entry;
-        $data['accounts'] = $this->coa->findAll();
+        $data['accounts'] = $this->coa->where('type', 1)->findAll();
         $this->authenticate_user($username, 'pages/jv/create',$data);
     }
 

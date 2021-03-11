@@ -222,6 +222,14 @@ $routes->post('approve_receipt', 'Receipt::approve_receipt');
 $routes->get('approve_receipt', 'Receipt::approve_receipt');
 
 
+$routes->post('new_transfer', 'Receipt::new_transfer');
+$routes->get('new_transfer', 'Receipt::new_transfer');
+$routes->post('verify_transfer', 'Receipt::verify_transfer');
+$routes->get('verify_transfer', 'Receipt::verify_transfer');
+$routes->post('approve_transfer', 'Receipt::approve_transfer');
+$routes->get('approve_transfer', 'Receipt::approve_transfer');
+
+
 
 /**
  * --------------------------------------------------------------------

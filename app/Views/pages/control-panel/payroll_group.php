@@ -84,7 +84,7 @@ Payroll Groups
 
                             <div class="form-group">
                                 <label>GL Code:</label>
-								<select class="custom-select" required name="pg_gl_code">
+								<select class="custom-selec" required name="pg_gl_code">
 									<option selected disabled> -- select gl code -- </option>
 		
 		                            <?php foreach ($coas as $coa): ?>

@@ -275,6 +275,10 @@
 										<li><a href="<?=base_url('new_receipt') ?>">New</a></li>
 										<li><a href="<?=base_url('verify_receipt') ?>">Verify</a></li>
 										<li><a href="<?=base_url('approve_receipt') ?>">Approve</a></li>
+										<li class="header">Journal Transfer</li>
+										<li><a href="<?=base_url('new_transfer') ?>">New</a></li>
+										<li><a href="<?=base_url('verify_transfer') ?>">Verify</a></li>
+										<li><a href="<?=base_url('approve_transfer') ?>">Approve</a></li>
 										<li class="header">Third Party</li>
 										<li><a href="<?=site_url('/third-party/receivable/customer-setup') ?>">Customer Setup</a></li>
                                         <li><a href="<?=site_url('/third-party/receivable/customer-setup-list') ?>">Customer Setup List</a></li>

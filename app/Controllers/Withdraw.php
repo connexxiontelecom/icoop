@@ -299,6 +299,7 @@ class Withdraw extends BaseController
     public function compute_balance(){
         $policy_configs = $this->policy->first();
         $staff_id = $_POST['staff_id'];
+        $type = $_POST['type'];
         
         $cooperator = $this->cooperator->where(['cooperator_staff_id' => $staff_id])->first();
         
@@ -330,10 +331,21 @@ class Withdraw extends BaseController
            $bf_w = ($max_withdrawal/100)*$bf;
 
 
-
-          $data['note'] = 'Withdrawal Balance: NGN'.number_format($bf_w).'<br>'.'Savings Balance: NGN'.number_format($bf);
-          $data['balance'] = $bf_w;
-        echo json_encode($data);
+			if($type == 2):
+				
+				$data['note'] = 'Savings Balance: NGN'.number_format($bf);
+				$data['balance'] = $bf;
+				echo json_encode($data);
+				endif;
+			
+			
+			if($type == 1):
+				$data['note'] = 'Withdrawal Balance: NGN'.number_format($bf_w).'<br>'.'Savings Balance: NGN'.number_format($bf);
+				$data['balance'] = $bf_w;
+				echo json_encode($data);
+				
+				endif;
+        
 
         else:
             $data['note'] = "Balance for Selected Contribution Type is: NGN".number_format($bf);
