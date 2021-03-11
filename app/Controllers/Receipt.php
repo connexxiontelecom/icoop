@@ -923,7 +923,7 @@
 						$data = array(
 							'msg' => 'Journal Transfer Verified',
 							'type' => 'success',
-							'location' => base_url('verify_receipt')
+							'location' => base_url('verify_transfer')
 						);
 						return view('pages/sweet-alert', $data);
 					
@@ -932,7 +932,7 @@
 						$data = array(
 							'msg' => 'An error Occurred',
 							'type' => 'error',
-							'location' => base_url('verify_receipt')
+							'location' => base_url('verify_transfer')
 						);
 						return view('pages/sweet-alert', $data);
 					endif;
@@ -955,7 +955,7 @@
 						$data = array(
 							'msg' => 'Journal Transfer Disqualified',
 							'type' => 'success',
-							'location' => base_url('verify_receipt')
+							'location' => base_url('verify_transfer')
 						);
 						return view('pages/sweet-alert', $data);
 					
@@ -964,7 +964,7 @@
 						$data = array(
 							'msg' => 'An error Occurred',
 							'type' => 'error',
-							'location' => base_url('verify_receipt')
+							'location' => base_url('verify_transfer')
 						);
 						return view('pages/sweet-alert', $data);
 					endif;
@@ -1020,7 +1020,7 @@
 				//dd($jtm_data);
 				
 				$username = $this->session->user_username;
-				$this->authenticate_user($username, 'pages/receipt/approve_receipt', $data);
+				$this->authenticate_user($username, 'pages/receipt/approve_transfer', $data);
 			
 			endif;
 			
@@ -1049,7 +1049,7 @@
 					$cts= $this->contribution_type->where('contribution_type_id', $jt_m['jtm_ct_id'])->first();
 					$account = $this->coa->where('glcode', $cts['contribution_type_glcode'])->first();
 					$bankGl = array(
-						'glcode' => $cts['glcode'],
+						'glcode' => $cts['contribution_type_glcode'],
 						'posted_by' => $this->session->user_username,
 						'narration' => 'Journal Transfer',
 						'dr_amount' => $jt_m['jtm_amount'],
@@ -1069,7 +1069,7 @@
 						'pd_narration' => 'Journal transfer',
 						'pd_amount' => $jt_m['jtm_amount'],
 						'pd_drcrtype' => 2,
-						'pd_ct_id' => $ct_id,
+						'pd_ct_id' => $jt_m['jtm_ct_id'],
 						'pd_pg_id' => $cooperator->cooperator_payroll_group_id,
 						'pd_ref_code' => $ref_code,
 						'pd_month' => date('n'),
