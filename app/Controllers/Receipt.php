@@ -404,6 +404,23 @@
 					$rds = $this->rd->where(['rd_rm_id' => $rm_id])->findAll();
 					$cooperator = $this->cooperator->get_cooperator_staff_id($staff_id);
 					
+					$coop_bank = $this->cb->where('coop_bank_id', $r_m['rm_coop_bank'])->first();
+					$account = $this->coa->where('glcode', $coop_bank['glcode'])->first();
+					$bankGl = array(
+						'glcode' => $coop_bank['glcode'],
+						'posted_by' => $this->session->user_username,
+						'narration' => 'External Receipt Payment',
+						'dr_amount' => $r_m['rm_amount'],
+						'cr_amount' => 0,
+						'ref_no' =>$ref_code,
+						'bank' => $account['bank'],
+						'ob' => 0,
+						'posted' => 1,
+						'created_at' => date('Y-m-d'),
+					);
+					$this->gl->save($bankGl);
+					
+					
 					
 					foreach ($rds as $rd):
 						if($rd['rd_type'] == 1): //loan
@@ -503,21 +520,6 @@
 							);
 							$this->gl->save($bankGl);
 							
-							$coop_bank = $this->cb->where('coop_bank_id', $r_m['rm_coop_bank'])->first();
-							$account = $this->coa->where('glcode', $coop_bank['glcode'])->first();
-							$bankGl = array(
-								'glcode' => $coop_bank['glcode'],
-								'posted_by' => $this->session->user_username,
-								'narration' => 'Loan repayment from external receipt',
-								'dr_amount' => $rd['rd_amount'],
-								'cr_amount' => 0,
-								'ref_no' =>$ref_code,
-								'bank' => $account['bank'],
-								'ob' => 0,
-								'posted' => 1,
-								'created_at' => date('Y-m-d'),
-							);
-							$this->gl->save($bankGl);
 							
 							
 						endif;
@@ -566,22 +568,22 @@
 							//debit bank gl
 							// bank gl_code should be entered here
 							
-							$coop_bank = $this->cb->where('coop_bank_id', $r_m['rm_coop_bank'])->first();
-							$account = $this->coa->where('glcode', $coop_bank['glcode'])->first();
-							
-							$bankGl = array(
-								'glcode' => $coop_bank['glcode'],
-								'posted_by' => $this->session->user_username,
-								'narration' => 'External receipt contribution',
-								'dr_amount' => $rd['rd_amount'],
-								'cr_amount' => 0,
-								'ref_no' =>$ref_code,
-								'bank' => $account['bank'],
-								'ob' => 0,
-								'posted' => 1,
-								'created_at' =>  date('Y-m-d'),
-							);
-							$this->gl->save($bankGl);
+//							$coop_bank = $this->cb->where('coop_bank_id', $r_m['rm_coop_bank'])->first();
+//							$account = $this->coa->where('glcode', $coop_bank['glcode'])->first();
+//
+//							$bankGl = array(
+//								'glcode' => $coop_bank['glcode'],
+//								'posted_by' => $this->session->user_username,
+//								'narration' => 'External receipt contribution',
+//								'dr_amount' => $rd['rd_amount'],
+//								'cr_amount' => 0,
+//								'ref_no' =>$ref_code,
+//								'bank' => $account['bank'],
+//								'ob' => 0,
+//								'posted' => 1,
+//								'created_at' =>  date('Y-m-d'),
+//							);
+//							$this->gl->save($bankGl);
 							
 							
 							
