@@ -657,6 +657,8 @@ class Cooperators extends BaseController
 	        if($method == 'post'):
 	            $year = $this->request->getPost('ct_year');
 	            $ct_id = $this->request->getPost('ct_id');
+	            
+	            $data['ct_dt'] = $this->ct->where('contribution_type_id', $ct_id)->first();
 	            if($year == 'a'):
 	                    $data['bf'] = 0;
 	                    $ledgers = $this->pd->get_payment_staff_id($staff_id);
@@ -1062,22 +1064,20 @@ class Cooperators extends BaseController
 					
 					$v = $this->ac->save($_POST);
 					
-					
+					//print_r($_POST);
 					
 					if($v):
-						
-						
-						
+
 						$data = array(
 							'msg' => 'Account Closure Initiated',
 							'type' => 'success',
 							'location' => base_url('new_closure')
-						
+
 						);
-						
+
 						echo view('pages/sweet-alert', $data);
 					endif;
-				
+//
 				
 				else:
 					
@@ -1353,7 +1353,7 @@ class Cooperators extends BaseController
 					$check = $this->loan->where(['staff_id' => $staff_id, 'paid_back' => 0])->findAll();
 					
 					
-					if(!empty($check)):
+					if(empty($check)):
 					
 							$ct_s = $this->ct->where(['contribution_type_regular' => 1])->first();
 							
@@ -1399,8 +1399,11 @@ class Cooperators extends BaseController
 							$this->wd->save($wd);
 							
 							$v = $this->ac->save($_POST);
-							
-							
+						
+						
+						$er['cooperator_status'] = 3;
+						$this->cooperator->save($er);
+				
 							
 							
 							if($v):
