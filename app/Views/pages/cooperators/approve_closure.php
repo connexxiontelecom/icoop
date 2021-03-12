@@ -321,7 +321,7 @@ Approve Account Closure
 
             swal({
                 title: "Warning?",
-                text: "This action is irreversible, it collapses all savings into one saving!",
+                text: "This action is irreversible!",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#dc3545",

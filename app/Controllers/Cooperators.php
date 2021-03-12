@@ -1353,7 +1353,7 @@ class Cooperators extends BaseController
 					$check = $this->loan->where(['staff_id' => $staff_id, 'paid_back' => 0])->findAll();
 					
 					
-					if(empty($check)):
+					if(!empty($check)):
 					
 							$ct_s = $this->ct->where(['contribution_type_regular' => 1])->first();
 							
@@ -1425,9 +1425,14 @@ class Cooperators extends BaseController
 							
 							endif;
 					else:
-					
-					
-					
+						
+						$data = array(
+							'msg' => 'Member has pending loans',
+							'type' => 'error',
+							'location' => base_url('approve_closure')
+						
+						);
+						return view('pages/sweet-alert', $data);
 					endif;
 				
 				
