@@ -12,6 +12,7 @@ use App\Models\ContributionTypeModel;
 use App\Models\LoanModel;
 use App\Models\LoanSetupModel;
 use App\Models\LoanRepaymentModel;
+use App\Models\AccountClosureModel;
 
 
 
@@ -31,6 +32,7 @@ class Cooperators extends BaseController
              $this->loan = new LoanModel();
              $this->ls = new LoanSetupModel();
              $this->lr = new LoanRepaymentModel();
+             $this->ac = new AccountClosureModel();
 
         }
 
@@ -609,15 +611,13 @@ class Cooperators extends BaseController
 
 	    public function coperator($cooperator_id){
 	
-	
-	
 	        $cooperator =  $this->cooperator->get_cooperator( $cooperator_id);
 	
 	
 	
 	        if(!empty($cooperator)):
 	
-//	            if($cooperator->cooperator_status == 2):
+//	            if($cooperator->cooperator_status < 2):
 	
 	                $data['cooperator'] = $cooperator;
 	                $data['states'] = $this->state->findAll();
@@ -989,6 +989,128 @@ class Cooperators extends BaseController
 			endif;
 			
 	  
+		}
+		
+		public function new_closure(){
+			
+			$method = $this->request->getMethod();
+			
+			if($method == 'get'):
+				
+				$data['cooperators'] = $this->cooperator->get_cooperators();
+				
+				$username = $this->session->user_username;
+				$this->authenticate_user($username, 'pages/cooperators/new_closure', $data);
+			
+			endif;
+			
+			if($method == 'post'):
+				
+				
+				$this->validator->setRules( [
+					'ac_staff_id'=>[
+						'rules'=>'required',
+						'errors'=>[
+							'required'=>'Enter Staff ID'
+						]
+					],
+					
+					'ac_effective_date'=>[
+						'rules'=>'required',
+						'errors'=>[
+							'required'=>'Enter effective date'
+						]
+					],
+					
+					'ac_mailing'=>[
+						'rules'=>'required',
+						'errors'=>[
+							'required'=>'Enter a mailing address'
+						]
+					],
+					
+//					'ac_email'=>[
+//						'rules'=>'required',
+//						'errors'=>[
+//							'required'=>'Enter an email address'
+//						]
+//					],
+					
+					'ac_phone'=>[
+						'rules'=>'required',
+						'errors'=>[
+							'required'=>'Enter a phone number'
+						]
+					],
+					
+					
+				
+				
+				
+				]);
+				if ($this->validator->withRequest($this->request)->run()):
+					$staff_id = $_POST['ac_staff_id'];
+					$_POST['ac_staff_id'] = substr($staff_id, 0, strpos($staff_id, ','));
+					$_POST['ac_a_date'] = date('Y-m-d');
+					$_POST['ac_by'] = $this->session->user_username;
+					
+					$v = $this->ac->save($_POST);
+					
+					
+					
+					if($v):
+						
+						
+						
+						$data = array(
+							'msg' => 'Account Closure Initiated',
+							'type' => 'success',
+							'location' => base_url('new_closure')
+						
+						);
+						
+						echo view('pages/sweet-alert', $data);
+					endif;
+				
+				
+				else:
+					
+					$arr = $this->validator->getErrors();
+					
+					$data = array(
+						'msg' => implode(", ", $arr),
+						'type' => 'error',
+						'location' => base_url('new_closure')
+					
+					);
+					
+					echo view('pages/sweet-alert', $data);
+				
+				
+				endif;
+
+
+
+
+
+
+
+
+//            $data['cts'] = $this->contribution_type->findAll();
+//            $username = $this->session->user_username;
+//            $this->authenticate_user($username, 'pages/withdraw/new_withdraw', $data);
+			
+			endif;
+		}
+		
+		
+		public function verify_closure(){
+  
+  
+		}
+		
+		public function approve_closure(){
+  
 		}
     
     

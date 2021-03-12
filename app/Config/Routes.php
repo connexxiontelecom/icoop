@@ -129,6 +129,13 @@ $routes->get('loan_ledger/(:any)', 'Cooperators::loan_ledger/$1');
 $routes->post('loan_ledger/(:any)', 'Cooperators::loan_ledger/$1');
 $routes->get('freeze', 'Cooperators::freeze');
 $routes->post('freeze', 'Cooperators::freeze');
+$routes->get('new_closure', 'Cooperators::new_closure');
+$routes->post('new_closure', 'Cooperators::new_closure');
+$routes->get('verify_closure', 'Cooperators::verify_closure');
+$routes->post('verify_closure', 'Cooperators::verify_closure');
+$routes->get('approve_closure', 'Cooperators::approve_closure');
+$routes->post('approve_closure', 'Cooperators::approve_closure');
+
 
 #Loan routes
 $routes->get('/loan/new', 'LoanController::showLoanApplicationForm');

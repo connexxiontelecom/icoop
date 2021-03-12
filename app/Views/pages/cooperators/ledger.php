@@ -31,7 +31,7 @@ Contribution Types - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
 
 
             <div class="body">
-
+<?php if(!empty($contribution_types)): ?>
 
                 <form method="POST" enctype="multipart/form-data">
 
@@ -76,6 +76,11 @@ Contribution Types - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
 
 
                 </form>
+<?php else: ?>
+				
+				<p> No Savings for Cooperator</p>
+				
+				<?php endif; ?>
 
 			</div>
 
