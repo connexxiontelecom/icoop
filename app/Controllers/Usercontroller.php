@@ -35,7 +35,8 @@ class Usercontroller extends BaseController
     #Authentication
     public function showLoginForm(){
         helper(['form']);
-        return view('auth/login');
+        $data['url'] = '';
+        return view('auth/login', $data);
     }
 
     public function login(){
@@ -65,6 +66,7 @@ class Usercontroller extends BaseController
                 $user = new UserModel;
                 $email = $this->request->getVar('email');
                 $password = $this->request->getVar('password');
+                $url = $this->request->getVar('url');
                 $data = $user->where('email', $email)->first();
                 if($data){
                     $pass = $data['password'];
@@ -78,7 +80,11 @@ class Usercontroller extends BaseController
                             'user_last_name' => $data['last_name']
                         ];
                         $session->set($ses_data);
+                        if(!empty($url)):
+	                        return  redirect()->to($url);
+                        else:
                         return redirect()->to('/dashboard');
+                        endif;
                     }else{
                     }
                     $session->setFlashdata('msg', 'Wrong password.');

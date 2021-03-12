@@ -54,6 +54,7 @@
                         <label for="signin-password" class="control-label sr-only">Password</label>
                         <input type="password" name="password" class="form-control round" id="signin-password"  placeholder="Password">
                     </div>
+					<input type="hidden" name="url" value="<?=$url; ?>">
                     <?= csrf_field() ?>
                     <div class="form-group clearfix">
                         <label class="fancy-checkbox element-left">
