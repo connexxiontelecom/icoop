@@ -1,14 +1,14 @@
 <?= $this->extend('layouts/master') ?>
 
 <?= $this->section('title') ?>
-Verify Account Closure
+Approve Account Closure
 <?= $this->endSection() ?>
 
 <?= $this->section('current_page') ?>
-Verify Account Closure
+Approve Account Closure
 <?= $this->endSection() ?>
 <?= $this->section('page_crumb') ?>
-Verify Account Closure
+Approve Account Closure
 <?= $this->endSection() ?>
 
 <?= $this->section('extra-styles') ?>
@@ -26,7 +26,7 @@ Verify Account Closure
 	<div class="col-lg-12">
 		<div class="card">
 			<div class="header">
-				<h2>Verify Account Closure</h2>
+				<h2>Approve Account Closure</h2>
 			
 			</div>
 			<div class="body">
@@ -55,7 +55,7 @@ Verify Account Closure
 								
 								
 								<td>
-									<button type="button" class="btn btn-success" data-toggle="modal" data-target="#verifyModal<?=$ac['ac_id'] ?>"><i class="fa fa-check"></i></button>
+									<button type="button" class="btn btn-success" data-toggle="modal" data-target="#approveModal<?=$ac['ac_id'] ?>"><i class="fa fa-check"></i></button>
 									<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal<?=$ac['ac_id'] ?>"> <i class="fa fa-times"></i></button>
 								
 								</td>
@@ -73,17 +73,17 @@ Verify Account Closure
 		
 		
 		<?php $sn = 1; foreach ($acs as $ac): ?>
-			<div class="modal fade" id="verifyModal<?=$ac['ac_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+			<div class="modal fade" id="approveModal<?=$ac['ac_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5 class="modal-title h4" id="myLargeModalLabel">Verify Account Closure</h5>
+							<h5 class="modal-title h4" id="myLargeModalLabel">approve Account Closure</h5>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">×</span>
 							</button>
 						</div>
 						<div class="modal-body">
-							<form method="post" id="verifyForm<?=$ac['ac_id']; ?>" action="">
+							<form method="post" id="approveForm<?=$ac['ac_id']; ?>" action="">
 								<div class="row clearfix">
 									<div class="col-lg-12 col-md-12">
 										<div class="form-group">
@@ -148,18 +148,30 @@ Verify Account Closure
 								
 								</div>
 								
-								<input type="hidden" name="ac_status" value="1">
+								<div class="row clearfix">
+									<div class="col-lg-12 col-md-12">
+										<div class="header">
+											<p> <small><b>Verified By:</b> <?=$ac['ac_verify_by']; ?></small></p>
+											<p><small><b> Date:</b> <?=$ac['ac_verify_date']; ?></small></p>
+										</div>
+									</div>
+								
+								
+								
+								</div>
+								
+								<input type="hidden" name="ac_status" value="2">
 								
 								<input type="hidden" name="ac_id" value="<?=$ac['ac_id']; ?>">
 								
 								<div class="form-group">
 									<label for="application_address">Comment:</label>
-									<textarea name="ac_verify_comment"   cols="30" rows="3" placeholder="Comments "  class="form-control no-resize"></textarea>
+									<textarea name="ac_approve_comment"   cols="30" rows="3" placeholder="Comments "  class="form-control no-resize"></textarea>
 								</div>
 								
 								<?= csrf_field() ?>
 								<div class="form-group">
-									<button type="submit" class="btn btn-info btn-block">Verify</button>
+									<button type="submit" class="btn btn-info btn-block">Approve</button>
 								</div>
 							</form>
 						</div>
@@ -237,6 +249,19 @@ Verify Account Closure
 								
 								</div>
 								
+								
+								<div class="row clearfix">
+									<div class="col-lg-12 col-md-12">
+										<div class="header">
+											<p> <small><b>Verified By:</b> <?=$ac['ac_verify_by']; ?></small></p>
+											<p><small><b> Date:</b> <?=$ac['ac_verify_date']; ?></small></p>
+										</div>
+									</div>
+								
+								
+								
+								</div>
+								
 								<input type="hidden" name="ac_status" value="3">
 								
 								<input type="hidden" name="ac_id" value="<?=$ac['ac_id']; ?>">
@@ -290,7 +315,7 @@ Verify Account Closure
         $('.simpletable').DataTable();
 		
 		<?php foreach ($acs as $ac): ?>
-        $("#verifyForm<?=$ac['ac_id']; ?>").submit(function (e) {
+        $("#approveForm<?=$ac['ac_id']; ?>").submit(function (e) {
 
             e.preventDefault();
 
@@ -305,7 +330,7 @@ Verify Account Closure
             }, function () {
                 // swal("Deleted!", "Your imaginary file has been deleted.", "success");
 				
-				document.getElementById('verifyForm<?=$ac['ac_id']; ?>').submit();
+				document.getElementById('approveForm<?=$ac['ac_id']; ?>').submit();
             });
 
             

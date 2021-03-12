@@ -13,6 +13,9 @@ use App\Models\LoanModel;
 use App\Models\LoanSetupModel;
 use App\Models\LoanRepaymentModel;
 use App\Models\AccountClosureModel;
+use App\Models\CoaModel;
+use App\Models\GlModel;
+use App\Models\WithdrawModel;
 
 
 
@@ -33,6 +36,9 @@ class Cooperators extends BaseController
              $this->ls = new LoanSetupModel();
              $this->lr = new LoanRepaymentModel();
              $this->ac = new AccountClosureModel();
+             $this->coa = new CoaModel();
+             $this->gl = new GlModel();
+             $this->wd = new WithdrawModel();
 
         }
 
@@ -760,7 +766,7 @@ class Cooperators extends BaseController
 	    public function view_ledger($ct_id, $staff_id){
 	        $cooperator =  $this->cooperator->get_cooperator_staff_id( $staff_id);
 	        if(!empty($cooperator)):
-	            if($cooperator->cooperator_status == 2):
+//	            if($cooperator->cooperator_status == 2):
 	                $data['ledgers'] = $this->pd->where(['pd_staff_id' => $staff_id, 'pd_ct_id' => $ct_id])->orderBy('pd_transaction_date', 'DESC')->findAll();
 	                $data['ct'] = $this->ct->where(['contribution_type_id' => $ct_id])->first();
 	                $data['cooperator'] = $cooperator;
@@ -770,9 +776,9 @@ class Cooperators extends BaseController
 	                $data['pgs'] = $this->pg->findAll();
 	                $username = $this->session->user_username;
 	                $this->authenticate_user($username, 'pages/cooperators/view_ledger', $data);
-	            else:
-	                return redirect('error_404');
-	            endif;
+//	            else:
+//	                return redirect('error_404');
+//	            endif;
 	        else:
 	            return redirect('error_404');
 	        endif;
@@ -1105,11 +1111,363 @@ class Cooperators extends BaseController
 		
 		
 		public function verify_closure(){
-  
+			
+			$method = $this->request->getMethod();
+			
+			if($method == 'get'):
+				
+			
+				$data['acs'] = $this->ac->get_closures(0);
+				
+				// print_r($data['withdrawals']);
+				$username = $this->session->user_username;
+				$this->authenticate_user($username, 'pages/cooperators/verify_closure', $data);
+			
+			endif;
+			
+			if($method == 'post'):
+				
+				$ac_status = $_POST['ac_status'];
+				
+				if($ac_status == 1):
+					
+					$_POST['ac_verify_date'] = date('Y-m-d');
+					$_POST['ac_verify_by']  = $this->session->user_username;
+					$staff_id = $_POST['ac_staff_id'];
+					
+					$staff = $this->cooperator->where('cooperator_staff_id', $staff_id)->first();
+					
+					$ledgers = $this->pd->get_payment_staff_id($staff_id);
+					$ref_code = time();
+					
+					foreach ($ledgers as $ledger):
+					
+					
+					
+					$cts = $this->ct->where(['contribution_type_id' => $ledger->pd_ct_id])->first();
+					
+
+
+					
+					if($cts['contribution_type_regular'] != 1):
+							$ct_s = $this->ct->where(['contribution_type_regular' => 1])->first();
+
+							$ledgs = $this->pd->where(['pd_staff_id' => $staff_id, 'pd_ct_id' => $cts['contribution_type_id']])
+									->findAll();
+
+								$total_cr = 0;
+								$total_dr = 0;
+								$cr = 0;
+								$dr = 0;
+
+								foreach ($ledgs as $ledg):
+
+									if($ledg['pd_drcrtype'] == 1):
+										$cr = $ledg['pd_amount'];
+										$total_cr = $total_cr + $cr;
+									endif;
+
+									if($ledg['pd_drcrtype'] == 2):
+										$dr = $ledg['pd_amount'];
+										$total_dr = $total_dr + $dr;
+									endif;
+
+								endforeach;
+
+
+
+								$balance = $total_cr - $total_dr;
+
+								$payment_details_array = array(
+									'pd_staff_id' => $staff_id,
+									'pd_transaction_date' => date('Y-m-d'),
+									'pd_narration' => 'Account Closure',
+									'pd_amount' => $balance,
+									'pd_drcrtype' => 2,
+									'pd_ct_id' => $cts['contribution_type_id'],
+									'pd_pg_id' => $staff['cooperator_payroll_group_id'],
+									'pd_ref_code' => $ref_code,
+									'pd_month' => date('n'),
+									'pd_year' => date('Y'),
+								);
+
+
+								 $this->pd->save($payment_details_array);
+
+								$account = $this->coa->where('glcode', $cts['contribution_type_glcode'])->first();
+								$bankGl = array(
+									'glcode' => $cts['contribution_type_glcode'],
+									'posted_by' => $this->session->user_username,
+									'narration' => 'Account Closure by '. $staff['cooperator_first_name'].' '.$staff['cooperator_last_name'],
+									'dr_amount' => $balance,
+									'cr_amount' => 0,
+									'ref_no' =>$ref_code,
+									'bank' => $account['bank'],
+									'ob' => 0,
+									'posted' => 1,
+									'created_at' =>  date('Y-m-d'),
+								);
+								$this->gl->save($bankGl);
+
+
+								// credit leg
+
+								$payment_details_array = array(
+									'pd_staff_id' => $staff_id,
+									'pd_transaction_date' => date('Y-m-d'),
+									'pd_narration' => 'Account Closure from '.$cts['contribution_type_name'],
+									'pd_amount' => $balance,
+									'pd_drcrtype' => 1,
+									'pd_ct_id' => $ct_s['contribution_type_id'],
+									'pd_pg_id' => $staff['cooperator_payroll_group_id'],
+									'pd_ref_code' => $ref_code,
+									'pd_month' => date('n'),
+									'pd_year' => date('Y'),
+								);
+
+
+
+							   $this->pd->save($payment_details_array);
+
+								$account = $this->coa->where('glcode', $ct_s['contribution_type_glcode'])->first();
+								$bankGl = array(
+									'glcode' => $ct_s['contribution_type_glcode'],
+									'posted_by' => $this->session->user_username,
+									'narration' => 'Account closure from '.$cts['contribution_type_name'].' by'. $staff['cooperator_first_name'].' '.$staff['cooperator_last_name'],
+									'dr_amount' => 0,
+									'cr_amount' => $balance,
+									'ref_no' =>$ref_code,
+									'bank' => $account['bank'],
+									'ob' => 0,
+									'posted' => 1,
+									'created_at' =>  date('Y-m-d'),
+								);
+								$this->gl->save($bankGl);
+
+						endif;
+						
+						
+					endforeach;
+					
+					
+					
+					
+					$v = $this->ac->save($_POST);
+					
+				
+			
+					
+					if($v):
+
+						$data = array(
+							'msg' => 'Action Successful',
+							'type' => 'success',
+							'location' => base_url('verify_closure')
+
+						);
+						return view('pages/sweet-alert', $data);
+
+					else:
+						$data = array(
+							'msg' => 'An Error Occurred',
+							'type' => 'error',
+							'location' => base_url('verify_closure')
+
+						);
+						return view('pages/sweet-alert', $data);
+
+
+					endif;
+				
+				
+				endif;
+				if($ac_status == 3):
+					
+					$_POST['ac_discarded_date'] = date('Y-m-d');
+					$_POST['ac_discarded_by']  = $this->session->user_username;
+					
+					$v = $this->ac->save($_POST);
+					
+					if($v):
+						
+						$data = array(
+							'msg' => 'Action Successful',
+							'type' => 'success',
+							'location' => base_url('verify_closure')
+						
+						);
+						return view('pages/sweet-alert', $data);
+					
+					else:
+						$data = array(
+							'msg' => 'An Error Occurred',
+							'type' => 'error',
+							'location' => base_url('verify_closure')
+						
+						);
+						return view('pages/sweet-alert', $data);
+					
+					
+					endif;
+				
+				
+				endif;
+			
+			
+			
+			
+			endif;
   
 		}
 		
 		public function approve_closure(){
+			
+			$method = $this->request->getMethod();
+			
+			if($method == 'get'):
+				
+				
+				$data['acs'] = $this->ac->get_closures(1);
+				
+				// print_r($data['withdrawals']);
+				$username = $this->session->user_username;
+				$this->authenticate_user($username, 'pages/cooperators/approve_closure', $data);
+			
+			endif;
+			
+			if($method == 'post'):
+				
+				$ac_status = $_POST['ac_status'];
+				
+				if($ac_status == 2):
+					
+					$_POST['ac_approve_date'] = date('Y-m-d');
+					$_POST['ac_approve_by']  = $this->session->user_username;
+					$staff_id = $_POST['ac_staff_id'];
+					
+					$staff = $this->cooperator->where('cooperator_staff_id', $staff_id)->first();
+					
+					$ledgers = $this->pd->get_payment_staff_id($staff_id);
+					$ref_code = time();
+					
+					$check = $this->loan->where(['staff_id' => $staff_id, 'paid_back' => 0])->findAll();
+					
+					
+					if(empty($check)):
+					
+							$ct_s = $this->ct->where(['contribution_type_regular' => 1])->first();
+							
+							$ledgs = $this->pd->where(['pd_staff_id' => $staff_id, 'pd_ct_id' => $ct_s['contribution_type_id']])
+								->findAll();
+							
+							$total_cr = 0;
+							$total_dr = 0;
+							$cr = 0;
+							$dr = 0;
+							
+							foreach ($ledgs as $ledg):
+								
+								if($ledg['pd_drcrtype'] == 1):
+									$cr = $ledg['pd_amount'];
+									$total_cr = $total_cr + $cr;
+								endif;
+								
+								if($ledg['pd_drcrtype'] == 2):
+									$dr = $ledg['pd_amount'];
+									$total_dr = $total_dr + $dr;
+								endif;
+							
+							endforeach;
+							
+							
+							
+							$balance = $total_cr - $total_dr;
+							
+							
+							$wd = array(
+								'withdraw_staff_id'=> $staff_id,
+								'withdraw_ct_id' => $ct_s['contribution_type_id'],
+								'withdraw_amount' => $balance,
+								'withdraw_charges' => 0.00,
+								'withdraw_date' => date('Y-m-d'),
+								'withdraw_narration' => 'Account Closure',
+								'withdraw_status' => 2,
+								'withdraw_approved_by' => $this->session->user_username,
+								'withdraw_approved_date' => date('Y-m-d')
+							);
+							
+							$this->wd->save($wd);
+							
+							$v = $this->ac->save($_POST);
+							
+							
+							
+							
+							if($v):
+								
+								$data = array(
+									'msg' => 'Action Successful',
+									'type' => 'success',
+									'location' => base_url('approve_closure')
+								
+								);
+								return view('pages/sweet-alert', $data);
+							
+							else:
+								$data = array(
+									'msg' => 'An Error Occurred',
+									'type' => 'error',
+									'location' => base_url('approve_closure')
+								
+								);
+								return view('pages/sweet-alert', $data);
+							
+							
+							endif;
+					else:
+					
+					
+					
+					endif;
+				
+				
+				endif;
+				if($ac_status == 3):
+					
+					$_POST['ac_discarded_date'] = date('Y-m-d');
+					$_POST['ac_discarded_by']  = $this->session->user_username;
+					
+					$v = $this->ac->save($_POST);
+					
+					if($v):
+						
+						$data = array(
+							'msg' => 'Action Successful',
+							'type' => 'success',
+							'location' => base_url('approve_closure')
+						
+						);
+						return view('pages/sweet-alert', $data);
+					
+					else:
+						$data = array(
+							'msg' => 'An Error Occurred',
+							'type' => 'error',
+							'location' => base_url('approve_closure')
+						
+						);
+						return view('pages/sweet-alert', $data);
+					
+					
+					endif;
+				
+				
+				endif;
+			
+			
+			
+			
+			endif;
   
 		}
     
