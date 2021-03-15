@@ -44,7 +44,9 @@ Cooperators
                         </thead>
 
                         <tbody>
-                        <?php $sn = 1; foreach ($cooperators as $cooperator): ?>
+                        <?php $sn = 1; foreach ($cooperators as $cooperator):
+							
+							?>
                             <tr>
 
                                 <td><?=$sn; ?></td>

@@ -566,11 +566,17 @@ class PaymentController extends BaseController
                     $cooperator = $this->coop->where('cooperator_staff_id', $withdraw['withdraw_staff_id'])->first();
 
                     $ref_code = time();
+                    $payment_type = 1;
+                    if($withdraw['withdraw_narration'] == 'Account Closure'):
+	                    $payment_type = 5;
+	                    endif;
+	                    
                      $payment_details_array = array(
                         'pd_staff_id' => $withdraw['withdraw_staff_id'],
                         'pd_transaction_date' =>$payable_date,
                         'pd_narration' => $withdraw['withdraw_narration'],
                         'pd_amount' => $withdraw['withdraw_amount'],
+                        'pd_payment_type' => $payment_type,
                         'pd_drcrtype' => 2,
                         'pd_ct_id' => $withdraw['withdraw_ct_id'],
                         'pd_pg_id' => $cooperator['cooperator_payroll_group_id'],//$cooperator_payroll_group_id,
@@ -604,6 +610,7 @@ class PaymentController extends BaseController
 		                'pd_transaction_date' =>$payable_date,
 		                'pd_narration' => 'Charges on withdrawal',
 		                'pd_amount' => $withdraw['withdraw_charges'],
+		                'pd_payment_type' => 2,
 		                'pd_drcrtype' => 2,
 		                'pd_ct_id' => $withdraw['withdraw_ct_id'],
 		                'pd_pg_id' => $cooperator['cooperator_payroll_group_id'],//$cooperator_payroll_group_id,

@@ -54,10 +54,26 @@ class BaseController extends ResourceController
 	}
 
     public function authenticate_user($username, $page, $data = null){
-
-        //$this->response->redirect('login');
+	   
+	    if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on'):
+		    $url = "https://";
+	    else:
+		    $url = "http://";
+	    endif;
+	    // Append the host(domain name, ip) to the URL.
+	    $url.= $_SERVER['HTTP_HOST'];
+	
+	    // Append the requested resource location to the URL
+	    $url.= $_SERVER['REQUEST_URI'];
+	
+	   
+	   
+	    
+	  
+	
+	    //$this->response->redirect('login');
             if(isset($username)):
-
+	           
                  echo view($page, $data);
 
             else:
@@ -65,7 +81,8 @@ class BaseController extends ResourceController
                 //$this->response->redirect('login', 'refresh');
            // $this->response->redirect()->to('login');
 	        //return redirect()->to('login', 'refresh');
-	            echo view('auth/login');
+	            $data['url'] =  $url;
+	            echo view('auth/login', $data);
 
             endif;
 

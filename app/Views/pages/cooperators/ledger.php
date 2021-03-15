@@ -31,7 +31,7 @@ Contribution Types - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
 
 
             <div class="body">
-
+<?php if(!empty($contribution_types)): ?>
 
                 <form method="POST" enctype="multipart/form-data">
 
@@ -76,6 +76,11 @@ Contribution Types - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
 
 
                 </form>
+<?php else: ?>
+				
+				<p> No Savings for Cooperator</p>
+				
+				<?php endif; ?>
 
 			</div>
 
@@ -90,7 +95,7 @@ Contribution Types - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
 				
 				
 					<div class="header">
-						<h2>Account Statement for (<?=$ct['contribution_type_name']; ?>) - <?=$cooperator->cooperator_first_name.' '.$cooperator->cooperator_last_name; ?></h2>
+						<h2>Account Statement for (<?=$ct_dt['contribution_type_name']; ?>) - <?=$cooperator->cooperator_first_name.' '.$cooperator->cooperator_last_name; ?></h2>
 						<ul class="header-dropdown dropdown">
 						
 							<li><a href="javascript:void(0);" class="full-screen"><i class="icon-frame"></i></a></li>
