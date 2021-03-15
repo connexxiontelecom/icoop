@@ -185,7 +185,7 @@
                                     <ul>
                                         <li><a href="<?=base_url('contribution_type') ?>">Contribution Type</a></li>
                                         <li><a href="<?=base_url('payroll_group') ?>">Payroll Group</a></li>
-										<li class="header">Routines</li>
+										<li class="header"><b>Routines</b></li>
 										<li><a href="<?=base_url('upload_routine') ?>">Upload Routine</a></li>
 										<li><a href="<?=base_url('interest_routine') ?>">Interest Routine</a></li>
                                     </ul>
