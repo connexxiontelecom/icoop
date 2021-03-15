@@ -19,6 +19,7 @@ class Usercontroller extends BaseController
         $this->bank = new Banks();
         $this->pg = new PayrollGroups();
         $this->session = session();
+        $this->user = new UserModel();
 
     }
     
@@ -149,12 +150,158 @@ class Usercontroller extends BaseController
     }
 
 
+    
     public function dashboard(){
 
         $username = $this->session->user_username;
         $data = [];
         $this->authenticate_user($username, 'pages/dashboard', $data);
 
+    }
+    
+    
+    public function new_user(){
+	    $method = $this->request->getMethod();
+	
+	    if($method == 'get'):
+		        $username = $this->session->user_username;
+			    $data = [];
+			    $this->authenticate_user($username, 'auth/new_user', $data);
+		endif;
+	
+	
+	    if($method == 'post'):
+		
+		    $this->validator->setRules( [
+			    'first_name'=>[
+				    'rules'=>'required',
+				    'errors'=>[
+					    'required'=>'Enter first name '
+				    ]
+			    ],
+			
+			    'last_name'=>[
+				    'rules'=>'required',
+				    'errors'=>[
+					    'required'=>'Enter last name'
+				    ]
+			    ],
+			
+			    'username'=>[
+				    'rules'=>'required|min_length[4]',
+				    'errors'=>[
+					    'required'=>'Enter a username',
+					    
+				    ]
+			    ],
+			
+			    'password'=>[
+				    'rules'=>'required',
+				    'errors'=>[
+					    'required'=>'Enter a password'
+				    ]
+			    ],
+		
+		
+		
+		    ]);
+		
+		    if ($this->validator->withRequest($this->request)->run()):
+				$_POST['password'] = password_hash($_POST['password'], PASSWORD_BCRYPT);
+		    
+		    
+		        $check_username = $this->user->where('username', $_POST['username'])->first();
+		        if(!empty($_POST['email'])):
+		         $check_email = $this->user->where('email', $_POST['email'])->first();
+		        endif;
+		        
+		        if((empty($check_username)) && (empty($check_email))):
+			      
+			        $v = $this->user->save($_POST);
+			        
+			        if($v):
+				        $data = array(
+					        'msg' => 'User created successfully',
+					        'type' => 'success',
+					        'location' => base_url('new_user')
+				
+				        );
+				
+				        echo view('pages/sweet-alert', $data);
+				        
+				        
+				        else:
+					
+					        $data = array(
+						        'msg' => 'An error occurred',
+						        'type' => 'error',
+						        'location' => base_url('new_user')
+					
+					        );
+					
+					        echo view('pages/sweet-alert', $data);
+					        endif;
+				else:
+					
+					$data = array(
+						'msg' => 'Email or username already taken',
+						'type' => 'error',
+						'location' => base_url('new_user')
+					
+					);
+					
+					echo view('pages/sweet-alert', $data);
+				
+				endif;
+		
+		    else:
+			
+			    $arr = $this->validator->getErrors();
+			
+			    $data = array(
+				    'msg' => implode(", ", $arr),
+				    'type' => 'error',
+				    'location' => base_url('new_user')
+			
+			    );
+			
+			    echo view('pages/sweet-alert', $data);
+		
+		
+		    endif;
+			   
+		    
+		    
+		    
+		
+	    endif;
+    }
+    
+    public function check_user(){
+    	$type = $_POST['type'];
+    	if($type == 1):
+	        $username = $_POST['user_name'];
+	        $check = $this->user->where('username', $username)->first();
+	        $data = [];
+	        if(!empty($check)):
+			    $data = $check;
+			    endif;
+	        echo json_encode($data);
+        endif;
+	
+	    if($type == 2):
+		    $email = $_POST['email'];
+		    $data = [];
+	    if(!empty($email)):
+		    $check = $this->user->where('email', $email)->first();
+		  
+		    if(!empty($check)):
+			    $data = $check;
+		    endif;
+		endif;
+		    echo json_encode($data);
+	    endif;
+    	
     }
 
     public function error_404(){

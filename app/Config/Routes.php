@@ -41,6 +41,10 @@ $routes->get('/login', 'Usercontroller::showLoginForm');
 $routes->post('/login', 'Usercontroller::login');
 $routes->get('/register', 'Usercontroller::showRegistrationForm');
 $routes->post('/register', 'Usercontroller::register');
+$routes->post('check_user', 'Usercontroller::check_user');
+
+$routes->get('new_user', 'Usercontroller::new_user');
+$routes->post('new_user', 'Usercontroller::new_user');
 $routes->get('/logout', 'Usercontroller::logout');
 $routes->get('(:any)/login', 'Usercontroller::showLoginForm');
 
