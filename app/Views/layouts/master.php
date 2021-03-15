@@ -185,7 +185,7 @@
                                     <ul>
                                         <li><a href="<?=base_url('contribution_type') ?>">Contribution Type</a></li>
                                         <li><a href="<?=base_url('payroll_group') ?>">Payroll Group</a></li>
-										<li class="header">Routines</li>
+										<li class="header"><b>Routines</b></li>
 										<li><a href="<?=base_url('upload_routine') ?>">Upload Routine</a></li>
 										<li><a href="<?=base_url('interest_routine') ?>">Interest Routine</a></li>
                                     </ul>
@@ -229,11 +229,17 @@
                                 <li>
                                     <a href="#" class="has-arrow"><i class="fa fa-users"></i><span>Cooperators</span></a>
                                     <ul>
+										<li class="header"><b>Membership</b></li>
                                         <li><a href="<?=base_url('new_application') ?>">New Application</a></li>
                                         <li><a href="<?=base_url('verify_application') ?>">Verify Applications</a></li>
                                         <li><a href="<?=base_url('approve_application') ?>">Approve Applications</a></li>
-                                        <li><a href="<?=base_url('cooperators') ?>">Ledgers</a></li>
+								        <li><a href="<?=base_url('cooperators') ?>">Ledgers</a></li>
+										<li class="header"><b>Account Options</b></li>
 										<li><a href="<?=base_url('freeze') ?>">Freeze/Unfreeze</a></li>
+										<li class="header"><b>Account Closure</b></li>
+										<li><a href="<?=base_url('new_closure') ?>">New</a></li>
+										<li><a href="<?=base_url('verify_closure') ?>">Verify</a></li>
+										<li><a href="<?=base_url('approve_closure') ?>">Approve</a></li>
 
                                     </ul>
                                 </li>
@@ -256,11 +262,11 @@
                                     <a href="javascript:void(0);" class="has-arrow"><i class="fa fa-money"></i><span>Payments</span></a>
                                     
                                     <ul>
-										<li class="header">Member Payments</li>
+										<li class="header"><b>Member Payments</b></li>
 										<li><a href="<?=site_url('/loan/new-payment-schedule') ?>">Payment Schedule</a></li>
 										<li><a href="<?=base_url('/loan/payment-schedules') ?>">Verify</a></li>
 										<li><a href="<?=base_url('/loan/verified-payment-schedules') ?>">Approve</a></li>
-										<li class="header">3rd Party Payments</li>
+										<li class="header"><b>3rd Party Payments</b></li>
 										<li><a href="<?=site_url('/third-party/payment/entry') ?>">Entry</a></li>
 										<li><a href="<?=base_url('/third-party/new-payment') ?>">New Payment</a></li>
 										<li><a href="<?=base_url('/third-party/verify-payment-entry') ?>">Verify</a></li>
@@ -271,17 +277,21 @@
 
                                 <li><a href="#" class="has-arrow"><i class="fa fa-arrow-down"></i><span>Receipts</span></a>
 									<ul>
-										<li class="header">Member</li>
+										<li class="header"><b>Member</b></li>
 										<li><a href="<?=base_url('new_receipt') ?>">New</a></li>
 										<li><a href="<?=base_url('verify_receipt') ?>">Verify</a></li>
 										<li><a href="<?=base_url('approve_receipt') ?>">Approve</a></li>
-										<li class="header">Third Party</li>
+										<li class="header"><b>Journal Transfer</b></li>
+										<li><a href="<?=base_url('new_transfer') ?>">New</a></li>
+										<li><a href="<?=base_url('verify_transfer') ?>">Verify</a></li>
+										<li><a href="<?=base_url('approve_transfer') ?>">Approve</a></li>
+										<li class="header"><b>Third Party</b></li>
 										<li><a href="<?=site_url('/third-party/receivable/customer-setup') ?>">Customer Setup</a></li>
                                         <li><a href="<?=site_url('/third-party/receivable/customer-setup-list') ?>">Customer Setup List</a></li>
                                         <li><a href="<?=site_url('/third-party/receivable/new') ?>">New Receipt</a></li>
                                         <li><a href="<?=site_url('/third-party/receivable/unverified') ?>">Verify</a></li>
                                         <li><a href="<?=site_url('/third-party/receivable/verified') ?>">Approve</a></li>
-										<li class="header">Report</li>
+										<li class="header"><b>Report</b></li>
 										<li><a href="<?=site_url('/third-party/receivable/member-report') ?>">Member Report</a></li>
 										<li><a href="<?=site_url('/third-party/receivable/report') ?>">3<sup>rd</sup> Party Report</a></li>
                                         

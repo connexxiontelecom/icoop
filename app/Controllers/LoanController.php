@@ -163,84 +163,126 @@ class LoanController extends BaseController
 					],
             ];
             if($this->validate($rules)){
-                $filename = null;
+	
+	            $check_closure = $this->ac->check_ac(current(explode(",", $this->request->getVar('staff_id'))));
+	
+	
+	            if(empty($check_closure)):
+		            $cooperator = $this->cooperator->where(['cooperator_staff_id' => current(explode(",", $this->request->getVar('staff_id')))])->first();
+		
+				            if($cooperator['cooperator_status'] == 2):
+				                $filename = null;
+									
+				                     $file = $this->request->getFile('attachment');
+				                     if(!empty($file)){
+				                         if($file->isValid() && !$file->hasMoved()){
+				                            $extension = $file->guessExtension();
+				                            $extension = strtolower($extension);
+				                            if($extension == 'pdf'){
+						                            $filename = $file->getRandomName();
+				                                    $file->move('.uploads/withdrawals', $filename);
+				                            }
+				                         }
+				                     }
+				                     $data = [
+										'staff_id'=>current(explode(",", $this->request->getVar('staff_id'))),
+				                        'guarantor'=>current(explode(",", $this->request->getVar('guarantor_1'))),
+				                        'name'=>substr($this->request->getVar('staff_id'), strlen(current(explode(" ", $this->request->getVar('staff_id'))))),
+										'guarantor_2'=>current(explode(",", $this->request->getVar('guarantor_2'))),
+										'loan_type'=>$this->request->getVar('loan_type'),
+										'duration'=>$this->request->getVar('duration'),
+				                        'amount'=>str_replace(",","",$this->request->getVar('amount')),
+				                        'applied_date'=>date('Y-m-d H:i:s'),
+				                        'attachment'=>$filename
+				                    ];
+				                    // check loan type details with $loan_type
+				                    $loan_setups = $this->loansetup->where(['loan_setup_id'=> $this->request->getVar('loan_type')])->first();
+				                    if($loan_setups['psr'] == 1){
+				                        $psr = $loan_setups['psr_value'];
+				                        $staff_id = $this->request->getVar('staff_id');
+				                        $ct = $this->ct->where(['contribution_type_regular' => 1])->first();
+				                       $ct_id = $ct['contribution_type_id'];
+				                        $ledgers =  $this->paymentdetail->where(['pd_staff_id' => $staff_id, 'pd_ct_id' => $ct_id])
+				                        ->findAll();
+				
+				                        $bf = 0;
+				                        if(!empty($ledgers)){
+				                        foreach ($ledgers as $ledger):
+				                                if($ledger['pd_drcrtype'] == 2):
+				                                    $dr = $ledger['pd_amount'];
+				                                    $cr = 0;
+				
+				                                endif;
+				                                    if($ledger['pd_drcrtype'] == 1):
+				                                        $cr = $ledger['pd_amount'];
+				                                            $dr = 0;
+				                                            endif;
+				
+				                                $bf = ($bf + $cr) - $dr;
+				                        endforeach;
+				
+				                        }else{
+				
+				                            $bf = 0;
+				                        }
+				                        $psr_amount = ($psr/100)*(float)str_replace(",","",$this->request->getVar('amount'));
+				
+				                        if($psr_amount >= $bf){
+				                            //loan verification can go through
+				                            $this->loanapp->save($data);
+				                            $alert = array(
+				                                'msg' => 'Success! Loan application done.',
+				                                'type' => 'success',
+				                                'location' => site_url('/loan/new')
+				                    
+				                            );
+				                            return view('pages/sweet-alert', $alert);
+				                        }
+				
+				                    }
+				                    else{
+				                        $this->loanapp->save($data);
+				                            $alert = array(
+				                                'msg' => 'Success! Loan application done.',
+				                                'type' => 'success',
+				                                'location' => site_url('/loan/new')
+				                    
+				                            );
+				                            return view('pages/sweet-alert', $alert);
+				                    }
+				                    
+				              
+					                
+					                
+					                
+					                endif;
+		
+				           
+				            if($cooperator['cooperator_status'] == 0):
 					
-                     $file = $this->request->getFile('attachment');
-                     if(!empty($file)){
-                         if($file->isValid() && !$file->hasMoved()){
-                            $extension = $file->guessExtension();
-                            $extension = strtolower($extension);
-                            if($extension == 'pdf'){
-		                            $filename = $file->getRandomName();
-                                    $file->move('.uploads/withdrawals', $filename);
-                            }
-                         }
-                     }
-                     $data = [
-						'staff_id'=>current(explode(",", $this->request->getVar('staff_id'))),
-                        'guarantor'=>current(explode(",", $this->request->getVar('guarantor_1'))),
-                        'name'=>substr($this->request->getVar('staff_id'), strlen(current(explode(" ", $this->request->getVar('staff_id'))))),
-						'guarantor_2'=>current(explode(",", $this->request->getVar('guarantor_2'))),
-						'loan_type'=>$this->request->getVar('loan_type'), 
-						'duration'=>$this->request->getVar('duration'),
-                        'amount'=>str_replace(",","",$this->request->getVar('amount')),
-                        'applied_date'=>date('Y-m-d H:i:s'),
-                        'attachment'=>$filename
-                    ];
-                    // check loan type details with $loan_type
-                    $loan_setups = $this->loansetup->where(['loan_setup_id'=> $this->request->getVar('loan_type')])->first();
-                    if($loan_setups['psr'] == 1){
-                        $psr = $loan_setups['psr_value'];
-                        $staff_id = $this->request->getVar('staff_id');
-                        $ct = $this->ct->where(['contribution_type_regular' => 1])->first();
-                       $ct_id = $ct['contribution_type_id'];
-                        $ledgers =  $this->paymentdetail->where(['pd_staff_id' => $staff_id, 'pd_ct_id' => $ct_id])                 
-                        ->findAll();
-
-                        $bf = 0;
-                        if(!empty($ledgers)){
-                        foreach ($ledgers as $ledger):
-                                if($ledger['pd_drcrtype'] == 2):
-                                    $dr = $ledger['pd_amount'];
-                                    $cr = 0;
-
-                                endif;
-                                    if($ledger['pd_drcrtype'] == 1):
-                                        $cr = $ledger['pd_amount'];
-                                            $dr = 0;
-                                            endif;
-
-                                $bf = ($bf + $cr) - $dr;
-                        endforeach;
-
-                        }else{
-
-                            $bf = 0;
-                        }
-                        $psr_amount = ($psr/100)*(float)str_replace(",","",$this->request->getVar('amount'));
-
-                        if($psr_amount >= $bf){
-                            //loan verification can go through
-                            $this->loanapp->save($data);
-                            $alert = array(
-                                'msg' => 'Success! Loan application done.',
-                                'type' => 'success',
-                                'location' => site_url('/loan/new')
+								
+					            $data = array(
+						            'msg' => 'Account has been frozen',
+						            'type' => 'error',
+						            'location' => base_url('loan/new')
+					
+					            );
+					
+					            echo view('pages/sweet-alert', $data);
+				            endif;
                     
-                            );
-                            return view('pages/sweet-alert', $alert);
-                        }       
-
-                    }else{
-                        $this->loanapp->save($data);
-                            $alert = array(
-                                'msg' => 'Success! Loan application done.',
-                                'type' => 'success',
-                                'location' => site_url('/loan/new')
-                    
-                            );
-                            return view('pages/sweet-alert', $alert);
-                    }
+                    else:
+	
+	
+	                    $data = array(
+		                    'msg' => 'Account is undergoing closure',
+		                    'type' => 'error',
+		                    'location' => base_url('loan/new')
+	
+	                    );
+	
+	                    echo view('pages/sweet-alert', $data);
+	                    endif;
 
 
 

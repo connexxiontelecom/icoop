@@ -12,6 +12,7 @@ Use App\Models\PaymentDetailsModel;
 use App\Models\ExceptionModel;
 use App\Models\WithdrawModel;
 use App\Models\PolicyConfigModel;
+use App\Models\AccountClosureModel;
 
 class Withdraw extends BaseController
 {
@@ -24,6 +25,8 @@ class Withdraw extends BaseController
         $this->exception = new ExceptionModel();
         $this->withdraw = new WithdrawModel();
         $this->policy = new PolicyConfigModel();
+        $this->ac = new AccountClosureModel();
+        
 
     }
 
@@ -74,7 +77,11 @@ class Withdraw extends BaseController
 	            $cooperator = $this->cooperator->where(['cooperator_staff_id' => $withdraw_staff_id])->first();
 	
 	            if($cooperator['cooperator_status'] == 2):
+		           
+		           
+	            $check_closure = $this->ac->check_ac($withdraw_staff_id);
 	            
+	            if(empty($check_closure)):
 		            $check_pending_withdrawal = $this->withdraw->where(['withdraw_status <'=> 3, 'disburse' => 0, 'withdraw_staff_id' => $withdraw_staff_id])->findAll();
 		            
 					if(empty($check_pending_withdrawal)):
@@ -232,6 +239,18 @@ class Withdraw extends BaseController
 					
 					
 					endif;
+				else:
+					
+					$data = array(
+						'msg' => 'Account is undergoing closure',
+						'type' => 'error',
+						'location' => base_url('new_withdraw')
+					
+					);
+					
+					echo view('pages/sweet-alert', $data);
+		  
+		        endif;
 				endif;
 	
 	            if($cooperator['cooperator_status'] == 0):
@@ -288,8 +307,9 @@ class Withdraw extends BaseController
         else {
             $cooperators = $this->cooperator->search_cooperators($value);
             foreach ($cooperators as $cooperator) {
-                $data[] = $cooperator->cooperator_staff_id . ', ' . $cooperator->cooperator_first_name . ' ' . $cooperator->cooperator_last_name;
-
+            	if($cooperator->cooperator_status < 3):
+                    $data[] = $cooperator->cooperator_staff_id . ', ' . $cooperator->cooperator_first_name . ' ' . $cooperator->cooperator_last_name;
+				endif;
             }
             echo json_encode($data);
             die;
@@ -299,6 +319,7 @@ class Withdraw extends BaseController
     public function compute_balance(){
         $policy_configs = $this->policy->first();
         $staff_id = $_POST['staff_id'];
+        $type = $_POST['type'];
         
         $cooperator = $this->cooperator->where(['cooperator_staff_id' => $staff_id])->first();
         
@@ -330,10 +351,21 @@ class Withdraw extends BaseController
            $bf_w = ($max_withdrawal/100)*$bf;
 
 
-
-          $data['note'] = 'Withdrawal Balance: NGN'.number_format($bf_w).'<br>'.'Savings Balance: NGN'.number_format($bf);
-          $data['balance'] = $bf_w;
-        echo json_encode($data);
+			if($type == 2):
+				
+				$data['note'] = 'Savings Balance: NGN'.number_format($bf);
+				$data['balance'] = $bf;
+				echo json_encode($data);
+				endif;
+			
+			
+			if($type == 1):
+				$data['note'] = 'Withdrawal Balance: NGN'.number_format($bf_w).'<br>'.'Savings Balance: NGN'.number_format($bf);
+				$data['balance'] = $bf_w;
+				echo json_encode($data);
+				
+				endif;
+        
 
         else:
             $data['note'] = "Balance for Selected Contribution Type is: NGN".number_format($bf);

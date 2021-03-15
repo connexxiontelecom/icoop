@@ -129,6 +129,13 @@ $routes->get('loan_ledger/(:any)', 'Cooperators::loan_ledger/$1');
 $routes->post('loan_ledger/(:any)', 'Cooperators::loan_ledger/$1');
 $routes->get('freeze', 'Cooperators::freeze');
 $routes->post('freeze', 'Cooperators::freeze');
+$routes->get('new_closure', 'Cooperators::new_closure');
+$routes->post('new_closure', 'Cooperators::new_closure');
+$routes->get('verify_closure', 'Cooperators::verify_closure');
+$routes->post('verify_closure', 'Cooperators::verify_closure');
+$routes->get('approve_closure', 'Cooperators::approve_closure');
+$routes->post('approve_closure', 'Cooperators::approve_closure');
+
 
 #Loan routes
 $routes->get('/loan/new', 'LoanController::showLoanApplicationForm');
@@ -220,6 +227,14 @@ $routes->post('verify_receipt', 'Receipt::verify_receipt');
 $routes->get('verify_receipt', 'Receipt::verify_receipt');
 $routes->post('approve_receipt', 'Receipt::approve_receipt');
 $routes->get('approve_receipt', 'Receipt::approve_receipt');
+
+
+$routes->post('new_transfer', 'Receipt::new_transfer');
+$routes->get('new_transfer', 'Receipt::new_transfer');
+$routes->post('verify_transfer', 'Receipt::verify_transfer');
+$routes->get('verify_transfer', 'Receipt::verify_transfer');
+$routes->post('approve_transfer', 'Receipt::approve_transfer');
+$routes->get('approve_transfer', 'Receipt::approve_transfer');
 
 
 
