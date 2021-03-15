@@ -19,4 +19,14 @@
 			return $builder->get()->getResultArray();
 			
 		}
+		
+		public function check_ac($staff_id){
+			$builder = $this->db->table('account_closure');
+			//$builder->join('cooperators', 'cooperators.cooperator_staff_id = account_closure.ac_staff_id');
+			$builder->where('ac_staff_id', $staff_id);
+			$builder->where('ac_status', 0);
+			$builder->orWhere('ac_status', 1);
+			$builder->orWhere('ac_status', 2);
+			return $builder->get()->getResultArray();
+		}
 	}

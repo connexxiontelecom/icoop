@@ -79,7 +79,7 @@ class Withdraw extends BaseController
 	            if($cooperator['cooperator_status'] == 2):
 		           
 		           
-	            $check_closure = $this->ac->where(['ac_staff_id' => $withdraw_staff_id])->findAll();
+	            $check_closure = $this->ac->check_ac($withdraw_staff_id);
 	            
 	            if(empty($check_closure)):
 		            $check_pending_withdrawal = $this->withdraw->where(['withdraw_status <'=> 3, 'disburse' => 0, 'withdraw_staff_id' => $withdraw_staff_id])->findAll();
