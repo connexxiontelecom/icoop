@@ -741,13 +741,12 @@ class PaymentController extends BaseController
             'coas'=>$coas,
             'entries'=>$entries
         ];
-        
         $username = $this->session->user_username;
         $this->authenticate_user($username, 'pages/payment/new-payment', $data); 
     }
 
     public function postNewPayment(){
-        
+       
         if($_POST){
             $amount = 0;
             for($n = 0; $n < count($this->request->getVar('entries')); $n++){
@@ -775,7 +774,7 @@ class PaymentController extends BaseController
                         'entry_payment_d_account_no'=>$this->request->getVar('account_no')[$i], 
                         'entry_payment_d_reference_no'=>$this->request->getVar('reference_no')[$i],
                         'entry_payment_d_gl_account_no'=>$this->request->getVar('gl_account_no')[$i],
-                        'third_party_payment_entry_id'=>$this->request->getVar('entry_id')[$i]
+                        'third_party_payment_entry_id'=>$this->request->getVar('entry_id')[$i],
                      ];
                      $this->entrypaymentdetail->save($detail);
                      $this->thirpartypaymententry->save(['third_party_payment_entry_id'=>$this->request->getVar('entry_id')[$i],
@@ -840,6 +839,65 @@ class PaymentController extends BaseController
                 return $this->response->redirect(site_url('/loan/verify'));
             } */
         }
+    }
+    public function returnAllUnverifiedPaymentEntry($masterId){
+                $master = $this->entrypaymentmaster->getEntryMasterById($masterId);
+                if(!empty($master)){
+                    $this->entrypaymentmaster->delete($masterId);
+                    $details = $this->entrypaymentdetail->getPaymentDetailsByMasterId($masterId);
+                   
+                    if(!empty($details)){
+                        foreach($details as $detail){
+                            $this->entrypaymentdetail->delete($detail->entry_payment_d_detail_id);
+                        }
+                    }
+                    $alert = array(
+                        'msg' => 'Success! Payment entry declined.',
+                        'type' => 'success',
+                        'location' => site_url('/third-party/verify-payment-entry')
+                    );
+                    return view('pages/sweet-alert', $alert);
+
+                }else{
+                    $alert = array(
+                        'msg' => 'Ooops! No record found.',
+                        'type' => 'error',
+                        'location' => site_url('/third-party/verify-payment-entry')
+                    );
+                    return view('pages/sweet-alert', $alert);
+                }
+                    
+        
+    }
+    public function returnOneUnverifiedPaymentEntry($detailId){
+        
+        $details = $this->entrypaymentdetail->getPaymentDetailsByDetailId($detailId);               
+                    if(!empty($details)){
+                        #Last record
+                        /* if(count($details) == 1){
+                            return dd($details[0]);
+                            $master = $this->entrypaymentmaster->getEntryMasterById($masterId);
+                        } */
+                            foreach($details as $detail){
+                                $this->entrypaymentdetail->delete($detail->entry_payment_d_detail_id);
+                            }
+                            $alert = array(
+                                'msg' => 'Success! Payment entry declined.',
+                                'type' => 'success',
+                                'location' => site_url('/third-party/verify-payment-entry')
+                            );
+                            return view('pages/sweet-alert', $alert);
+                        }else{
+
+                            $alert = array(
+                                'msg' => 'Ooops! No record found.',
+                                'type' => 'error',
+                                'location' => site_url('/third-party/verify-payment-entry')
+                            );
+                            return view('pages/sweet-alert', $alert);
+                        }
+                    
+        
     }
 
     public function approvePaymentEntry(){

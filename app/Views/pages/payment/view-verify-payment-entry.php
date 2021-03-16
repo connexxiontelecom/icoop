@@ -89,7 +89,8 @@ View Payment Entry
                                         <td>S/No</td>
                                         <td>Payee Name</td>
                                         <td>Bank</td>
-                                        <td>Reference No.</td>
+                                        <td>Narration</td>
+                                        <td>Attachment</td>
                                         <td>Payment Amount</td>
                                         <td>Action</td>
                                     </tr>
@@ -99,17 +100,43 @@ View Payment Entry
                                             <td><?= $serial++ ?></td>
                                             <td><?= $d->entry_payment_d_payee_name ?? '' ?></td>
                                             <td>
-                                                <?= $d->bank_name ?? '' ?>
+                                                <?= $d->bank_name ?? '' ?> - <?= $d->entry_payment_d_account_no ?? '' ?>
                                             </td>
-                                            <td><?= $d->entry_payment_d_reference_no ?? '' ?> </td>
+                                            <td><?= $d->entry_narration ?? '' ?> </td>
+                                            <td>
+                                                <?php if(!is_null($d->entry_attachment)) : ?>
+                                                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#entryDetailModal_<?= $d->entry_payment_d_detail_id ?>" >Download Attachment</button>
+                                                    <div class="modal fade" id="entryDetailModal_<?= $d->entry_payment_d_detail_id ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="exampleModalLabel"><?= $d->entry_payment_d_payee_name ?? '' ?>'s Attachment</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    
+                                                                    <embed src="<?= site_url('assets/uploads/withdrawals/'.$d->entry_attachment) ?>" frameborder="0" width="100%" height="400px">
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                <?php else: ?>
+                                                    No attachment
+                                                <?php endif; ?>
+                                             </td>
                                             <td class="text-right"><?= number_format($d->entry_payment_d_amount,2) ?? '' ?> </td>
                                             <input type="hidden" name="sum" value="<?= $sum += $d->entry_payment_d_amount ?? 0?>">
                                             <input type="hidden" name="entry_master" value="<?= $d->entry_payment_master_id ?? ''  ?>">
-                                            <td><a href="<?= site_url('/third-party/view-verify-payment-entry/'.$d->entry_payment_master_id) ?>">Return</a></td>
+                                            <td><a href="<?= site_url('/third-party/return-entry/unverified/'.$d->entry_payment_d_detail_id) ?>">Return</a></td>
                                         </tr>
                                     <?php endforeach; ?>
                                     <tr>
-                                        <td colspan="5" class="text-right">
+                                        <td colspan="6" class="text-right">
                                             <strong>Total:</strong>
                                         </td>
                                         <td class="text-right"><?=number_format($sum,2) ?></td>
@@ -121,7 +148,7 @@ View Payment Entry
                                                     <div class="d-flex justify-content-center">
                                                         <?php if($entry_master->entry_payment_verified == 0 && $entry_master->entry_payment_approved == 0) : ?>
                                                             <div class="btn-group">
-                                                                <button class="btn btn-danger btn-sm" type="submit" >Return Entry</button>
+                                                                <a class="btn btn-danger btn-sm" href="<?= site_url('/third-party/return-all/unverified/'.$entry_master->entry_payment_master_id) ?>" >Return Entry</a>
                                                                 <button class="btn btn-primary btn-sm text-right"  type="submit">Verify Entry</button>
                                                             </div>
 

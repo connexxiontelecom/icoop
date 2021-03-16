@@ -15,6 +15,7 @@ class EntryPaymentDetailModel extends Model{
         $builder = $this->db->table('entry_payment_details');
         $builder->join('entry_payment_masters', 'entry_payment_details.entry_payment_d_master_id = entry_payment_masters.entry_payment_master_id');
         $builder->join('banks', 'banks.bank_id = entry_payment_details.entry_payment_d_payee_bank');
+        $builder->join('third_party_payment_entries', 'third_party_payment_entries.third_party_payment_entry_id = entry_payment_details.third_party_payment_entry_id');
         $builder->groupBy('banks.bank_id');
         $builder->where('entry_payment_details.entry_payment_d_master_id = '.$id);
         return $builder->get()->getResultObject();
@@ -22,6 +23,11 @@ class EntryPaymentDetailModel extends Model{
     public function getPaymentDetailsByMasterId($id){
         $builder = $this->db->table('entry_payment_details');
         $builder->where('entry_payment_details.entry_payment_d_master_id = '.$id);
+        return $builder->get()->getResultObject();
+    }
+    public function getPaymentDetailsByDetailId($id){
+        $builder = $this->db->table('entry_payment_details');
+        $builder->where('entry_payment_details.entry_payment_d_detail_id = '.$id);
         return $builder->get()->getResultObject();
     }
     /* public function getScheduleMaster(){

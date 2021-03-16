@@ -43,7 +43,7 @@ class EntryPaymentMasterModel extends Model{
         $builder->join('coop_banks', 'coop_banks.coop_bank_id = entry_payment_masters.entry_payment_bank_id');
         $builder->join('banks', 'banks.bank_id = coop_banks.bank_id');
         $builder->join('third_party_payment_entries', 'third_party_payment_entries.entry_bank_id = banks.bank_id');
-        $builder->groupby('third_party_payment_entries.third_party_payment_entry_id');
+        $builder->groupby('entry_payment_masters.entry_payment_master_id');
         $builder->orderBy('third_party_payment_entries.third_party_payment_entry_id', 'DESC');
         return $builder->get()->getResultObject();
     }

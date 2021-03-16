@@ -74,7 +74,7 @@ View Payment Entry Details
                                         <td class="text-nowrap">Attachment</td>
                                         <td>
                                             <?php if(!is_null($entry->entry_attachment)) : ?>
-                                                <a href="/assets/uploads/withdrawals/<?= $entry->entry_attachment ?>" target="_blank" ><strong>Download Attachment</strong></a>
+                                                <a href="/.uploads/withdrawals/<?= $entry->entry_attachment ?>" target="_blank" ><strong>Download Attachment</strong></a>
                                             <?php endif; ?>
                                         </td>
                                     </tr>                                    
