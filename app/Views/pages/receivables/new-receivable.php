@@ -14,6 +14,7 @@
 <?= $this->section('extra-styles') ?>
     <link href="/assets/css/parsley.min.css" rel="stylesheet">
     <link href="/assets/css/toastify.min.css" rel="stylesheet">
+    <link href="/assets/css/select2.min.css" rel="stylesheet">
 <?= $this->endSection() ?>
 
 
@@ -35,7 +36,7 @@
                                     <div class="col-md-6 col-lg-6 col-sm-6">
                                         <div class="form-group">
                                             <strong for="">Coop Bank</strong>
-                                            <select name="coop_bank" id="coop_bank" class="form-control">
+                                            <select name="coop_bank" id="coop_bank" class="form-control js-example-basic-single">
                                                 <option selected disabled>--Select bank--</option>
                                                 <?php foreach($coopbanks as $bank): ?>
                                                     <option value="<?= $bank->coop_bank_id ?? '' ?>"><?= $bank->account_no ?? '' ?> - <?= $bank->bank_name ?? '' ?> </option>
@@ -64,32 +65,16 @@
                                     </div>
                                     <div class="col-md-6 col-lg-6 col-sm-6">
                                         <div class="form-group">
-                                            <strong for="">GL CR.</strong>
-                                            <select name="gl_cr" id="gl_cr" class="form-control">
-                                                <option selected disabled>--Select GL CR.--</option>
-                                                <?php foreach($coas as $account) : ?>
-                                                    <option value="<?= $account['glcode'] ?>"><?= $account['glcode'] ?? '' ?> - <?= $account['account_name'] ?? '' ?></option>
-                                                <?php endforeach; ?>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    
-                                </div>
-                                <div class="row ">
-                                    <div class="col-md-6 col-lg-6 col-sm-6">
-                                        <div class="form-group">
                                             <strong for="">Payer/Customer</strong>
-                                            <select name="customer"  id="customer" class="form-control">
+                                            <select name="customer"  id="customer" class="form-control js-example-basic-single">
                                                 <option disabled selected>--Select payer/customer--</option>
                                                 <?php foreach($customers as $customer) : ?>
                                                     <option value="<?= $customer['customer_setup_id']  ?? '' ?>"><?= $customer['customer_name'] ?? '' ?> </option>
                                                 <?php endforeach; ?>
                                             </select>
                                         </div>
-                                    </div>
-                                    
+                                    </div>                                    
                                 </div>
-                                
                                 <hr>
                                 <div class="form-group d-flex justify-content-center">
                                     <button class="btn btn-sm btn-primary" id="submitLoanBtn"><i class="ti-check mr-2"></i>Submit</button>
@@ -107,4 +92,10 @@
     <script src="/assets/js/toastify.min.js"></script>
     <script src="/assets/js/axios.min.js"></script>
     <script src="/assets/js/simple.money.format.js"></script>
+    <script src="/assets/js/select2.min.js"></script>
+     <script>
+        $(document).ready(function(){
+            $('.js-example-basic-single').select2();
+        });
+        </script>
 <?= $this->endSection() ?>

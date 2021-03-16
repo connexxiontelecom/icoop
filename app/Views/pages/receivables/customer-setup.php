@@ -14,6 +14,7 @@
 <?= $this->section('extra-styles') ?>
     <link href="/assets/css/parsley.min.css" rel="stylesheet">
     <link href="/assets/css/toastify.min.css" rel="stylesheet">
+    <link href="/assets/css/select2.min.css" rel="stylesheet">
 <?= $this->endSection() ?>
 
 
@@ -58,7 +59,7 @@
                                             <div class="col-md-6 col-lg-6 col-sm-6 response">
                                                 <div class="form-group">
                                                     <strong for="">GL Account Code</strong>
-                                                    <select name="gl_account_code" id="gl_account_code" class="form-control">
+                                                    <select name="gl_account_code" id="gl_account_code" class="form-control js-example-basic-single">
                                                         <option selected disabled>--Select GL Account Code--</option>
                                                         <?php foreach($accounts as $account) : ?>
                                                             <option value="<?= $account['glcode'] ?? '' ?>"><?= $account['account_name'] ?? '' ?> - <?= $account['glcode'] ?? '' ?></option>
@@ -86,5 +87,10 @@
 <?= $this->section('extra-scripts') ?>
     <script src="/assets/js/parsley.min.js"></script>
     <script src="/assets/js/toastify.min.js"></script>
-    
+     <script src="/assets/js/select2.min.js"></script>
+     <script>
+$(document).ready(function(){
+     $('.js-example-basic-single').select2();
+});
+</script>
 <?= $this->endSection() ?>

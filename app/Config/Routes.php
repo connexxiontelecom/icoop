@@ -41,6 +41,15 @@ $routes->get('/login', 'Usercontroller::showLoginForm');
 $routes->post('/login', 'Usercontroller::login');
 $routes->get('/register', 'Usercontroller::showRegistrationForm');
 $routes->post('/register', 'Usercontroller::register');
+$routes->post('check_user', 'Usercontroller::check_user');
+
+$routes->get('new_user', 'Usercontroller::new_user');
+$routes->post('new_user', 'Usercontroller::new_user');
+$routes->get('users', 'Usercontroller::users');
+
+$routes->post('manage_user/(:num)', 'Usercontroller::manage_user/$1');
+$routes->get('manage_user/(:num)', 'Usercontroller::manage_user/$1');
+
 $routes->get('/logout', 'Usercontroller::logout');
 $routes->get('(:any)/login', 'Usercontroller::showLoginForm');
 
@@ -181,6 +190,11 @@ $routes->get('/third-party/view-verify-payment-entry/(:num)', 'PaymentController
 $routes->post('/third-party/view-verify-payment-entry', 'PaymentController::postVerifyPaymentEntry');
 $routes->get('/third-party/approve-payment-entry', 'PaymentController::approvePaymentEntry');
 $routes->post('/third-party/approved-payment-entry', 'PaymentController::postApprovedPaymentEntry');
+$routes->get('/third-party/return-payment/(:num)', 'PaymentController::returnPayment/$1');
+$routes->get('/third-party/payment-list', 'PaymentController::paymentList');
+$routes->get('/third-party/payment-entry/(:num)', 'PaymentController::getThirdpartyEntry/$1');
+$routes->get('/third-party/return-all/unverified/(:num)', 'PaymentController::returnAllUnverifiedPaymentEntry/$1');
+$routes->get('/third-party/return-entry/unverified/(:num)', 'PaymentController::returnOneUnverifiedPaymentEntry/$1');
 
 #Third-party receivable routes
 $routes->get('/third-party/receivable/customer-setup', 'ThirdpartyReceivableController::showCustomerSetupForm');
@@ -197,6 +211,15 @@ $routes->get('/third-party/receivable/report', 'ThirdpartyReceivableController::
 $routes->post('/third-party/receivable/report', 'ThirdpartyReceivableController::generateReport');
 $routes->get('/third-party/receivable/member-report', 'ThirdpartyReceivableController::memberReport');
 $routes->post('/third-party/receivable/member-report', 'ThirdpartyReceivableController::generateMemberReport');
+$routes->get('/third-party/view-receipt/(:num)', 'ThirdpartyReceivableController::viewThirdpartyReceipt/$1');
+$routes->get('/third-party/email-receipt/(:num)', 'ThirdpartyReceivableController::emailThirdpartyReceipt/$1');
+$routes->get('/third-party/view-member-receipt/(:num)', 'ThirdpartyReceivableController::viewMemberyReceipt/$1');
+
+#Saving variations routes
+$routes->get('/saving-variations/new', 'SavingVariationController::showSavingVariationForm');
+$routes->post('/saving-variations/new', 'SavingVariationController::postSavingVariationForm');
+$routes->get('/saving-variations/unverified', 'SavingVariationController::showUnverifiedSavingVariations');
+$routes->get('/get-payment-details/(:num)', 'SavingVariationController::getPaymentDetails/$1');
 
 
 

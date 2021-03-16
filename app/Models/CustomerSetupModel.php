@@ -16,6 +16,13 @@ class CustomerSetupModel extends Model{
         return $builder->get()->getResultObject();
     } 
 
+
+    public function getCustomerDetails($id){
+        $builder = $this->db->table('customer_setups');
+        $builder->where('customer_setup_id = '.$id);
+        return $builder->get()->getRowObject();
+    }
+
 }
 
 ?>

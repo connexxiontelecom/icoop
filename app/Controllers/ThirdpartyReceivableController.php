@@ -31,6 +31,7 @@ class ThirdpartyReceivableController extends BaseController
         $this->customersetup = new CustomerSetupModel;
         $this->customerreceivable = new CustomerReceivableModel;
         $this->receiptmaster = new ReceiptMasterModel;
+        $this->user = new UserModel();
     }
 
     public function showCustomerSetupForm(){
@@ -145,13 +146,14 @@ class ThirdpartyReceivableController extends BaseController
     public function approveDeclineReceivable(){
         helper(['form']);
         $data = [];
+        $username = $this->session->user_username;
         if($_POST){
             if($this->request->getVar('receivable_status') == 'verified'){
                 $data = [
                     'customer_receivable_id'=>$this->request->getVar('customer_receivable'),
                     'cr_verify'=>1,
                     'cr_date_verified'=>date('Y-m-d H:i:s'),
-                    'cr_verified_by'=>'Joseph' 
+                    'cr_verified_by'=>$this->user->where('email', $username)->first()['user_id']
                 ];
 
             }else{
@@ -159,14 +161,16 @@ class ThirdpartyReceivableController extends BaseController
                     'customer_receivable_id'=>$this->request->getVar('customer_receivable'),
                     'cr_approve'=>1,
                     'cr_date_approved'=>date('Y-m-d H:i:s'),
-                    'cr_approved_by'=>'Joseph' 
+                    'cr_approved_by'=>$this->user->where('email', $username)->first()['user_id']
                 ];
+                
                 #customer
-                $customer = $this->customerreceivable->getCustomer($this->request->getVar('customer_receivable'));
+                $customer = $this->customerreceivable->getCustomer($this->request->getVar('customer_setup'));
+                $customerGl = $this->customersetup->getCustomerDetails($this->request->getVar('customer_setup'));
                 $bank = $this->coopbank->getBank($customer->cr_coop_bank_id);
                 $ref = time();
                 $glcr = [
-                    'glcode'=>$customer->cr_gl_cr,
+                    'glcode'=>$customerGl->gl_account_code,
                     'cr_amount'=>$customer->cr_amount,
                     'dr_amount'=>0,
                     'ref_no'=>$ref,
@@ -207,7 +211,7 @@ class ThirdpartyReceivableController extends BaseController
 
 
 
-    public function generateReport(){
+    public function generateReport(){ //this is third-party report
         helper(['form']);
         $data = [];
         $from = $this->request->getVar('from') ?? date('Y-m-d');
@@ -248,8 +252,81 @@ class ThirdpartyReceivableController extends BaseController
                 'to'=>$to,
                 'accounts'=> $this->coa->where('type',1)->findAll()
             ];
+            //return dd($data['result']);
             $username = $this->session->user_username;
         $this->authenticate_user($username, 'pages/receivables/member-report', $data);
+        }
+    }
+
+
+
+    public function viewThirdpartyReceipt($id){
+        $receipt = $this->customerreceivable->getThirdpartyReceiptById($id);
+        if(!empty($receipt)){
+            $data = [
+                'receipt'=>$receipt
+            ];
+            //return dd($data);
+            $username = $this->session->user_username;
+            $this->authenticate_user($username, 'pages/receivables/3rd-party-receipt', $data);
+        }else{
+            $alert = array(
+                'msg' => 'Ooops! No record found.',
+                'type' => 'error',
+                'location' => site_url('/third-party/receivable/report')
+            );
+            return view('pages/sweet-alert', $alert);
+        }
+    }
+    public function viewMemberyReceipt($id){
+        $receipt = $this->receiptmaster->getReceiptDetailsById($id);
+        if(!empty($receipt)){
+            $data = [
+                'receipt'=>$receipt
+            ];
+           
+            $username = $this->session->user_username;
+            $this->authenticate_user($username, 'pages/receivables/member-receipt', $data);
+        }else{
+            $alert = array(
+                'msg' => 'Ooops! No record found.',
+                'type' => 'error',
+                'location' => site_url('/third-party/receivable/report')
+            );
+            return view('pages/sweet-alert', $alert);
+        }
+    }
+    public function emailThirdpartyReceipt($id){
+        $receipt = $this->customerreceivable->getThirdpartyReceiptById($id);
+        if(!empty($receipt)){
+            #Send email
+            $this->email->setFrom('info@connexxiontelecom.com', 'iCoop');
+            $this->email->setTo('talktojoegee@gmail.com');
+        //$this->email->setTo($receipt->email);
+            $this->email->setSubject('Receipt from iCoop');
+            $this->email->setMailType('html');
+            
+            $data['customer_name'] = $receipt->customer_name ?? '';
+            $data['transaction_date'] = $receipt->cr_transaction_date ?? '';
+            $data['account_name'] = $receipt->account_name ?? '';
+            $data['account_no'] = $receipt->account_no ?? '';
+            $data['amount'] = $receipt->cr_amount ?? '';
+            $body =  view('pages/receivables/receipt-email-template', $data);
+            $this->email->setMessage($body);
+            $this->email->send();
+            $alert = array(
+                'msg' => 'Success! Receipt sent via mail.',
+                'type' => 'success',
+                'location' => site_url('/third-party/receivable/report')
+            );
+            return view('pages/sweet-alert', $alert);
+        }else{
+            $alert = array(
+                'msg' => 'Ooops! No record found.',
+                'type' => 'error',
+                'location' => site_url('/third-party/receivable/report')
+            );
+            return view('pages/sweet-alert', $alert);
         }
     }
     

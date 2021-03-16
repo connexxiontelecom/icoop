@@ -101,11 +101,11 @@ Payment Entry Voucher
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="">Payee Bank</label>
+                                    <label for=""> Bank</label>
                                     <select required name="payee_bank" id="payee_bank" class="form-control js-example-basic-single">
                                         <option selected disabled>--Select --</option>
-                                        <?php foreach($coopbank as $coop) : ?>
-                                                <option value="<?= $coop->coop_bank_id ?>"><?= $coop->account_no ?? '' ?> - <?= $coop->bank_name ?? '' ?></option>
+                                        <?php foreach($banks as $bank) : ?>
+                                                <option value="<?= $bank->bank_id ?>"><?= $bank->bank_name ?? '' ?></option>
                                             <?php endforeach; ?>
                                     </select>
                                 </div>

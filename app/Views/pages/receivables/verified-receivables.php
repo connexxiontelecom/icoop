@@ -99,7 +99,7 @@
                                                                     <div class="col-md-6 col-lg-6 col-sm-6 response">
                                                                         <div class="form-group">
                                                                             <strong for="">GL Account Code</strong>
-                                                                            
+                                                                             <input type="text" disabled value="<?= $app->cr_gl_cr ?? '' ?> - <?= $app->account_name ?? '' ?>" class="form-control">
                                                                         </div>
                                                                     </div>
                                                                     
@@ -108,6 +108,7 @@
                                                                 <div class="row">
                                                                     <div class="col-md-12 d-flex justify-content-center">
                                                                 <input type="hidden" name="customer_receivable" value="<?= $app->customer_receivable_id ?>">
+                                                                <input type="hidden" name="customer_setup" value="<?= $app->cr_customer_setup_id ?>">
                                                                 <input type="hidden" name="receivable_status" value="approved">
                                                                         <div class="btn-group">
                                                                             <button class="btn-sm btn btn-primary text-white" type="submit">Approve</button>
