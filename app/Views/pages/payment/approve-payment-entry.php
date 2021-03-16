@@ -64,7 +64,7 @@ Approve Payment Entry
                                 <tr>
                                     <td><?= $i++ ?></td>
                                     <td><?= $app->bank_name ?? '' ?></td>
-                                    <td><?= number_format($app->entry_payment_amount ?? 0) ?></td>
+                                    <td class="text-right"><?= number_format($app->entry_payment_amount ?? 0) ?></td>
                                     <td><?= $app->entry_payment_cheque_no ?? '' ?></td>
                                     <td><?= date('d M, Y', strtotime($app->entry_payment_payable_date)) ?> </td>
                                     <td><?= $app->sort_code ?? '' ?> </td>

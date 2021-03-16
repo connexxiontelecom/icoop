@@ -248,6 +248,10 @@
                                     <li><a href="<?=base_url('new_withdraw') ?>">New Withdraw</a></li>
                                     <li><a href="<?=base_url('verify_withdrawal') ?>">Verify Withdrawal</a></li>
                                     <li><a href="<?=base_url('approve_withdrawal') ?>">Approve Withdrawal</a></li>
+                                    <li class="header">Saving Variations</li>
+                                    <li><a href="<?=base_url('/saving-variations/new') ?>">New</a></li>
+                                    <li><a href="<?=base_url('/saving-variations/unverified') ?>">Verify</a></li>
+                                    <li><a href="<?=base_url('approve_withdrawal') ?>">Approve</a></li>
                                 </ul>
                                 </li>
                                 <li>
@@ -271,6 +275,7 @@
 										<li><a href="<?=base_url('/third-party/new-payment') ?>">New Payment</a></li>
 										<li><a href="<?=base_url('/third-party/verify-payment-entry') ?>">Verify</a></li>
 										<li><a href="<?=base_url('/third-party/approve-payment-entry') ?>">Approve</a></li>
+										<li><a href="<?=base_url('/third-party/payment-list') ?>">Payment List</a></li>
                                     </ul>
                                     
                                 </li>

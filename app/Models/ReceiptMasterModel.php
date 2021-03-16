@@ -31,5 +31,13 @@
 			$builder->where('receipt_master.rm_approve_date <= ', $to);
 			return $builder->get()->getResultObject();
 		}
+		public function getReceiptDetailsById($receiptId){
+			$builder = $this->db->table('receipt_master');
+			$builder->join('coop_banks', 'receipt_master.rm_coop_bank = coop_banks.coop_bank_id');
+			$builder->join('coas', 'coas.glcode = coop_banks.glcode');
+			$builder->join('cooperators', 'cooperators.cooperator_staff_id = receipt_master.rm_staff_id');
+			$builder->where('receipt_master.rm_id = '.$receiptId);
+			return $builder->get()->getRowObject();
+		}
 		
 	}

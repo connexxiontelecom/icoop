@@ -60,6 +60,7 @@
                                             <th>Customer Name</th>
                                             <th>Amount</th>
                                             <th>GL Account</th>
+                                            <th>Action</th>
                                         </tr>
                                     
                                     </thead>
@@ -72,7 +73,9 @@
                                                 <td><?= $app->cooperator_first_name ?? '' ?> <?= $app->cooperator_last_name ?? '' ?></td>
                                                 <td class="text-right"><?= number_format($app->rm_amount,2) ?? '' ?> </td>
                                                 <td><?= $app->glcode ?? '' ?> - <?= $app->account_name ?? '' ?> </td>
-                                               
+                                                <td>
+                                                    <a href="<?= site_url('/third-party/view-member-receipt/'.$app->rm_id) ?>" class="btn btn-sm btn-primary">View</a>
+                                                </td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>
