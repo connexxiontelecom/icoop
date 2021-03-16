@@ -191,7 +191,7 @@
 	
 										<li class="header"><b>User Management</b></li>
 										<li><a href="<?=base_url('new_user') ?>">New User</a></li>
-										<li><a href="<?=base_url('interest_routine') ?>">Manage Users</a></li>
+										<li><a href="<?=base_url('users') ?>">All Users</a></li>
                                     </ul>
 
                                <ul>

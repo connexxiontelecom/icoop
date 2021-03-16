@@ -45,16 +45,16 @@ class Usercontroller extends BaseController
         helper(['form']);
         if($this->request->getMethod() == 'post'){
             $rules = [
-                'email'=> [
-                    'rules'=>'required|valid_email',
+                'username'=> [
+                    'rules'=>'required',
                     'label'=>'Email address',
                     'errors'=>[
-                        'required'=>'Email address field is compulsory',
-                        'valid_email'=>'Kindly enter a valid email address'
+                        'required'=>'username is compulsory',
+                        
                     ]
                 ],
                 'password'=> [
-                    'rules'=>'required|min_length[8]',
+                    'rules'=>'required',
                     'label'=>'Password',
                     'errors'=>[
                         'required'=>'Enter your registered password'
@@ -65,10 +65,10 @@ class Usercontroller extends BaseController
             if($this->validate($rules)){
                 $session = session();
                 $user = new UserModel;
-                $email = $this->request->getVar('email');
+                $username= $this->request->getVar('username');
                 $password = $this->request->getVar('password');
                 $url = $this->request->getVar('url');
-                $data = $user->where('email', $email)->first();
+                $data = $user->where('username', $username)->first();
                 if($data){
                     $pass = $data['password'];
                     $verify_password = password_verify($password, $pass);
@@ -76,7 +76,7 @@ class Usercontroller extends BaseController
                         $ses_data = [
                             'user_id'=> $data['user_id'],
                             'user_email'=>$data['email'],
-                            'user_username' => $data['email'],
+                            'user_username' => $data['username'],
                             'user_first_name'=>$data['first_name'],
                             'user_last_name' => $data['last_name']
                         ];
@@ -88,12 +88,14 @@ class Usercontroller extends BaseController
                         endif;
                     }else{
                     }
-                    $session->setFlashdata('msg', 'Wrong password.');
-                    return redirect()->to('/login');
+	                $data['errors'] = 'Wrong authentication details';
+	                $data['url'] = '';
+	                return view('auth/login', $data);
                 }
             }else{
                 $data['validation'] = $this->validator;
-                return view('auth/login',$data);
+	            $data['url'] = '';
+	            return view('auth/login', $data);
             }
         }
     }
@@ -303,6 +305,111 @@ class Usercontroller extends BaseController
 	    endif;
     	
     }
+    
+    public function users(){
+	    $username = $this->session->user_username;
+	    $data['users'] = $this->user->orderBy('user_status', 'DESC')->findAll();
+	    $this->authenticate_user($username, 'auth/users', $data);
+    	
+    }
+	
+	public function manage_user($user_id){
+		$method = $this->request->getMethod();
+		
+		if($method == 'get'):
+			$username = $this->session->user_username;
+			$data['user'] = $this->user->where('user_id', $user_id)->first();
+			$this->authenticate_user($username, 'auth/user', $data);
+		endif;
+		
+		
+		if($method == 'post'):
+			
+			$this->validator->setRules( [
+				'first_name'=>[
+					'rules'=>'required',
+					'errors'=>[
+						'required'=>'Enter first name '
+					]
+				],
+				
+				'last_name'=>[
+					'rules'=>'required',
+					'errors'=>[
+						'required'=>'Enter last name'
+					]
+				],
+				
+				'username'=>[
+					'rules'=>'required|min_length[4]',
+					'errors'=>[
+						'required'=>'Enter a username',
+					
+					]
+				],
+				
+			
+			
+			
+			]);
+			
+			if ($this->validator->withRequest($this->request)->run()):
+				if(!empty($_POST['password'])):
+				$_POST['password'] = password_hash($_POST['password'], PASSWORD_BCRYPT);
+				else:
+					unset($_POST['password']);
+					endif;
+				
+					$v = $this->user->save($_POST);
+					
+					if($v):
+						$data = array(
+							'msg' => 'User updated successfully',
+							'type' => 'success',
+							'location' => base_url('users')
+						
+						);
+						
+						echo view('pages/sweet-alert', $data);
+					
+					
+					else:
+						
+						$data = array(
+							'msg' => 'An error occurred',
+							'type' => 'error',
+							'location' => base_url('users')
+						
+						);
+						
+						echo view('pages/sweet-alert', $data);
+					endif;
+				
+			
+			else:
+				
+				$arr = $this->validator->getErrors();
+				
+				$data = array(
+					'msg' => implode(", ", $arr),
+					'type' => 'error',
+					'location' => base_url('users')
+				
+				);
+				
+				echo view('pages/sweet-alert', $data);
+			
+			
+			endif;
+		
+		
+		
+		
+		
+		endif;
+	}
+    
+    
 
     public function error_404(){
 

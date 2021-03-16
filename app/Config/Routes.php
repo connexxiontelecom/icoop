@@ -45,6 +45,11 @@ $routes->post('check_user', 'Usercontroller::check_user');
 
 $routes->get('new_user', 'Usercontroller::new_user');
 $routes->post('new_user', 'Usercontroller::new_user');
+$routes->get('users', 'Usercontroller::users');
+
+$routes->post('manage_user/(:num)', 'Usercontroller::manage_user/$1');
+$routes->get('manage_user/(:num)', 'Usercontroller::manage_user/$1');
+
 $routes->get('/logout', 'Usercontroller::logout');
 $routes->get('(:any)/login', 'Usercontroller::showLoginForm');
 
