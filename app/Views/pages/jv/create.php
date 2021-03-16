@@ -90,7 +90,7 @@ New Journal Voucher
 														<select name="credit_account[]" id="credit_account1" class="custom-select" required>
 															<option disabled selected>Select account</option>
 															<?php foreach($accounts as $account) : ?>
-																<option value="<?= $account['glcode'] ?>"><?= $account['account_name'] ?? ''?> - <?= $account['glcode'] ?? ''?> </option>
+																<option value="<?= $account['glcode'] ?>"> <?= $account['glcode'] ?? ''?> - <?= $account['account_name'] ?? ''?>  </option>
 															<?php endforeach; ?>
 														</select>
 													</div>
@@ -154,7 +154,7 @@ New Journal Voucher
 																<select name="debit_account[]" id="debit_account1" class="custom-select" required>
 																	<option disabled selected>Select account</option>
 																	<?php foreach($accounts as $account) : ?>
-																		<option value="<?= $account['glcode'] ?>"><?= $account['account_name'] ?? ''?> - <?= $account['glcode'] ?? ''?> </option>
+																		<option value="<?= $account['glcode'] ?>"> <?= $account['glcode'] ?? ''?> - <?= $account['account_name'] ?? ''?>  </option>
 																	<?php endforeach; ?>
 																</select>
 															</div>
@@ -311,6 +311,15 @@ New Journal Voucher
                     inputs[index].value = '0.00';
                 }
             }
+			//
+            // for (index = 0; index < inputs.length; ++index) {
+            //     if (inputs[index].name === 'credit_account') {
+            //         // console.log('i changed target');
+            //         inputs[index].id = "credit_account" + count_cloness;
+            //         inputs[index].value = '';
+            //     }
+			//
+            // }
 
 
 

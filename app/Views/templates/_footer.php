@@ -23,6 +23,7 @@
 <script src="<?php echo site_url() ?>assets/vendor/jquery-datatable/buttons/buttons.html5.min.js"></script>
 <script src="<?php echo site_url() ?>assets/vendor/jquery-datatable/buttons/buttons.print.min.js"></script>
 <script src="<?php echo site_url() ?>assets/js/jquery-ui.js"></script>
+<script src="<?php echo site_url() ?>assets/vendor/selectize/js/standalone/selectize.js"></script>
 
     <?= $this->renderSection('extra-scripts') ?>
 
@@ -60,6 +61,13 @@
             components[1] = components[1].replace(/\D/g, "");
         return components.join(".");
     }
+    // $('.custom-select').select2({
+    //     maximumInputLength: 20 // only allow terms up to 20 characters long
+    // });
+
+    $('.custom-selec').selectize({
+        sortField: 'text'
+    });
 </script>
 </body>
 

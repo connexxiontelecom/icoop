@@ -201,13 +201,15 @@ New Withdrawal
         let t_staff_id =  $("#search_account").val();
         let ct_id = $("#ct_id").val();
         let staff_id = t_staff_id.split(',')[0];
+        let type = 1;
 
         $.ajax({
             url: '<?php echo site_url('compute_balance') ?>',
             type: 'post',
             data: {
                 'staff_id': staff_id,
-                'ct_id': ct_id
+                'ct_id': ct_id,
+				'type': type
             },
             dataType: 'json',
             success:function(response){
