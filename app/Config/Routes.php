@@ -259,6 +259,13 @@ $routes->get('verify_transfer', 'Receipt::verify_transfer');
 $routes->post('approve_transfer', 'Receipt::approve_transfer');
 $routes->get('approve_transfer', 'Receipt::approve_transfer');
 
+### Reconciliation Routes
+$routes->get('new_savings_reconciliation', 'Reconciliation::new_savings_reconciliation');
+$routes->post('new_savings_reconciliation', 'Reconciliation::new_savings_reconciliation');
+$routes->get('verify_savings_reconciliation', 'Reconciliation::verify_savings_reconciliation');
+$routes->post('verify_savings_reconciliation', 'Reconciliation::verify_savings_reconciliation');
+$routes->get('approve_savings_reconciliation', 'Reconciliation::approve_savings_reconciliation');
+$routes->post('approve_savings_reconciliation', 'Reconciliation::approve_savings_reconciliation');
 
 
 /**

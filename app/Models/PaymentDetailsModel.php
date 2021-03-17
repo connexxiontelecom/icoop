@@ -11,7 +11,7 @@ namespace App\Models;
  * 3 = payroll contribution
  * 4 = journal transfer
  * 5 = account closure
- *
+ * 6 = reconciliation
  *
  */
 

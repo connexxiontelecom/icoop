@@ -332,6 +332,22 @@
                                         <li><a href="#">Coop</a></li>
                                     </ul>
                                 </li>
+	
+	
+								<li>
+									<a href="javascript:void(0);" class="has-arrow"><i class="fa fa-university"></i><span>Reconciliation</span></a>
+		
+									<ul>
+										<li class="header"><b>Savings</b></li>
+										<li><a href="<?=base_url('new_savings_reconciliation') ?>">New</a></li>
+										<li><a href="<?=base_url('verify_savings_reconciliation') ?>">Verify</a></li>
+										<li><a href="<?=base_url('approve_savings_reconciliation') ?>">Approve</a></li>
+										<li class="header"><b>Loans</b></li>
+										<li><a href="<?=base_url('new_loan_reconciliation') ?>">New</a></li>
+										<li><a href="<?=base_url('verify_loan_reconciliation') ?>">Verify</a></li>
+										<li><a href="<?=base_url('approve_loan_reconciliation') ?>">Approve</a></li>
+									</ul>
+								</li>
 
 
                             </ul>
