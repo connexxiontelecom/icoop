@@ -267,6 +267,13 @@ $routes->post('verify_savings_reconciliation', 'Reconciliation::verify_savings_r
 $routes->get('approve_savings_reconciliation', 'Reconciliation::approve_savings_reconciliation');
 $routes->post('approve_savings_reconciliation', 'Reconciliation::approve_savings_reconciliation');
 
+$routes->get('new_loans_reconciliation', 'Reconciliation::new_loans_reconciliation');
+$routes->post('new_loans_reconciliation', 'Reconciliation::new_loans_reconciliation');
+$routes->get('verify_loans_reconciliation', 'Reconciliation::verify_loans_reconciliation');
+$routes->post('verify_loans_reconciliation', 'Reconciliation::verify_loans_reconciliation');
+$routes->get('approve_loans_reconciliation', 'Reconciliation::approve_loans_reconciliation');
+$routes->post('approve_loans_reconciliation', 'Reconciliation::approve_loans_reconciliation');
+
 
 /**
  * --------------------------------------------------------------------

@@ -627,7 +627,7 @@
 						]
 					],
 					
-					'ct_id'=>[
+					'loan_id'=>[
 						'rules'=>'required',
 						'errors'=>[
 							'required'=>'Select a Contribution Type'
@@ -714,78 +714,15 @@
 							
 							if($transaction_type == 2):
 								
-								$balance = $_POST['balance'];
-								$amount = $_POST['amount'];
-								
-								if($amount > $balance):
-									$data = array(
-										'msg' => 'Insufficient Balance',
-										'type' => 'error',
-										'location' => base_url('new_savings_reconciliation')
-									
-									);
-									
-									return view('pages/sweet-alert', $data);
-								
-								
-								else:
-									$re_array = array(
-										're_staff_id' => $staff_id,
-										're_type' => 1,
-										're_narration' => 'Savings Reconciliation',
-										're_source' => $_POST['ct_id'],
-										're_destination' => $_POST['account'],
-										're_amount' => (float)str_replace(',', '', $_POST['amount']),
-										're_ref_no' => $ref_no,
-										're_dctype' => 2,
-										're_transaction_date' => date('Y-m-d'),
-										're_by'=> $this->session->user_username,
-										're_date' => date('Y-m-d'),
-									
-									);
-									
-									
-									$v =  $this->re->save($re_array);
-									
-									if($v):
-										
-										$data = array(
-											'msg' => 'Action Successful',
-											'type' => 'success',
-											'location' => base_url('new_savings_reconciliation')
-										
-										);
-										return view('pages/sweet-alert', $data);
-									
-									else:
-										$data = array(
-											'msg' => 'An Error Occured',
-											'type' => 'error',
-											'location' => base_url('new_savings_reconciliation')
-										
-										);
-										return view('pages/sweet-alert', $data);
-									
-									
-									endif;
-								
-								endif;
-							
-							
-							endif;
-							
-							
-							
-							if($transaction_type == 1):
 								$re_array = array(
 									're_staff_id' => $staff_id,
 									're_type' => 1,
-									're_narration' => 'Savings Reconciliation',
-									're_source' => $_POST['ct_id'],
+									're_narration' => 'Loan Reconciliation',
+									're_source' => $_POST['loan_id'],
 									're_destination' => $_POST['account'],
 									're_amount' => (float)str_replace(',', '', $_POST['amount']),
 									're_ref_no' => $ref_no,
-									're_dctype' => 1,
+									're_dctype' => 2,
 									're_transaction_date' => date('Y-m-d'),
 									're_by'=> $this->session->user_username,
 									're_date' => date('Y-m-d'),
@@ -807,7 +744,7 @@
 								
 								else:
 									$data = array(
-										'msg' => 'An Error Occurred',
+										'msg' => 'An Error Occured',
 										'type' => 'error',
 										'location' => base_url('new_savings_reconciliation')
 									
@@ -816,6 +753,79 @@
 								
 								
 								endif;
+							
+							
+							endif;
+							
+							
+							
+							if($transaction_type == 1):
+								$balance = $_POST['balance'];
+								$amount = $_POST['amount'];
+								
+								if($amount > $balance):
+									
+									$data = array(
+										'msg' => 'Amount cannot be greater than balance',
+										'type' => 'error',
+										'location' => base_url('new_loans_reconciliation')
+									
+									);
+									
+									return view('pages/sweet-alert', $data);
+									
+									else:
+									
+									$mi = $_POST['mi'];
+									$mpr = $_POST['mpr'];
+										
+										$re_array = array(
+											're_staff_id' => $staff_id,
+											're_type' => 1,
+											're_narration' => 'Loans Reconciliation',
+											're_source' => $_POST['loan_id'],
+											're_destination' => $_POST['account'],
+											're_amount' => (float)str_replace(',', '', $_POST['amount']),
+											're_mi' => $mi,
+											're_mpr' => $mpr,
+											're_ref_no' => $ref_no,
+											're_dctype' => 1,
+											're_transaction_date' => date('Y-m-d'),
+											're_by'=> $this->session->user_username,
+											're_date' => date('Y-m-d'),
+										
+										);
+										
+										
+										$v =  $this->re->save($re_array);
+										
+										if($v):
+											
+											$data = array(
+												'msg' => 'Action Successful',
+												'type' => 'success',
+												'location' => base_url('new_savings_reconciliation')
+											
+											);
+											return view('pages/sweet-alert', $data);
+										
+										else:
+											$data = array(
+												'msg' => 'An Error Occurred',
+												'type' => 'error',
+												'location' => base_url('new_savings_reconciliation')
+											
+											);
+											return view('pages/sweet-alert', $data);
+										
+										
+										endif;
+										
+										
+										
+										endif;
+								
+								
 							
 							
 							endif;

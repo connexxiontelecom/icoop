@@ -343,9 +343,9 @@
 										<li><a href="<?=base_url('verify_savings_reconciliation') ?>">Verify</a></li>
 										<li><a href="<?=base_url('approve_savings_reconciliation') ?>">Approve</a></li>
 										<li class="header"><b>Loans</b></li>
-										<li><a href="<?=base_url('new_loan_reconciliation') ?>">New</a></li>
-										<li><a href="<?=base_url('verify_loan_reconciliation') ?>">Verify</a></li>
-										<li><a href="<?=base_url('approve_loan_reconciliation') ?>">Approve</a></li>
+										<li><a href="<?=base_url('new_loans_reconciliation') ?>">New</a></li>
+										<li><a href="<?=base_url('verify_loans_reconciliation') ?>">Verify</a></li>
+										<li><a href="<?=base_url('approve_loans_reconciliation') ?>">Approve</a></li>
 									</ul>
 								</li>
 
