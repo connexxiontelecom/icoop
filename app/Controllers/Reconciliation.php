@@ -716,7 +716,7 @@
 								
 								$re_array = array(
 									're_staff_id' => $staff_id,
-									're_type' => 1,
+									're_type' => 2,
 									're_narration' => 'Loan Reconciliation',
 									're_source' => $_POST['loan_id'],
 									're_destination' => $_POST['account'],
@@ -737,7 +737,7 @@
 									$data = array(
 										'msg' => 'Action Successful',
 										'type' => 'success',
-										'location' => base_url('new_savings_reconciliation')
+										'location' => base_url('new_loans_reconciliation')
 									
 									);
 									return view('pages/sweet-alert', $data);
@@ -781,13 +781,13 @@
 										
 										$re_array = array(
 											're_staff_id' => $staff_id,
-											're_type' => 1,
+											're_type' => 2,
 											're_narration' => 'Loans Reconciliation',
 											're_source' => $_POST['loan_id'],
 											're_destination' => $_POST['account'],
 											're_amount' => (float)str_replace(',', '', $_POST['amount']),
-											're_mi' => $mi,
-											're_mpr' => $mpr,
+											're_mi' => (float)str_replace(',', '', $mi),
+											're_mpr' => (float)str_replace(',', '', $mpr),
 											're_ref_no' => $ref_no,
 											're_dctype' => 1,
 											're_transaction_date' => date('Y-m-d'),
@@ -804,7 +804,7 @@
 											$data = array(
 												'msg' => 'Action Successful',
 												'type' => 'success',
-												'location' => base_url('new_savings_reconciliation')
+												'location' => base_url('new_loans_reconciliation')
 											
 											);
 											return view('pages/sweet-alert', $data);
@@ -835,7 +835,7 @@
 							$data = array(
 								'msg' => 'Account is undergoing closure',
 								'type' => 'error',
-								'location' => base_url('new_savings_reconciliation')
+								'location' => base_url('new_loans_reconciliation')
 							
 							);
 							
@@ -851,7 +851,7 @@
 						$data = array(
 							'msg' => 'Account has been frozen',
 							'type' => 'error',
-							'location' => base_url('new_savings_reconciliation')
+							'location' => base_url('new_loans_reconciliation')
 						
 						);
 						
@@ -866,7 +866,7 @@
 					$data = array(
 						'msg' => implode(", ", $arr),
 						'type' => 'error',
-						'location' => base_url('new_savings_reconciliation')
+						'location' => base_url('new_loans_reconciliation')
 					
 					);
 					

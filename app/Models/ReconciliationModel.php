@@ -9,7 +9,7 @@
 		protected $table = 'reconciliation';
 		protected $primaryKey = 're_id';
 		protected $allowedFields = ['re_id', 're_staff_id', 're_type', 're_narration', 're_source', 're_destination',
-			're_amount', 're_dctype', 're_transaction_date', 're_ref_no', 're_by', 're_date', 're_verify_by',  're_verify_date', 're_verify_comment', 're_approved_comment', 're_approved_by', 're_approved_date',
+			're_amount', 're_mpr', 're_mi', 're_dctype', 're_transaction_date', 're_ref_no', 're_by', 're_date', 're_verify_by',  're_verify_date', 're_verify_comment', 're_approved_comment', 're_approved_by', 're_approved_date',
 			're_discard_comment', 're_discard_by', 're_discard_date', 're_status'];
 		
 		

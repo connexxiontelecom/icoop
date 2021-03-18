@@ -87,7 +87,7 @@ Loans Reconciliation
 									<div class="form-group" id="mi_div">
 										
 										<label  for="application_payroll_group_id"> <b> MI: </b></label>
-										<input type="text" class="number form-control"  required  name="mi" id="mi" onkeyup="split(this)"  placeholder="Enter Amount">
+										<input type="text" class="number form-control"    name="mi" id="mi" onkeyup="split(this)"  placeholder="Enter Amount">
 										
 									
 									</div>
@@ -95,7 +95,7 @@ Loans Reconciliation
 									<div class="form-group" id="mpr_div">
 										
 										<label  for="application_payroll_group_id"> <b> MPR: </b></label>
-										<input type="text" class="number form-control"  required  name="mpr" id="mpr" readonly  placeholder="Enter Amount">
+										<input type="text" class="number form-control"    name="mpr" id="mpr" readonly  placeholder="Enter Amount">
 										
 										
 									</div>
