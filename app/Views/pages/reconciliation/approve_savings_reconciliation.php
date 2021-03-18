@@ -36,6 +36,7 @@ Approve Savings Reconciliations
 							<th>#</th>
 							<th>Staff ID</th>
 							<th> Staff Name</th>
+							<th>Ref Code </th>
 							<th> Contribution Type</th>
 							<th> Transaction Type </th>
 							<th style="text-align: right"> Amount</th>
@@ -52,6 +53,7 @@ Approve Savings Reconciliations
 								<td><?=$sn; ?></td>
 								<td><?=$reconciliation['re_staff_id']; ?></td>
 								<td><?=$reconciliation['cooperator_first_name']." ".$reconciliation['cooperator_last_name']; ?></td>
+								<td><?=$reconciliation['re_ref_no']; ?></td>
 								<td><?=$reconciliation['contribution_type_name']; ?></td>
 								<td> <?php if($reconciliation['re_dctype'] == 1): echo 'Credit'; endif; if($reconciliation['re_dctype'] == 2): echo 'Debit'; endif; ?> </td>
 								<td style="text-align: right"><?=number_format($reconciliation['re_amount']); ?></td>
@@ -81,11 +83,14 @@ Approve Savings Reconciliations
 					<div class="modal-content">
 						<div class="modal-header">
 							<h5 class="modal-title h4" id="myLargeModalLabel">Approve Reconciliation - <?php if($reconciliation['re_dctype'] == 2): echo 'Debit Transaction'; endif; if($reconciliation['re_dctype'] == 1): echo 'Credit Transaction'; endif; ?></h5>
+							
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">×</span>
 							</button>
 						</div>
+						
 						<div class="modal-body">
+							<p> <b>Ref Code: </b>  <kbd><?=$reconciliation['re_ref_no']; ?></kbd></p>
 							<form method="post" action="">
 								<div class="row clearfix">
 									<div class="col-lg-6 col-md-12">
@@ -190,11 +195,13 @@ Approve Savings Reconciliations
 					<div class="modal-content">
 						<div class="modal-header">
 							<h5 class="modal-title h4" id="myLargeModalLabel">Disqualify reconciliation - <?php if($reconciliation['re_dctype'] == 2): echo 'Debit Transaction'; endif; if($reconciliation['re_dctype'] == 1): echo 'Credit Transaction'; endif; ?></h5>
+							
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">×</span>
 							</button>
 						</div>
 						<div class="modal-body">
+							<p> <b>Ref Code: </b>  <kbd><?=$reconciliation['re_ref_no']; ?></kbd></p>
 							<form method="post" action="">
 								<div class="row clearfix">
 									<div class="col-lg-6 col-md-12">
