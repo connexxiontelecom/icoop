@@ -44,11 +44,17 @@
                         <?= $validation->listErrors() ?>
                     </div>
                 <?php endif ?>
+	
+	            <?php if(isset($errors)) : ?>
+					<div class="text-danger">
+			            <?= $errors ?>
+					</div>
+	            <?php endif ?>
 
                 <form class="form-auth-small m-t-20" method="post" action="<?=base_url('login'); ?>">
                     <div class="form-group">
-                        <label for="signin-email" class="control-label sr-only">Email</label>
-                        <input type="email" name="email" value="<?= set_value('email') ?>"  class="form-control round" id="signin-email" placeholder="Email">
+                        <label for="signin-email" class="control-label sr-only">Username</label>
+                        <input type="text" name="username" value="<?= set_value('username') ?>"  class="form-control round" id="signin-email" placeholder="Username">
                     </div>
                     <div class="form-group">
                         <label for="signin-password" class="control-label sr-only">Password</label>
