@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class Addencumbrancefield extends Migration
+class Addencumbrancefieldloanapp extends Migration
 {
 	public function up()
 	{
@@ -16,7 +16,7 @@ class Addencumbrancefield extends Migration
 			
 			]	
 		];
-		$this->forge->addColumn('loans', $fields);
+		$this->forge->addColumn('loan_applications', $fields);
 	}
 
 	public function down()
