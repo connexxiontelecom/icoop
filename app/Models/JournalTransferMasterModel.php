@@ -30,4 +30,12 @@
 			$builder->where('journal_transfer_master.jtm_approve_date <= ', $to);
 			return $builder->get()->getResultObject();
 		}
+
+
+		public function getAllJournalTransferApplications(){
+			$builder = $this->db->table('journal_transfer_master');
+			$builder->join('cooperators', 'cooperators.cooperator_staff_id = journal_transfer_master.jtm_staff_id');
+			$builder->orderBy('journal_transfer_master.jtm_date', 'DESC');
+			return $builder->get()->getResultObject();
+		}
 	}

@@ -31,20 +31,16 @@
 					<div class="col-lg-6 col-md-12 col-xl-6">
                               <?= csrf_field() ?>
 						
-									<div class="form-group">
-										<strong for="">Staff ID</strong>
-										<input required type="text" name="staff_id" id="search_account"  onblur="getSavings()" placeholder="Enter staff ID or  name"  class="form-control">
-									
-									</div>
+                            <div class="form-group">
+                                <strong for="">Staff ID</strong>
+                                <input required type="text" name="staff_id" id="search_account"  onblur="getSavings()" placeholder="Enter staff ID or  name"  class="form-control">
+                            
+                            </div>
 						
 						<div class="form-group response">
 							<strong for="">Contribution Type</strong>
-							<select name="contribution_type" id="contribution_type" required id="contribution_type" class="form-control">
-								<option selected disabled>--Select contribution type--</option>
-								<?php foreach($contribution_types as $ct): ?>
-                                    <option value="<?= $ct['contribution_type_id'] ?? '' ?>"><?= $ct['contribution_type_name']  ?? '' ?></option>
-                                <?php endforeach; ?>
-							</select>
+                            <div id="contribution_type_wrapper"></div>
+							
 						</div>
                         <div class="row">
                             <div class="form-group col-md-6">
@@ -67,7 +63,7 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <strong for="">Year</strong>
-                                <select name="month" id="month" class="form-control">
+                                <select name="year" id="year" class="form-control">
                                     <option disabled selected>--Select year--</option>
                                     <?php for($i = date('Y')+5; $i>=date('Y'); $i--) : ?>
                                         <option value="<?=$i ?>"><?= $i ?></option>
@@ -78,7 +74,7 @@
                         </div>	
                         <div class="form-group">
                             <label for="">Amount</label>
-                            <input type="text" placeholder="Amount" class="form-control">
+                            <input type="text" placeholder="Amount" name="amount" class="form-control">
                         </div>					
 						
                                     <hr>
@@ -108,6 +104,7 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('extra-scripts') ?>
+<script src="/assets/js/axios.min.js"></script>
 <script>
     $(document).ready(function(){
         $(document).on('change','#contribution_type', function(e){
@@ -118,18 +115,66 @@
                     cache: false,
                     success: function(html){
                         $('#savingsTable').html(html);
-                        //console.log(html);
-                        /* var handler = $.parseJSON(html);
-                        duration = handler.max_repayment_periods;
-                        amount = handler.max_credit_limit;
-                        interest_method = handler.interest_method;
-                        $('#interest_method').val(interest_method);
-                        $('#loan_terms').text(handler.loan_terms);
-                        $('#duration').val('');
-                        $('#amount').val(''); */
                     }
                 });
         });
+
+        $("#search_account").autocomplete({
+                source: "<?php echo base_url('/loan/search-cooperator'); ?>",
+                select: function( event , ui ) {
+                   axios.post('/cooperator/account-status', {term:ui.item.label})
+                   .then(res=>{
+                        var data = res.data.cooperator;
+                        //console.log(data.cooperator_staff_id);
+                        axios.post('/get-staff-ct',{staff:data.cooperator_staff_id})
+                        .then(response=>{
+                            $('#contribution_type_wrapper').html(response.data);
+                            //console.log(response);
+                        });
+                       /*  if(data.cooperator_status == 2){
+                            $('#submitLoanBtn').show();
+                        }else{
+                            $('#submitLoanBtn').hide();
+                            Toastify({
+                            text: "Ooop! This account is frozen.",
+                            duration: 3000,
+                            newWindow: true,
+                            close: true,
+                            gravity: "top", 
+                            position: "right", 
+                            backgroundColor: "linear-gradient(to right, #FF0000, #FFE8AC)",
+                            stopOnFocus: true, 
+                            onClick: function(){} 
+                            }).showToast();
+
+                        } */
+                   })
+                   .catch(error=>{
+                       // $('#submitLoanBtn').attr('disabled','true');
+                   });
+                }
+            });
+        
+
+        $("#cooperator").autocomplete({
+            source: "<?php echo base_url('/loan/search-cooperator'); ?>",
+        });
     });
+
+     function getSavings(){
+            var staff = $('#search_account').val();
+            let staff_id = staff.split(',')[0];
+            $.ajax({
+            url: '<?php echo site_url('get-savings') ?>',
+            type: 'post',
+            data: {
+                'staff_id': staff_id,
+            },
+            dataType: 'json',
+            success:function(response){
+                savings = response.savings.pd_amount;
+            }
+        });
+        }
 </script>
 <?= $this->endSection() ?>

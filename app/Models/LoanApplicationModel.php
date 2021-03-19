@@ -50,6 +50,13 @@ class LoanApplicationModel extends Model{
         $builder->groupby('loan_applications.loan_app_id');
         return $builder->get()->getResultObject();
     }
+
+    public function getAllLoanApplications(){
+		$builder = $this->db->table('loan_applications');
+        $builder->join('cooperators', 'cooperators.cooperator_staff_id = loan_applications.staff_id');
+		$builder->orderBy('loan_applications.applied_date', 'DESC');
+        return $builder->get()->getResultObject();
+	}
 }
 
 ?>

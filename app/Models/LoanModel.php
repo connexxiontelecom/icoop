@@ -167,6 +167,9 @@ class LoanModel extends Model{
 		return $builder->get()->getRowArray();
 		
 	}
+
+
+	
 	
 	
 	
