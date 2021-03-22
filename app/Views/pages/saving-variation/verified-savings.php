@@ -105,6 +105,8 @@ Approve Saving Variations
                                                     
                                                     </div>
                                                     <input type="hidden" name="saving_variation" value="<?=$us->saving_variation_id ?? '' ?>">
+                                                    <input type="hidden" name="staff" value="<?= $us->sv_staff_id ?? '' ?>">
+                                                    <input type="hidden" name="sv_amount" value="<?= $us->sv_amount ?? 0 ?>">
                                                     
                                                    
                                                     

@@ -2,6 +2,7 @@
 use App\Models\ContributionTypeModel; 
 use App\Models\SavingVariationsModel; 
 use App\Models\PaymentDetailsModel; 
+use App\Models\Cooperators; 
 
 class SavingVariationController extends BaseController
 {
@@ -11,6 +12,7 @@ class SavingVariationController extends BaseController
         $this->contributiontype = new ContributionTypeModel;
         $this->savingvariation = new SavingVariationsModel;
         $this->pd = new PaymentDetailsModel();
+        $this->coop = new Cooperators();
         
     }
 
@@ -28,11 +30,12 @@ class SavingVariationController extends BaseController
         $data = [];
         if($_POST){
             $data = [
-                'sv_staff_id'=>$this->request->getVar('staff_id'),
+                'sv_staff_id'=>current(explode(",", $this->request->getVar('staff_id'))),
                 'ct_type_id'=>$this->request->getVar('contribution_type'),
                 'sv_month'=>$this->request->getVar('month'),
                 'sv_year'=>$this->request->getVar('year'),
-                'sv_amount'=>$this->request->getVar('amount')
+                'sv_amount'=>$this->request->getVar('amount'),
+                'sv_status'=>0
             ];
             $this->savingvariation->save($data);
             $alert = array(
@@ -105,6 +108,7 @@ class SavingVariationController extends BaseController
     public function approveSavingVariation(){
         helper(['form']);
         $data = [];
+        
         if($_POST){
             $data = [
                 'saving_variation_id'=>$this->request->getVar('saving_variation'),
@@ -113,6 +117,14 @@ class SavingVariationController extends BaseController
                 'sv_status'=>2,
             ];
             $this->savingvariation->save($data);
+            #Update cooperator's saving
+            $coop = $this->coop->where('cooperator_staff_id', $this->request->getVar('staff'))->first();
+            $savings = $coop['cooperator_savings'] + $this->request->getVar('sv_amount');
+            $saving_data = [
+                'cooperator_id' => $coop['cooperator_id'],
+                'cooperator_savings'=> $savings
+            ];
+            $this->coop->save($saving_data);
                 $alert = array(
                         'msg' => 'Success! Approval done.',
                         'type' => 'success',
