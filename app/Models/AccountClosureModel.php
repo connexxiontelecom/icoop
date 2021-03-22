@@ -29,4 +29,11 @@
 			$builder->orWhere('ac_status', 2);
 			return $builder->get()->getResultArray();
 		}
+
+		public function getAllAccountClosureApplications(){
+			$builder = $this->db->table('account_closure');
+			$builder->join('cooperators', 'cooperators.cooperator_staff_id = account_closure.ac_staff_id');
+			$builder->orderBy('account_closure.ac_effective_date', 'DESC');
+			return $builder->get()->getResultObject();
+		}
 	}
