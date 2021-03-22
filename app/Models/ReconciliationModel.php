@@ -1,5 +1,6 @@
 <?php
-	
+	// 1 is savings
+	// 2 is loans
 	
 	namespace App\Models;
 	

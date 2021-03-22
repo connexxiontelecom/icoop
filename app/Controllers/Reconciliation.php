@@ -13,6 +13,8 @@
 	use App\Models\GlModel;
 	use App\Models\CoaModel;
 	use App\Models\ReconciliationModel;
+	use App\Models\LoanModel;
+	use App\Models\LoanRepaymentModel;
 	
 	class Reconciliation extends BaseController
 	{
@@ -28,6 +30,8 @@
 			$this->ac = new AccountClosureModel();
 			$this->coa = new CoaModel();
 			$this->re = new ReconciliationModel();
+			$this->loan = new LoanModel();
+			$this->lr = new LoanRepaymentModel();
 			
 			
 		}
@@ -695,7 +699,7 @@
 										$data = array(
 											'msg' => 'Only PDF files are allowed',
 											'type' => 'error',
-											'location' => base_url('new_savings_reconciliation')
+											'location' => base_url('new_loans_reconciliation')
 										
 										);
 										
@@ -746,7 +750,7 @@
 									$data = array(
 										'msg' => 'An Error Occured',
 										'type' => 'error',
-										'location' => base_url('new_savings_reconciliation')
+										'location' => base_url('new_loans_reconciliation')
 									
 									);
 									return view('pages/sweet-alert', $data);
@@ -813,7 +817,7 @@
 											$data = array(
 												'msg' => 'An Error Occurred',
 												'type' => 'error',
-												'location' => base_url('new_savings_reconciliation')
+												'location' => base_url('new_loans_reconciliation')
 											
 											);
 											return view('pages/sweet-alert', $data);
@@ -887,7 +891,7 @@
 				$data['policy_configs'] = $this->policy->first();
 				$data['cts'] = $this->contribution_type->findAll();
 				$data['accounts'] = $this->coa->where('type', 1)->findAll();
-				$data['reconciliations'] = $this->re->get_reconciliations(1, 0);
+				$data['reconciliations'] = $this->re->get_reconciliations(2, 0);
 				$username = $this->session->user_username;
 				
 				
@@ -913,7 +917,7 @@
 						$data = array(
 							'msg' => 'Action Successful',
 							'type' => 'success',
-							'location' => base_url('verify_savings_reconciliation')
+							'location' => base_url('verify_loans_reconciliation')
 						
 						);
 						return view('pages/sweet-alert', $data);
@@ -922,7 +926,7 @@
 						$data = array(
 							'msg' => 'An Error Occurred',
 							'type' => 'error',
-							'location' => base_url('verify_savings_reconciliation')
+							'location' => base_url('verify_loans_reconciliation')
 						
 						);
 						return view('pages/sweet-alert', $data);
@@ -945,7 +949,7 @@
 						$data = array(
 							'msg' => 'Action Successful',
 							'type' => 'success',
-							'location' => base_url('verify_savings_reconciliation')
+							'location' => base_url('verify_loans_reconciliation')
 						
 						);
 						return view('pages/sweet-alert', $data);
@@ -954,7 +958,7 @@
 						$data = array(
 							'msg' => 'An Error Occurred',
 							'type' => 'error',
-							'location' => base_url('verify_savings_reconciliation')
+							'location' => base_url('verify_loans_reconciliation')
 						
 						);
 						return view('pages/sweet-alert', $data);
@@ -978,7 +982,7 @@
 				$data['policy_configs'] = $this->policy->first();
 				$data['cts'] = $this->contribution_type->findAll();
 				$data['accounts'] = $this->coa->where('type', 1)->findAll();
-				$data['reconciliations'] = $this->re->get_reconciliations(1, 1);
+				$data['reconciliations'] = $this->re->get_reconciliations(2, 1);
 				$username = $this->session->user_username;
 				
 				
@@ -1008,31 +1012,36 @@
 					$year=date("Y",$time);
 					
 					$coop = $this->cooperator->where(['cooperator_staff_id' =>$reconciliation_detail['re_staff_id'] ])->first();
+					$active_loan = $this->loan->get_loan($reconciliation_detail['re_source']);
 					
 					if($reconciliation_detail['re_dctype'] == 1): //credit action
 						
-						$payment_details_array = array(
-							'pd_staff_id' => $reconciliation_detail['re_staff_id'],
-							'pd_transaction_date' => $reconciliation_detail['re_transaction_date'],
-							'pd_narration' => $reconciliation_detail['re_narration'],
-							'pd_amount' => $reconciliation_detail['re_amount'],
-							'pd_payment_type' => 6,
-							'pd_drcrtype' => 1,
-							'pd_ct_id' => $reconciliation_detail['re_source'],
-							'pd_pg_id' => $coop['cooperator_payroll_group_id'],
-							'pd_ref_code' => $reconciliation_detail['re_ref_no'],
-							'pd_month' => $month,
-							'pd_year' => $year
+				
+					
+						$lr_array = array(
+							'lr_loan_id' => $reconciliation_detail['re_source'],
+							'lr_month' => $month,
+							'lr_year' => $year,
+							'lr_amount' => $reconciliation_detail['re_amount'],
+							'lr_narration' => $reconciliation_detail['re_narration'],
+							'lr_dctype' => 1,
+							'lr_ref' => $reconciliation_detail['re_ref_no'],
+							'lr_mi' => $reconciliation_detail['re_mi'],
+							'lr_mpr' => $reconciliation_detail['re_mpr'],
+							'lr_interest' => 1,
+							'lr_interest_rate' => $active_loan['ls_interest_rate'],
+							'lr_date' => $reconciliation_detail['re_transaction_date']
+						
+						
 						);
 						
+						$v =   $this->lr->save($lr_array);
 						
-						$v =   $this->pd->save($payment_details_array);
-						
-						$wt = $this->contribution_type->where('contribution_type_id', $reconciliation_detail['re_source'])->first();
-						$account = $this->coa->where('glcode', $wt['contribution_type_glcode'])->first();
+//						$wt = $this->loan->where('contribution_type_id', $reconciliation_detail['re_source'])->first();
+						$account = $this->coa->where('glcode', $active_loan['loan_gl_account_no'])->first();
 						
 						$bankGl = array(
-							'glcode' => $wt['contribution_type_glcode'],
+							'glcode' => $active_loan['loan_gl_account_no'],
 							'posted_by' => $this->session->user_username,
 							'narration' => $reconciliation_detail['re_narration'],
 							'dr_amount' => 0,
@@ -1062,6 +1071,55 @@
 							'created_at' =>  date('Y-m-d'),
 						);
 						$this->gl->save($bankGl);
+						
+						
+						
+						$loan_ledgers = $this->loan->get_loans_staff_id($reconciliation_detail['re_staff_id'], $reconciliation_detail['re_source']);
+						
+						$total_cr = 0;
+						$total_dr = 0;
+						$cr = 0;
+						$dr = 0;
+						$total_mi = 0;
+						$total_interest = 0;
+						$total_cr_mi = 0;
+						$total_dr_mi = 0;
+						
+						foreach ($loan_ledgers as$loan_ledger):
+							
+							if($loan_ledger->lr_dctype == 1):
+								$cr = $loan_ledger->lr_amount;
+								$total_cr = $total_cr + $cr;
+								
+								$total_cr_mi = $total_cr_mi + $loan_ledger->lr_mi;
+							endif;
+							
+							if($loan_ledger->lr_dctype == 2):
+								$dr = $loan_ledger->lr_amount;
+								$total_dr = $total_dr + $dr;
+								
+								$total_dr_mi = $total_dr_mi + $loan_ledger->lr_mi;
+							endif;
+						
+						
+						endforeach;
+						
+						$balance =  $active_loan['amount']+($total_dr - $total_cr);
+
+//			echo 'total dr: '.$total_dr.'<br>';
+//			echo 'total cr: '.$total_cr.'<br>';
+//			echo 'balance: '.$balance;
+						
+						if($balance <= 0):
+							
+							$loan_array = array(
+								'loan_id' => $reconciliation_detail['re_source'],
+								'paid_back' => 1
+							);
+							
+							$this->loan->save($loan_array);
+						
+						endif;
 					
 					
 					endif;
@@ -1069,27 +1127,30 @@
 					
 					if($reconciliation_detail['re_dctype'] == 2): //debit action
 						
-						$payment_details_array = array(
-							'pd_staff_id' => $reconciliation_detail['re_staff_id'],
-							'pd_transaction_date' => $reconciliation_detail['re_transaction_date'],
-							'pd_narration' => $reconciliation_detail['re_narration'],
-							'pd_amount' => $reconciliation_detail['re_amount'],
-							'pd_payment_type' => 6,
-							'pd_drcrtype' => 2,
-							'pd_ct_id' => $reconciliation_detail['re_source'],
-							'pd_pg_id' => $coop['cooperator_payroll_group_id'],
-							'pd_ref_code' => $reconciliation_detail['re_ref_no'],
-							'pd_month' => $month,
-							'pd_year' => $year
+						$lr_array = array(
+							'lr_loan_id' => $reconciliation_detail['re_source'],
+							'lr_month' => $month,
+							'lr_year' => $year,
+							'lr_amount' => $reconciliation_detail['re_amount'],
+							'lr_narration' => $reconciliation_detail['re_narration'],
+							'lr_dctype' => 2,
+							'lr_ref' => $reconciliation_detail['re_ref_no'],
+							'lr_mi' => $reconciliation_detail['re_mi'],
+							'lr_mpr' => $reconciliation_detail['re_mpr'],
+							'lr_interest' => 1,
+							'lr_interest_rate' => $active_loan['ls_interest_rate'],
+							'lr_date' => $reconciliation_detail['re_transaction_date']
+						
+						
 						);
 						
-						$v =   $this->pd->save($payment_details_array);
+						$v =   $this->lr->save($lr_array);
 						
 						$wt = $this->contribution_type->where('contribution_type_id', $reconciliation_detail['re_source'])->first();
-						$account = $this->coa->where('glcode', $wt['contribution_type_glcode'])->first();
+						$account = $this->coa->where('glcode', $active_loan['loan_gl_account_no'])->first();
 						
 						$bankGl = array(
-							'glcode' => $wt['contribution_type_glcode'],
+							'glcode' => $active_loan['loan_gl_account_no'],
 							'posted_by' => $this->session->user_username,
 							'narration' => $reconciliation_detail['re_narration'],
 							'dr_amount' => $reconciliation_detail['re_amount'],
@@ -1127,7 +1188,7 @@
 						$data = array(
 							'msg' => 'Action Successful',
 							'type' => 'success',
-							'location' => base_url('approve_savings_reconciliation')
+							'location' => base_url('approve_loans_reconciliation')
 						
 						);
 						return view('pages/sweet-alert', $data);
@@ -1136,7 +1197,7 @@
 						$data = array(
 							'msg' => 'An Error Occurred',
 							'type' => 'error',
-							'location' => base_url('approve_savings_reconciliation')
+							'location' => base_url('approve_loans_reconciliation')
 						
 						);
 						return view('pages/sweet-alert', $data);
@@ -1159,7 +1220,7 @@
 						$data = array(
 							'msg' => 'Action Successful',
 							'type' => 'success',
-							'location' => base_url('approve_savings_reconciliation')
+							'location' => base_url('approve_loans_reconciliation')
 						
 						);
 						return view('pages/sweet-alert', $data);
@@ -1168,7 +1229,7 @@
 						$data = array(
 							'msg' => 'An Error Occurred',
 							'type' => 'error',
-							'location' => base_url('approve_savings_reconciliation')
+							'location' => base_url('approve_loans_reconciliation')
 						
 						);
 						return view('pages/sweet-alert', $data);
