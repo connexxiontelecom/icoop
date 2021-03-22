@@ -204,6 +204,7 @@ class LoanController extends BaseController
 				                       $ct_id = $ct['contribution_type_id'];
 				                        $ledgers =  $this->paymentdetail->where(['pd_staff_id' => $staff_id, 'pd_ct_id' => $ct_id])
 				                        ->findAll();
+                                        $data['encumbrance_amount'] = 3330;
 				
 				                        $bf = 0;
 				                        if(!empty($ledgers)){
