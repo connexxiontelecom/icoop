@@ -31,7 +31,7 @@ View Cooperator
 
 
             <div class="col-md-12">
-                <div class="card">
+            
                     <div class="profile-header d-flex justify-content-between justify-content-center">
                         <div class="d-flex">
                             <div class="mr-3">
@@ -50,47 +50,66 @@ View Cooperator
                         </div>
 
                     </div>
+				<div class="row clearfix">
+					<div class="col-lg-4 col-md-6 col-sm-12">
+						
+						<div class="card">
+							<a href="<?=base_url('ledger')."/".$cooperator->cooperator_staff_id; ?>">
+							<div class="body">
+						
+						<div class="d-flex align-items-center">
+							<div class="icon-in-bg bg-indigo text-white rounded-circle"><i class="fa fa-briefcase"></i></div>
+							<div class="ml-4">
+								<span>Contribution Types</span>
+								
+								
+							</div>
+						</div>
+					
+					</div>
+							</a>
+				</div>
+					</div>
+					
+					<div class="col-lg-4 col-md-6 col-sm-12">
+						
+						<div class="card">
+							<a href="<?=base_url('loan_ledger')."/".$cooperator->cooperator_staff_id; ?>">
+							<div class="body">
+								<div class="d-flex align-items-center">
+									<div class="icon-in-bg bg-indigo text-white rounded-circle"><i class="fa fa-briefcase"></i></div>
+									<div class="ml-4">
+										<span>Outstanding Loans</span>
+										
+									</div>
+								</div>
+							</div>
+							</a>
+						</div>
+					</div>
+					
+					<div class="col-lg-4 col-md-6 col-sm-12">
+						<a href="<?=base_url('finished_loan_ledger')."/".$cooperator->cooperator_staff_id; ?>">
+						<div class="card">
+							<div class="body">
+								<div class="d-flex align-items-center">
+									<div class="icon-in-bg bg-indigo text-white rounded-circle"><i class="fa fa-briefcase"></i></div>
+									<div class="ml-4">
+										<span>Finished Loans</span>
+										
+									</div>
+								</div>
+							</div>
+						</div>
+						</a>
+					</div>
+				</div>
+				
+				
+				
+            
 
-                    <div class="row clearfix">
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <div class="card w_card3">
-                                <div class="body">
-                                    <div class="text-center"><i class="fa fa-book"></i>
-                                        <h5 class="m-t-20 mb-0">Contribution Ledger</h5>
-                                        <p class="text-muted"></p>
-                                        <a href="<?=base_url('ledger')."/".$cooperator->cooperator_staff_id; ?>" class="btn btn-info btn-round">View Ledger</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <div class="card w_card3">
-                                <div class="body">
-                                    <div class="text-center"><i class="fa fa-book"></i>
-                                        <h5 class="m-t-20 mb-0">Outstanding Loans</h5>
-                                        <p class="text-muted"></p>
-                                        <a href="<?=base_url('loan_ledger')."/".$cooperator->cooperator_staff_id; ?>" class="btn btn-info btn-round">View Ledger</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <div class="card w_card3">
-                                <div class="body">
-                                    <div class="text-center"><i class="fa fa-book"></i>
-                                        <h5 class="m-t-20 mb-0">Finished Loans</h5>
-                                        <p class="text-muted"></p>
-                                        <a href="<?=base_url('ledger')."/".$cooperator->cooperator_staff_id; ?>" class="btn btn-info btn-round">View Ledger</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
+                
             </div>
 
         </div>

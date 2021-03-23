@@ -942,6 +942,162 @@ class Cooperators extends BaseController
 			endif;
 			
 		}
+	
+	
+	
+	public function finished_loan_ledger($staff_id){
+		$cooperator =  $this->cooperator->get_cooperator_staff_id( $staff_id);
+		$method = $this->request->getMethod();
+		
+		if($method == 'post'):
+			$year = $this->request->getPost('loan_year');
+			$loan_id = $this->request->getPost('loan_id');
+			if($year == 'a'):
+				
+				$check_ledger = $this->loan->get_loans_staff_id($staff_id, $loan_id);
+				
+				if(empty($check_ledger)):
+					$data['ledgers'] = $this->loan->get_loanss_staff_id($staff_id, $loan_id);
+					$data['empty'] = 1;
+				
+				else:
+					$data['ledgers'] = $check_ledger;
+					$data['empty'] = 0;
+					//echo" i am not empty";
+				endif;
+				$data['loan_details'] = $data['ledgers'][0];
+				
+				$ledgs = $this->pd->get_regular_savings($staff_id);
+				$total_cr = 0;
+				$total_dr = 0;
+				$cr = 0;
+				$dr = 0;
+				
+				foreach ($ledgs as $ledg):
+					
+					if($ledg->pd_drcrtype == 1):
+						$cr = $ledg->pd_amount;
+						$total_cr = $total_cr + $cr;
+					endif;
+					
+					if($ledg->pd_drcrtype == 2):
+						$dr = $ledg->pd_amount;
+						$total_dr = $total_dr + $dr;
+					endif;
+				
+				endforeach;
+				
+				$data['savings'] = $total_cr - $total_dr;
+				
+				$data['ls'] = $this->ls->where(['loan_setup_id' => $loan_id])->first();
+				$data['check'] = 1;
+				$data['years'] = $this->lr->get_year_loan($staff_id);
+				$data['cooperator'] = $cooperator;
+				$data['states'] = $this->state->findAll();
+				$data['departments'] = $this->department->findAll();
+				$data['banks'] = $this->bank->findAll();
+				$data['pgs'] = $this->pg->findAll();
+				$username = $this->session->user_username;
+				
+				//print_r($data['loan_details']);
+				$this->authenticate_user($username, 'pages/cooperators/loan_ledger', $data);
+			
+			endif;
+		
+		endif;
+		
+		if($method == 'get'):
+			if(!empty($cooperator)):
+//					if($cooperator->cooperator_status == 2):
+				
+				
+				
+				$loans = $this->loan->get_loan_staff_id($staff_id);
+				$i = 0;
+				
+				foreach ($loans as $loan):
+					
+					if($loan->disburse == 1 && $loan->paid_back == 1):
+						//$data['loan_types'][$i] = $this->ls->where(['loan_setup_id' => $loan->loan_type])->first();
+						
+						$total_cr = 0;
+						$total_dr = 0;
+						$cr = 0;
+						$dr = 0;
+						
+						$total_interest = 0;
+						
+						$loan_ledgers = $this->loan->get_loans_staff_id($staff_id, $loan->loan_id);
+						
+						if(!empty($loan_ledgers)):
+							
+							foreach ($loan_ledgers as$loan_ledger):
+								
+								if($loan_ledger->lr_dctype == 1):
+									$cr = $loan_ledger->lr_amount;
+									$total_cr = $total_cr + $cr;
+								endif;
+								
+								if($loan_ledger->lr_dctype == 2):
+									$dr = $loan_ledger->lr_amount;
+									$total_dr = $total_dr + $dr;
+								endif;
+								
+								if($loan_ledger->lr_interest == 1):
+									$total_interest = $total_interest + $loan_ledger->lr_amount;
+								endif;
+							
+							endforeach;
+						
+						else:
+							
+							$loan_ledgers = $this->loan->get_loanss_staff_id($staff_id, $loan->loan_id);
+						
+						endif;
+						
+						//$total_cr = $total_cr - $total_dr;
+						
+						//print_r($loan_ledgers);
+						
+						$data['ledgers'][$i]  = array(
+							'loan_description' => $loan_ledgers[0]->loan_description,
+							'loan_principal' => $loan_ledgers[0]->amount,
+							'loan_total_interest' => $total_interest,
+							'loan_total_cr' => $total_cr,
+							'loan_total_dr' => $total_dr,
+							'loan_balance' => $loan_ledgers[0]->amount + ($total_dr - $total_cr),
+							'loan_type' => $loan->loan_id
+						
+						);
+						
+						$i++;
+					endif;
+				endforeach;
+				
+				$data['cooperator'] = $cooperator;
+				$data['states'] = $this->state->findAll();
+				$data['departments'] = $this->department->findAll();
+				$data['banks'] = $this->bank->findAll();
+				$data['pgs'] = $this->pg->findAll();
+				$username = $this->session->user_username;
+				
+				
+				$this->authenticate_user($username, 'pages/cooperators/finished_loan_ledger', $data);
+
+
+//					else:
+//						return redirect('error_404');
+//					endif;
+			
+			else:
+				
+				return redirect('error_404');
+			
+			endif;
+		
+		endif;
+		
+	}
 		
 		public function freeze(){
 			$method = $this->request->getMethod();
