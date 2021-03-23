@@ -141,9 +141,27 @@
 						</div>
 						<p id="loan_terms">
 						</p>
+                        <hr>
+						<div class="row p-2 mb-2">
+							<div class="col-md-12 col-lg-12">
+								<div class="form-group">
+                                    <label for="">Savings</label>
+                                    <input type="text" name="savings_amount" id="savings_amount" class="form-control" placeholder="Savings" readonly>
+                                </div>
+							</div>
+							<div class="col-md-12 col-lg-12">
+								<div class="form-group">
+                                    <label for="">Ecumbrance Amount</label>
+                                    <input type="text" id="encumbrance_amount" name="encumbrance_amount" class="form-control" placeholder="Encumbrance Amount" readonly>
+                                    <input type="hidden" id="encumbrance" name="encumbrance" class="form-control" placeholder="Encumbrance Amount">
+                                    <input type="hidden" id="psr" name="psr" class="form-control" placeholder="PSR" >
+                                    <input type="hidden" id="psr_rate" name="psr_rate" class="form-control" placeholder="PSR Rate" >
+                                </div>
+							</div>
+						</div>
                             
                                
-                            </div>
+                    </div>
 				</div>
 					</form>
 					
@@ -168,6 +186,11 @@
         var staff = null;
         var guarantor_2 = null;
         var interest_method = null;
+        var max_limit = 0;
+        var min_limit = 0;
+        var psr_value = 0;
+        var psr_rate = 0;
+        var psr = 0;
         $(document).ready(function(){
             $('#guarantor_wrapper_1').hide();
             $('#guarantor_wrapper_2').hide();
@@ -234,9 +257,32 @@
            $(document).on('blur', '#amount', function(e){
                e.preventDefault();
                var money = $(this).val();
-               if(parseInt(money.replace(/,/g, '')) > amount || parseInt(money.replace(/,/g, '')) > savings){
+                psr_value = psr == 1 ? (psr_rate/100)*parseInt(money.replace(/,/g, '')) : 0;
+                $('#encumbrance_amount').val(parseInt(psr_value).toLocaleString() );
+                $('#encumbrance').val(parseInt(psr_value) );
+                $('#psr').val(psr );
+                $('#psr_rate').val(psr_rate );
+               if(parseInt(money.replace(/,/g, '')) < min_limit ){
                 Toastify({
-                    text: "Ooop! Amount must not exceed maximum credit limit for the selected loan type or your savings is not up to this amount.",
+                    text: `Ooop! This amount is less than min amount. Enter higher amount.`,
+                    duration: 3000,
+                    newWindow: true,
+                    close: true,
+                    gravity: "top", 
+                    position: "right", 
+                    backgroundColor: "linear-gradient(to right, #FF0000, #FFE8AC)",
+                    stopOnFocus: true, 
+                    onClick: function(){} 
+                    }).showToast();
+                    $('#submitLoanBtn').prop('disabled',true);
+               }else {
+                $('#submitLoanBtn').prop('disabled',false);
+               }
+               
+               
+               if(parseInt(money.replace(/,/g, '') > savings)){
+                Toastify({
+                    text: `Ooop! Your current savings amount is not up to this amount.`,
                     duration: 3000,
                     newWindow: true,
                     close: true,
@@ -261,8 +307,11 @@
                     success: function(html){
                         var handler = $.parseJSON(html);
                         duration = handler.max_repayment_periods;
-                        amount = handler.max_credit_limit;
+                        max_limit = handler.max_credit_limit;
+                        min_limit = handler.min_credit_limit;
                         interest_method = handler.interest_method;
+                        psr = handler.psr;
+                        psr_rate = handler.psr_value;
                         $('#interest_method').val(interest_method);
                         $('#loan_terms').text(handler.loan_terms);
                         $('#duration').val('');
@@ -286,6 +335,8 @@
                    axios.post('/cooperator/account-status', {term:ui.item.label})
                    .then(res=>{
                         var data = res.data.cooperator;
+                        savings = data.cooperator_savings;
+                        $('#savings_amount').val(parseInt(savings).toLocaleString());
                         if(data.cooperator_status == 2){
                             $('#submitLoanBtn').show();
                         }else{
