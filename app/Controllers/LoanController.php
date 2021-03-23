@@ -11,6 +11,7 @@ use \App\Models\ScheduleMasterDetailModel;
 use \App\Models\PaymentDetailsModel;
 use \App\Models\PaymentCartModel;
 use \App\Models\ContributionTypeModel;
+use \App\Models\AccountClosureModel;
 
 class LoanController extends BaseController
 {
@@ -29,6 +30,7 @@ class LoanController extends BaseController
         $this->paymentdetail = new PaymentDetailsModel();
         $this->paymentcart = new PaymentCartModel();
         $this->ct = new ContributionTypeModel();
+        $this->ac = new AccountClosureModel();
         $this->session = session();
     }
 
@@ -116,7 +118,7 @@ class LoanController extends BaseController
              
         helper(['form', 'date']);
         $data = [];
-
+        //return dd($_POST);
         if($_POST){
             $rules = [
                 'staff_id'=>[
@@ -168,7 +170,7 @@ class LoanController extends BaseController
 	
 	
 	            if(empty($check_closure)):
-		            $cooperator = $this->cooperator->where(['cooperator_staff_id' => current(explode(",", $this->request->getVar('staff_id')))])->first();
+		            $cooperator = $this->coop->where(['cooperator_staff_id' => current(explode(",", $this->request->getVar('staff_id')))])->first();
 		
 				            if($cooperator['cooperator_status'] == 2):
 				                $filename = null;
@@ -193,7 +195,8 @@ class LoanController extends BaseController
 										'duration'=>$this->request->getVar('duration'),
 				                        'amount'=>str_replace(",","",$this->request->getVar('amount')),
 				                        'applied_date'=>date('Y-m-d H:i:s'),
-				                        'attachment'=>$filename
+				                        'attachment'=>$filename,
+                                        'encumbrance_amount'=> $this->request->getVar('psr') == 1 ? ($this->request->getVar('psr_rate')/100) * str_replace(",","",$this->request->getVar('amount')) : 0, 
 				                    ];
 				                    // check loan type details with $loan_type
 				                    $loan_setups = $this->loansetup->where(['loan_setup_id'=> $this->request->getVar('loan_type')])->first();
@@ -204,7 +207,6 @@ class LoanController extends BaseController
 				                       $ct_id = $ct['contribution_type_id'];
 				                        $ledgers =  $this->paymentdetail->where(['pd_staff_id' => $staff_id, 'pd_ct_id' => $ct_id])
 				                        ->findAll();
-                                        $data['encumbrance_amount'] = 3330;
 				
 				                        $bf = 0;
 				                        if(!empty($ledgers)){
@@ -324,7 +326,7 @@ class LoanController extends BaseController
                         'verify_comment'=>$this->request->getVar('comment'),
                         'verify'=>1,
                         'verify_date'=>date('y-m-d H:i:s'),
-                        'verified_by'=> $this->user->where('email', $username)->first()['user_id'],
+                        'verified_by'=> $this->user->where('username', $username)->first()['user_id'],
 					];
                     $this->loanapp->update($this->request->getVar('application_id'), $data);
             $alert = array(
@@ -367,7 +369,7 @@ class LoanController extends BaseController
 					$data = [
                         'approve_comment'=>$this->request->getVar('comment'),
                         'approve'=>1,
-                        'approved_by'=> $this->user->where('email', $username)->first()['user_id'],
+                        'approved_by'=> $this->user->where('username', $username)->first()['user_id'],
                         'approve_date'=>date('Y-m-d H:i:s'),
 
                     ];
@@ -384,6 +386,7 @@ class LoanController extends BaseController
                         'disburse'=>0,
                         'scheduled'=>0,
                         'loan_type'=>$this->request->getVar('loan_type'),
+                        'encumbrance_amount'=>$application['encumbrance_amount'],
                     ];
                     $this->loan->save($loanData);
                     $alert = array(
