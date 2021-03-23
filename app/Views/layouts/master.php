@@ -335,7 +335,7 @@
 	
 	
 								<li>
-									<a href="javascript:void(0);" class="has-arrow"><i class="fa fa-university"></i><span>Reconciliation</span></a>
+									<a href="javascript:void(0);" class="has-arrow"><i class="fa fa-sliders"></i><span>Reconciliation</span></a>
 		
 									<ul>
 										<li class="header"><b>Savings</b></li>
