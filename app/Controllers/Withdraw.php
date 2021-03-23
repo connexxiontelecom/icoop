@@ -13,6 +13,7 @@ use App\Models\ExceptionModel;
 use App\Models\WithdrawModel;
 use App\Models\PolicyConfigModel;
 use App\Models\AccountClosureModel;
+use App\Models\LoanModel;
 
 class Withdraw extends BaseController
 {
@@ -26,6 +27,7 @@ class Withdraw extends BaseController
         $this->withdraw = new WithdrawModel();
         $this->policy = new PolicyConfigModel();
         $this->ac = new AccountClosureModel();
+        $this->loan = new LoanModel();
         
 
     }
@@ -329,6 +331,13 @@ class Withdraw extends BaseController
        $ledgers =  $this->pd->where(['pd_staff_id' => $staff_id, 'pd_ct_id' => $ct_id])
 //                        ->orderBy('pd_transaction_date', 'DESC')
             ->findAll();
+       $ct = $this->contribution_type->where('contribution_type_id', $ct_id)->first();
+     
+        $encumbered_amount = 0;
+       if($ct['contribution_type_regular'] == 1):
+	       $loan = $this->loan->where(['staff_id' => $staff_id, 'paid_back'=> 0, 'disburse' => 1])->first();
+	       $encumbered_amount = $loan['encumbrance_amount'];
+	       endif;
 
         $bf = 0;
 
@@ -353,15 +362,17 @@ class Withdraw extends BaseController
 
 			if($type == 2):
 				
-				$data['note'] = 'Savings Balance: NGN'.number_format($bf);
-				$data['balance'] = $bf;
+				$data['note'] = 'Savings Balance: NGN'.number_format($bf - $encumbered_amount).'<br>'.'Encumbered Amount: NGN'.number_format($encumbered_amount);
+				$data['balance'] = $bf - $encumbered_amount;
+				$data['encumbered_amount'] =  $encumbered_amount;
 				echo json_encode($data);
 				endif;
 			
 			
 			if($type == 1):
-				$data['note'] = 'Withdrawal Balance: NGN'.number_format($bf_w).'<br>'.'Savings Balance: NGN'.number_format($bf);
-				$data['balance'] = $bf_w;
+				$data['note'] = 'Withdrawal Balance: NGN'.number_format($bf_w - $encumbered_amount).'<br>'.'Encumbered Amount: NGN'.number_format($encumbered_amount).'<br>'.'Savings Balance: NGN'.number_format($bf);
+				$data['balance'] = $bf_w - $encumbered_amount;
+				$data['encumbered_amount'] =  $encumbered_amount;
 				echo json_encode($data);
 				
 				endif;

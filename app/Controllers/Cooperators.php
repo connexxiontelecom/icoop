@@ -910,7 +910,8 @@ class Cooperators extends BaseController
 									'loan_total_cr' => $total_cr,
 									'loan_total_dr' => $total_dr,
 									'loan_balance' => $loan_ledgers[0]->amount + ($total_dr - $total_cr),
-									'loan_type' => $loan->loan_id
+									'loan_type' => $loan->loan_id,
+									'loan_encumbrance' => $loan_ledgers[0]->encumbrance_amount
 	
 								);
 	
@@ -1066,7 +1067,8 @@ class Cooperators extends BaseController
 							'loan_total_cr' => $total_cr,
 							'loan_total_dr' => $total_dr,
 							'loan_balance' => $loan_ledgers[0]->amount + ($total_dr - $total_cr),
-							'loan_type' => $loan->loan_id
+							'loan_type' => $loan->loan_id,
+							'loan_encumbrance' => $loan_ledgers[0]->encumbrance_amount
 						
 						);
 						

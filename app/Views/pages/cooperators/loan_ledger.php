@@ -63,7 +63,7 @@ Loans - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
 						
 						</li>
 						<li class="m-b-15">
-							<div><kbd>Encumbered Amount:</kbd> <small><?=0 ?></small>
+							<div><kbd>Encumbered Amount:</kbd> <small>><?=number_format($loan_details->encumbrance_amount, 2); ?></small>
 							</div>
 						
 						</li>
