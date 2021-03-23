@@ -61,7 +61,7 @@ Finished Loans - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
 										<td style="text-align: right"><?=number_format($ledger['loan_total_cr'], 2); ?></td>
 										
 										<td style="text-align: right"><?=number_format($ledger['loan_balance'], 2); ?>
-										<td style="text-align: right">0.00</td>
+										<td style="text-align: right"><?=number_format($ledger['loan_encumbrance'], 2) ?></td>
 										<td> <form method="post">
 												<input type="hidden" name="loan_year" value="a">
 												<input type="hidden" name="loan_id" value="<?=$ledger['loan_type']; ?>">
