@@ -65,5 +65,13 @@ class WithdrawModel extends \CodeIgniter\Model
 		$builder->where('withdraws.cart = 0');
 		return $builder->get()->getResultObject();
 	}
+
+
+    public function getAllWithdrawApplications(){
+		$builder = $this->db->table('withdraws');
+        $builder->join('cooperators', 'cooperators.cooperator_staff_id = withdraws.withdraw_staff_id');
+		$builder->orderBy('withdraws.withdraw_date', 'DESC');
+        return $builder->get()->getResultObject();
+	}
 	
 }

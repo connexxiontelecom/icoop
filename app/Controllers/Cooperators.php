@@ -731,6 +731,7 @@ class Cooperators extends BaseController
 	                    $this->authenticate_user($username, 'pages/cooperators/ledger', $data);
 	                endif;
 	            endif;
+	      
 	        if($method == 'get'):
 	            if(!empty($cooperator)):
 //	                if($cooperator->cooperator_status == 2):

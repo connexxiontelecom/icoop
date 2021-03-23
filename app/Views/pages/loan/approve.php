@@ -81,10 +81,7 @@ Approve Loan Application
 <?= $this->endSection() ?>
 
 <?= $this->section('extra-scripts') ?>
-<script>
-    $('.simpletable').DataTable();
-	
-</script>
+
 <script src="<?=site_url() ?>assets/bundles/vendorscripts.bundle.js"></script>
 
 <script src="<?=site_url() ?>assets/bundles/datatablescripts.bundle.js"></script>

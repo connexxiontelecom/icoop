@@ -1,14 +1,14 @@
 <?= $this->extend('layouts/master') ?>
 
 <?= $this->section('title') ?>
-Verify Saving Variations 
+Approve Saving Variations 
 <?= $this->endSection() ?>
 
 <?= $this->section('current_page') ?>
-Verify Saving Variations 
+Approve Saving Variations 
 <?= $this->endSection() ?>
 <?= $this->section('page_crumb') ?>
-Verify Saving Variations 
+Approve Saving Variations 
 <?= $this->endSection() ?>
 
 <?= $this->section('extra-styles') ?>
@@ -25,7 +25,7 @@ Verify Saving Variations
 	<div class="col-lg-12">
 		<div class="card">
 			<div class="header">
-				<h2>Verify Saving Variations </h2>
+				<h2>Approve Saving Variations </h2>
 			
 			</div>
 			<div class="body">
@@ -42,7 +42,7 @@ Verify Saving Variations
 						
 						<tbody>
                         
-						<?php $i=1; foreach($unverified_savings as $us) :?>
+						<?php $i=1; foreach($verified_savings as $us) :?>
 							<tr>
 								
 								<td><?=$i++; ?></td>
@@ -55,13 +55,13 @@ Verify Saving Variations
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title h4" id="verifyModal<?=$us->saving_variation_id ?>">Verify Saving Variation</h5>
+                                                <h5 class="modal-title h4" id="verifyModal<?=$us->saving_variation_id ?>">Approve Saving Variation</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">×</span>
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <form method="post" action="<?= site_url('/verify-saving-variation') ?>">
+                                                <form method="post" action="<?= site_url('/approve-saving-variation') ?>">
                                                 <?= csrf_field() ?>
                                                     <div class="row clearfix">
                                                         <div class="col-lg-6 col-md-12">
@@ -105,12 +105,14 @@ Verify Saving Variations
                                                     
                                                     </div>
                                                     <input type="hidden" name="saving_variation" value="<?=$us->saving_variation_id ?? '' ?>">
+                                                    <input type="hidden" name="staff" value="<?= $us->sv_staff_id ?? '' ?>">
+                                                    <input type="hidden" name="sv_amount" value="<?= $us->sv_amount ?? 0 ?>">
                                                     
                                                    
                                                     
                                                     <?= csrf_field() ?>
                                                     <div class="form-group">
-                                                        <button type="submit" class="btn btn-primary btn-block">Verify</button>
+                                                        <button type="submit" class="btn btn-primary btn-block">Approve</button>
                                                     </div>
                                                 </form>
                                             </div>

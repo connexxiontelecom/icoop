@@ -220,6 +220,16 @@ $routes->get('/saving-variations/new', 'SavingVariationController::showSavingVar
 $routes->post('/saving-variations/new', 'SavingVariationController::postSavingVariationForm');
 $routes->get('/saving-variations/unverified', 'SavingVariationController::showUnverifiedSavingVariations');
 $routes->get('/get-payment-details/(:num)', 'SavingVariationController::getPaymentDetails/$1');
+$routes->post('/get-staff-ct', 'SavingVariationController::getStaffContributionType');
+$routes->post('/verify-saving-variation', 'SavingVariationController::verifySavingVariation');
+$routes->get('/saving-variations/verified', 'SavingVariationController::showVerifiedSavingVariations');
+$routes->post('/approve-saving-variation', 'SavingVariationController::approveSavingVariation');
+
+#Help desk routes
+$routes->get('/help-desk/loan-application', 'HelpDeskController::getLoanApplication');
+$routes->get('/help-desk/withdraw-application', 'HelpDeskController::getWithdrawApplication');
+$routes->get('/help-desk/account-closure-application', 'HelpDeskController::getAccountClosureApplication');
+$routes->get('/help-desk/journal-transfer', 'HelpDeskController::getJournalTransferApplication');
 
 
 
@@ -259,6 +269,20 @@ $routes->get('verify_transfer', 'Receipt::verify_transfer');
 $routes->post('approve_transfer', 'Receipt::approve_transfer');
 $routes->get('approve_transfer', 'Receipt::approve_transfer');
 
+### Reconciliation Routes
+$routes->get('new_savings_reconciliation', 'Reconciliation::new_savings_reconciliation');
+$routes->post('new_savings_reconciliation', 'Reconciliation::new_savings_reconciliation');
+$routes->get('verify_savings_reconciliation', 'Reconciliation::verify_savings_reconciliation');
+$routes->post('verify_savings_reconciliation', 'Reconciliation::verify_savings_reconciliation');
+$routes->get('approve_savings_reconciliation', 'Reconciliation::approve_savings_reconciliation');
+$routes->post('approve_savings_reconciliation', 'Reconciliation::approve_savings_reconciliation');
+
+$routes->get('new_loans_reconciliation', 'Reconciliation::new_loans_reconciliation');
+$routes->post('new_loans_reconciliation', 'Reconciliation::new_loans_reconciliation');
+$routes->get('verify_loans_reconciliation', 'Reconciliation::verify_loans_reconciliation');
+$routes->post('verify_loans_reconciliation', 'Reconciliation::verify_loans_reconciliation');
+$routes->get('approve_loans_reconciliation', 'Reconciliation::approve_loans_reconciliation');
+$routes->post('approve_loans_reconciliation', 'Reconciliation::approve_loans_reconciliation');
 
 
 /**

@@ -11,7 +11,7 @@ namespace App\Models;
  * 3 = payroll contribution
  * 4 = journal transfer
  * 5 = account closure
- *
+ * 6 = reconciliation
  *
  */
 
@@ -29,6 +29,13 @@ class PaymentDetailsModel extends \CodeIgniter\Model
 //        $builder->join('payroll_groups', 'payroll_groups.pg_id = cooperators.cooperator_payroll_group_id');
 //        $builder->join('states', 'states.state_id = cooperators.cooperator_state_id');
         //$builder->join('contribution_type', 'contribution_type.contribution_type_id = payment_details.pd_ct_id');
+        $builder->groupBy('payment_details.pd_ct_id');
+        $builder->where('payment_details.pd_staff_id', $staff_id);
+        return $builder->get()->getResultObject();
+    }
+    public function getStaffPaymentDetails($staff_id){
+        $builder = $this->db->table('payment_details');
+        $builder->join('contribution_type', 'contribution_type.contribution_type_id = payment_details.pd_ct_id');
         $builder->groupBy('payment_details.pd_ct_id');
         $builder->where('payment_details.pd_staff_id', $staff_id);
         return $builder->get()->getResultObject();

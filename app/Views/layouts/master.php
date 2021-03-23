@@ -255,7 +255,7 @@
                                     <li class="header">Saving Variations</li>
                                     <li><a href="<?=base_url('/saving-variations/new') ?>">New</a></li>
                                     <li><a href="<?=base_url('/saving-variations/unverified') ?>">Verify</a></li>
-                                    <li><a href="<?=base_url('approve_withdrawal') ?>">Approve</a></li>
+                                    <li><a href="<?=base_url('/saving-variations/verified') ?>">Approve</a></li>
                                 </ul>
                                 </li>
                                 <li>
@@ -329,9 +329,34 @@
                                         <li><a href="<?=base_url('new-journal-voucher') ?>">Journal Voucher</a></li>
                                         <li><a href="<?=base_url('journal-voucher') ?>">Posting</a></li>
                                         <li><a href="<?=base_url('state') ?>">Location</a></li>
-                                        <li><a href="#">Coop</a></li>
                                     </ul>
                                 </li>
+                                <li>
+                                    <a href="javascript:void(0);" class="has-arrow"><i class="fa fa-question-circle"></i><span>Help Desk</span></a>
+
+                                    <ul>
+                                        <li><a href="<?=base_url('/help-desk/loan-application') ?>">Loan Application</a></li>
+                                        <li><a href="<?=base_url('/help-desk/withdraw-application') ?>">Withdraw Application</a></li>
+                                        <li><a href="<?=base_url('/help-desk/account-closure-application') ?>">Account Closure</a></li>
+                                        <li><a href="<?=base_url('/help-desk/journal-transfer') ?>">Journal Transfer</a></li>
+                                    </ul>
+                                </li>
+	
+	
+								<li>
+									<a href="javascript:void(0);" class="has-arrow"><i class="fa fa-university"></i><span>Reconciliation</span></a>
+		
+									<ul>
+										<li class="header"><b>Savings</b></li>
+										<li><a href="<?=base_url('new_savings_reconciliation') ?>">New</a></li>
+										<li><a href="<?=base_url('verify_savings_reconciliation') ?>">Verify</a></li>
+										<li><a href="<?=base_url('approve_savings_reconciliation') ?>">Approve</a></li>
+										<li class="header"><b>Loans</b></li>
+										<li><a href="<?=base_url('new_loans_reconciliation') ?>">New</a></li>
+										<li><a href="<?=base_url('verify_loans_reconciliation') ?>">Verify</a></li>
+										<li><a href="<?=base_url('approve_loans_reconciliation') ?>">Approve</a></li>
+									</ul>
+								</li>
 
 
                             </ul>
