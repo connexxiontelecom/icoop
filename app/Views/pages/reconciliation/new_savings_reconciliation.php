@@ -33,7 +33,7 @@ Savings Reconciliation
 					
 					<fieldset>
 						<div class="row clearfix">
-							<div class="col-lg-7 col-md-12">
+							<div class="col-lg-6 col-md-12">
 								<div class="form-group">
 									
 									<label  for="application_payroll_group_id"> <b> Staff ID or Name: </b></label>
@@ -129,6 +129,11 @@ Savings Reconciliation
 								</div>
 							
 							</div>
+							
+							<div class="col-lg-6 col-md-12" id="statement" style="height: 650px; overflow-y: auto;">
+							
+							
+							</div>
 						
 						
 						</div>
@@ -139,8 +144,83 @@ Savings Reconciliation
 			</div>
 		</div>
 	</div>
-
-
+	
+	<div class="modal fade" id="verifyModal<?=$withdrawal['withdraw_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title h4" id="myLargeModalLabel">Verify Withdrawal</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form method="post" action="">
+						<div class="row clearfix">
+							<div class="col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Staff ID:</label>
+									<input class="form-control" value="<?=$withdrawal['withdraw_staff_id']; ?>" name="pg_name" disabled readonly>
+								</div>
+							</div>
+							
+							<div class="col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Staff Name:</label>
+									<input class="form-control" value="<?=$withdrawal['cooperator_first_name']." ".$withdrawal['cooperator_last_name']; ?>" disabled readonly>
+								</div>
+							</div>
+						</div>
+						<div class="row clearfix">
+							<div class="col-lg-6 col-md-12">
+								<div class="form-group">
+									<label>Contribution Type:</label>
+									<input class="form-control" value="<?=$withdrawal['contribution_type_name']; ?>" disabled readonly>
+								</div>
+							</div>
+							
+							
+							<div class="col-lg-6 col-md-12">
+								
+								<div class="form-group">
+									<label>Balance:</label>
+									<input class="form-control" value="<?=number_format($withdrawal['balance']); ?>" disabled readonly>
+								</div>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label>Amount:</label>
+							<input class="form-control" value="<?=number_format($withdrawal['withdraw_amount']); ?>" disabled readonly>
+						</div>
+						<?php if(!empty($withdrawal['withdraw_doc'])): ?>
+							
+							<div class="form-group">
+								
+								<button type="button" class="btn btn-primary mb-2" onclick="window.open('<?php echo base_url('.uploads/withdrawals')."/".$withdrawal['withdraw_doc'];?>', '_blank')" ><i class="fa fa-paperclip"></i> <span>View Attachment</span></button>
+							
+							</div>
+						
+						<?php endif; ?>
+						
+						<input type="hidden" name="withdraw_status" value="1">
+						
+						<input type="hidden" name="withdraw_id" value="<?=$withdrawal['withdraw_id']; ?>">
+						
+						<div class="form-group">
+							<label for="application_address">Comment:</label>
+							<textarea name="withdraw_verify_comment"   cols="30" rows="3" placeholder="Comments "  class="form-control no-resize"></textarea>
+						</div>
+						
+						<?= csrf_field() ?>
+						<div class="form-group">
+							<button type="submit" class="btn btn-info btn-block">Verify</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 
 
 </div>
@@ -293,6 +373,56 @@ function change_label(){
                     $("#b_t").append(response.note);
                     $('#freeze').hide();
                 }else{
+                    $('#statement').empty();
+                    let content = '<div class="table-responsive">' +
+						'<div class="header">\n' +
+                        '\t\t\t\t<h2>Account Statement</h2>\n' +
+                        '\t\t\t</div>' +
+						'<table class="table table-hover js-basic-example dataTable simpletable table-custom spacing5" > ' +
+						'<thead>\n' +
+                        '                        <tr>\n' +
+                        '                            <th><strong># </strong></th>\n' +
+                        '                            <th><strong>Date</strong></th>\n' +
+                        '                            <th style="text-align: left"><strong>Narration</strong></th>\n' +
+                        '                            <th style="text-align: right"><strong>Dr</strong></th>\n' +
+                        '                            <th style="text-align: right"><strong>Cr</strong></th>\n' +
+                        '                            <th style="text-align: right"><strong>Balance</strong></th>\n' +
+                        '\n' +
+                        '\n' +
+                        '\n' +
+                        '                        </tr>\n' +
+                        '                    </thead> '
+                    let total_cr = 0;
+                    let total_dr = 0;
+                    let bf = 0;
+                    let cr = 0;
+                    let dr = 0;
+					for(i=1; i<response.ledgers.length; i++){
+                        content += '<tr>' +
+							'<td>' +  i + '</td>' +
+                            '<td>' +  response.ledgers[i].pd_transaction_date + '</td>'+
+                        '<td>' +  response.ledgers[i].pd_narration + '</td>'
+							
+						if(response.ledgers[i].pd_drcrtype == 1){
+                            cr =  response.ledgers[i].pd_amount;
+                            content += '<td> 0 </td>' +
+                                '<td>' + cr.toLocaleString() + '</td>'
+							
+							}
+                        if(response.ledgers[i].pd_drcrtype == 2){
+                            dr =  response.ledgers[i].pd_amount;
+                            content += '<td>' +  dr.toLocaleString() + '</td>' +
+                            '<td> 0 </td>'
+                                                   }
+                      
+                       bf = (bf + cr) - dr;
+                        content += '<td>' +  parseFloat(bf)  + '</td>' +
+							'</tr>';
+                    }
+                    content += '</table> </div>'
+
+                    $('#statement').append(content);
+                    
                     $('#freeze').show();
                     $("#balance_warning").show();
                     $("#b_t").append(response.note);
