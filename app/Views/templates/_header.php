@@ -28,6 +28,7 @@
     <!-- MAIN CSS -->
     <link rel="stylesheet" href="<?php echo site_url() ?>assets/css/site.min.css">
     <?= $this->renderSection('extra-styles') ?>
+	
 </head>
 
 <style>

@@ -139,18 +139,7 @@ Contribution Type
                             <input type="hidden" name="type" value="2">
 
                             <input type="hidden" name="contribution_type_id" value="<?=$contribution_type['contribution_type_id']; ?>">
-	
-							<div class="form-group">
-		
-								<label>Regular?</label>
-								<select class="custom-select" required name="contribution_type_regular" >
-			
-									<option value="0" <?php if($contribution_type['contribution_type_regular'] !== 1): echo "selected"; endif; ?>> No </option>
-									<option value="1"  <?php if($contribution_type['contribution_type_regular'] == 1): echo "selected"; endif; ?>> Yes </option>
-		
-								</select>
-							</div>
-	
+
 							<div class="form-group">
 								<label>GL Code:</label>
 								<select class="custom-select" required name="contribution_type_glcode">
