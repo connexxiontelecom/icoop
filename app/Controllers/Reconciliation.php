@@ -36,6 +36,7 @@
 			
 		}
 		
+		
 		public function new_savings_reconciliation(){
 			$method = $this->request->getMethod();
 			
@@ -148,61 +149,63 @@
 						if($transaction_type == 2):
 							
 							$balance = $_POST['balance'];
-											$amount = $_POST['amount'];
+							$amount = $_POST['amount'];
+							
+							$re_array = array(
+								're_staff_id' => $staff_id,
+								're_type' => 1,
+								're_narration' => $_POST['narration'].' -(Savings Reconciliation)',
+								're_source' => $_POST['ct_id'],
+								're_destination' => $_POST['account'],
+								're_amount' => (float)str_replace(',', '', $_POST['amount']),
+								're_ref_no' => $ref_no,
+								're_dctype' => 2,
+								're_transaction_date' => $_POST['date'],
+								're_by'=> $this->session->user_username,
+								're_date' => date('Y-m-d'),
+							
+							);
+							
+							
+							$v =  $this->re->save($re_array);
+							
+							if($v):
+								
+								$data = array(
+									'msg' => 'Action Successful',
+									'type' => 'success',
+									'location' => base_url('new_savings_reconciliation')
+								
+								);
+								return view('pages/sweet-alert', $data);
+							
+							else:
+								$data = array(
+									'msg' => 'An Error Occured',
+									'type' => 'error',
+									'location' => base_url('new_savings_reconciliation')
+								
+								);
+								return view('pages/sweet-alert', $data);
+							
+							
+							endif;
 											
-											if($amount > $balance):
-												$data = array(
-													'msg' => 'Insufficient Balance',
-													'type' => 'error',
-													'location' => base_url('new_savings_reconciliation')
-												
-												);
-												
-												return view('pages/sweet-alert', $data);
-											
-											
-											else:
-											$re_array = array(
-												're_staff_id' => $staff_id,
-												're_type' => 1,
-												're_narration' => 'Savings Reconciliation',
-												're_source' => $_POST['ct_id'],
-												're_destination' => $_POST['account'],
-												're_amount' => (float)str_replace(',', '', $_POST['amount']),
-												're_ref_no' => $ref_no,
-												're_dctype' => 2,
-												're_transaction_date' => date('Y-m-d'),
-												're_by'=> $this->session->user_username,
-												're_date' => date('Y-m-d'),
-																								
-											);
-												
-												
-												$v =  $this->re->save($re_array);
-												
-												if($v):
-													
-													$data = array(
-														'msg' => 'Action Successful',
-														'type' => 'success',
-														'location' => base_url('new_savings_reconciliation')
-													
-													);
-													return view('pages/sweet-alert', $data);
-												
-												else:
-													$data = array(
-														'msg' => 'An Error Occured',
-														'type' => 'error',
-														'location' => base_url('new_savings_reconciliation')
-													
-													);
-													return view('pages/sweet-alert', $data);
-												
-												
-												endif;
-											
-											endif;
+//											if($amount > $balance):
+//												$data = array(
+//													'msg' => 'Insufficient Balance',
+//													'type' => 'error',
+//													'location' => base_url('new_savings_reconciliation')
+//
+//												);
+//
+//												return view('pages/sweet-alert', $data);
+//
+//
+//											else:
+//
+//
+//											endif;
 							
 							
 							endif;
@@ -213,13 +216,13 @@
 							$re_array = array(
 								're_staff_id' => $staff_id,
 								're_type' => 1,
-								're_narration' => 'Savings Reconciliation',
+								're_narration' => $_POST['narration'].' -(Savings Reconciliation)',
 								're_source' => $_POST['ct_id'],
 								're_destination' => $_POST['account'],
 								're_amount' => (float)str_replace(',', '', $_POST['amount']),
 								're_ref_no' => $ref_no,
 								're_dctype' => 1,
-								're_transaction_date' => date('Y-m-d'),
+								're_transaction_date' => $_POST['date'],
 								're_by'=> $this->session->user_username,
 								're_date' => date('Y-m-d'),
 							
@@ -464,7 +467,7 @@
 							'bank' => $account['bank'],
 							'ob' => 0,
 							'posted' => 1,
-							'created_at' =>  date('Y-m-d'),
+							'created_at' =>  $reconciliation_detail['re_transaction_date'],
 						);
 						$this->gl->save($bankGl);
 						
@@ -482,7 +485,7 @@
 							'bank' => $account['bank'],
 							'ob' => 0,
 							'posted' => 1,
-							'created_at' =>  date('Y-m-d'),
+							'created_at' =>  $reconciliation_detail['re_transaction_date'],
 						);
 						$this->gl->save($bankGl);
 						
@@ -521,7 +524,7 @@
 							'bank' => $account['bank'],
 							'ob' => 0,
 							'posted' => 1,
-							'created_at' =>  date('Y-m-d'),
+							'created_at' => $reconciliation_detail['re_transaction_date'],
 						);
 						$this->gl->save($bankGl);
 						
@@ -539,7 +542,7 @@
 							'bank' => $account['bank'],
 							'ob' => 0,
 							'posted' => 1,
-							'created_at' =>  date('Y-m-d'),
+							'created_at' =>  $reconciliation_detail['re_transaction_date'],
 						);
 						$this->gl->save($bankGl);
 					
@@ -721,13 +724,13 @@
 								$re_array = array(
 									're_staff_id' => $staff_id,
 									're_type' => 2,
-									're_narration' => 'Loan Reconciliation',
+									're_narration' => $_POST['narration'].' -(Loans Reconciliation)',
 									're_source' => $_POST['loan_id'],
 									're_destination' => $_POST['account'],
 									're_amount' => (float)str_replace(',', '', $_POST['amount']),
 									're_ref_no' => $ref_no,
 									're_dctype' => 2,
-									're_transaction_date' => date('Y-m-d'),
+									're_transaction_date' => $_POST['date'],
 									're_by'=> $this->session->user_username,
 									're_date' => date('Y-m-d'),
 								
@@ -786,7 +789,7 @@
 										$re_array = array(
 											're_staff_id' => $staff_id,
 											're_type' => 2,
-											're_narration' => 'Loans Reconciliation',
+											're_narration' => $_POST['narration'].' -(Loans Reconciliation)',
 											're_source' => $_POST['loan_id'],
 											're_destination' => $_POST['account'],
 											're_amount' => (float)str_replace(',', '', $_POST['amount']),
@@ -794,7 +797,7 @@
 											're_mpr' => (float)str_replace(',', '', $mpr),
 											're_ref_no' => $ref_no,
 											're_dctype' => 1,
-											're_transaction_date' => date('Y-m-d'),
+											're_transaction_date' => $_POST['date'],
 											're_by'=> $this->session->user_username,
 											're_date' => date('Y-m-d'),
 										
@@ -1050,7 +1053,7 @@
 							'bank' => $account['bank'],
 							'ob' => 0,
 							'posted' => 1,
-							'created_at' =>  date('Y-m-d'),
+							'created_at' => $reconciliation_detail['re_transaction_date'],
 						);
 						$this->gl->save($bankGl);
 						
@@ -1068,7 +1071,7 @@
 							'bank' => $account['bank'],
 							'ob' => 0,
 							'posted' => 1,
-							'created_at' =>  date('Y-m-d'),
+							'created_at' =>  $reconciliation_detail['re_transaction_date'],
 						);
 						$this->gl->save($bankGl);
 						
@@ -1159,7 +1162,7 @@
 							'bank' => $account['bank'],
 							'ob' => 0,
 							'posted' => 1,
-							'created_at' =>  date('Y-m-d'),
+							'created_at' =>  $reconciliation_detail['re_transaction_date'],
 						);
 						$this->gl->save($bankGl);
 						
@@ -1177,7 +1180,7 @@
 							'bank' => $account['bank'],
 							'ob' => 0,
 							'posted' => 1,
-							'created_at' =>  date('Y-m-d'),
+							'created_at' =>  $reconciliation_detail['re_transaction_date'],
 						);
 						$this->gl->save($bankGl);
 					

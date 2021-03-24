@@ -105,6 +105,15 @@ Savings Reconciliation
 										</select>
 									</div>
 									
+									<div class="form-group">
+										<label for="application_first_name"><b> Transaction Date:</b></label>
+										<input type="date"  class="form-control" placeholder="Date" name="date" required>
+									</div>
+									<div class="form-group">
+										<label for="application_address"><b>Narration:</b></label>
+										<textarea name="narration" id="withdraw_narration"  cols="30" rows="3" placeholder="Narration "  class="form-control no-resize"></textarea>
+									</div>
+									
 <!--									<div class="form-group">-->
 <!--										<label for="application_first_name"><b>File(.PDF):</b></label>-->
 <!--										<input type="file"  class="form-control"  name="withdraw_file">-->
@@ -181,7 +190,7 @@ function change_label(){
 
         if(withdraw_amount > withdraw_balance){
             // $('#withdraw_submit').hide();
-            $('#withdraw_submit').attr('disabled', true);
+            // $('#withdraw_submit').attr('disabled', true);
             $('#withdraw_warning').show();
             $("#c_t").empty();
             $('#charge_warning').hide();
@@ -205,7 +214,7 @@ function change_label(){
 	
     $(document).ready(function() {
         $('#balance_warning').hide();
-        $('#withdraw_submit').hide();
+        // $('#withdraw_submit').hide();
         $('#withdraw_warning').hide();
         $('#charge_warning').hide();
         $('#ac_ac').hide();
@@ -243,10 +252,10 @@ function change_label(){
 
                     if(withdraw_amount > withdraw_balance){
                         // $('#withdraw_submit').hide();
-                        $('#withdraw_submit').attr('disabled', true);
+                        // $('#withdraw_submit').attr('disabled', true);
                         $('#withdraw_warning').show();
-                        $("#c_t").empty();
-                        $('#charge_warning').hide();
+                        // $("#c_t").empty();
+                        // $('#charge_warning').hide();
 
                     }
                 }

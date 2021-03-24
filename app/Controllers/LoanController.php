@@ -92,9 +92,11 @@ class LoanController extends BaseController
     }
 
     public function getCooperatorAccountStatus(){
-        $value = $this->request->getVar('term');
+        $value = $_GET['term'];
         if(empty($value)){
-            redirect('home/error_404');
+	        $data = [];
+	        echo json_encode($data);
+	        die;
         }
         else {
             $cooperatorId = current(explode(",", $value));
