@@ -9,6 +9,10 @@
         <div class="loader">
             <div class="m-t-30"><i class="fa fa-cube font-25"></i></div>
             <p>Please wait...</p>
+			<noscript>
+				This application needs JavaScript activated to work.
+	
+			</noscript>
         </div>
     </div>
 
