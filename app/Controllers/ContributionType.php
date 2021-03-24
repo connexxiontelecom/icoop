@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\Models\ContributionTypeModel;
 use App\Models\CoaModel;
+use App\Models\PaymentDetailsModel;
 
 class ContributionType extends BaseController
 {
@@ -14,7 +15,7 @@ class ContributionType extends BaseController
 
         $this->contribution_type = new ContributionTypeModel();
 	    $this->coa = new CoaModel();
-        //$this->session = session();
+        $this->pd = new PaymentDetailsModel();
     }
     public function contribution_type () {
 
@@ -43,20 +44,39 @@ class ContributionType extends BaseController
 
 
                             if($check_contribution):
+	                            
+	                            
+	                            
                                 $data = array(
                                     'msg' => 'Contribution type already exists',
                                     'type' => 'error',
-                                    'location' => site_url('new_application')
+                                    'location' => site_url('contribution_type')
 
                                 );
 
                                 echo view('pages/sweet-alert', $data);
 
                             else:
-
-            //                                print_r($_POST);
-            //
+	
+	                            $check_regular = $this->contribution_type->where('contribution_type_regular', 1)
+		                            ->first();
+                            
+                            if($check_regular && ($_POST['contribution_type_regular'] == 1)):
+	
+	                            $data = array(
+		                            'msg' => 'Only one Contribution Type can be regular',
+		                            'type' => 'error',
+		                            'location' => site_url('contribution_type')
+	
+	                            );
+	
+	                            echo view('pages/sweet-alert', $data);
+	                            
+	                            else:
+                            
                                 $v = $this->contribution_type->save($_POST);
+	                            
+	                            endif;
 
                                 if($v):
 
@@ -193,7 +213,11 @@ class ContributionType extends BaseController
 
 
             if($_POST['type'] == 3):
-
+	           
+	           
+						$check_pd = $this->pd->where('pd_ct_id', $this->request->getVar('contribution_type_id'))->first();
+            
+            if(empty($check_pd)):
 
                         $v = $this->contribution_type->delete($this->request->getVar('contribution_type_id'));
 
@@ -219,6 +243,19 @@ class ContributionType extends BaseController
 
                             return view('pages/sweet-alert', $data);
                         endif;
+                        
+                        else:
+	
+	                        $data = array(
+		                        'msg' => 'Cannot Delete Contribution Type, Savings already in use',
+		                        'type' => 'error',
+		                        'location' => site_url('contribution_type')
+	
+	                        );
+	
+	                        return view('pages/sweet-alert', $data);
+	            
+	            endif;
 
             endif;
 
