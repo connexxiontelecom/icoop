@@ -567,6 +567,14 @@ class LoanController extends BaseController
         $username = $this->session->user_username;
         $this->authenticate_user($username, 'pages/loan/report', $data); 
     }
+    public function showApprovedLoanReportSection(){
+        $data = [
+            //'applications'=>$this->loanapp->getAllApprovedLoanApplications()
+        ];
+    
+        $username = $this->session->user_username;
+        $this->authenticate_user($username, 'pages/loan/report-index', $data); 
+    }
 
 
       public function generateLoanApplicationReport(){
