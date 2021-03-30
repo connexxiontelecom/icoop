@@ -24,6 +24,22 @@ class SavingVariationsModel extends Model{
         $builder->where('saving_variations.sv_status = 1');
         return $builder->get()->getResultObject();
     }
+    public function getApprovedSavingVariations(){
+        $builder = $this->db->table('saving_variations');
+        $builder->join('cooperators', 'cooperators.cooperator_staff_id = saving_variations.sv_staff_id');
+        $builder->join('contribution_type', 'contribution_type.contribution_type_id = saving_variations.ct_type_id');
+        $builder->where('saving_variations.sv_status = 2'); //approved
+        return $builder->get()->getResultObject();
+    }
+    public function getGenerateApprovedSavingVariations($from, $to){
+        $builder = $this->db->table('saving_variations');
+        $builder->join('cooperators', 'cooperators.cooperator_staff_id = saving_variations.sv_staff_id');
+        $builder->join('contribution_type', 'contribution_type.contribution_type_id = saving_variations.ct_type_id');
+        $builder->where('saving_variations.sv_status = 2'); //approved
+        $builder->where('saving_variations.sv_date_approved >= ', $from);
+		$builder->where('saving_variations.sv_date_approved <= ', $to);
+        return $builder->get()->getResultObject();
+    }
     public function getPaymentDetailsByContributionType($ct){
         $builder = $this->db->table('payment_details');
         //$builder->join('cooperators', 'cooperators.cooperator_staff_id = saving_variations.sv_staff_id');
