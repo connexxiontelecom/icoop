@@ -33,7 +33,7 @@ Savings Reconciliation
 					
 					<fieldset>
 						<div class="row clearfix">
-							<div class="col-lg-7 col-md-12">
+							<div class="col-lg-6 col-md-12">
 								<div class="form-group">
 									
 									<label  for="application_payroll_group_id"> <b> Staff ID or Name: </b></label>
@@ -54,7 +54,11 @@ Savings Reconciliation
 								</div>
 								<div class="alert alert-warning alert-dismissible" role="alert" id="balance_warning">
 									<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									
 									<i class="fa fa-warning"></i> <span id="b_t"></span>
+									
+									<button id="statementButton" style="float: right" type="button" class="btn btn-primary" data-toggle="modal" data-target="#accountStatement"> <i class="fa fa-eye"></i> View Statement</button>
+								
 								</div>
 								
 								<div class="form-group">
@@ -105,6 +109,15 @@ Savings Reconciliation
 										</select>
 									</div>
 									
+									<div class="form-group">
+										<label for="application_first_name"><b> Transaction Date:</b></label>
+										<input type="date"  class="form-control" placeholder="Date" name="date" required>
+									</div>
+									<div class="form-group">
+										<label for="application_address"><b>Narration:</b></label>
+										<textarea name="narration" id="withdraw_narration"  cols="30" rows="3" placeholder="Narration "  class="form-control no-resize"></textarea>
+									</div>
+									
 <!--									<div class="form-group">-->
 <!--										<label for="application_first_name"><b>File(.PDF):</b></label>-->
 <!--										<input type="file"  class="form-control"  name="withdraw_file">-->
@@ -120,6 +133,11 @@ Savings Reconciliation
 								</div>
 							
 							</div>
+							
+							<div class="col-lg-6 col-md-12"  style="height: 650px; overflow-y: auto;">
+								
+							
+							</div>
 						
 						
 						</div>
@@ -130,8 +148,26 @@ Savings Reconciliation
 			</div>
 		</div>
 	</div>
-
-
+	
+	<div class="modal fade bd-example-modal-lg" id="accountStatement" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title h4" id="myLargeModalLabel">Account Statement</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="table-responsive" style="height: 650px; overflow-y: auto;">
+						<table class="table table-hover js-basic-example dataTable simpletable table-custom spacing5" id="statement">
+						
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 
 </div>
@@ -181,7 +217,7 @@ function change_label(){
 
         if(withdraw_amount > withdraw_balance){
             // $('#withdraw_submit').hide();
-            $('#withdraw_submit').attr('disabled', true);
+            // $('#withdraw_submit').attr('disabled', true);
             $('#withdraw_warning').show();
             $("#c_t").empty();
             $('#charge_warning').hide();
@@ -205,10 +241,12 @@ function change_label(){
 	
     $(document).ready(function() {
         $('#balance_warning').hide();
-        $('#withdraw_submit').hide();
+        // $('#withdraw_submit').hide();
         $('#withdraw_warning').hide();
         $('#charge_warning').hide();
         $('#ac_ac').hide();
+        $('#statementButton').hide();
+        // $('.simpletable').DataTable();
 
 
 
@@ -243,10 +281,10 @@ function change_label(){
 
                     if(withdraw_amount > withdraw_balance){
                         // $('#withdraw_submit').hide();
-                        $('#withdraw_submit').attr('disabled', true);
+                        // $('#withdraw_submit').attr('disabled', true);
                         $('#withdraw_warning').show();
-                        $("#c_t").empty();
-                        $('#charge_warning').hide();
+                        // $("#c_t").empty();
+                        // $('#charge_warning').hide();
 
                     }
                 }
@@ -284,6 +322,70 @@ function change_label(){
                     $("#b_t").append(response.note);
                     $('#freeze').hide();
                 }else{
+                    $('#statementButton').show();
+                    $('#statement').empty();
+                    let content = '<thead>\n' +
+                        '                        <tr>\n' +
+                        '                            <th><strong># </strong></th>\n' +
+                        '                            <th><strong>Date</strong></th>\n' +
+                        '                            <th style="text-align: left"><strong>Narration</strong></th>\n' +
+                        '                            <th style="text-align: right"><strong>Dr</strong></th>\n' +
+                        '                            <th style="text-align: right"><strong>Cr</strong></th>\n' +
+                        '                            <th style="text-align: right"><strong>Balance</strong></th>\n' +
+                        '\n' +
+                        '\n' +
+                        '\n' +
+                        '                        </tr>\n' +
+                        '                    </thead> '
+                    let total_cr = 0;
+                    let total_dr = 0;
+                    let bf = 0;
+                    let cr = 0;
+                    let dr = 0;
+					for(i=0; i<response.ledgers.length; i++){
+					   let j = i + 1;
+                        content += '<tr>' +
+							'<td>' +  j + '</td>' +
+                            '<td>' +  response.ledgers[i].pd_transaction_date + '</td>'+
+                        '<td>' +  response.ledgers[i].pd_narration + '</td>'
+							
+						if(response.ledgers[i].pd_drcrtype == 1){
+                            cr =  parseFloat(response.ledgers[i].pd_amount);
+                            total_cr = cr + total_cr;
+                            dr = 0;
+                            content += '<td style="text-align: right"> 0 </td>' +
+                                '<td style="text-align: right">' + replaceComma(response.ledgers[i].pd_amount) + '</td>'
+							
+							}
+                        if(response.ledgers[i].pd_drcrtype == 2){
+                            dr =  parseFloat(response.ledgers[i].pd_amount);
+                            total_dr = dr + total_dr;
+                            cr = 0;
+                            content += '<td style="text-align: right">' +  replaceComma(response.ledgers[i].pd_amount) + '</td>' +
+                            '<td style="text-align: right"> 0 </td>'
+                                                   }
+                        
+                        bf = parseFloat(bf);
+                        cr = parseFloat(cr);
+                        dr = parseFloat(dr);
+                      
+                       bf = (bf + cr) - dr;
+                        content += '<td style="text-align: right">' +  replaceComma(bf)  + '</td>' +
+							'</tr>';
+                    }
+
+                    content += '<tr>'+
+                        '<td> </td>' +
+                        '<td> </td>' +
+						'<td> </td>' +
+                        '<td style="text-align: right"> <b>Total Debit:</b>' +  replaceComma(bf)  + '</td>' +
+                        '<td style="text-align: right"> <b>Total Credit: </b>' +  replaceComma(bf)  + '</td>' +
+						'<td style="text-align: right"> <b>Balance: </b>' +  replaceComma(bf)  + '</td>' +
+                        '</tr>';
+
+                    $('#statement').append(content);
+					
+					
                     $('#freeze').show();
                     $("#balance_warning").show();
                     $("#b_t").append(response.note);
@@ -321,6 +423,10 @@ function change_label(){
         });
 
     }
+
+function replaceComma(yourNumber) {
+    return yourNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 
 </script>
 <?= $this->endSection() ?>
