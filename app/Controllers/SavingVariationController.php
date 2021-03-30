@@ -133,5 +133,30 @@ class SavingVariationController extends BaseController
                     return view('pages/sweet-alert', $alert);
         }
     }
+
+
+    public function showReport(){
+         $data = [
+            'reports'=>$this->savingvariation->getApprovedSavingVariations(),
+         ];
+         $username = $this->session->user_username;
+        $this->authenticate_user($username, 'pages/saving-variation/report', $data);
+    }
+    public function generateSavingVariationsReport(){
+        helper(['form']);
+        $data = [];
+        $from = $this->request->getVar('from') ?? date('Y-m-d');
+        $to =  $this->request->getVar('to') ?? date('Y-m-d');
+        
+        if($_POST){
+            $data = [
+               'reports'=>$this->savingvariation->getGenerateApprovedSavingVariations($from, $to),
+               'from'=>$from,
+               'to'=>$to
+            ];
+            $username = $this->session->user_username;
+           $this->authenticate_user($username, 'pages/saving-variation/generated-report', $data);
+        }
+    }
     
 }

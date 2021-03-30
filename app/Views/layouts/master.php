@@ -260,6 +260,7 @@
                                     <li><a href="<?=base_url('/saving-variations/new') ?>">New</a></li>
                                     <li><a href="<?=base_url('/saving-variations/unverified') ?>">Verify</a></li>
                                     <li><a href="<?=base_url('/saving-variations/verified') ?>">Approve</a></li>
+                                    <li><a href="<?=base_url('/saving-variations/report') ?>">Report</a></li>
                                 </ul>
                                 </li>
                                 <li>
@@ -268,6 +269,7 @@
                                         <li><a href="<?=site_url('/loan/new') ?>">New Loan</a></li>
                                         <li><a href="<?=site_url('/loan/verify') ?>">Verify Loan</a></li>
                                         <li><a href="<?=site_url('/loan/approve') ?>">Approve Loan</a></li>
+                                        <li><a href="<?=site_url('/loan/report') ?>">Report</a></li>
                                     </ul>
                                 </li>
                                 <li>
