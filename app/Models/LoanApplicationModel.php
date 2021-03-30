@@ -57,6 +57,22 @@ class LoanApplicationModel extends Model{
 		$builder->orderBy('loan_applications.applied_date', 'DESC');
         return $builder->get()->getResultObject();
 	}
+    public function getAllApprovedLoanApplications(){
+		$builder = $this->db->table('loan_applications');
+        $builder->join('cooperators', 'cooperators.cooperator_staff_id = loan_applications.staff_id');
+        $builder->where('loan_applications.approve = 1');
+		$builder->orderBy('loan_applications.applied_date', 'DESC');
+        return $builder->get()->getResultObject();
+	}
+    public function getApprovedLoanApplicationReport($from,$to){
+		$builder = $this->db->table('loan_applications');
+        $builder->join('cooperators', 'cooperators.cooperator_staff_id = loan_applications.staff_id');
+        $builder->where('loan_applications.approve = 1');
+         $builder->where('loan_applications.approve_date >= ', $from);
+		$builder->where('loan_applications.approve_date <= ', $to);
+		$builder->orderBy('loan_applications.applied_date', 'DESC');
+        return $builder->get()->getResultObject();
+	}
 }
 
 ?>

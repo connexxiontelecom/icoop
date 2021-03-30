@@ -1,14 +1,14 @@
 <?= $this->extend('layouts/master') ?>
 
 <?= $this->section('title') ?>
-Approve Saving Variations 
+Report 
 <?= $this->endSection() ?>
 
 <?= $this->section('current_page') ?>
-Approve Saving Variations 
+Report 
 <?= $this->endSection() ?>
 <?= $this->section('page_crumb') ?>
-Approve Saving Variations 
+Report
 <?= $this->endSection() ?>
 
 <?= $this->section('extra-styles') ?>
@@ -25,10 +25,30 @@ Approve Saving Variations
 	<div class="col-lg-12">
 		<div class="card">
 			<div class="header">
-				<h2>Approve Saving Variations </h2>
-			
+				<h2>Report </h2>
 			</div>
 			<div class="body">
+                <div class="row ">
+                    <div class="col-lg-12 col-md-12 col-xl-12">
+                        <h6 class="sub-title p-3  text-uppercase">Saving Variation Report</h6>
+                        <form action="<?= site_url('/saving-variations/report') ?>" method="post" class="form-inline">
+                            <?= csrf_field() ?>
+                            <div class="form-group">
+                                <label for="">From</label>
+                                <input type="date" class="form-control ml-2 mr-2" placeholder="dd/mm/yyyy" name="from">
+                                
+                            </div>
+                            <div class="form-group">
+                                <label for=""> To</label>
+                                <input type="date" class="form-control ml-2" placeholder="dd/mm/yyyy" name="to">
+                                
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-sm btn-primary ml-2">Generate Report</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
 				<div class="table-responsive">
 					<table class="table table-hover js-basic-example dataTable simpletable table-custom spacing5">
 						<thead>
@@ -42,8 +62,7 @@ Approve Saving Variations
 						</thead>
 						
 						<tbody>
-                        
-						<?php $i=1; foreach($verified_savings as $us) :?>
+                        <?php $i=1; foreach($reports as $us) :?>
 							<tr>
 								
 								<td><?=$i++; ?></td>
@@ -51,19 +70,18 @@ Approve Saving Variations
 								<td><?= number_format($us->sv_amount,2) ?></td>				
                                 <td><?= $us->contribution_type_name ?? '' ?></td>					
 								<td>
-									<button type="button" class="btn btn-success" data-toggle="modal" data-target="#verifyModal<?=$us->saving_variation_id ?? '' ?>"><i class="fa fa-check"></i></button>
-									<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal<?=$us->saving_variation_id ?? '' ?>"> <i class="fa fa-times"></i></button>
+									<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#verifyModal<?=$us->saving_variation_id ?? '' ?>"><i class="fa fa-eye"></i></button>
 								<div class="modal fade" id="verifyModal<?=$us->saving_variation_id ?? '' ?>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title h4" id="verifyModal<?=$us->saving_variation_id ?>">Approve Saving Variation</h5>
+                                                <h5 class="modal-title h4" id="verifyModal<?=$us->saving_variation_id ?>">Saving Variation Details</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">×</span>
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <form method="post" action="<?= site_url('/approve-saving-variation') ?>">
+                                                <form method="post" action="#">
                                                 <?= csrf_field() ?>
                                                     <div class="row clearfix">
                                                         <div class="col-lg-6 col-md-12">
@@ -99,22 +117,24 @@ Approve Saving Variations
                                                         <div class="col-lg-6 col-md-12">
                                                             <div class="header">
                                                                 <p> <small><b>Verified By:</b> <?= $us->sv_verified_by ?? '' ?></small></p>
-                                                                <p><small><b>Date Verified:</b> <?=$us->sv_verified ?? '' ?></small></p>
+                                                                <p><small><b>Date Verified:</b> <?= !is_null($us->sv_date_verified) ? date('d-M, Y', strtotime($us->sv_date_verified)) : '' ?></small></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6 col-md-12">
+                                                            <div class="header">
+                                                                <p> <small><b>Approved By:</b> <?= $us->sv_approved_by ?? '' ?></small></p>
+                                                                <p><small><b>Date Approved:</b> <?= !is_null($us->sv_date_approved) ? date('d-M, Y', strtotime($us->sv_date_approved)) : '' ?></small></p>
                                                             </div>
                                                         </div>
                                                         
                                                         
                                                     
-                                                    </div>
-                                                    <input type="hidden" name="saving_variation" value="<?=$us->saving_variation_id ?? '' ?>">
-                                                    <input type="hidden" name="staff" value="<?= $us->sv_staff_id ?? '' ?>">
-                                                    <input type="hidden" name="sv_amount" value="<?= $us->sv_amount ?? 0 ?>">
-                                                    
+                                                    </div>                                               
                                                    
                                                     
                                                     <?= csrf_field() ?>
                                                     <div class="form-group">
-                                                        <button type="submit" class="btn btn-primary btn-block">Approve</button>
+                                                        <button type="button" data-dismiss="modal" class="btn btn-primary btn-block">Close</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -124,6 +144,7 @@ Approve Saving Variations
 								</td>
 							</tr>
 							<?php  endforeach; ?>
+						
 						</tbody>
 					</table>
 				</div>

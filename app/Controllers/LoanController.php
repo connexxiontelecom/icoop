@@ -558,5 +558,33 @@ class LoanController extends BaseController
 	    echo json_encode($data);
     }
 
+
+    public function showApprovedLoanReports(){
+        $data = [
+            'applications'=>$this->loanapp->getAllApprovedLoanApplications()
+        ];
+    
+        $username = $this->session->user_username;
+        $this->authenticate_user($username, 'pages/loan/report', $data); 
+    }
+
+
+      public function generateLoanApplicationReport(){
+        helper(['form']);
+        $data = [];
+        $from = $this->request->getVar('from') ?? date('Y-m-d');
+        $to =  $this->request->getVar('to') ?? date('Y-m-d');
+        
+        if($_POST){
+            $data = [
+               'applications'=>$this->loanapp->getApprovedLoanApplicationReport($from, $to),
+               'from'=>$from,
+               'to'=>$to
+            ];
+            $username = $this->session->user_username;
+           $this->authenticate_user($username, 'pages/loan/generated-report', $data);
+        }
+    }
+
    
 }
