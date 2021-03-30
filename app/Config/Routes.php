@@ -146,6 +146,9 @@ $routes->get('verify_closure', 'Cooperators::verify_closure');
 $routes->post('verify_closure', 'Cooperators::verify_closure');
 $routes->get('approve_closure', 'Cooperators::approve_closure');
 $routes->post('approve_closure', 'Cooperators::approve_closure');
+$routes->get('cooperator_reports', 'Cooperators::reports');
+$routes->get('savings_report', 'Cooperators::savings_report');
+$routes->Post('savings_report', 'Cooperators::savings_report');
 
 
 #Loan routes

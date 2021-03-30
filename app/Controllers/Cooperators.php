@@ -1637,6 +1637,134 @@ class Cooperators extends BaseController
 			endif;
   
 		}
+		
+		
+		public function reports(){
+			
+			$data = [];
+			$username = $this->session->user_username;
+			$this->authenticate_user($username, 'pages/cooperators/report_base', $data);
+		}
+		
+		public function savings_report(){
+			
+			$method = $this->request->getMethod();
+			
+			if($method == 'post'):
+				$username = $this->session->user_username;
+				$from = $this->request->getPost('start');
+				$end = $this->request->getPost('end');
+				$ct_id = $this->request->getPost('ct_id');
+				
+				$data['ct_dt'] = $this->ct->where('contribution_type_id', $ct_id)->first();
+				
+				$_pds = $this->pd->get_payments_group($ct_id);
+				
+				
+				$i = 0;
+				$balances = array();
+				
+						foreach ($_pds as $pd):
+							
+							$staff_id = $pd['pd_staff_id'];
+							$cooperator =  $this->cooperator->where(['cooperator_staff_id' => $staff_id])->first();
+							$balances[$i]['name'] = $cooperator['cooperator_first_name']. ' '.$cooperator['cooperator_last_name'];
+							$balances[$i]['staff_id'] = $staff_id;
+							
+							$bf_payments = $this->pd->get_payment_bf($staff_id, $ct_id, $from);
+							$cr = 0;
+							$dr = 0;
+							$bf = 0;
+							
+//							print_r($bf_payments);
+							foreach ($bf_payments as $bf_payment):
+								
+								if($bf_payment['pd_drcrtype'] == 2):
+									$dr = $bf_payment['pd_amount'];
+									$cr = 0;
+								
+								endif;
+								if($bf_payment['pd_drcrtype'] == 1):
+									$cr = $bf_payment['pd_amount'];
+									$dr = 0;
+								endif;
+								
+								$bf = ($bf + $cr) - $dr;
+								endforeach;
+							
+							$balances[$i]['bf'] = $bf;
+							
+							
+							$payments = $this->pd->get_payments_range($staff_id, $ct_id, $from, $end);
+							$cr = 0;
+							$dr = 0;
+							$balance =0;
+							
+							//print_r($payments);
+							foreach ($payments as $payment):
+								if($payment['pd_drcrtype'] == 2):
+									$dr = $payment['pd_amount'] + $dr;
+									$cr = 0;
+								
+								endif;
+								if($payment['pd_drcrtype'] == 1):
+									$cr = $payment['pd_amount'];
+									$dr = 0;
+								endif;
+								
+								
+								$balance =  ($balance + $cr) - $dr;;
+							endforeach;
+								$balances[$i]['balance'] = $balance;
+						
+							
+								
+							
+						
+						
+							
+						
+							
+							
+							$i++;
+							endforeach;
+				
+				$data['check'] = 1;
+				$data['from'] = $from;
+				$data['to'] = $end;
+				$data['contribution_types'] = $this->ct->findAll();
+				$data['ledgers'] = $balances;
+				
+				//dd($balances);
+				
+				
+				$this->authenticate_user($username, 'pages/cooperators/savings_report', $data);
+			
+			
+			
+			
+			endif;
+			
+			if($method == 'get'):
+				
+
+					$data['ledgers'] = [ ];
+					$data['check'] = 0;
+		
+				
+					$data['states'] = $this->state->findAll();
+					$data['departments'] = $this->department->findAll();
+					$data['banks'] = $this->bank->findAll();
+					$data['pgs'] = $this->pg->findAll();
+					$username = $this->session->user_username;
+					$data['contribution_types'] = $this->ct->findAll();
+					$this->authenticate_user($username, 'pages/cooperators/savings_report', $data);
+				
+
+			endif;
+			
+			
+		}
     
     
     public function test_sweet(){

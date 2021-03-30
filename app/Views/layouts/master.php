@@ -248,7 +248,9 @@
 										<li><a href="<?=base_url('new_closure') ?>">New</a></li>
 										<li><a href="<?=base_url('verify_closure') ?>">Verify</a></li>
 										<li><a href="<?=base_url('approve_closure') ?>">Approve</a></li>
-
+										<li class="header"><b>Reports</b></li>
+										<li><a href="<?=base_url('cooperator_reports') ?>">Reports</a></li>
+										
                                     </ul>
                                 </li>
                                 <li><a href="#" class="has-arrow"><i class="icon-bag"></i><span>Savings</span></a>
