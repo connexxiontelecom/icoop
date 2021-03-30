@@ -36,18 +36,19 @@ Verify Saving Variations
 							<th>#</th>
 							<th> Staff Name</th>
 							<th> Amount </th>							
+							<th> Contribution Type </th>							
 							<th>Action</th>
 						</tr>
 						</thead>
 						
 						<tbody>
-                        
 						<?php $i=1; foreach($unverified_savings as $us) :?>
 							<tr>
 								
 								<td><?=$i++; ?></td>
 								<td><?= $us->cooperator_first_name ?? '' ?> <?= $us->cooperator_last_name ?? '' ?></td>
 								<td><?= number_format($us->sv_amount,2) ?></td>								
+								<td><?= $us->contribution_type_name ?? '' ?></td>								
 								<td>
 									<button type="button" class="btn btn-success" data-toggle="modal" data-target="#verifyModal<?=$us->saving_variation_id ?? '' ?>"><i class="fa fa-check"></i></button>
 									<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal<?=$us->saving_variation_id ?? '' ?>"> <i class="fa fa-times"></i></button>

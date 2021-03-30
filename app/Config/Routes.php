@@ -161,6 +161,8 @@ $routes->get('/view-loan-application/(:num)', 'LoanController::viewLoanApplicati
 $routes->get('/loan/approve', 'LoanController::showApproveApplications');
 $routes->post('/loan/approve', 'LoanController::approveLoanApplication');
 $routes->get('/loan/search-cooperator', 'LoanController::searchCooperator');
+$routes->get('/loan/report', 'LoanController::showApprovedLoanReports');
+$routes->post('/loan/report', 'LoanController::generateLoanApplicationReport');
 
 $routes->post('/cooperator/account-status', 'LoanController::getCooperatorAccountStatus');
 
@@ -226,6 +228,8 @@ $routes->post('/get-staff-ct', 'SavingVariationController::getStaffContributionT
 $routes->post('/verify-saving-variation', 'SavingVariationController::verifySavingVariation');
 $routes->get('/saving-variations/verified', 'SavingVariationController::showVerifiedSavingVariations');
 $routes->post('/approve-saving-variation', 'SavingVariationController::approveSavingVariation');
+$routes->get('/saving-variations/report', 'SavingVariationController::showReport');
+$routes->post('/saving-variations/report', 'SavingVariationController::generateSavingVariationsReport');
 
 #Help desk routes
 $routes->get('/help-desk/loan-application', 'HelpDeskController::getLoanApplication');
