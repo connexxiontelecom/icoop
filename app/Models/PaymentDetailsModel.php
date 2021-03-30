@@ -81,5 +81,35 @@ class PaymentDetailsModel extends \CodeIgniter\Model
 		$builder->where('contribution_type.contribution_type_regular', 1);
 		return $builder->get()->getResultObject();
 	}
+	
+	public function get_payments_group($ct_id){
+		$builder = $this->db->table('payment_details');
+		$builder->groupBy('payment_details.pd_staff_id');
+		$builder->where('payment_details.pd_ct_id', $ct_id);
+		return $builder->get()->getResultArray();
+	}
+	
+	public function get_payments($ct_id){
+		$builder = $this->db->table('payment_details');
+		$builder->where('payment_details.pd_ct_id', $ct_id);
+		return $builder->get()->getResultArray();
+	}
+	
+	public function get_payment_bf($staff_id, $ct_id, $bf_date){
+		$builder = $this->db->table('payment_details');
+		$builder->where('payment_details.pd_staff_id', $staff_id);
+		$builder->where('payment_details.pd_ct_id', $ct_id);
+		$builder->where('payment_details.pd_transaction_date <', $bf_date);
+		return $builder->get()->getResultArray();
+	}
+	
+	public function get_payments_range($staff_id, $ct_id, $from, $to){
+		$builder = $this->db->table('payment_details');
+		$builder->where('payment_details.pd_staff_id', $staff_id);
+		$builder->where('payment_details.pd_ct_id', $ct_id);
+		$builder->where('payment_details.pd_transaction_date >=', $from);
+		$builder->where('payment_details.pd_transaction_date <=', $to);
+		return $builder->get()->getResultArray();
+	}
 
 }
