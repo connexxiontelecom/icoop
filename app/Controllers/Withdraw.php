@@ -362,9 +362,10 @@ class Withdraw extends BaseController
 
 			if($type == 2):
 				
-				$data['note'] = 'Savings Balance: NGN'.number_format($bf - $encumbered_amount).'<br>'.'Encumbered Amount: NGN'.number_format($encumbered_amount);
+				$data['note'] = 'Savings Balance: NGN'.number_format($bf);
 				$data['balance'] = $bf - $encumbered_amount;
 				$data['encumbered_amount'] =  $encumbered_amount;
+				$data['ledgers'] = $ledgers;
 				echo json_encode($data);
 				endif;
 			
