@@ -1,14 +1,14 @@
 <?= $this->extend('layouts/master') ?>
 
 <?= $this->section('title') ?>
-Report 
+Saving Variations Report 
 <?= $this->endSection() ?>
 
 <?= $this->section('current_page') ?>
-Report 
+Saving Variations Report 
 <?= $this->endSection() ?>
 <?= $this->section('page_crumb') ?>
-Report
+Saving Variations Report
 <?= $this->endSection() ?>
 
 <?= $this->section('extra-styles') ?>
@@ -25,7 +25,7 @@ Report
 	<div class="col-lg-12">
 		<div class="card">
 			<div class="header">
-				<h2>Report </h2>
+				<h2>Saving Variations Report </h2>
 			</div>
 			<div class="body">
                 <div class="row ">

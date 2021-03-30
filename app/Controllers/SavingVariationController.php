@@ -135,6 +135,13 @@ class SavingVariationController extends BaseController
     }
 
 
+    public function showReportIndex(){
+         $data = [
+            //'reports'=>$this->savingvariation->getApprovedSavingVariations(),
+         ];
+         $username = $this->session->user_username;
+        $this->authenticate_user($username, 'pages/saving-variation/report-index', $data);
+    }
     public function showReport(){
          $data = [
             'reports'=>$this->savingvariation->getApprovedSavingVariations(),
