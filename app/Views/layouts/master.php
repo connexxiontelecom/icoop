@@ -260,7 +260,7 @@
                                     <li><a href="<?=base_url('/saving-variations/new') ?>">New</a></li>
                                     <li><a href="<?=base_url('/saving-variations/unverified') ?>">Verify</a></li>
                                     <li><a href="<?=base_url('/saving-variations/verified') ?>">Approve</a></li>
-                                    <li><a href="<?=base_url('/saving-variations/report') ?>">Report</a></li>
+                                    <li><a href="<?=base_url('/saving-variations/index/report') ?>">Report</a></li>
                                 </ul>
                                 </li>
                                 <li>
