@@ -567,6 +567,28 @@ class LoanController extends BaseController
         $username = $this->session->user_username;
         $this->authenticate_user($username, 'pages/loan/report', $data); 
     }
+
+
+    public function showDisapprovedLoanReportSection(){
+        $data = [
+            'applications'=>$this->loanapp->getAllDisapprovedLoanApplications()
+        ];
+    
+        $username = $this->session->user_username;
+        $this->authenticate_user($username, 'pages/loan/disapproved-report', $data); 
+    }
+
+
+    public function showDisbursedLoanReportSection(){
+        $data = [
+            'applications'=>$this->loan->getAllDisbursedLoanReport()
+        ];
+    
+        $username = $this->session->user_username;
+        $this->authenticate_user($username, 'pages/loan/disbursed-loan-report', $data); 
+    }
+
+
     public function showApprovedLoanReportSection(){
         $data = [
             //'applications'=>$this->loanapp->getAllApprovedLoanApplications()
@@ -591,6 +613,24 @@ class LoanController extends BaseController
             ];
             $username = $this->session->user_username;
            $this->authenticate_user($username, 'pages/loan/generated-report', $data);
+        }
+    }
+
+
+      public function generateDisapprovedLoanApplicationReport(){
+        helper(['form']);
+        $data = [];
+        $from = $this->request->getVar('from') ?? date('Y-m-d');
+        $to =  $this->request->getVar('to') ?? date('Y-m-d');
+        
+        if($_POST){
+            $data = [
+               'applications'=>$this->loanapp->getDisapprovedLoanApplicationReport($from, $to),
+               'from'=>$from,
+               'to'=>$to
+            ];
+            $username = $this->session->user_username;
+           $this->authenticate_user($username, 'pages/loan/generated-disapproved-report', $data);
         }
     }
 
