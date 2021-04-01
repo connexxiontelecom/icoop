@@ -115,7 +115,7 @@ Savings Report
 					<div class="body">
 						<div class="table-responsive">
 							<?php  if(!empty($ledgers)): ?>
-								<table class="table table-hover js-basic-example dataTable simpletable table-custom spacing5">
+								<table class="table table-hover  table-custom spacing5 dataTable js-exportable">
 									<thead>
 									<tr>
 										<th><strong># </strong></th>
@@ -188,7 +188,7 @@ Savings Report
 <script src="assets/vendor/dropify/js/dropify.js"></script>
 <script src="assets/js/common.js"></script>
 
-<script src="assets/bundles/datatablescripts.bundle.js"></script>
+<!--<script src="assets/bundles/datatablescripts.bundle.js"></script>-->
 <script src="assets/vendor/jquery-datatable/buttons/dataTables.buttons.min.js"></script>
 <script src="assets/vendor/jquery-datatable/buttons/buttons.bootstrap4.min.js"></script>
 <script src="assets/vendor/jquery-datatable/buttons/buttons.colVis.min.js"></script>
@@ -202,5 +202,16 @@ Savings Report
 <script src="assets/vendor/bootstrap-multiselect/bootstrap-multiselect.js"></script>
 <script src="assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 <script src="assets/vendor/bootstrap-tagsinput/bootstrap-tagsinput.js"></script><!-- Bootstrap Tags Input Plugin Js -->
+
+
+
+<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script src="assets/bundles/vendorscripts.bundle.js"></script>
+
+
+<script src="assets/vendor/sweetalert/sweetalert.min.js"></script><!-- SweetAlert Plugin Js -->
+<script src="assets/js/common.js"></script>
+<script src="assets/js/pages/tables/jquery-datatable.js"></script>
 
 <?= $this->endSection() ?>
