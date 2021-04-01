@@ -1699,11 +1699,13 @@ class Cooperators extends BaseController
 							$cr = 0;
 							$dr = 0;
 							$balance =0;
+							$total_cr = 0;
+							$total_dr = 0;
 							
 							//print_r($payments);
 							foreach ($payments as $payment):
 								if($payment['pd_drcrtype'] == 2):
-									$dr = $payment['pd_amount'] + $dr;
+									$dr = $payment['pd_amount'];
 									$cr = 0;
 								
 								endif;
@@ -1712,19 +1714,15 @@ class Cooperators extends BaseController
 									$dr = 0;
 								endif;
 								
+								$total_dr = $total_dr + $dr;
+								$total_cr = $total_cr + $cr;
 								
 								$balance =  ($balance + $cr) - $dr;;
 							endforeach;
 								$balances[$i]['balance'] = $balance;
-						
-							
+								$balances[$i]['total_cr'] = $total_cr;
+								$balances[$i]['total_dr'] = $total_dr;
 								
-							
-						
-						
-							
-						
-							
 							
 							$i++;
 							endforeach;

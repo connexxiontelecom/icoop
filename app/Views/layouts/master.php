@@ -262,7 +262,9 @@
                                     <li><a href="<?=base_url('/saving-variations/new') ?>">New</a></li>
                                     <li><a href="<?=base_url('/saving-variations/unverified') ?>">Verify</a></li>
                                     <li><a href="<?=base_url('/saving-variations/verified') ?>">Approve</a></li>
-                                    <li><a href="<?=base_url('/saving-variations/index/report') ?>">Report</a></li>
+									<li class="header"><b>Reports</b></li>
+									<li><a href="<?=base_url('/saving-variations/index/report') ?>">Reports</a></li>
+                                
                                 </ul>
                                 </li>
                                 <li>

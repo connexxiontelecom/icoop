@@ -122,6 +122,8 @@ Savings Report
 										<th><strong>Staff ID</strong></th>
 										<th><strong>Name</strong></th>
 										<th style="text-align: right"><strong>BF</strong></th>
+										<th style="text-align: right"><strong>Period DR</strong></th>
+										<th style="text-align: right"><strong>Period CR</strong></th>
 										<th style="text-align: right"><strong>Period Balance</strong></th>
 										<th style="text-align: right"><strong> Balance</strong></th>
 										
@@ -143,6 +145,8 @@ Savings Report
 												<td><?=$ledger['staff_id']; ?></td>
 												<td><?=$ledger['name']; ?></td>
 												<td style="text-align: right"><?=number_format($ledger['bf'], 2); ?></td>
+												<td style="text-align: right"><?=number_format($ledger['total_dr'], 2); ?></td>
+												<td style="text-align: right"><?=number_format($ledger['total_cr'], 2); ?></td>
 												<td style="text-align: right"><?=number_format($ledger['balance'], 2); ?></td>
 												<td style="text-align: right"><?=number_format($ledger['balance'] + $ledger['bf'], 2); ?></td>
 												
