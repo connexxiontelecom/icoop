@@ -269,7 +269,7 @@
                                         <li><a href="<?=site_url('/loan/new') ?>">New Loan</a></li>
                                         <li><a href="<?=site_url('/loan/verify') ?>">Verify Loan</a></li>
                                         <li><a href="<?=site_url('/loan/approve') ?>">Approve Loan</a></li>
-                                         <li class="header">Report</li>
+                                         <li class="header"><b>Report</b> </li>
                                         <li><a href="<?=site_url('/loan/index/report') ?>">Report</a></li>
                                     </ul>
                                 </li>

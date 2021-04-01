@@ -1,14 +1,14 @@
 <?= $this->extend('layouts/master') ?>
 
 <?= $this->section('title') ?>
-Approved Loan Report 
+Disbursed Loan Report 
 <?= $this->endSection() ?>
 
 <?= $this->section('current_page') ?>
-Approved Loan Report 
+Disbursed Loan Report 
 <?= $this->endSection() ?>
 <?= $this->section('page_crumb') ?>
-Approved Loan Report
+Disbursed Loan Report
 <?= $this->endSection() ?>
 
 <?= $this->section('extra-styles') ?>
@@ -25,13 +25,13 @@ Approved Loan Report
 	<div class="col-lg-12">
 		<div class="card">
 			<div class="header">
-				<h2>Approved Loan Report </h2>
+				<h2>Disbursed Loan Report </h2>
 			</div>
 			<div class="body">
                 <div class="row mb-3">
                     <div class="col-lg-12 col-md-12 col-xl-12">
-                        <h6 class="sub-title p-3  text-uppercase">Approved Loan Report</h6>
-                        <form action="<?= site_url('/loan/report') ?>" method="post" class="form-inline">
+                        <h6 class="sub-title p-3  text-uppercase">Disbursed Loan Report</h6>
+                        <form action="<?= site_url('/loan/disapproved-loan-report') ?>" method="post" class="form-inline">
                             <?= csrf_field() ?>
                             <div class="form-group">
                                 <label for="">From</label>
@@ -58,10 +58,7 @@ Approved Loan Report
                             <th>Name</th>
                             <th>Loan Type</th>
                             <th>Amount</th>
-                            <th>Duration</th>
-                            <th>Date Applied</th>
-                            <th>Date Approved</th>
-                            <th>Action</th>
+                            <th>Date Disbursed</th>
                         </tr>
 						</thead>
                         <tbody>
@@ -73,12 +70,8 @@ Approved Loan Report
                                     <td><?= $app->cooperator_first_name ?? '' ?> <?= $app->cooperator_last_name ?? '' ?></td>
                                     <td><?= $app->loan_description ?? '' ?> </td>
                                     <td class="text-right"><?= number_format($app->amount ?? 0) ?></td>
-                                    <td><?= number_format($app->duration ?? 0) ?> months</td>
-                                    <td><?= date('d M, Y', strtotime($app->applied_date)) ?> </td>
-                                    <td><?= date('d M, Y', strtotime($app->approve_date)) ?> </td>
-                                    <td>
-                                        <a href="<?= site_url('/view-loan-application/'.$app->loan_app_id) ?>" class="btn btn-primary btn-sm">View</a>
-                                    </td>
+                                    <td><?= date('d M, Y', strtotime($app->disburse_date)) ?> </td>
+                                    
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
