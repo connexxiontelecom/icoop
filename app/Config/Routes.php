@@ -167,6 +167,9 @@ $routes->get('/loan/search-cooperator', 'LoanController::searchCooperator');
 $routes->get('/loan/report', 'LoanController::showApprovedLoanReports');
 $routes->get('/loan/index/report', 'LoanController::showApprovedLoanReportSection');
 $routes->post('/loan/report', 'LoanController::generateLoanApplicationReport');
+$routes->get('/loan/index/disapproved-report', 'LoanController::showDisapprovedLoanReportSection');
+$routes->post('/loan/disapproved-loan-report', 'LoanController::generateDisapprovedLoanApplicationReport');
+$routes->get('/loan/index/disbursed-report', 'LoanController::showDisbursedLoanReportSection');
 
 $routes->post('/cooperator/account-status', 'LoanController::getCooperatorAccountStatus');
 

@@ -169,7 +169,24 @@ class LoanModel extends Model{
 	}
 
 
-	
+	public function getAllDisbursedLoanReport(){
+		$builder = $this->db->table('loans');
+        $builder->join('cooperators', 'cooperators.cooperator_staff_id = loans.staff_id');
+        $builder->join('loan_setups', 'loan_setups.loan_setup_id = loans.loan_type');
+        $builder->where('loans.disburse = 1');
+		$builder->orderBy('loans.disburse_date', 'DESC');
+        return $builder->get()->getResultObject();
+	}
+    public function getAllDisbursedLoanReportByPeriod($from,$to){
+		$builder = $this->db->table('loans');
+        $builder->join('cooperators', 'cooperators.cooperator_staff_id = loans.staff_id');
+        $builder->join('loan_setups', 'loan_setups.loan_setup_id = loans.loan_type');
+        $builder->where('loans.disburse = 1');
+		$builder->where('loans.disburse_date >= ', $from);
+		$builder->where('loans.disburse_date <= ', $to);
+		$builder->orderBy('loans.disburse_date', 'DESC');
+        return $builder->get()->getResultObject();
+	}
 	
 	
 	

@@ -38,9 +38,41 @@ Loan Report
 							<a href="<?= site_url('/loan/report') ?>">
                                 <div class="body">
                                     <div class="d-flex align-items-center">
-                                        <div class="icon-in-bg bg-indigo text-white rounded-circle"><i class="fa fa-briefcase"></i></div>
+                                        <div class="icon-in-bg bg-indigo text-white rounded-circle"><i class="fa fa-check"></i></div>
                                         <div class="ml-4">
-                                            <span>Loan Report</span>								
+                                            <span>Approved Loan Report</span>								
+                                        </div>
+                                    </div>
+                        
+                                </div>
+							</a>
+				        </div>
+					</div>
+					<div class="col-lg-4 col-md-6 col-sm-12">
+						
+						<div class="card">
+							<a href="<?= site_url('/loan/index/disapproved-report') ?>">
+                                <div class="body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="icon-in-bg bg-indigo text-white rounded-circle"><i class="fa fa-ban"></i></div>
+                                        <div class="ml-4">
+                                            <span>Disapproved Loan Report</span>								
+                                        </div>
+                                    </div>
+                        
+                                </div>
+							</a>
+				        </div>
+					</div>
+					<div class="col-lg-4 col-md-6 col-sm-12">
+						
+						<div class="card">
+							<a href="<?= site_url('/loan/index/disbursed-report') ?>">
+                                <div class="body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="icon-in-bg bg-indigo text-white rounded-circle"><i class="fa fa-money"></i></div>
+                                        <div class="ml-4">
+                                            <span>Disbursed Loan Report</span>								
                                         </div>
                                     </div>
                         
