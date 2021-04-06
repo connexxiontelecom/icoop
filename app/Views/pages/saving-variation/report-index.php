@@ -68,6 +68,82 @@ Report(Savings)
 							</a>
 						</div>
 					</div>
+					
+					<div class="col-lg-4 col-md-6 col-sm-12">
+						
+						<div class="card">
+							<a href="<?php echo base_url('analysis_report'); ?>">
+								
+								<div class="body">
+									
+									<div class="d-flex align-items-center">
+										<div class="icon-in-bg bg-indigo text-white rounded-circle"><i class="icon-notebook"></i></div>
+										<div class="ml-4">
+											<span>Analysis Reports</span>
+										</div>
+									</div>
+								
+								</div>
+							</a>
+						</div>
+					</div>
+					
+					<div class="col-lg-4 col-md-6 col-sm-12">
+						
+						<div class="card">
+							<a href="<?php echo base_url('withdrawal_report'); ?>">
+								
+								<div class="body">
+									
+									<div class="d-flex align-items-center">
+										<div class="icon-in-bg bg-indigo text-white rounded-circle"><i class="icon-notebook"></i></div>
+										<div class="ml-4">
+											<span>Withdrawal Reports</span>
+										</div>
+									</div>
+								
+								</div>
+							</a>
+						</div>
+					</div>
+					
+					<div class="col-lg-4 col-md-6 col-sm-12">
+						
+						<div class="card">
+							<a href="<?php echo base_url('payroll_contribution_report'); ?>">
+								
+								<div class="body">
+									
+									<div class="d-flex align-items-center">
+										<div class="icon-in-bg bg-indigo text-white rounded-circle"><i class="icon-notebook"></i></div>
+										<div class="ml-4">
+											<span>Payroll Contribution Reports</span>
+										</div>
+									</div>
+								
+								</div>
+							</a>
+						</div>
+					</div>
+					
+					<div class="col-lg-4 col-md-6 col-sm-12">
+						
+						<div class="card">
+							<a href="<?php echo base_url('external_savings_report'); ?>">
+								
+								<div class="body">
+									
+									<div class="d-flex align-items-center">
+										<div class="icon-in-bg bg-indigo text-white rounded-circle"><i class="icon-notebook"></i></div>
+										<div class="ml-4">
+											<span>External Contribution Reports</span>
+										</div>
+									</div>
+								
+								</div>
+							</a>
+						</div>
+					</div>
 				</div>
             </div>
 
