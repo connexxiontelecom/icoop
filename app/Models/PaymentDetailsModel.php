@@ -5,13 +5,14 @@ namespace App\Models;
 //1 = CREDIT, 2 = DEBIT
 
 /***
- * payment type
+ * payment types
  * 1 = withdraw
  * 2 = withdraw charges
  * 3 = payroll contribution
  * 4 = journal transfer
- * 5 = account closure
+ * 5 = external savings
  * 6 = reconciliation
+ * 7 = account closure
  *
  */
 

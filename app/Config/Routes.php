@@ -149,6 +149,14 @@ $routes->post('approve_closure', 'Cooperators::approve_closure');
 $routes->get('cooperator_reports', 'Cooperators::reports');
 $routes->get('savings_report', 'Cooperators::savings_report');
 $routes->Post('savings_report', 'Cooperators::savings_report');
+$routes->get('analysis_report', 'Cooperators::analysis_report');
+$routes->Post('analysis_report', 'Cooperators::analysis_report');
+$routes->get('withdrawal_report', 'Cooperators::withdrawal_report');
+$routes->Post('withdrawal_report', 'Cooperators::withdrawal_report');
+$routes->get('payroll_contribution_report', 'Cooperators::payroll_contribution_report');
+$routes->Post('payroll_contribution_report', 'Cooperators::payroll_contribution_report');
+$routes->get('external_savings_report', 'Cooperators::external_savings_report');
+$routes->Post('external_savings_report', 'Cooperators::external_savings_report');
 
 
 #Loan routes

@@ -1,14 +1,14 @@
 <?= $this->extend('layouts/master') ?>
 
 <?= $this->section('title') ?>
-Savings Report
+Savings Analysis Report
 <?= $this->endSection() ?>
 
 <?= $this->section('current_page') ?>
-Savings Report
+Savings Analysis Report
 <?= $this->endSection() ?>
 <?= $this->section('page_crumb') ?>
-Savings Report
+Savings Analysis Report
 <?= $this->endSection() ?>
 
 <?= $this->section('extra-styles') ?>
@@ -26,7 +26,7 @@ Savings Report
 	<div class="col-lg-12">
 		<div class="card">
 			<div class="header">
-				<h2>Savings Report - View Report</h2>
+				<h2>Savings Analysis Report - View Report</h2>
 			
 			</div>
 			
@@ -145,8 +145,32 @@ Savings Report
 												<td><?=$ledger['staff_id']; ?></td>
 												<td><?=$ledger['name']; ?></td>
 												<td style="text-align: right"><?=number_format($ledger['bf'], 2); ?></td>
-												<td style="text-align: right"><?=number_format($ledger['total_dr'], 2); ?></td>
-												<td style="text-align: right"><?=number_format($ledger['total_cr'], 2); ?></td>
+												<td style="text-align: right">
+													
+													<?=number_format($ledger['total_dr'], 2); ?>
+													<hr>
+													<b>Analysis</b>
+													<p> Withdraw: <kbd><?=number_format($ledger['withdraw_dr'], 2) ?></kbd></p>
+													<p> Withdraw Charges: <kbd><?=number_format($ledger['withdraw_charges_dr'], 2) ?></kbd></p>
+													<p> Payroll Contribution: <kbd><?=number_format($ledger['payroll_contribution_dr'], 2) ?></kbd></p>
+													<p> Journal Transfer: <kbd><?=number_format($ledger['journal_transfer_dr'], 2) ?></kbd></p>
+													<p> External Savings: <kbd><?=number_format($ledger['external_savings_dr'], 2) ?></kbd></p>
+													<p> Account Closure: <kbd><?=number_format($ledger['account_closure_dr'], 2) ?></kbd></p>
+													<p> Others: <kbd><?=number_format($ledger['reconciliation_dr'], 2) ?></kbd></p>
+												</td>
+												<td style="text-align: right">
+													
+													<?=number_format($ledger['total_cr'], 2); ?>
+													<hr>
+													<b>Analysis</b>
+													<p> Withdraw: <kbd><?=number_format($ledger['withdraw_cr'], 2) ?></kbd></p>
+													<p> Withdraw Charges: <kbd><?=number_format($ledger['withdraw_charges_cr'], 2) ?></kbd></p>
+													<p> Payroll Contribution: <kbd><?=number_format($ledger['payroll_contribution_cr'], 2) ?></kbd></p>
+													<p> Journal Transfer: <kbd><?=number_format($ledger['journal_transfer_cr'], 2) ?></kbd></p>
+													<p> External Savings: <kbd><?=number_format($ledger['external_savings_cr'], 2) ?></kbd></p>
+													<p> Account Closure: <kbd><?=number_format($ledger['account_closure_cr'], 2) ?></kbd></p>
+													<p> Others: <kbd><?=number_format($ledger['reconciliation_cr'], 2) ?></kbd></p>
+												</td>
 												<td style="text-align: right"><?=number_format($ledger['balance'], 2); ?></td>
 												<td style="text-align: right"><?=number_format($ledger['balance'] + $ledger['bf'], 2); ?></td>
 												

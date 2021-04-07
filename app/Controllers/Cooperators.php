@@ -1346,6 +1346,7 @@ class Cooperators extends BaseController
 									'pd_ct_id' => $cts['contribution_type_id'],
 									'pd_pg_id' => $staff['cooperator_payroll_group_id'],
 									'pd_ref_code' => $ref_code,
+									'pd_payment_type' => 7,
 									'pd_month' => date('n'),
 									'pd_year' => date('Y'),
 								);
@@ -1380,6 +1381,7 @@ class Cooperators extends BaseController
 									'pd_ct_id' => $ct_s['contribution_type_id'],
 									'pd_pg_id' => $staff['cooperator_payroll_group_id'],
 									'pd_ref_code' => $ref_code,
+									'pd_payment_type' => 7,
 									'pd_month' => date('n'),
 									'pd_year' => date('Y'),
 								);
@@ -1699,11 +1701,13 @@ class Cooperators extends BaseController
 							$cr = 0;
 							$dr = 0;
 							$balance =0;
+							$total_cr = 0;
+							$total_dr = 0;
 							
 							//print_r($payments);
 							foreach ($payments as $payment):
 								if($payment['pd_drcrtype'] == 2):
-									$dr = $payment['pd_amount'] + $dr;
+									$dr = $payment['pd_amount'];
 									$cr = 0;
 								
 								endif;
@@ -1712,19 +1716,15 @@ class Cooperators extends BaseController
 									$dr = 0;
 								endif;
 								
+								$total_dr = $total_dr + $dr;
+								$total_cr = $total_cr + $cr;
 								
 								$balance =  ($balance + $cr) - $dr;;
 							endforeach;
 								$balances[$i]['balance'] = $balance;
-						
-							
+								$balances[$i]['total_cr'] = $total_cr;
+								$balances[$i]['total_dr'] = $total_dr;
 								
-							
-						
-						
-							
-						
-							
 							
 							$i++;
 							endforeach;
@@ -1765,9 +1765,662 @@ class Cooperators extends BaseController
 			
 			
 		}
+	
+	public function analysis_report(){
+		
+		$method = $this->request->getMethod();
+		
+		if($method == 'post'):
+			$username = $this->session->user_username;
+			$from = $this->request->getPost('start');
+			$end = $this->request->getPost('end');
+			$ct_id = $this->request->getPost('ct_id');
+			
+			$data['ct_dt'] = $this->ct->where('contribution_type_id', $ct_id)->first();
+			
+			$_pds = $this->pd->get_payments_group($ct_id);
+			
+			
+			$i = 0;
+			$balances = array();
+			
+			foreach ($_pds as $pd):
+				
+				$staff_id = $pd['pd_staff_id'];
+				$cooperator =  $this->cooperator->where(['cooperator_staff_id' => $staff_id])->first();
+				$balances[$i]['name'] = $cooperator['cooperator_first_name']. ' '.$cooperator['cooperator_last_name'];
+				$balances[$i]['staff_id'] = $staff_id;
+				
+				$bf_payments = $this->pd->get_payment_bf($staff_id, $ct_id, $from);
+				$cr = 0;
+				$dr = 0;
+				$bf = 0;
+				
+				/***
+				 * payment types
+				 * 1 = withdraw
+				 * 2 = withdraw charges
+				 * 3 = payroll contribution
+				 * 4 = journal transfer
+				 * 5 = external savings
+				 * 6 = reconciliation
+				 * 7 = account closure
+				 *
+				 */
+				
+				$p_withdraw_dr = 0;
+				$p_withdraw_charges_dr = 0;
+				$p_payroll_contribution_dr = 0;
+				$p_journal_transfer_dr = 0;
+				$p_account_closure_dr = 0;
+				$p_reconciliation_dr = 0;
+				$p_external_savings_dr = 0;
+				
+				
+				$p_withdraw_cr = 0;
+				$p_withdraw_charges_cr = 0;
+				$p_payroll_contribution_cr = 0;
+				$p_journal_transfer_cr = 0;
+				$p_account_closure_cr = 0;
+				$p_reconciliation_cr = 0;
+				$p_external_savings_cr = 0;
+				
+
+//							print_r($bf_payments);
+				foreach ($bf_payments as $bf_payment):
+					
+					if($bf_payment['pd_drcrtype'] == 2):
+						$dr = $bf_payment['pd_amount'];
+						$cr = 0;
+						
+						
+					
+					endif;
+					if($bf_payment['pd_drcrtype'] == 1):
+						$cr = $bf_payment['pd_amount'];
+						$dr = 0;
+						
+						
+						
+					endif;
+					
+					$bf = ($bf + $cr) - $dr;
+				endforeach;
+				
+				$balances[$i]['bf'] = $bf;
+				
+				
+				$payments = $this->pd->get_payments_range($staff_id, $ct_id, $from, $end);
+				
+				$cr = 0;
+				$dr = 0;
+				$balance =0;
+				$total_cr = 0;
+				$total_dr = 0;
+				
+				//print_r($payments);
+				foreach ($payments as $payment):
+					if($payment['pd_drcrtype'] == 2):
+						$dr = $payment['pd_amount'];
+						$cr = 0;
+						
+						if($payment['pd_payment_type'] == 1):
+							
+							$p_withdraw_dr = $payment['pd_amount'] + $p_withdraw_dr;
+						endif;
+						
+						if($payment['pd_payment_type'] == 2):
+							
+							$p_withdraw_charges_dr = $payment['pd_amount'] + $p_withdraw_charges_dr;
+						endif;
+						
+						if($payment['pd_payment_type'] == 3):
+							
+							$p_payroll_contribution_dr = $payment['pd_amount'] + $p_payroll_contribution_dr;
+						endif;
+						
+						if($payment['pd_payment_type'] == 4):
+							
+							$p_journal_transfer_dr = $payment['pd_amount'] + $p_journal_transfer_dr;
+						endif;
+						
+						if($payment['pd_payment_type'] == 5):
+							
+							$p_external_savings_dr = $payment['pd_amount'] + $p_external_savings_dr;
+						endif;
+						
+						if($payment['pd_payment_type'] == 6):
+							
+							$p_reconciliation_dr = $payment['pd_amount'] + $p_reconciliation_dr;
+						endif;
+						
+						if($payment['pd_payment_type'] == 7):
+							
+							$p_account_closure_dr = $payment['pd_amount'] + $p_account_closure_dr;
+						endif;
+					
+					endif;
+					if($payment['pd_drcrtype'] == 1):
+						$cr = $payment['pd_amount'];
+						$dr = 0;
+						
+						if($payment['pd_payment_type'] == 1):
+							
+							$p_withdraw_cr = $payment['pd_amount'] + $p_withdraw_cr;
+						endif;
+						
+						if($payment['pd_payment_type'] == 2):
+							
+							$p_withdraw_charges_cr = $payment['pd_amount'] + $p_withdraw_charges_cr;
+						endif;
+						
+						if($payment['pd_payment_type'] == 3):
+							
+							$p_payroll_contribution_cr = $payment['pd_amount'] + $p_payroll_contribution_cr;
+						endif;
+						
+						if($payment['pd_payment_type'] == 4):
+							
+							$p_journal_transfer_cr = $payment['pd_amount'] + $p_journal_transfer_cr;
+						endif;
+						
+						if($payment['pd_payment_type'] == 5):
+							
+							$p_external_savings_cr = $payment['pd_amount'] + $p_external_savings_cr;
+						endif;
+						
+						if($payment['pd_payment_type'] == 6):
+							
+							$p_reconciliation_cr = $payment['pd_amount'] + $p_reconciliation_cr;
+						endif;
+						
+						if($payment['pd_payment_type'] == 7):
+							
+							$p_account_closure_cr = $payment['pd_amount'] + $p_account_closure_cr;
+						endif;
+					endif;
+					
+					$total_dr = $total_dr + $dr;
+					$total_cr = $total_cr + $cr;
+					
+					$balance =  ($balance + $cr) - $dr;;
+				endforeach;
+				$balances[$i]['balance'] = $balance;
+				$balances[$i]['total_cr'] = $total_cr;
+				$balances[$i]['total_dr'] = $total_dr;
+				
+				$balances[$i]['withdraw_cr'] = $p_withdraw_cr;
+				$balances[$i]['withdraw_charges_cr'] = $p_withdraw_charges_cr;
+				$balances[$i]['payroll_contribution_cr'] = $p_payroll_contribution_cr;
+				$balances[$i]['journal_transfer_cr'] = $p_journal_transfer_cr;
+				$balances[$i]['external_savings_cr'] = $p_external_savings_cr;
+				$balances[$i]['reconciliation_cr'] = $p_reconciliation_cr;
+				$balances[$i]['account_closure_cr'] = $p_account_closure_cr;
+				
+				
+				$balances[$i]['withdraw_dr'] = $p_withdraw_dr;
+				$balances[$i]['withdraw_charges_dr'] = $p_withdraw_charges_dr;
+				$balances[$i]['payroll_contribution_dr'] = $p_payroll_contribution_dr;
+				$balances[$i]['journal_transfer_dr'] = $p_journal_transfer_dr;
+				$balances[$i]['external_savings_dr'] = $p_external_savings_dr;
+				$balances[$i]['reconciliation_dr'] = $p_reconciliation_dr;
+				$balances[$i]['account_closure_dr'] = $p_account_closure_dr;
+				
+				
+				$i++;
+			endforeach;
+			
+			$data['check'] = 1;
+			$data['from'] = $from;
+			$data['to'] = $end;
+			$data['contribution_types'] = $this->ct->findAll();
+			$data['ledgers'] = $balances;
+			
+			//dd($balances);
+			
+			
+			$this->authenticate_user($username, 'pages/cooperators/analysis_report', $data);
+		
+		
+		
+		
+		endif;
+		
+		if($method == 'get'):
+			
+			
+			$data['ledgers'] = [ ];
+			$data['check'] = 0;
+			
+			
+			$data['states'] = $this->state->findAll();
+			$data['departments'] = $this->department->findAll();
+			$data['banks'] = $this->bank->findAll();
+			$data['pgs'] = $this->pg->findAll();
+			$username = $this->session->user_username;
+			$data['contribution_types'] = $this->ct->findAll();
+			$this->authenticate_user($username, 'pages/cooperators/analysis_report', $data);
+		
+		
+		endif;
+		
+		
+	}
+	
+	public function withdrawal_report(){
+		
+		$method = $this->request->getMethod();
+		
+		if($method == 'post'):
+			$username = $this->session->user_username;
+			$from = $this->request->getPost('start');
+			$end = $this->request->getPost('end');
+			$ct_id = $this->request->getPost('ct_id');
+			
+			$data['ct_dt'] = $this->ct->where('contribution_type_id', $ct_id)->first();
+			
+			$_pds = $this->pd->get_payments_group($ct_id);
+			
+			
+			$i = 0;
+			$balances = array();
+			
+			foreach ($_pds as $pd):
+				
+				$staff_id = $pd['pd_staff_id'];
+				$cooperator =  $this->cooperator->where(['cooperator_staff_id' => $staff_id])->first();
+				$balances[$i]['name'] = $cooperator['cooperator_first_name']. ' '.$cooperator['cooperator_last_name'];
+				$balances[$i]['staff_id'] = $staff_id;
+				
+				$bf_payments = $this->pd->get_payment_bf($staff_id, $ct_id, $from);
+				$cr = 0;
+				$dr = 0;
+				$bf = 0;
+				
+				/***
+				 * payment types
+				 * 1 = withdraw
+				 * 2 = withdraw charges
+				 * 3 = payroll contribution
+				 * 4 = journal transfer
+				 * 5 = external savings
+				 * 6 = reconciliation
+				 * 7 = account closure
+				 *
+				 */
+				
+				$p_withdraw_dr = 0;
+				$p_withdraw_charges_dr = 0;
+				
+
+
+
+				
+				
+				
+				$payments = $this->pd->get_payments_range($staff_id, $ct_id, $from, $end);
+				
+				$cr = 0;
+				$dr = 0;
+				$balance =0;
+				$total_cr = 0;
+				$total_dr = 0;
+				
+				//print_r($payments);
+				foreach ($payments as $payment):
+					if($payment['pd_drcrtype'] == 2):
+						$dr = $payment['pd_amount'];
+						$cr = 0;
+						
+						
+						if($payment['pd_payment_type'] == 1):
+							
+							$p_withdraw_dr = $payment['pd_amount'] + $p_withdraw_dr;
+						endif;
+						if($payment['pd_payment_type'] == 2):
+							
+							$p_withdraw_charges_dr = $payment['pd_amount'] + $p_withdraw_charges_dr;
+						endif;
+						
+						
+						
+					
+					endif;
+					if($payment['pd_drcrtype'] == 1):
+						$cr = $payment['pd_amount'];
+						$dr = 0;
+						
+				
+					
+					endif;
+					
+					$total_dr = $total_dr + $dr;
+					$total_cr = $total_cr + $cr;
+					
+					$balance =  ($balance + $cr) - $dr;;
+				endforeach;
+				$balances[$i]['balance'] = $balance;
+				$balances[$i]['total_cr'] = $total_cr;
+				$balances[$i]['total_dr'] = $total_dr;
+				
+				$balances[$i]['withdraw_dr'] = $p_withdraw_dr;
+				$balances[$i]['withdraw_charges_dr'] = $p_withdraw_charges_dr;
+			
+
+				
+				
+				$i++;
+			endforeach;
+			
+			$data['check'] = 1;
+			$data['from'] = $from;
+			$data['to'] = $end;
+			$data['contribution_types'] = $this->ct->findAll();
+			$data['ledgers'] = $balances;
+			
+			//dd($balances);
+			
+			
+			$this->authenticate_user($username, 'pages/cooperators/withdrawal_report', $data);
+		
+		
+		
+		
+		endif;
+		
+		if($method == 'get'):
+			
+			
+			$data['ledgers'] = [ ];
+			$data['check'] = 0;
+			
+			
+			$data['states'] = $this->state->findAll();
+			$data['departments'] = $this->department->findAll();
+			$data['banks'] = $this->bank->findAll();
+			$data['pgs'] = $this->pg->findAll();
+			$username = $this->session->user_username;
+			$data['contribution_types'] = $this->ct->findAll();
+			$this->authenticate_user($username, 'pages/cooperators/withdrawal_report', $data);
+		
+		
+		endif;
+		
+		
+	}
+	
+	public function payroll_contribution_report(){
+		
+		$method = $this->request->getMethod();
+		
+		if($method == 'post'):
+			$username = $this->session->user_username;
+			$from = $this->request->getPost('start');
+			$end = $this->request->getPost('end');
+			$ct_id = $this->request->getPost('ct_id');
+			
+			$data['ct_dt'] = $this->ct->where('contribution_type_id', $ct_id)->first();
+			
+			$_pds = $this->pd->get_payments_group($ct_id);
+			
+			
+			$i = 0;
+			$balances = array();
+			
+			foreach ($_pds as $pd):
+				
+				$staff_id = $pd['pd_staff_id'];
+				$cooperator =  $this->cooperator->where(['cooperator_staff_id' => $staff_id])->first();
+				$balances[$i]['name'] = $cooperator['cooperator_first_name']. ' '.$cooperator['cooperator_last_name'];
+				$balances[$i]['staff_id'] = $staff_id;
+				
+				$bf_payments = $this->pd->get_payment_bf($staff_id, $ct_id, $from);
+				$cr = 0;
+				$dr = 0;
+				$bf = 0;
+				
+				/***
+				 * payment types
+				 * 1 = withdraw
+				 * 2 = withdraw charges
+				 * 3 = payroll contribution
+				 * 4 = journal transfer
+				 * 5 = external savings
+				 * 6 = reconciliation
+				 * 7 = account closure
+				 *
+				 */
+				
+			
+				$p_payroll_contribution_cr =0;
+				
+				
+				
+				
+				
+				
+				
+				$payments = $this->pd->get_payments_range($staff_id, $ct_id, $from, $end);
+				
+				$cr = 0;
+				$dr = 0;
+				$balance =0;
+				$total_cr = 0;
+				$total_dr = 0;
+				
+				//print_r($payments);
+				foreach ($payments as $payment):
+					if($payment['pd_drcrtype'] == 2):
+						$dr = $payment['pd_amount'];
+						$cr = 0;
+						
+						
+					endif;
+					
+					if($payment['pd_drcrtype'] == 1):
+						$cr = $payment['pd_amount'];
+						$dr = 0;
+						
+						if($payment['pd_payment_type'] == 3):
+							
+							$p_payroll_contribution_cr = $payment['pd_amount'] + $p_payroll_contribution_cr;
+						endif;
+					
+					endif;
+					
+					$total_dr = $total_dr + $dr;
+					$total_cr = $total_cr + $cr;
+					
+					$balance =  ($balance + $cr) - $dr;;
+				endforeach;
+				$balances[$i]['balance'] = $balance;
+				$balances[$i]['total_cr'] = $total_cr;
+				$balances[$i]['total_dr'] = $total_dr;
+				
+				$balances[$i]['payroll_contribution_cr'] = $p_payroll_contribution_cr;
+	
+				
+				
+				
+				
+				$i++;
+			endforeach;
+			
+			$data['check'] = 1;
+			$data['from'] = $from;
+			$data['to'] = $end;
+			$data['contribution_types'] = $this->ct->findAll();
+			$data['ledgers'] = $balances;
+			
+			//dd($balances);
+			
+			
+			$this->authenticate_user($username, 'pages/cooperators/payroll_contribution_report', $data);
+		
+		
+		
+		
+		endif;
+		
+		if($method == 'get'):
+			
+			
+			$data['ledgers'] = [ ];
+			$data['check'] = 0;
+			
+			
+			$data['states'] = $this->state->findAll();
+			$data['departments'] = $this->department->findAll();
+			$data['banks'] = $this->bank->findAll();
+			$data['pgs'] = $this->pg->findAll();
+			$username = $this->session->user_username;
+			$data['contribution_types'] = $this->ct->findAll();
+			$this->authenticate_user($username, 'pages/cooperators/payroll_contribution_report', $data);
+		
+		
+		endif;
+		
+		
+	}
+	
+	public function external_savings_report(){
+		
+		$method = $this->request->getMethod();
+		
+		if($method == 'post'):
+			$username = $this->session->user_username;
+			$from = $this->request->getPost('start');
+			$end = $this->request->getPost('end');
+			$ct_id = $this->request->getPost('ct_id');
+			
+			$data['ct_dt'] = $this->ct->where('contribution_type_id', $ct_id)->first();
+			
+			$_pds = $this->pd->get_payments_group($ct_id);
+			
+			
+			$i = 0;
+			$balances = array();
+			
+			foreach ($_pds as $pd):
+				
+				$staff_id = $pd['pd_staff_id'];
+				$cooperator =  $this->cooperator->where(['cooperator_staff_id' => $staff_id])->first();
+				$balances[$i]['name'] = $cooperator['cooperator_first_name']. ' '.$cooperator['cooperator_last_name'];
+				$balances[$i]['staff_id'] = $staff_id;
+				
+				$bf_payments = $this->pd->get_payment_bf($staff_id, $ct_id, $from);
+				$cr = 0;
+				$dr = 0;
+				$bf = 0;
+				
+				/***
+				 * payment types
+				 * 1 = withdraw
+				 * 2 = withdraw charges
+				 * 3 = payroll contribution
+				 * 4 = journal transfer
+				 * 5 = external savings
+				 * 6 = reconciliation
+				 * 7 = account closure
+				 *
+				 */
+				
+				
+				
+				
+				$p_external_savings_cr = 0;
+				
+				
+				
+				
+				
+				$payments = $this->pd->get_payments_range($staff_id, $ct_id, $from, $end);
+				
+				$cr = 0;
+				$dr = 0;
+				$balance =0;
+				$total_cr = 0;
+				$total_dr = 0;
+				
+				//print_r($payments);
+				foreach ($payments as $payment):
+					if($payment['pd_drcrtype'] == 2):
+						$dr = $payment['pd_amount'];
+						$cr = 0;
+					
+					
+					endif;
+					
+					if($payment['pd_drcrtype'] == 1):
+						$cr = $payment['pd_amount'];
+						$dr = 0;
+						
+						if($payment['pd_payment_type'] == 5):
+							
+							$p_external_savings_cr  = $payment['pd_amount'] + $p_external_savings_cr;
+						endif;
+					
+					endif;
+					
+					$total_dr = $total_dr + $dr;
+					$total_cr = $total_cr + $cr;
+					
+					$balance =  ($balance + $cr) - $dr;;
+				endforeach;
+				$balances[$i]['balance'] = $balance;
+				$balances[$i]['total_cr'] = $total_cr;
+				$balances[$i]['total_dr'] = $total_dr;
+				
+				$balances[$i]['external_savings_cr'] = $p_external_savings_cr;
+				
+				
+				
+				
+				
+				$i++;
+			endforeach;
+			
+			$data['check'] = 1;
+			$data['from'] = $from;
+			$data['to'] = $end;
+			$data['contribution_types'] = $this->ct->findAll();
+			$data['ledgers'] = $balances;
+			
+			//dd($balances);
+			
+			
+			$this->authenticate_user($username, 'pages/cooperators/external_savings_report', $data);
+		
+		
+		
+		
+		endif;
+		
+		if($method == 'get'):
+			
+			
+			$data['ledgers'] = [ ];
+			$data['check'] = 0;
+			
+			
+			$data['states'] = $this->state->findAll();
+			$data['departments'] = $this->department->findAll();
+			$data['banks'] = $this->bank->findAll();
+			$data['pgs'] = $this->pg->findAll();
+			$username = $this->session->user_username;
+			$data['contribution_types'] = $this->ct->findAll();
+			$this->authenticate_user($username, 'pages/cooperators/external_savings_report', $data);
+		
+		
+		endif;
+		
+		
+	}
     
     
-    public function test_sweet(){
+ 
+	
+	public function test_sweet(){
 
             $data = array(
                 'msg' => 'Application Successful',
