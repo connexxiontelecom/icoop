@@ -1,14 +1,14 @@
 <?= $this->extend('layouts/master') ?>
 
 <?= $this->section('title') ?>
-Savings Report
+External Savings Report
 <?= $this->endSection() ?>
 
 <?= $this->section('current_page') ?>
-Savings Report
+External Savings Report
 <?= $this->endSection() ?>
 <?= $this->section('page_crumb') ?>
-Savings Report
+External Savings Report
 <?= $this->endSection() ?>
 
 <?= $this->section('extra-styles') ?>
@@ -26,7 +26,7 @@ Savings Report
 	<div class="col-lg-12">
 		<div class="card">
 			<div class="header">
-				<h2>Savings Report - View Report</h2>
+				<h2>External Savings Report - View Report</h2>
 			
 			</div>
 			
@@ -96,7 +96,7 @@ Savings Report
 					
 					
 					<div class="header">
-						<h2>Savings Report for (<?=$ct_dt['contribution_type_name']; ?>) - </h2>
+						<h2>External Savings Report for (<?=$ct_dt['contribution_type_name']; ?>) - </h2>
 						<ul class="header-dropdown dropdown">
 							
 							<li><a href="javascript:void(0);" class="full-screen"><i class="icon-frame"></i></a></li>
@@ -121,15 +121,10 @@ Savings Report
 										<th><strong># </strong></th>
 										<th><strong>Staff ID</strong></th>
 										<th><strong>Name</strong></th>
-										<th style="text-align: right"><strong>BF</strong></th>
-										<th style="text-align: right"><strong>Period DR</strong></th>
-										<th style="text-align: right"><strong>Period CR</strong></th>
-										<th style="text-align: right"><strong>Period Balance</strong></th>
-										<th style="text-align: right"><strong> Balance</strong></th>
+							
+										<th style="text-align: right"><strong>Amount</strong></th>
+							
 										
-									
-									
-									
 									
 									</tr>
 									</thead>
@@ -144,11 +139,10 @@ Savings Report
 												<td><?=$sn; ?></td>
 												<td><?=$ledger['staff_id']; ?></td>
 												<td><?=$ledger['name']; ?></td>
-												<td style="text-align: right"><?=number_format($ledger['bf'], 2); ?></td>
-												<td style="text-align: right"><?=number_format($ledger['total_dr'], 2); ?></td>
-												<td style="text-align: right"><?=number_format($ledger['total_cr'], 2); ?></td>
-												<td style="text-align: right"><?=number_format($ledger['balance'], 2); ?></td>
-												<td style="text-align: right"><?=number_format($ledger['balance'] + $ledger['bf'], 2); ?></td>
+												<td style="text-align: right">
+													
+													<?=number_format($ledger['external_savings_cr'], 2) ?>
+														</td>
 												
 												
 											

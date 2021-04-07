@@ -3,7 +3,8 @@ $(function () {
 
     //Exportable table
     $('.js-exportable').DataTable({
-        dom: 'Bfrtip',
+        dom: 'Bfrltip',
+        lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
         ]

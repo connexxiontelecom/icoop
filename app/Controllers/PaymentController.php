@@ -570,7 +570,7 @@ class PaymentController extends BaseController
                     $ref_code = time();
                     $payment_type = 1;
                     if($withdraw['withdraw_narration'] == 'Account Closure'):
-	                    $payment_type = 5;
+	                    $payment_type = 7;
 	                    endif;
 	                    
                      $payment_details_array = array(
