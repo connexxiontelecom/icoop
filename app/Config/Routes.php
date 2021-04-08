@@ -157,6 +157,8 @@ $routes->get('payroll_contribution_report', 'Cooperators::payroll_contribution_r
 $routes->Post('payroll_contribution_report', 'Cooperators::payroll_contribution_report');
 $routes->get('external_savings_report', 'Cooperators::external_savings_report');
 $routes->Post('external_savings_report', 'Cooperators::external_savings_report');
+$routes->get('journal_transfer_report', 'Cooperators::journal_transfer_report');
+$routes->Post('journal_transfer_report', 'Cooperators::journal_transfer_report');
 
 
 #Loan routes
