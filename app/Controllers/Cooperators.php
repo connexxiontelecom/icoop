@@ -2416,6 +2416,144 @@ class Cooperators extends BaseController
 		
 		
 	}
+	
+	public function journal_transfer_report(){
+		
+		$method = $this->request->getMethod();
+		
+		if($method == 'post'):
+			$username = $this->session->user_username;
+			$from = $this->request->getPost('start');
+			$end = $this->request->getPost('end');
+			$ct_id = $this->request->getPost('ct_id');
+			
+			$data['ct_dt'] = $this->ct->where('contribution_type_id', $ct_id)->first();
+			
+			$_pds = $this->pd->get_payments_group($ct_id);
+			
+			
+			$i = 0;
+			$balances = array();
+			
+			foreach ($_pds as $pd):
+				
+				$staff_id = $pd['pd_staff_id'];
+				$cooperator =  $this->cooperator->where(['cooperator_staff_id' => $staff_id])->first();
+				$balances[$i]['name'] = $cooperator['cooperator_first_name']. ' '.$cooperator['cooperator_last_name'];
+				$balances[$i]['staff_id'] = $staff_id;
+				
+				$bf_payments = $this->pd->get_payment_bf($staff_id, $ct_id, $from);
+				$cr = 0;
+				$dr = 0;
+				$bf = 0;
+				
+				/***
+				 * payment types
+				 * 1 = withdraw
+				 * 2 = withdraw charges
+				 * 3 = payroll contribution
+				 * 4 = journal transfer
+				 * 5 = external savings
+				 * 6 = reconciliation
+				 * 7 = account closure
+				 *
+				 */
+				
+				
+				
+				
+				$p_jt_cr = 0;
+				$p_jt_dr = 0;
+				
+				
+				
+				
+				
+				$payments = $this->pd->get_payments_range($staff_id, $ct_id, $from, $end);
+				
+				$cr = 0;
+				$dr = 0;
+				$balance =0;
+				$total_cr = 0;
+				$total_dr = 0;
+				
+				//print_r($payments);
+				foreach ($payments as $payment):
+					if($payment['pd_payment_type'] == 4):
+						if($payment['pd_drcrtype'] == 2):
+							$dr = $payment['pd_amount'];
+							$cr = 0;
+							$p_jt_dr  = $payment['pd_amount'] + $p_jt_dr;
+						
+						
+						endif;
+						
+						if($payment['pd_drcrtype'] == 1):
+							$cr = $payment['pd_amount'];
+							$dr = 0;
+							
+							
+							
+							$p_jt_cr  = $payment['pd_amount'] + $p_jt_cr;
+							endif;
+					
+					endif;
+					
+					$total_dr = $total_dr + $dr;
+					$total_cr = $total_cr + $cr;
+					
+					$balance =  ($balance + $cr) - $dr;;
+				endforeach;
+				$balances[$i]['balance'] = $balance;
+				$balances[$i]['total_cr'] = $total_cr;
+				$balances[$i]['total_dr'] = $total_dr;
+				
+				$balances[$i]['jt_cr'] = $p_jt_cr;
+				$balances[$i]['jt_dr'] = $p_jt_dr;
+				
+				
+				
+				
+				
+				$i++;
+			endforeach;
+			
+			$data['check'] = 1;
+			$data['from'] = $from;
+			$data['to'] = $end;
+			$data['contribution_types'] = $this->ct->findAll();
+			$data['ledgers'] = $balances;
+			
+			//dd($balances);
+			
+			
+			$this->authenticate_user($username, 'pages/cooperators/jt_report', $data);
+		
+		
+		
+		
+		endif;
+		
+		if($method == 'get'):
+			
+			
+			$data['ledgers'] = [ ];
+			$data['check'] = 0;
+			
+			
+			$data['states'] = $this->state->findAll();
+			$data['departments'] = $this->department->findAll();
+			$data['banks'] = $this->bank->findAll();
+			$data['pgs'] = $this->pg->findAll();
+			$username = $this->session->user_username;
+			$data['contribution_types'] = $this->ct->findAll();
+			$this->authenticate_user($username, 'pages/cooperators/jt_report', $data);
+		
+		
+		endif;
+		
+		
+	}
     
     
  
