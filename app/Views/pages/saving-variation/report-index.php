@@ -144,6 +144,25 @@ Report(Savings)
 							</a>
 						</div>
 					</div>
+					
+					<div class="col-lg-4 col-md-6 col-sm-12">
+						
+						<div class="card">
+							<a href="<?php echo base_url('journal_transfer_report'); ?>">
+								
+								<div class="body">
+									
+									<div class="d-flex align-items-center">
+										<div class="icon-in-bg bg-indigo text-white rounded-circle"><i class="icon-notebook"></i></div>
+										<div class="ml-4">
+											<span>Journal Transfer Reports</span>
+										</div>
+									</div>
+								
+								</div>
+							</a>
+						</div>
+					</div>
 				</div>
             </div>
 

@@ -14,11 +14,13 @@ Saving Variations Report
 <?= $this->section('extra-styles') ?>
 
 
-<link rel="stylesheet" href="assets/vendor/jquery-datatable/fixedeader/dataTables.fixedcolumns.bootstrap4.min.css">
-<link rel="stylesheet" href="assets/vendor/jquery-datatable/fixedeader/dataTables.fixedheader.bootstrap4.min.css">
 
 
 <?= $this->endSection() ?>
+
+<link rel="stylesheet" href="assets/vendor/jquery-datatable/fixedeader/dataTables.fixedcolumns.bootstrap4.min.css">
+<link rel="stylesheet" href="assets/vendor/jquery-datatable/fixedeader/dataTables.fixedheader.bootstrap4.min.css">
+<link rel="stylesheet" href="assets/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.min.css">
 
 <?= $this->section('content') ?>
 <div class="row clearfix">
@@ -50,8 +52,8 @@ Saving Variations Report
                     </div>
                 </div>
 				<div class="table-responsive">
-					<table class="table table-hover js-basic-example dataTable simpletable table-custom spacing5">
-						<thead>
+					<table class="table table-hover  table-custom spacing5 dataTable js-exportable">
+					<thead>
 						<tr>
 							<th>#</th>
 							<th> Staff Name</th>
@@ -158,6 +160,26 @@ Saving Variations Report
 <?= $this->endSection() ?>
 
 <?= $this->section('extra-scripts') ?>
+<!--<script src="assets/bundles/vendorscripts.bundle.js"></script>-->
+<!--<script src="assets/vendor/jquery-validation/jquery.validate.js"></script><!-- Jquery Validation Plugin Css -->-->
+<!--<script src="assets/vendor/jquery-steps/jquery.steps.js"></script><!-- JQuery Steps Plugin Js -->-->
+<!--<script src="assets/js/common.js"></script>-->
+<!--<script src="assets/js/pages/forms/form-wizard.js"></script>-->
+<!--<script src="assets/vendor/dropify/js/dropify.js"></script>-->
+<!--<script src="assets/js/common.js"></script>-->
+<!---->
+<!--<script src="assets/bundles/datatablescripts.bundle.js"></script>-->
+<!--<script src="assets/vendor/jquery-datatable/buttons/dataTables.buttons.min.js"></script>-->
+<!--<script src="assets/vendor/jquery-datatable/buttons/buttons.bootstrap4.min.js"></script>-->
+<!--<script src="assets/vendor/jquery-datatable/buttons/buttons.colVis.min.js"></script>-->
+<!--<script src="assets/vendor/jquery-datatable/buttons/buttons.html5.min.js"></script>-->
+<!--<script src="assets/vendor/jquery-datatable/buttons/buttons.print.min.js"></script>-->
+<script>
+    $(document).ready(function(){
+        $('.simpletable').DataTable();
+    });
+</script>
+<?= $this->endSection() ?>
 <script src="assets/bundles/vendorscripts.bundle.js"></script>
 <script src="assets/vendor/jquery-validation/jquery.validate.js"></script><!-- Jquery Validation Plugin Css -->
 <script src="assets/vendor/jquery-steps/jquery.steps.js"></script><!-- JQuery Steps Plugin Js -->
@@ -166,15 +188,28 @@ Saving Variations Report
 <script src="assets/vendor/dropify/js/dropify.js"></script>
 <script src="assets/js/common.js"></script>
 
-<script src="assets/bundles/datatablescripts.bundle.js"></script>
+<!--<script src="assets/bundles/datatablescripts.bundle.js"></script>-->
 <script src="assets/vendor/jquery-datatable/buttons/dataTables.buttons.min.js"></script>
 <script src="assets/vendor/jquery-datatable/buttons/buttons.bootstrap4.min.js"></script>
 <script src="assets/vendor/jquery-datatable/buttons/buttons.colVis.min.js"></script>
 <script src="assets/vendor/jquery-datatable/buttons/buttons.html5.min.js"></script>
 <script src="assets/vendor/jquery-datatable/buttons/buttons.print.min.js"></script>
-<script>
-    $(document).ready(function(){
-        $('.simpletable').DataTable();
-    });
-</script>
-<?= $this->endSection() ?>
+
+<script src="assets/vendor/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script><!-- Bootstrap Colorpicker Js -->
+<script src="assets/vendor/jquery-inputmask/jquery.inputmask.bundle.js"></script><!-- Input Mask Plugin Js -->
+<script src="assets/vendor/jquery.maskedinput/jquery.maskedinput.min.js"></script>
+<script src="assets/vendor/multi-select/js/jquery.multi-select.js"></script><!-- Multi Select Plugin Js -->
+<script src="assets/vendor/bootstrap-multiselect/bootstrap-multiselect.js"></script>
+<script src="assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+<script src="assets/vendor/bootstrap-tagsinput/bootstrap-tagsinput.js"></script><!-- Bootstrap Tags Input Plugin Js -->
+
+
+
+<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script src="assets/bundles/vendorscripts.bundle.js"></script>
+
+
+<script src="assets/vendor/sweetalert/sweetalert.min.js"></script><!-- SweetAlert Plugin Js -->
+<script src="assets/js/common.js"></script>
+<script src="assets/js/pages/tables/jquery-datatable.js"></script>
