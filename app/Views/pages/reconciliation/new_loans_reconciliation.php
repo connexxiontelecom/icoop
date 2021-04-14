@@ -123,6 +123,11 @@ Loans Reconciliation
 										</select>
 									</div>
 									
+									<div class="form-group">
+										<label for="application_address"><b>Narration:</b></label>
+										<textarea name="narration" id="withdraw_narration"  cols="30" rows="3" placeholder="Narration "  class="form-control no-resize"></textarea>
+									</div>
+									
 <!--									<div class="form-group">-->
 <!--										<label for="application_first_name"><b>File(.PDF):</b></label>-->
 <!--										<input type="file"  class="form-control"  name="withdraw_file">-->
