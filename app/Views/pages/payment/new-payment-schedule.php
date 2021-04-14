@@ -125,7 +125,7 @@ Payment Schedule (Member)
                                                     <td><?= $wcar->bank_name ?? '' ?> - <?= $wcar->cooperator_account_number ?? '' ?></td>
                                                     <td> Savings Withdrawal </td>
                                                     <td class="text-right"> <?=number_format($wcar->withdraw_amount,2) ?>
-                                                        <input type="hidden" name="amount[]" <?= $sum += $wcar->withdraw_amount ?? 0 ?> value="<?= $wcar->withdraw_amount ?? 0 ?>">
+                                                        <input type="hidden" name="w_amount[]" <?= $sum += $wcar->withdraw_amount ?? 0 ?> value="<?= $wcar->withdraw_amount ?? 0 ?>">
                                                     </td>
                                                     <td>
                                                         <a href="<?= site_url('/loan/remove-withdraw-from-cart/'.$wcar->withdraw_id) ?>" title="Remove from cart" class="text-danger"><i class="fa fa-trash"></i></a>

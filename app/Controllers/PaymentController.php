@@ -249,17 +249,17 @@ class PaymentController extends BaseController
                     }
                     #withdraw detail
                      if(!is_null($this->request->getVar('withdraw_id'))){
-                        for($i = 0; $i<count($this->request->getVar('withdraw_id')); $i++ ){
+                        for($w = 0; $w<count($this->request->getVar('withdraw_id')); $w++ ){
                             $detail = [
                                 //'loan_type'=>$this->request->getVar('loan_type')[$i], 
-                                'coop_id'=>$this->request->getVar('coop_id')[$i],
-                                'amount'=>$this->request->getVar('amount')[$i],
+                                'coop_id'=>$this->request->getVar('coop_id')[$w],
+                                'amount'=>$this->request->getVar('w_amount')[$w],
                                 'schedule_master_id'=>$masterId,
                                 'transaction_type'=>2,//withdraw,
-                                'loan_id'=>$this->request->getVar('withdraw_id')[$i]
+                                'loan_id'=>$this->request->getVar('withdraw_id')[$w]
                             ];
                             $this->schedulemasterdetail->save($detail);
-                            $withdraw_id = $this->request->getVar('withdraw_id')[$i];
+                            $withdraw_id = $this->request->getVar('withdraw_id')[$w];
                             //$val = $this->withdraw->where('withdraw_id', )->first();
                             $data = array(
                                 'withdraw_id' => $withdraw_id,
