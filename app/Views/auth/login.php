@@ -11,12 +11,12 @@
 
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <!-- VENDOR CSS -->
-    <link rel="stylesheet" href="/assets/vendor/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/assets/vendor/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/assets/vendor/animate-css/vivify.min.css">
+    <link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/vendor/animate-css/vivify.min.css">
 
     <!-- MAIN CSS -->
-    <link rel="stylesheet" href="/assets/css/site.min.css">
+    <link rel="stylesheet" href="assets/css/site.min.css">
 
 </head>
 
@@ -90,21 +90,21 @@
             </ol>
             <div class="carousel-inner pb-5">
                 <div class="carousel-item active">
-                    <img src="/assets/images/login-slide1.png" class="img-fluid" alt="login page" />
+                    <img src="assets/images/login-slide1.png" class="img-fluid" alt="login page" />
                     <div class="px-4">
                         <h2>Highly Customizable</h2>
                         <p>Cooperative Automation to Suit your Needs</p>
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img src="/assets/images/login-slide2.png" class="img-fluid" alt="login page" />
+                    <img src="assets/images/login-slide2.png" class="img-fluid" alt="login page" />
                     <div class="px-4">
                         <h2>100% Secure</h2>
                         <p>Deployed with best Technology and Practices</p>
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img src="/assets/images/login-slide2.png" class="img-fluid" alt="login page" />
+                    <img src="assets/images/login-slide2.png" class="img-fluid" alt="login page" />
                     <div class="px-4">
                         <h2>Saving Time</h2>
                         <p>Save as much time as you can.</p>
@@ -118,13 +118,13 @@
 <!-- END WRAPPER -->
 
 <!-- Latest jQuery -->
-<script src="/assets/vendor/jquery/jquery-3.3.1.min.js"></script>
+<script src="assets/vendor/jquery/jquery-3.3.1.min.js"></script>
 
 <!-- Bootstrap 4x JS  -->
-<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-<script src="/assets/bundles/vendorscripts.bundle.js"></script>
-<script src="/assets/js/common.js"></script>
+<script src="assets/bundles/vendorscripts.bundle.js"></script>
+<script src="assets/js/common.js"></script>
 </body>
 </html>
 

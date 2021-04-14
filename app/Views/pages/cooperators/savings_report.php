@@ -1,14 +1,14 @@
 <?= $this->extend('layouts/master') ?>
 
 <?= $this->section('title') ?>
-Savings Report
+Savings Balance Report
 <?= $this->endSection() ?>
 
 <?= $this->section('current_page') ?>
-Savings Report
+Savings Balance Report
 <?= $this->endSection() ?>
 <?= $this->section('page_crumb') ?>
-Savings Report
+Savings Balance Report
 <?= $this->endSection() ?>
 
 <?= $this->section('extra-styles') ?>
@@ -26,7 +26,7 @@ Savings Report
 	<div class="col-lg-12">
 		<div class="card">
 			<div class="header">
-				<h2>Savings Report - View Report</h2>
+				<h2>Savings Balance Report - View Report</h2>
 			
 			</div>
 			
@@ -125,7 +125,7 @@ Savings Report
 										<th style="text-align: right"><strong>Period DR</strong></th>
 										<th style="text-align: right"><strong>Period CR</strong></th>
 										<th style="text-align: right"><strong>Period Balance</strong></th>
-										<th style="text-align: right"><strong> Balance</strong></th>
+										<th style="text-align: right"><strong> Balance Today</strong></th>
 										
 									
 									
@@ -147,8 +147,9 @@ Savings Report
 												<td style="text-align: right"><?=number_format($ledger['bf'], 2); ?></td>
 												<td style="text-align: right"><?=number_format($ledger['total_dr'], 2); ?></td>
 												<td style="text-align: right"><?=number_format($ledger['total_cr'], 2); ?></td>
-												<td style="text-align: right"><?=number_format($ledger['balance'], 2); ?></td>
 												<td style="text-align: right"><?=number_format($ledger['balance'] + $ledger['bf'], 2); ?></td>
+												<td style="text-align: right"><?=number_format($ledger['balance_today'], 2); ?></td>
+												
 												
 												
 											
