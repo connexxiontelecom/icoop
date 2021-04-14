@@ -33,7 +33,7 @@ Outstanding Loans - <small> <?=$cooperator->cooperator_staff_id; ?> </small>
 					<div class="col-lg-12">
 					<div class="table-responsive">
 				        <?php  if(!empty($ledgers)): ?>
-							<table class="table table-hover js-basic-example dataTable simpletable table-custom spacing5">
+							<table class="table table-hover js-basic-example dataTable table-custom spacing5 js-exportable">
 								<thead>
 								<tr>
 									<th><strong>S/N </strong> </th>

@@ -4,14 +4,6 @@ $(function () {
     //Exportable table
     $('.js-exportable').DataTable({
         dom: 'Bfrltip',
-        "columnDefs": [
-            { "width": "10px", "targets": 0 },
-            { "width": "40px", "targets": 1 },
-            { "width": "100px", "targets": 2 },
-            { "width": "70px", "targets": 3 },
-            { "width": "70px", "targets": 4 },
-            { "width": "70px", "targets": 5 }
-        ],
         lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'

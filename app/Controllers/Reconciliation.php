@@ -1031,7 +1031,7 @@
 							'lr_ref' => $reconciliation_detail['re_ref_no'],
 							'lr_mi' => $reconciliation_detail['re_mi'],
 							'lr_mpr' => $reconciliation_detail['re_mpr'],
-							'lr_interest' => 1,
+							'lr_interest' => 0,
 							'lr_interest_rate' => $active_loan['ls_interest_rate'],
 							'lr_date' => $reconciliation_detail['re_transaction_date']
 						
@@ -1158,7 +1158,7 @@
 							'lr_ref' => $reconciliation_detail['re_ref_no'],
 							'lr_mi' => $reconciliation_detail['re_mi'],
 							'lr_mpr' => $reconciliation_detail['re_mpr'],
-							'lr_interest' => 1,
+							'lr_interest' => 0,
 							'lr_interest_rate' => $active_loan['ls_interest_rate'],
 							'lr_date' => $reconciliation_detail['re_transaction_date']
 						
@@ -1178,6 +1178,8 @@
 						$total_cr_mi = 0;
 						$total_dr_mi = 0;
 						$total_principal = 0;
+						
+				
 						
 						foreach ($loan_ledgers as$loan_ledger):
 							
@@ -1204,6 +1206,8 @@
 						$balance =  $active_loan['amount']+($total_dr - $total_cr);
 						$total_principal = $active_loan['amount'] - $total_principal;
 						
+						
+						
 						if($psr == 1):
 							
 							$new_encumbrance_amount = ($psr_value/100) * $total_principal;
@@ -1211,6 +1215,8 @@
 								'loan_id' => $reconciliation_detail['re_source'],
 								'encumbrance_amount' => $new_encumbrance_amount
 							);
+							
+							print_r($total_principal);
 							
 							$this->loan->save($loan_array);
 						endif;
@@ -1275,7 +1281,7 @@
 							'msg' => 'Action Successful',
 							'type' => 'success',
 							'location' => base_url('approve_loans_reconciliation')
-						
+
 						);
 						return view('pages/sweet-alert', $data);
 					
