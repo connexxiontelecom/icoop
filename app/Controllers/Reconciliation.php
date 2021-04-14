@@ -1087,6 +1087,7 @@
 						$total_interest = 0;
 						$total_cr_mi = 0;
 						$total_dr_mi = 0;
+						$total_principal = 0;
 						
 						foreach ($loan_ledgers as$loan_ledger):
 							
@@ -1095,6 +1096,7 @@
 								$total_cr = $total_cr + $cr;
 								
 								$total_cr_mi = $total_cr_mi + $loan_ledger->lr_mi;
+								$total_principal = $total_principal + $loan_ledger->lr_mpr;
 							endif;
 							
 							if($loan_ledger->lr_dctype == 2):
@@ -1103,11 +1105,27 @@
 								
 								$total_dr_mi = $total_dr_mi + $loan_ledger->lr_mi;
 							endif;
-						
-						
+							
+							
+							$psr = $loan_ledger->psr;
+							$psr_value = $loan_ledger->psr_value;
 						endforeach;
 						
 						$balance =  $active_loan['amount']+($total_dr - $total_cr);
+						$total_principal = $active_loan['amount'] - $total_principal;
+						
+						if($psr == 1):
+							
+							$new_encumbrance_amount = ($psr_value/100) * $total_principal;
+							$loan_array = array(
+								'loan_id' => $reconciliation_detail['re_source'],
+								'encumbrance_amount' => $new_encumbrance_amount
+							);
+							
+							$this->loan->save($loan_array);
+						endif;
+						
+						//$balance =  $active_loan['amount']+($total_dr - $total_cr);
 
 //			echo 'total dr: '.$total_dr.'<br>';
 //			echo 'total cr: '.$total_cr.'<br>';
@@ -1148,6 +1166,71 @@
 						);
 						
 						$v =   $this->lr->save($lr_array);
+						
+						$loan_ledgers = $this->loan->get_loans_staff_id($reconciliation_detail['re_staff_id'], $reconciliation_detail['re_source']);
+						
+						$total_cr = 0;
+						$total_dr = 0;
+						$cr = 0;
+						$dr = 0;
+						$total_mi = 0;
+						$total_interest = 0;
+						$total_cr_mi = 0;
+						$total_dr_mi = 0;
+						$total_principal = 0;
+						
+						foreach ($loan_ledgers as$loan_ledger):
+							
+							if($loan_ledger->lr_dctype == 1):
+								$cr = $loan_ledger->lr_amount;
+								$total_cr = $total_cr + $cr;
+								
+								$total_cr_mi = $total_cr_mi + $loan_ledger->lr_mi;
+								$total_principal = $total_principal + $loan_ledger->lr_mpr;
+							endif;
+							
+							if($loan_ledger->lr_dctype == 2):
+								$dr = $loan_ledger->lr_amount;
+								$total_dr = $total_dr + $dr;
+								
+								$total_dr_mi = $total_dr_mi + $loan_ledger->lr_mi;
+							endif;
+							
+							
+							$psr = $loan_ledger->psr;
+							$psr_value = $loan_ledger->psr_value;
+						endforeach;
+						
+						$balance =  $active_loan['amount']+($total_dr - $total_cr);
+						$total_principal = $active_loan['amount'] - $total_principal;
+						
+						if($psr == 1):
+							
+							$new_encumbrance_amount = ($psr_value/100) * $total_principal;
+							$loan_array = array(
+								'loan_id' => $reconciliation_detail['re_source'],
+								'encumbrance_amount' => $new_encumbrance_amount
+							);
+							
+							$this->loan->save($loan_array);
+						endif;
+						
+						//$balance =  $active_loan['amount']+($total_dr - $total_cr);
+
+//			echo 'total dr: '.$total_dr.'<br>';
+//			echo 'total cr: '.$total_cr.'<br>';
+//			echo 'balance: '.$balance;
+						
+						if($balance <= 0):
+							
+							$loan_array = array(
+								'loan_id' => $reconciliation_detail['re_source'],
+								'paid_back' => 1
+							);
+							
+							$this->loan->save($loan_array);
+						
+						endif;
 						
 						$wt = $this->contribution_type->where('contribution_type_id', $reconciliation_detail['re_source'])->first();
 						$account = $this->coa->where('glcode', $active_loan['loan_gl_account_no'])->first();
