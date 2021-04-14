@@ -115,17 +115,50 @@ Savings Analysis Report
 					<div class="body">
 						<div class="table-responsive">
 							<?php  if(!empty($ledgers)): ?>
-								<table class="table table-hover  table-custom spacing5 dataTable js-exportable">
+								<table class="table table-hover table-custom dataTable js-exportable">
 									<thead>
+									
+									<tr>
+										<th><strong> </strong></th>
+										<th><strong></strong></th>
+										<th><strong></strong></th>
+										<th style="text-align: right"><strong></strong></th>
+										<th colspan="5" style="text-align: center"><strong>DEBIT</strong></th>
+										
+										<th style="text-align: center"><strong> - </strong></th>
+										
+										<th colspan="4" style="text-align: center"><strong>CREDIT</strong></th>
+										
+										
+										<th style="text-align: right"><strong></strong></th>
+										<th style="text-align: right"><strong> </strong></th>
+									
+									
+									
+									
+									
+									</tr>
 									<tr>
 										<th><strong># </strong></th>
 										<th><strong>Staff ID</strong></th>
 										<th><strong>Name</strong></th>
 										<th style="text-align: right"><strong>BF</strong></th>
+										<th style="text-align: right"><strong>Withdraw</strong></th>
+										<th style="text-align: right"><strong>Withdraw Charges</strong></th>
+										<th style="text-align: right"><strong>Journal Transfer (DR)</strong></th>
+										<th style="text-align: right"><strong>Account Closure (DR)</strong></th>
+										<th style="text-align: right"><strong>Others (DR)</strong></th>
 										<th style="text-align: right"><strong>Period DR</strong></th>
+										<th style="text-align: right"><strong> - </strong></th>
+										
+										<th style="text-align: right"><strong>Payroll Contribution</strong></th>
+										<th style="text-align: right"><strong>External Savings</strong></th>
+										<th style="text-align: right"><strong>Journal Transfer (CR)</strong></th>
+										<th style="text-align: right"><strong>Others (CR)</strong></th>
 										<th style="text-align: right"><strong>Period CR</strong></th>
+										
 										<th style="text-align: right"><strong>Period Balance</strong></th>
-										<th style="text-align: right"><strong> Balance</strong></th>
+										<th style="text-align: right"><strong> Balance Today</strong></th>
 										
 									
 									
@@ -145,35 +178,25 @@ Savings Analysis Report
 												<td><?=$ledger['staff_id']; ?></td>
 												<td><?=$ledger['name']; ?></td>
 												<td style="text-align: right"><?=number_format($ledger['bf'], 2); ?></td>
-												<td style="text-align: right">
-													
-													<?=number_format($ledger['total_dr'], 2); ?>
-													<hr>
-													<b>Analysis</b>
-													<p> Withdraw: <kbd><?=number_format($ledger['withdraw_dr'], 2) ?></kbd></p>
-													<p> Withdraw Charges: <kbd><?=number_format($ledger['withdraw_charges_dr'], 2) ?></kbd></p>
-													<p> Payroll Contribution: <kbd><?=number_format($ledger['payroll_contribution_dr'], 2) ?></kbd></p>
-													<p> Journal Transfer: <kbd><?=number_format($ledger['journal_transfer_dr'], 2) ?></kbd></p>
-													<p> External Savings: <kbd><?=number_format($ledger['external_savings_dr'], 2) ?></kbd></p>
-													<p> Account Closure: <kbd><?=number_format($ledger['account_closure_dr'], 2) ?></kbd></p>
-													<p> Others: <kbd><?=number_format($ledger['reconciliation_dr'], 2) ?></kbd></p>
-												</td>
-												<td style="text-align: right">
-													
-													<?=number_format($ledger['total_cr'], 2); ?>
-													<hr>
-													<b>Analysis</b>
-													<p> Withdraw: <kbd><?=number_format($ledger['withdraw_cr'], 2) ?></kbd></p>
-													<p> Withdraw Charges: <kbd><?=number_format($ledger['withdraw_charges_cr'], 2) ?></kbd></p>
-													<p> Payroll Contribution: <kbd><?=number_format($ledger['payroll_contribution_cr'], 2) ?></kbd></p>
-													<p> Journal Transfer: <kbd><?=number_format($ledger['journal_transfer_cr'], 2) ?></kbd></p>
-													<p> External Savings: <kbd><?=number_format($ledger['external_savings_cr'], 2) ?></kbd></p>
-													<p> Account Closure: <kbd><?=number_format($ledger['account_closure_cr'], 2) ?></kbd></p>
-													<p> Others: <kbd><?=number_format($ledger['reconciliation_cr'], 2) ?></kbd></p>
-												</td>
-												<td style="text-align: right"><?=number_format($ledger['balance'], 2); ?></td>
-												<td style="text-align: right"><?=number_format($ledger['balance'] + $ledger['bf'], 2); ?></td>
+												<td style="text-align: right"><?=number_format($ledger['withdraw_dr'], 2); ?></td>
+												<td style="text-align: right"><?=number_format($ledger['withdraw_charges_dr'], 2); ?></td>
+												<td style="text-align: right"><?=number_format($ledger['journal_transfer_dr'], 2); ?></td>
+												<td style="text-align: right"><?=number_format($ledger['account_closure_dr'], 2); ?></td>
+												<td style="text-align: right"><?=number_format($ledger['reconciliation_dr'], 2); ?></td>
+												<td style="text-align: right"><?=number_format($ledger['total_dr'], 2); ?></td>
 												
+												<td style="text-align: right"> - </td>
+												<td style="text-align: right"><?=number_format($ledger['payroll_contribution_cr'], 2); ?></td>
+												<td style="text-align: right"><?=number_format($ledger['external_savings_cr'], 2); ?></td>
+												<td style="text-align: right"><?=number_format($ledger['journal_transfer_cr'], 2); ?></td>
+												<td style="text-align: right"><?=number_format($ledger['reconciliation_cr'], 2); ?></td>
+												<td style="text-align: right"><?=number_format($ledger['total_cr'], 2); ?></td>
+												
+												
+											
+												
+												<td style="text-align: right"><?=number_format($ledger['balance'] + $ledger['bf'], 2); ?></td>
+												<td style="text-align: right"><?=number_format($ledger['balance_today'], 2); ?></td>
 												
 											
 											

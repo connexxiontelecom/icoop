@@ -120,7 +120,7 @@ Approve Loans Reconciliations
 										
 										<div class="form-group">
 											<label><b><?php if($reconciliation['re_dctype'] == 1): echo 'Account Debited'; endif; if($reconciliation['re_dctype'] == 2): echo 'Account Credited'; endif; ?>: </b></label>
-											<input class="form-control" value="<?=$reconciliation['account_name']; ?>" disabled readonly>
+											<input class="form-control" value="<?=$reconciliation['glcode'].' - '.$reconciliation['account_name']; ?>" disabled readonly>
 										</div>
 									</div>
 								</div>
@@ -250,7 +250,7 @@ Approve Loans Reconciliations
 										
 										<div class="form-group">
 											<label><b><?php if($reconciliation['re_dctype'] == 1): echo 'Account Debited'; endif; if($reconciliation['re_dctype'] == 2): echo 'Account Credited'; endif; ?>: </b></label>
-											<input class="form-control" value="<?=$reconciliation['account_name']; ?>" disabled readonly>
+											<input class="form-control" value="<?=$reconciliation['glcode'].' - '.$reconciliation['account_name']; ?>" disabled readonly>
 										</div>
 									</div>
 								

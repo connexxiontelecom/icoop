@@ -187,6 +187,7 @@
                                 <li>
                                     <a href="#" class="has-arrow"><i class="fa fa-cog"></i><span>Control Panel</span></a>
                                     <ul>
+										<li class="header"><b>Control Panel</b></li>
                                         <li><a href="<?=base_url('contribution_type') ?>">Contribution Type</a></li>
                                         <li><a href="<?=base_url('payroll_group') ?>">Payroll Group</a></li>
 										<li class="header"><b>Routines</b></li>
@@ -241,7 +242,7 @@
                                         <li><a href="<?=base_url('new_application') ?>">New Application</a></li>
                                         <li><a href="<?=base_url('verify_application') ?>">Verify Applications</a></li>
                                         <li><a href="<?=base_url('approve_application') ?>">Approve Applications</a></li>
-								        <li><a href="<?=base_url('cooperators') ?>">Ledgers</a></li>
+								        <li><a href="<?=base_url('cooperators') ?>">Personal Ledgers</a></li>
 										<li class="header"><b>Account Options</b></li>
 										<li><a href="<?=base_url('freeze') ?>">Freeze/Unfreeze</a></li>
 										<li class="header"><b>Account Closure</b></li>
@@ -255,10 +256,11 @@
                                 </li>
                                 <li><a href="#" class="has-arrow"><i class="icon-bag"></i><span>Savings</span></a>
                                 <ul>
+									<li class="header"><b>Withdraw</b></li>
                                     <li><a href="<?=base_url('new_withdraw') ?>">New Withdraw</a></li>
                                     <li><a href="<?=base_url('verify_withdrawal') ?>">Verify Withdrawal</a></li>
                                     <li><a href="<?=base_url('approve_withdrawal') ?>">Approve Withdrawal</a></li>
-                                    <li class="header">Saving Variations</li>
+									<li class="header"><b>Saving Variations</b></li>
                                     <li><a href="<?=base_url('/saving-variations/new') ?>">New</a></li>
                                     <li><a href="<?=base_url('/saving-variations/unverified') ?>">Verify</a></li>
                                     <li><a href="<?=base_url('/saving-variations/verified') ?>">Approve</a></li>
@@ -336,6 +338,7 @@
                                     <a href="javascript:void(0);" class="has-arrow"><i class="fa fa-university"></i><span>Financial Accounts</span></a>
 
                                     <ul>
+										<li class="header"><b>Financial Accounts</b></li>
                                         <li><a href="<?=base_url('chart-of-accounts') ?>">Chart of Accounts</a></li>
                                         <li><a href="<?=base_url('new-journal-voucher') ?>">Journal Voucher</a></li>
                                         <li><a href="<?=base_url('journal-voucher') ?>">Posting</a></li>
@@ -349,6 +352,7 @@
                                     <a href="javascript:void(0);" class="has-arrow"><i class="fa fa-question-circle"></i><span>Help Desk</span></a>
 
                                     <ul>
+										<li class="header"><b>Loans</b></li>
                                         <li><a href="<?=base_url('/help-desk/loan-application') ?>">Loan Application</a></li>
                                         <li><a href="<?=base_url('/help-desk/withdraw-application') ?>">Withdraw Application</a></li>
                                         <li><a href="<?=base_url('/help-desk/account-closure-application') ?>">Account Closure</a></li>
