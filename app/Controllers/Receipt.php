@@ -438,6 +438,7 @@
 							$total_interest = 0;
 							$total_cr_mi = 0;
 							$total_dr_mi = 0;
+							$total_principal = 0;
 							
 							foreach ($loan_ledgers as$loan_ledger):
 								
@@ -446,6 +447,7 @@
 									$total_cr = $total_cr + $cr;
 									
 									$total_cr_mi = $total_cr_mi + $loan_ledger->lr_mi;
+									$total_principal = $total_principal + $loan_ledger->lr_mpr;
 								endif;
 								
 								if($loan_ledger->lr_dctype == 2):
@@ -503,6 +505,74 @@
 
 
 							$v =   $this->lr->save($loan_repayment);
+							
+							
+							
+							$loan_ledgers = $this->loan->get_loans_staff_id($staff_id, $loan_id);
+							
+							$total_cr = 0;
+							$total_dr = 0;
+							$cr = 0;
+							$dr = 0;
+							$total_mi = 0;
+							$total_interest = 0;
+							$total_cr_mi = 0;
+							$total_dr_mi = 0;
+							$total_principal = 0;
+							
+							foreach ($loan_ledgers as$loan_ledger):
+								$loan_amount = $loan_ledger->amount;
+								
+								if($loan_ledger->lr_dctype == 1):
+									$cr = $loan_ledger->lr_amount;
+									$total_cr = $total_cr + $cr;
+									
+									$total_cr_mi = $total_cr_mi + $loan_ledger->lr_mi;
+									$total_principal = $total_principal + $loan_ledger->lr_mpr;
+								endif;
+								
+								if($loan_ledger->lr_dctype == 2):
+									$dr = $loan_ledger->lr_amount;
+									$total_dr = $total_dr + $dr;
+									
+									$total_dr_mi = $total_dr_mi + $loan_ledger->lr_mi;
+								endif;
+								
+								$psr = $loan_ledger->psr;
+								$psr_value = $loan_ledger->psr_value;
+							endforeach;
+							
+							$balance =  $loan_amount+($total_dr - $total_cr);
+							$total_principal = $loan_amount - $total_principal;
+							
+							if($psr == 1):
+								
+								$new_encumbrance_amount = ($psr_value/100) * $total_principal;
+								$loan_array = array(
+									'loan_id' => $loan_id,
+									'encumbrance_amount' => $new_encumbrance_amount
+								);
+								
+								$this->loan->save($loan_array);
+							endif;
+
+//			echo 'total dr: '.$total_dr.'<br>';
+//			echo 'total cr: '.$total_cr.'<br>';
+//			echo 'balance: '.$balance;
+							
+							if($balance <= 0):
+								
+								$loan_array = array(
+									'loan_id' => $loan_id,
+									'paid_back' => 1
+								);
+								
+								$this->loan->save($loan_array);
+							
+							endif;
+							
+							
+							
 							$loan_s = $this->loan->get_loan($loan_id);
 							
 							$account = $this->coa->where('glcode', $loan_s['loan_gl_account_no'])->first();
@@ -523,6 +593,8 @@
 							
 							
 						endif;
+						
+						
 						if($rd['rd_type'] == 2): //savings
 							$ct_id = $rd['rd_target'];
 							$ct_data = $this->contribution_type->where(['contribution_type_id' => $ct_id])->first();
@@ -587,54 +659,7 @@
 //							$this->gl->save($bankGl);
 							
 							
-							
-							$loan_ledgers = $this->loan->get_loans_staff_id($staff_id, $loan_id);
-							
-							$total_cr = 0;
-							$total_dr = 0;
-							$cr = 0;
-							$dr = 0;
-							$total_mi = 0;
-							$total_interest = 0;
-							$total_cr_mi = 0;
-							$total_dr_mi = 0;
-							
-							foreach ($loan_ledgers as$loan_ledger):
-								$loan_amount = $loan_ledger->amount;
-								
-								if($loan_ledger->lr_dctype == 1):
-									$cr = $loan_ledger->lr_amount;
-									$total_cr = $total_cr + $cr;
-									
-									$total_cr_mi = $total_cr_mi + $loan_ledger->lr_mi;
-								endif;
-								
-								if($loan_ledger->lr_dctype == 2):
-									$dr = $loan_ledger->lr_amount;
-									$total_dr = $total_dr + $dr;
-									
-									$total_dr_mi = $total_dr_mi + $loan_ledger->lr_mi;
-								endif;
-							
-							
-							endforeach;
-							
-							$balance =  $loan_amount+($total_dr - $total_cr);
 
-//			echo 'total dr: '.$total_dr.'<br>';
-//			echo 'total cr: '.$total_cr.'<br>';
-//			echo 'balance: '.$balance;
-							
-							if($balance <= 0):
-								
-								$loan_array = array(
-									'loan_id' => $loan_id,
-									'paid_back' => 1
-								);
-								
-								$this->loan->save($loan_array);
-							
-							endif;
 							
 							
 //							$rd_data['target'][$y] = $rd + $ct_data;
@@ -1101,6 +1126,7 @@
 							$total_interest = 0;
 							$total_cr_mi = 0;
 							$total_dr_mi = 0;
+							$total_principal = 0;
 							
 							foreach ($loan_ledgers as$loan_ledger):
 								
@@ -1109,6 +1135,7 @@
 									$total_cr = $total_cr + $cr;
 									
 									$total_cr_mi = $total_cr_mi + $loan_ledger->lr_mi;
+									
 								endif;
 								
 								if($loan_ledger->lr_dctype == 2):
@@ -1166,6 +1193,9 @@
 							
 							
 							$v =   $this->lr->save($loan_repayment);
+							
+							
+							
 							$loan_s = $this->loan->get_loan($loan_id);
 							
 							$account = $this->coa->where('glcode', $loan_s['loan_gl_account_no'])->first();
@@ -1184,6 +1214,76 @@
 							$this->gl->save($bankGl);
 							
 							
+							
+							$loan_ledgers = $this->loan->get_loans_staff_id($staff_id, $loan_id);
+							
+							$total_cr = 0;
+							$total_dr = 0;
+							$cr = 0;
+							$dr = 0;
+							$total_mi = 0;
+							$total_interest = 0;
+							$total_cr_mi = 0;
+							$total_dr_mi = 0;
+							$total_principal = 0;
+							
+							foreach ($loan_ledgers as$loan_ledger):
+								$loan_amount = $loan_ledger->amount;
+								
+								if($loan_ledger->lr_dctype == 1):
+									$cr = $loan_ledger->lr_amount;
+									$total_cr = $total_cr + $cr;
+									
+									$total_cr_mi = $total_cr_mi + $loan_ledger->lr_mi;
+									$total_principal = $total_principal + $loan_ledger->lr_mpr;
+								endif;
+								
+								if($loan_ledger->lr_dctype == 2):
+									$dr = $loan_ledger->lr_amount;
+									$total_dr = $total_dr + $dr;
+									
+									$total_dr_mi = $total_dr_mi + $loan_ledger->lr_mi;
+								endif;
+								
+								
+								$psr = $loan_ledger->psr;
+								$psr_value = $loan_ledger->psr_value;
+							endforeach;
+							
+							$balance =  $loan_amount + ($total_dr - $total_cr);
+							
+							$total_principal = $loan_amount - $total_principal;
+							
+							
+							if($psr == 1):
+								
+								$new_encumbrance_amount = ($psr_value/100) * $total_principal;
+								$loan_array = array(
+									'loan_id' => $loan_id,
+									'encumbrance_amount' => $new_encumbrance_amount
+								);
+								
+								$this->loan->save($loan_array);
+							endif;
+
+//			echo 'total dr: '.$total_dr.'<br>';
+//			echo 'total cr: '.$total_cr.'<br>';
+//			echo 'balance: '.$balance;
+							
+							if($balance <= 0):
+								
+								$loan_array = array(
+									'loan_id' => $loan_id,
+									'paid_back' => 1
+								);
+								
+								$this->loan->save($loan_array);
+							
+							endif;
+						
+						
+						
+						
 						endif;
 						if($jtd['jtd_type'] == 2): //savings
 							$ct_id = $jtd['jtd_target'];
@@ -1232,56 +1332,7 @@
 							// bank gl_code should be entered here
 							
 						
-							
-							$loan_ledgers = $this->loan->get_loans_staff_id($staff_id, $loan_id);
-							
-							$total_cr = 0;
-							$total_dr = 0;
-							$cr = 0;
-							$dr = 0;
-							$total_mi = 0;
-							$total_interest = 0;
-							$total_cr_mi = 0;
-							$total_dr_mi = 0;
-							
-							foreach ($loan_ledgers as$loan_ledger):
-								$loan_amount = $loan_ledger->amount;
-								
-								if($loan_ledger->lr_dctype == 1):
-									$cr = $loan_ledger->lr_amount;
-									$total_cr = $total_cr + $cr;
-									
-									$total_cr_mi = $total_cr_mi + $loan_ledger->lr_mi;
-								endif;
-								
-								if($loan_ledger->lr_dctype == 2):
-									$dr = $loan_ledger->lr_amount;
-									$total_dr = $total_dr + $dr;
-									
-									$total_dr_mi = $total_dr_mi + $loan_ledger->lr_mi;
-								endif;
-							
-							
-							endforeach;
-							
-							$balance =  $loan_amount+($total_dr - $total_cr);
-
-//			echo 'total dr: '.$total_dr.'<br>';
-//			echo 'total cr: '.$total_cr.'<br>';
-//			echo 'balance: '.$balance;
-							
-							if($balance <= 0):
-								
-								$loan_array = array(
-									'loan_id' => $loan_id,
-									'paid_back' => 1
-								);
-								
-								$this->loan->save($loan_array);
-							
-							endif;
-
-
+						
 //							$jtd_data['target'][$y] = $jtd + $ct_data;
 						endif;
 					

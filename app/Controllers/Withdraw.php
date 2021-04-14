@@ -339,8 +339,11 @@
 				
 				$encumbered_amount = 0;
 				if($ct['contribution_type_regular'] == 1):
-					$loan = $this->loan->where(['staff_id' => $staff_id, 'paid_back'=> 0, 'disburse' => 1])->first();
-					$encumbered_amount = $loan['encumbrance_amount'];
+					$loan_s = $this->loan->where(['staff_id' => $staff_id, 'paid_back'=> 0, 'disburse' => 1])->findAll();
+					foreach ($loan_s as $loan):
+				
+						$encumbered_amount = (float)$loan['encumbrance_amount'] + $encumbered_amount;
+					endforeach;
 				endif;
 				
 				$bf = 0;
