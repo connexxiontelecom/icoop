@@ -336,6 +336,9 @@
                                         <li><a href="<?=base_url('new-journal-voucher') ?>">Journal Voucher</a></li>
                                         <li><a href="<?=base_url('journal-voucher') ?>">Posting</a></li>
                                         <li><a href="<?=base_url('state') ?>">Location</a></li>
+                                        <li class="header"><b>Report</b></li>
+                                        <li><a href="<?=base_url('trial-balance') ?>">Trial Balance/Loss</a></li>
+                                        <li><a href="<?=base_url('profit-loss') ?>">Profit/Loss</a></li>
                                     </ul>
                                 </li>
                                 <li>

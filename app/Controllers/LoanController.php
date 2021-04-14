@@ -326,7 +326,7 @@ class LoanController extends BaseController
                         'verify_comment'=>$this->request->getVar('comment'),
                         'verify'=>1,
                         'verify_date'=>date('y-m-d H:i:s'),
-                        'verified_by'=> $this->user->where('username', $username)->first()['user_id'],
+                        'verified_by'=> $this->user->where('username', $username)->first()['username'],
 					];
                     $this->loanapp->update($this->request->getVar('application_id'), $data);
             $alert = array(
@@ -369,7 +369,7 @@ class LoanController extends BaseController
 					$data = [
                         'approve_comment'=>$this->request->getVar('comment'),
                         'approve'=>1,
-                        'approved_by'=> $this->user->where('username', $username)->first()['user_id'],
+                        'approved_by'=> $this->user->where('username', $username)->first()['username'],
                         'approve_date'=>date('Y-m-d H:i:s'),
 
                     ];
