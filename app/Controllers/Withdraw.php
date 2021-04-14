@@ -361,7 +361,8 @@
 						$bf = ($bf + $cr) - $dr;
 					endforeach;
 					$max_withdrawal = $policy_configs['max_withdrawal_amount'];
-					$bf_w = ($max_withdrawal/100)*$bf;
+					$withdraw_charges = $policy_configs['savings_withdrawal_charge'];
+					$bf_w = ($max_withdrawal/100)*($bf - $encumbered_amount);
 					
 					
 					if($type == 2):
@@ -375,8 +376,8 @@
 					
 					
 					if($type == 1):
-						$data['note'] = 'Withdrawal Balance: NGN'.number_format($bf_w - $encumbered_amount).'<br>'.'Encumbered Amount: NGN'.number_format($encumbered_amount).'<br>'.'Savings Balance: NGN'.number_format($bf);
-						$data['balance'] = $bf_w - (float)$encumbered_amount;
+						$data['note'] = 'Withdrawal Balance: NGN'.number_format($bf_w - (($withdraw_charges/100) *$bf_w)).'<br>'.'Encumbered Amount: NGN'.number_format($encumbered_amount).'<br>'.'Savings Balance: NGN'.number_format($bf);
+						$data['balance'] = $bf_w - (($withdraw_charges/100) * $bf_w);
 						$data['encumbered_amount'] =  $encumbered_amount;
 						echo json_encode($data);
 					
