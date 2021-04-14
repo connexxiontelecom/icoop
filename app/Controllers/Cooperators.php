@@ -1668,10 +1668,32 @@ class Cooperators extends BaseController
 				
 						foreach ($_pds as $pd):
 							
+							
+							
+							
+							
 							$staff_id = $pd['pd_staff_id'];
 							$cooperator =  $this->cooperator->where(['cooperator_staff_id' => $staff_id])->first();
 							$balances[$i]['name'] = $cooperator['cooperator_first_name']. ' '.$cooperator['cooperator_last_name'];
 							$balances[$i]['staff_id'] = $staff_id;
+							
+							
+							$ledgers =  $this->pd->where(['pd_staff_id' => $staff_id, 'pd_ct_id' => $ct_id])
+								->findAll();
+							$bf_t = 0;
+							foreach ($ledgers as $ledger):
+								if($ledger['pd_drcrtype'] == 2):
+									$dr = $ledger['pd_amount'];
+									$cr = 0;
+								
+								endif;
+								if($ledger['pd_drcrtype'] == 1):
+									$cr = $ledger['pd_amount'];
+									$dr = 0;
+								endif;
+								
+								$bf_t = ($bf_t + $cr) - $dr;
+							endforeach;
 							
 							$bf_payments = $this->pd->get_payment_bf($staff_id, $ct_id, $from);
 							$cr = 0;
@@ -1724,6 +1746,7 @@ class Cooperators extends BaseController
 								$balances[$i]['balance'] = $balance;
 								$balances[$i]['total_cr'] = $total_cr;
 								$balances[$i]['total_dr'] = $total_dr;
+								$balances[$i]['balance_today'] = $bf_t;
 								
 							
 							$i++;
@@ -1790,6 +1813,23 @@ class Cooperators extends BaseController
 				$cooperator =  $this->cooperator->where(['cooperator_staff_id' => $staff_id])->first();
 				$balances[$i]['name'] = $cooperator['cooperator_first_name']. ' '.$cooperator['cooperator_last_name'];
 				$balances[$i]['staff_id'] = $staff_id;
+				
+				$ledgers =  $this->pd->where(['pd_staff_id' => $staff_id, 'pd_ct_id' => $ct_id])
+					->findAll();
+				$bf_t = 0;
+				foreach ($ledgers as $ledger):
+					if($ledger['pd_drcrtype'] == 2):
+						$dr = $ledger['pd_amount'];
+						$cr = 0;
+					
+					endif;
+					if($ledger['pd_drcrtype'] == 1):
+						$cr = $ledger['pd_amount'];
+						$dr = 0;
+					endif;
+					
+					$bf_t = ($bf_t + $cr) - $dr;
+				endforeach;
 				
 				$bf_payments = $this->pd->get_payment_bf($staff_id, $ct_id, $from);
 				$cr = 0;
@@ -1965,6 +2005,7 @@ class Cooperators extends BaseController
 				$balances[$i]['external_savings_dr'] = $p_external_savings_dr;
 				$balances[$i]['reconciliation_dr'] = $p_reconciliation_dr;
 				$balances[$i]['account_closure_dr'] = $p_account_closure_dr;
+				$balances[$i]['balance_today'] = $bf_t;
 				
 				
 				$i++;

@@ -1071,6 +1071,7 @@
 						'pd_transaction_date' => $jt_m['jtm_date'],
 						'pd_narration' => 'Journal transfer',
 						'pd_amount' => $jt_m['jtm_amount'],
+						'pd_payment_type' => 4,
 						'pd_drcrtype' => 2,
 						'pd_ct_id' => $jt_m['jtm_ct_id'],
 						'pd_pg_id' => $cooperator->cooperator_payroll_group_id,

@@ -198,7 +198,8 @@ class LoanController extends BaseController
 				                        'amount'=>str_replace(",","",$this->request->getVar('amount')),
 				                        'applied_date'=>date('Y-m-d H:i:s'),
 				                        'attachment'=>$filename,
-                                        'encumbrance_amount'=> $this->request->getVar('psr') == 1 ? ($this->request->getVar('psr_rate')/100) * str_replace(",","",$this->request->getVar('amount')) : 0, 
+                                        'encumbrance_amount'=> $this->request->getVar('psr') == 1 ? ($this->request->getVar('psr_rate')/100) * str_replace(",","",$this->request->getVar('amount')) : 0,
+					                     'applied_by' => $this->session->user_username
 				                    ];
 				                    // check loan type details with $loan_type
 				                    $loan_setups = $this->loansetup->where(['loan_setup_id'=> $this->request->getVar('loan_type')])->first();
@@ -236,7 +237,7 @@ class LoanController extends BaseController
 				                            //loan verification can go through
 				                            $this->loanapp->save($data);
 				                            $alert = array(
-				                                'msg' => 'Success! Loan application done.',
+				                                'msg' => 'Success! Loan application done 1.',
 				                                'type' => 'success',
 				                                'location' => site_url('/loan/new')
 				                    
@@ -245,15 +246,22 @@ class LoanController extends BaseController
 				                        }
 				
 				                    }
-				                    else{
-				                        $this->loanapp->save($data);
-				                            $alert = array(
-				                                'msg' => 'Success! Loan application done.',
-				                                'type' => 'success',
-				                                'location' => site_url('/loan/new')
 				                    
-				                            );
-				                            return view('pages/sweet-alert', $alert);
+				                    else{
+				                     
+				                    	$c = $this->loanapp->save($data);
+				                    	
+				                    	print_r($c);
+				                     
+				                     
+				                     
+//				                        $alert = array(
+//				                                'msg' => 'Success! Loan application done. 2',
+//				                                'type' => 'success',
+//				                                'location' => site_url('/loan/new')
+//
+//				                            );
+//				                            return view('pages/sweet-alert', $alert);
 				                    }
 				                    
 				              

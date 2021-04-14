@@ -22,31 +22,31 @@ Report(Savings)
 
 <?= $this->section('content') ?>
 <div class="row clearfix">
-    <div class="col-lg-12">
-        <div class="card">
-            <div class="header">
-                <h2>Savings (Report)</h2>
-            </div>
-
-
-            <div class="col-md-12">
-            
+	<div class="col-lg-12">
+		<div class="card">
+			<div class="header">
+				<h2>Savings (Report)</h2>
+			</div>
+			
+			
+			<div class="col-md-12">
+				
 				<div class="row clearfix">
 					<div class="col-lg-4 col-md-6 col-sm-12">
 						
 						<div class="card">
 							<a href="<?= site_url('/saving-variations/report') ?>">
-                                <div class="body">
-                                    <div class="d-flex align-items-center">
-                                        <div class="icon-in-bg bg-indigo text-white rounded-circle"><i class="fa fa-briefcase"></i></div>
-                                        <div class="ml-4">
-                                            <span>Saving Variations Report</span>								
-                                        </div>
-                                    </div>
-                        
-                                </div>
+								<div class="body">
+									<div class="d-flex align-items-center">
+										<div class="icon-in-bg bg-indigo text-white rounded-circle"><i class="fa fa-briefcase"></i></div>
+										<div class="ml-4">
+											<span>Saving Variations Report</span>
+										</div>
+									</div>
+								
+								</div>
 							</a>
-				        </div>
+						</div>
 					</div>
 					<div class="col-lg-4 col-md-6 col-sm-12">
 						
@@ -58,7 +58,7 @@ Report(Savings)
 									<div class="d-flex align-items-center">
 										<div class="icon-in-bg bg-indigo text-white rounded-circle"><i class="icon-notebook"></i></div>
 										<div class="ml-4">
-											<span>Savings Reports</span>
+											<span>Savings Balance Report</span>
 										
 										
 										</div>
@@ -79,7 +79,7 @@ Report(Savings)
 									<div class="d-flex align-items-center">
 										<div class="icon-in-bg bg-indigo text-white rounded-circle"><i class="icon-notebook"></i></div>
 										<div class="ml-4">
-											<span>Analysis Reports</span>
+											<span>Analysis Report</span>
 										</div>
 									</div>
 								
@@ -98,7 +98,7 @@ Report(Savings)
 									<div class="d-flex align-items-center">
 										<div class="icon-in-bg bg-indigo text-white rounded-circle"><i class="icon-notebook"></i></div>
 										<div class="ml-4">
-											<span>Withdrawal Reports</span>
+											<span>Withdrawal Report</span>
 										</div>
 									</div>
 								
@@ -117,7 +117,7 @@ Report(Savings)
 									<div class="d-flex align-items-center">
 										<div class="icon-in-bg bg-indigo text-white rounded-circle"><i class="icon-notebook"></i></div>
 										<div class="ml-4">
-											<span>Payroll Contribution Reports</span>
+											<span>Payroll Contribution Report</span>
 										</div>
 									</div>
 								
@@ -136,7 +136,7 @@ Report(Savings)
 									<div class="d-flex align-items-center">
 										<div class="icon-in-bg bg-indigo text-white rounded-circle"><i class="icon-notebook"></i></div>
 										<div class="ml-4">
-											<span>External Contribution Reports</span>
+											<span>External Contribution Report</span>
 										</div>
 									</div>
 								
@@ -155,7 +155,7 @@ Report(Savings)
 									<div class="d-flex align-items-center">
 										<div class="icon-in-bg bg-indigo text-white rounded-circle"><i class="icon-notebook"></i></div>
 										<div class="ml-4">
-											<span>Journal Transfer Reports</span>
+											<span>Journal Transfer Report</span>
 										</div>
 									</div>
 								
@@ -164,10 +164,10 @@ Report(Savings)
 						</div>
 					</div>
 				</div>
-            </div>
-
-        </div>
-    </div>
+			</div>
+		
+		</div>
+	</div>
 
 </div>
 
