@@ -46,36 +46,169 @@ class AccountingReportController extends BaseController
                     ]
                 ],
             ];
-            //$current = Carbon::now();
             $inception = $this->glmodel->getFirstTransaction();
-            return dd($inception);
-            //DB::table(Auth::user()->tenant_id.'_gl')->orderBy('id', 'ASC')->first();
-          /*   if(!empty($inception)){
-                $bfDr = 
-                $bfCr = DB::table(Auth::user()->tenant_id.'_gl')->whereBetween('created_at', [$inception->created_at, $current->parse($request->from)->subDays(1)])->sum('cr_amount');
-                $reports = DB::table(Auth::user()->tenant_id.'_gl as g')
-                    ->join(Auth::user()->tenant_id.'_coa as c', 'c.glcode', '=', 'g.glcode')
-                    ->select(DB::raw('sum(g.dr_amount) AS sumDebit'),DB::raw('sum(g.cr_amount) AS sumCredit'),
-                        'c.account_name', 'g.glcode', 'c.glcode', 'c.account_type', 'c.type')
-                    //->where('c.account_type', 1)
-                    ->where('c.type', 'Detail')
-                    ->whereBetween('g.created_at', [$request->from, $request->to])
-                    ->orderBy('c.account_type', 'ASC')
-                    ->groupBy('c.account_name')
-                    ->get();
-                return view('backend.reports.trial-balance', [
-                    'reports'=>$reports,
-                    'bfDr'=>$bfDr,
-                    'bfCr'=>$bfCr,
-                    'from'=>$request->from,
-                    'to'=>$request->to
-                ]);
-            }else{
-                session()->flash("error", "<strong>Ooops!</strong> No record found.");
-                return back();
+            $bfDrObj = $this->glmodel->getBfDr($this->request->getVar('from'), $this->request->getVar('to'));
+            $bfCrObj = $this->glmodel->getBfCr($this->request->getVar('from'), $this->request->getVar('to'));
+            $reports = $this->glmodel->getReport($this->request->getVar('from'), $this->request->getVar('to'));
+            $report_s = array();
+            /* $i = 0;
+            foreach($reports as $report){
+                   $report_s[$i] = $report + $this->glmodel->where('glcode', $report['glcode'])->first();
+                   $i++; 
+
             } */
+            return dd($reports);
+            $bfDr = 0;
+            $bfCr = 0;
+            foreach($bfDrObj as $dr){
+                $bfDr += $dr->dr_amount;
+            }
+            foreach($bfCrObj as $cr){
+                $bfCr += $cr->cr_amount;
+            }
+            $drSum = 0;
+            $crSum = 0;
+            foreach($reports as $re){
+                $drSum += $re->dr_amount;
+            }
+            foreach($reports as $port){
+                $crSum += $port->cr_amount;
+            }
+            $data = [
+                'bfDr'=>$bfDr,
+                'bfCr'=>$bfCr,
+                'reports'=>$reports,
+                'sumDebit'=>$drSum,
+                'sumCredit'=>$crSum
+            ];
+           return view('pages/financial-report/trial-balance-report', $data);
 
         }
+    }
+
+
+    public function profitOrLoss(){
+        helper(['form']);
+        $data = [];
+
+        if($_POST){
+            $rules = [
+                'from'=>[
+                    'rules'=>'required',
+                    'label'=>'From',
+                    'errors'=>[
+                        'required'=>'Start date'
+                    ]
+                    ],
+                'to'=>[
+                    'rules'=>'required',
+                    'label'=>'To',
+                    'errors'=>[
+                        'required'=>'End date'
+                    ]
+                ],
+            ];
+            $inception = $this->glmodel->getFirstTransaction();
+        if(!empty($inception)){
+            $bfDrObj = $this->glmodel->getBfDr($this->request->getVar('from'), $this->request->getVar('to'));
+            $bfCrObj = $this->glmodel->getBfCr($this->request->getVar('from'), $this->request->getVar('to'));
+            $reports = $this->glmodel->getReport($this->request->getVar('from'), $this->request->getVar('to'));
+            $revenue = $this->glmodel->getRevenue($this->request->getVar('from'), $this->request->getVar('to'));
+            $expenses = $this->glmodel->getExpenses($this->request->getVar('from'), $this->request->getVar('to'));
+            $bfDr = 0;
+            $bfCr = 0;
+            foreach($bfDrObj as $dr){
+                $bfDr += $dr->dr_amount;
+            }
+            foreach($bfCrObj as $cr){
+                $bfCr += $cr->cr_amount;
+            }
+            $drSum = 0;
+            $crSum = 0;
+            foreach($reports as $re){
+                $drSum += $re->dr_amount;
+            }
+            foreach($reports as $port){
+                $crSum += $port->cr_amount;
+            }
+            $data = [
+                'bfDr'=>$bfDr,
+                'bfCr'=>$bfCr,
+                'reports'=>$reports,
+                'sumDebit'=>$drSum,
+                'sumCredit'=>$crSum,
+                'revenue'=>$revenue,
+                'expense'=>$expenses
+
+            ];
+             return view('pages/financial-report/profit-loss-report', $data);
+        }
+    }
+    }
+
+    public function showBalanceSheet(){
+        $data = [];
+        return view('pages/financial-report/balance-sheet', $data);
+    }
+
+    
+    public function balanceSheet(){
+        helper(['form']);
+        $data = [];
+
+        if($_POST){
+            $rules = [
+                'from'=>[
+                    'rules'=>'required',
+                    'label'=>'From',
+                    'errors'=>[
+                        'required'=>'Start date'
+                    ]
+                    ],
+                'to'=>[
+                    'rules'=>'required',
+                    'label'=>'To',
+                    'errors'=>[
+                        'required'=>'End date'
+                    ]
+                ],
+            ];
+            $inception = $this->glmodel->getFirstTransaction();
+        if(!empty($inception)){
+            $bfDrObj = $this->glmodel->getBfDr($this->request->getVar('from'), $this->request->getVar('to'));
+            $bfCrObj = $this->glmodel->getBfCr($this->request->getVar('from'), $this->request->getVar('to'));
+            $reports = $this->glmodel->getReport($this->request->getVar('from'), $this->request->getVar('to'));
+            $revenue = $this->glmodel->getRevenue($this->request->getVar('from'), $this->request->getVar('to'));
+            $expenses = $this->glmodel->getExpenses($this->request->getVar('from'), $this->request->getVar('to'));
+            $bfDr = 0;
+            $bfCr = 0;
+            foreach($bfDrObj as $dr){
+                $bfDr += $dr->dr_amount;
+            }
+            foreach($bfCrObj as $cr){
+                $bfCr += $cr->cr_amount;
+            }
+            $drSum = 0;
+            $crSum = 0;
+            foreach($reports as $re){
+                $drSum += $re->dr_amount;
+            }
+            foreach($reports as $port){
+                $crSum += $port->cr_amount;
+            }
+            $data = [
+                'bfDr'=>$bfDr,
+                'bfCr'=>$bfCr,
+                'reports'=>$reports,
+                'sumDebit'=>$drSum,
+                'sumCredit'=>$crSum,
+                'revenue'=>$revenue,
+                'expense'=>$expenses
+
+            ];
+             return view('pages/financial-report/balance-sheet-report', $data);
+        }
+    }
     }
 
 }

@@ -110,8 +110,11 @@ $routes->post('/add-new-chart-of-account', 'ChartOfAccountController::saveAccoun
 $routes->get('/get-parent-account', 'ChartOfAccountController::getParentAccount');
 #Report routes
 $routes->get('/profit-loss', 'AccountingReportController::showProfitLoss');
+$routes->post('/profit-loss', 'AccountingReportController::profitOrLoss');
 $routes->get('/trial-balance', 'AccountingReportController::showTrialBalanceForm');
 $routes->post('/trial-balance', 'AccountingReportController::trialBalance');
+$routes->get('/balance-sheet', 'AccountingReportController::showBalanceSheet');
+$routes->post('/balance-sheet', 'AccountingReportController::balanceSheet');
 #Journal voucher
 $routes->get('/journal-voucher', 'JournalVoucher::index');
 $routes->get('/new-journal-voucher', 'JournalVoucher::create');
