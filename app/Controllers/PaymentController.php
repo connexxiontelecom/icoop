@@ -467,6 +467,10 @@ class PaymentController extends BaseController
 			                $interest_amount =  $loan_amount * ($ls_interest_rate/100) * ($duration/12);
 
 		                }
+		                
+		                $cooperator = $this->coop->where('cooperator_staff_id', $loan['staff_id'])->first();
+		                
+		                $staff_name = $cooperator['cooperator_first_name'].' '.$cooperator['cooperator_last_name'];
 
 
 
@@ -505,7 +509,9 @@ class PaymentController extends BaseController
 		                'bank' => $account['bank'],
 		                'ob' => 0,
 		                'posted' => 1,
-		                'created_at' => $p_d,
+		                'gl_transaction_date' =>$p_d,
+		                'created_at' => date('Y-m-d'),
+		                'gl_description' => 'Staff id:'.$loan['staff_id'].', Staff Name:'.$staff_name.' Loan id:'.$loan['loan_id'],
 	                );
 	                $this->gl->save($bankGl);
 
@@ -522,7 +528,10 @@ class PaymentController extends BaseController
 		                'bank' => $account['bank'],
 		                'ob' => 0,
 		                'posted' => 1,
-		                'created_at' => $p_d,
+		                'gl_transaction_date' =>$p_d,
+		                'created_at' => date('Y-m-d'),
+		                'gl_description' => 'Staff id:'.$loan['staff_id'].', Staff Name:'.$staff_name.' Loan id:'.$loan['loan_id'],
+	
 	                );
 	                $this->gl->save($bankGl);
 
@@ -540,7 +549,10 @@ class PaymentController extends BaseController
 			                'bank' => $account['bank'],
 			                'ob' => 0,
 			                'posted' => 1,
-			                'created_at' => $p_d,
+			                'gl_transaction_date' =>$p_d,
+			                'created_at' => date('Y-m-d'),
+			                'gl_description' => 'Staff id:'.$loan['staff_id'].', Staff Name:'.$staff_name.' Loan id:'.$loan['loan_id'],
+		
 		                );
 		                $this->gl->save($bankGl);
 
@@ -567,6 +579,7 @@ class PaymentController extends BaseController
                     //$this->withdraw->update($withdraw, []);
                     #register withdraw
                     $cooperator = $this->coop->where('cooperator_staff_id', $withdraw['withdraw_staff_id'])->first();
+	                $staff_name = $cooperator['cooperator_first_name'].' '.$cooperator['cooperator_last_name'];
 
                     $ref_code = time();
                     $payment_type = 1;
@@ -603,7 +616,10 @@ class PaymentController extends BaseController
 		                'bank' => $account['bank'],
 		                'ob' => 0,
 		                'posted' => 1,
-		                'created_at' => $payable_date,
+		                'gl_transaction_date' =>$payable_date,
+		                'created_at' => date('Y-m-d'),
+		                'gl_description' => 'Staff id:'.$withdraw['withdraw_staff_id'].', Staff Name:'.$staff_name.' Contribution Type:'.$wt['contribution_type_name'],
+	
 	                );
 	                $this->gl->save($bankGl);
 
@@ -626,7 +642,7 @@ class PaymentController extends BaseController
 
 	                $wt = $this->ct->where('contribution_type_id', $withdraw['withdraw_ct_id'])->first();
 
-	                //dr contribution type gl chargea=s
+	                //dr contribution type gl charges
 	                $account = $this->coa->where('glcode', $wt['contribution_type_glcode'])->first();
 	                $bankGl = array(
 		                'glcode' => $wt['contribution_type_glcode'],
@@ -638,7 +654,10 @@ class PaymentController extends BaseController
 		                'bank' => $account['bank'],
 		                'ob' => 0,
 		                'posted' => 1,
-		                'created_at' => $payable_date,
+		                'gl_transaction_date' =>$payable_date,
+		                'created_at' => date('Y-m-d'),
+		                'gl_description' => 'Staff id:'.$withdraw['withdraw_staff_id'].', Staff Name:'.$staff_name.' Contribution Type:'.$wt['contribution_type_name'],
+	
 	                );
 	                $this->gl->save($bankGl);
 
@@ -655,7 +674,10 @@ class PaymentController extends BaseController
 		                'bank' => $account['bank'],
 		                'ob' => 0,
 		                'posted' => 1,
-		                'created_at' => $payable_date,
+		                'gl_transaction_date' =>$payable_date,
+		                'created_at' => date('Y-m-d'),
+		                'gl_description' => 'Staff id:'.$withdraw['withdraw_staff_id'].', Staff Name:'.$staff_name.' Contribution Type:'.$wt['contribution_type_name'],
+	
 	                );
 	                $this->gl->save($bankGl);
 
@@ -669,7 +691,10 @@ class PaymentController extends BaseController
 		                'bank' => $account['bank'],
 		                'ob' => 0,
 		                'posted' => 1,
-		                'created_at' => $payable_date,
+		                'gl_transaction_date' =>$payable_date,
+		                'created_at' => date('Y-m-d'),
+		                'gl_description' => 'Staff id:'.$withdraw['withdraw_staff_id'].', Staff Name:'.$staff_name.' Contribution Type:'.$wt['contribution_type_name'],
+	
 	                );
 	                $this->gl->save($bankGl);
                 }
