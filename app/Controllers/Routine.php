@@ -353,6 +353,10 @@ class Routine extends BaseController
 	        if(empty($check_duplicate)):
 		
 		        $pg_d = $this->pg->where('pg_id', $temp_payment['temp_pd_pg_id'])->first();
+		
+		        $cooperator = $this->cooperator->where('cooperator_staff_id', $temp_payment['temp_pd_staff_id'])->first();
+		
+		        $staff_name = $cooperator['cooperator_first_name'].' '.$cooperator['cooperator_last_name'];
 	        
 	            $payment_details_array = array(
 	                'pd_staff_id' => $temp_payment['temp_pd_staff_id'],
@@ -385,7 +389,10 @@ class Routine extends BaseController
 			        'bank' => $account['bank'],
 			        'ob' => 0,
 			        'posted' => 1,
-			        'created_at' =>  date('Y-m-d'),
+			        'gl_transaction_date' =>$temp_payment['temp_pd_transaction_date'],
+			        'created_at' => date('Y-m-d'),
+			        'gl_description' => 'Staff id:'.$temp_payment['temp_pd_staff_id'].', Staff Name:'.$staff_name.' Contribution Type:'.$wt['contribution_type_name'],
+		
 		        );
 		        $this->gl->save($bankGl);
 		
@@ -403,7 +410,10 @@ class Routine extends BaseController
 			        'bank' => $account['bank'],
 			        'ob' => 0,
 			        'posted' => 1,
-			        'created_at' =>  date('Y-m-d'),
+			        'gl_transaction_date' =>$temp_payment['temp_pd_transaction_date'],
+			        'created_at' => date('Y-m-d'),
+			        'gl_description' => 'Staff id:'.$temp_payment['temp_pd_staff_id'].', Staff Name:'.$staff_name.' Contribution Type:'.$wt['contribution_type_name'],
+		
 		        );
 		        $this->gl->save($bankGl);
 		       
@@ -427,7 +437,9 @@ class Routine extends BaseController
 	    
 	    if(empty($check_duplicate)):
 		    $pg_d = $this->pg->where('pg_id', $temp_payment['temp_pd_pg_id'])->first();
-	    
+		    $cooperator = $this->cooperator->where('cooperator_staff_id', $temp_payment['temp_pd_staff_id'])->first();
+		
+		    $staff_name = $cooperator['cooperator_first_name'].' '.$cooperator['cooperator_last_name'];
 		    $payment_details_array = array(
 			    'pd_staff_id' => $temp_payment['temp_pd_staff_id'],
 			    'pd_transaction_date' => $temp_payment['temp_pd_transaction_date'],
@@ -458,7 +470,10 @@ class Routine extends BaseController
 			    'bank' => $account['bank'],
 			    'ob' => 0,
 			    'posted' => 1,
-			    'created_at' =>  date('Y-m-d'),
+			    'gl_transaction_date' =>$temp_payment['temp_pd_transaction_date'],
+			    'created_at' => date('Y-m-d'),
+			    'gl_description' => 'Staff id:'.$temp_payment['temp_pd_staff_id'].', Staff Name:'.$staff_name.' Contribution Type:'.$wt['contribution_type_name'],
+		
 		    );
 		    $this->gl->save($bankGl);
 		
@@ -476,7 +491,10 @@ class Routine extends BaseController
 			    'bank' => $account['bank'],
 			    'ob' => 0,
 			    'posted' => 1,
-			    'created_at' =>  date('Y-m-d'),
+			    'gl_transaction_date' =>$temp_payment['temp_pd_transaction_date'],
+			    'created_at' => date('Y-m-d'),
+			    'gl_description' => 'Staff id:'.$temp_payment['temp_pd_staff_id'].', Staff Name:'.$staff_name.' Contribution Type:'.$wt['contribution_type_name'],
+		
 		    );
 		    $this->gl->save($bankGl);
 		    
@@ -574,10 +592,14 @@ class Routine extends BaseController
 					
 					if(!empty($active_loans)):
 						foreach ($active_loans as $active_loan):
+							$cooperator = $this->cooperator->where('cooperator_staff_id', $active_loan->staff_id)->first();
 							
+							$staff_name = $cooperator['cooperator_first_name'].' '.$cooperator['cooperator_last_name'];
 						
 						
 							if($active_loan->interest_method == 2):
+								
+								
 								
 								$loan_repayments = $this->lr->where(['lr_loan_id' => $active_loan->loan_id])->findAll();
 							
@@ -645,8 +667,10 @@ class Routine extends BaseController
 									'bank' => $account['bank'],
 									'ob' => 0,
 									'posted' => 1,
-									'created_at' => $date,
-								);
+									'gl_transaction_date' =>$date,
+									'created_at' => date('Y-m-d'),
+									'gl_description' => 'Staff id:'.$active_loan->staff_id.', Staff Name:'.$staff_name.' Loan id:'.$active_loan->loan_id,
+									);
 								  $this->gl->save($bankGl);
 								
 								//credit interest account
@@ -661,7 +685,9 @@ class Routine extends BaseController
 									'bank' => $account['bank'],
 									'ob' => 0,
 									'posted' => 1,
-									'created_at' => $date,
+									'gl_transaction_date' =>$date,
+									'created_at' => date('Y-m-d'),
+									'gl_description' => 'Staff id:'.$active_loan->staff_id.', Staff Name:'.$staff_name.' Loan id:'.$active_loan->loan_id,
 								);
 								 $this->gl->save($bankGl);
 								
@@ -719,7 +745,9 @@ class Routine extends BaseController
 									'bank' => $account['bank'],
 									'ob' => 0,
 									'posted' => 1,
-									'created_at' => $date,
+									'gl_transaction_date' =>$date,
+									'created_at' => date('Y-m-d'),
+									'gl_description' => 'Staff id:'.$active_loan->staff_id.', Staff Name:'.$staff_name.' Loan id:'.$active_loan->loan_id,
 								);
 								$this->gl->save($bankGl);
 								
@@ -735,7 +763,9 @@ class Routine extends BaseController
 									'bank' => $account['bank'],
 									'ob' => 0,
 									'posted' => 1,
-									'created_at' => $date,
+									'gl_transaction_date' =>$date,
+									'created_at' => date('Y-m-d'),
+									'gl_description' => 'Staff id:'.$active_loan->staff_id.', Staff Name:'.$staff_name.' Loan id:'.$active_loan->loan_id,
 								);
 								$this->gl->save($bankGl);
 								
@@ -790,6 +820,7 @@ class Routine extends BaseController
 							return view('pages/sweet-alert', $data);
 						
 						endif;
+						
 						
 						else:
 							
@@ -1217,7 +1248,7 @@ class Routine extends BaseController
 			$bankGl = array(
 				'glcode' => $pg_details['pg_gl_code'],
 				'posted_by' => $this->session->user_username,
-				'narration' => $temp_payment['temp_lr_narration'],
+				'narration' => $temp_payment['temp_lr_narration']." loan id:".$loan_id,
 				'dr_amount' => $temp_payment['temp_lr_amount'],
 				'cr_amount' => 0,
 				'ref_no' =>$temp_payment['temp_lr_ref_code'],
@@ -1226,7 +1257,7 @@ class Routine extends BaseController
 				'posted' => 1,
 				'gl_transaction_date' =>$temp_payment['temp_lr_transaction_date'],
 				'created_at' => date('Y-m-d'),
-				'gl_description' => $temp_payment['temp_lr_staff_id'].' '.$temp_payment['temp_lr_staff_name']
+				'gl_description' => 'Staff id:'.$temp_payment['temp_lr_staff_id'].', Staff Name:'.$temp_payment['temp_lr_staff_name'].' Loan id:'.$loan_id
 			);
 			$this->gl->save($bankGl);
 			
@@ -1235,7 +1266,7 @@ class Routine extends BaseController
 			$bankGl = array(
 				'glcode' => $loans->loan_gl_account_no,
 				'posted_by' => $this->session->user_username,
-				'narration' => $temp_payment['temp_lr_narration'],
+				'narration' => $temp_payment['temp_lr_narration']." loan id:".$loan_id,
 				'dr_amount' => 0,
 				'cr_amount' => $temp_payment['temp_lr_amount'],
 				'ref_no' =>$temp_payment['temp_lr_ref_code'],
@@ -1244,7 +1275,7 @@ class Routine extends BaseController
 				'posted' => 1,
 				'gl_transaction_date' =>$temp_payment['temp_lr_transaction_date'],
 				'created_at' => date('Y-m-d'),
-				'gl_description' => $temp_payment['temp_lr_staff_id'].' '.$temp_payment['temp_lr_staff_name']
+				'gl_description' => 'Staff id:'.$temp_payment['temp_lr_staff_id'].', Staff Name:'.$temp_payment['temp_lr_staff_name'].' Loan id:'.$loan_id
 			);
 			$this->gl->save($bankGl);
 			
