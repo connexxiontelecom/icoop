@@ -1216,7 +1216,7 @@
 								'encumbrance_amount' => $new_encumbrance_amount
 							);
 							
-							print_r($total_principal);
+							
 							
 							$this->loan->save($loan_array);
 						endif;

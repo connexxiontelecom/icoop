@@ -1224,7 +1224,9 @@ class Routine extends BaseController
 				'bank' => $account['bank'],
 				'ob' => 0,
 				'posted' => 1,
-				'created_at' => $temp_payment['temp_lr_transaction_date'],
+				'gl_transaction_date' =>$temp_payment['temp_lr_transaction_date'],
+				'created_at' => date('Y-m-d'),
+				'gl_description' => $temp_payment['temp_lr_staff_id'].' '.$temp_payment['temp_lr_staff_name']
 			);
 			$this->gl->save($bankGl);
 			
@@ -1240,7 +1242,9 @@ class Routine extends BaseController
 				'bank' => $account['bank'],
 				'ob' => 0,
 				'posted' => 1,
-				'created_at' => $temp_payment['temp_lr_transaction_date'],
+				'gl_transaction_date' =>$temp_payment['temp_lr_transaction_date'],
+				'created_at' => date('Y-m-d'),
+				'gl_description' => $temp_payment['temp_lr_staff_id'].' '.$temp_payment['temp_lr_staff_name']
 			);
 			$this->gl->save($bankGl);
 			
@@ -1255,6 +1259,7 @@ class Routine extends BaseController
 			$total_interest = 0;
 			$total_cr_mi = 0;
 			$total_dr_mi = 0;
+			$total_principal = 0;
 			
 			foreach ($loan_ledgers as$loan_ledger):
 				
@@ -1263,6 +1268,7 @@ class Routine extends BaseController
 					$total_cr = $total_cr + $cr;
 					
 					$total_cr_mi = $total_cr_mi + $loan_ledger->lr_mi;
+					$total_principal = $total_principal + $loan_ledger->lr_mpr;
 				endif;
 				
 				if($loan_ledger->lr_dctype == 2):
@@ -1271,11 +1277,27 @@ class Routine extends BaseController
 					
 					$total_dr_mi = $total_dr_mi + $loan_ledger->lr_mi;
 				endif;
-
-			
+				
+				$psr = $loan_ledger->psr;
+				$psr_value = $loan_ledger->psr_value;
 			endforeach;
 			
 			$balance =  $loan_amount+($total_dr - $total_cr);
+			
+			$total_principal =  $loan_amount - $total_principal;
+			
+			if($psr == 1):
+				
+				$new_encumbrance_amount = ($psr_value/100) * $total_principal;
+				$loan_array = array(
+					'loan_id' => $loan_id,
+					'encumbrance_amount' => $new_encumbrance_amount
+				);
+				
+				
+				
+				$this->loan->save($loan_array);
+			endif;
 			
 //			echo 'total dr: '.$total_dr.'<br>';
 //			echo 'total cr: '.$total_cr.'<br>';
