@@ -50,6 +50,8 @@ Chart of Accounts
                             <th class="sorting_asc text-left" tabindex="0" style="width: 50px;">S/No.</th>
                             <th class="sorting_asc text-left" tabindex="0" style="width: 50px;">ACCOUNT CODE</th>
                             <th class="sorting_asc text-left" tabindex="0" style="width: 150px;">ACCOUNT NAME</th>
+                            <th class="sorting_asc text-left" tabindex="0" >PARENT</th>
+                            <th class="sorting_asc text-left" tabindex="0" >TYPE</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -62,10 +64,12 @@ Chart of Accounts
                         <?php foreach ($charts as $report): ?>
                             <?php if($report['account_type'] == 1 ) : ?>
                                     <?php if($report['glcode'] != 1) : ?>
-                                        <tr role="row" class="odd">
+                                        <tr role="row" class="odd <?= $report['type'] == 0 ? 'bg-secondary text-white' : '' ?>">
                                             <td class="text-left"><?= $a++ ?></td>
                                             <td class="sorting_1 text-left"><?= $report['glcode'] ?? '' ?></td>
                                             <td class="text-left"><?= $report['account_name'] ?? '' ?></td>
+                                            <td class="text-left"><?= $report['parent_account'] ?? '' ?></td>
+                                            <td class="text-left"><?= $report['type'] == 0 ? 'General' : 'Detail' ?></td>
                                         </tr>
                                     <?php endif ?>
                             <?php endif; ?>
@@ -79,10 +83,12 @@ Chart of Accounts
                         <?php foreach ($charts as $report): ?>
                             <?php if($report['account_type'] == 2 ) : ?>
                                     <?php if($report['glcode'] != 2) : ?>
-                                        <tr role="row" class="odd">
+                                        <tr role="row" class="odd <?= $report['type'] == 0 ? 'bg-secondary text-white' : '' ?>">
                                             <td class="text-left"><?= $b++ ?></td>
                                             <td class="sorting_1 text-left"><?= $report['glcode'] ?? '' ?></td>
                                             <td class="text-left"><?= $report['account_name'] ?? '' ?></td>
+                                             <td class="text-left"><?= $report['parent_account'] ?? '' ?></td>
+                                            <td class="text-left"><?= $report['type'] == 0 ? 'General' : 'Detail' ?></td>
                                         </tr>
                                     <?php endif ?>
                             <?php endif; ?>
@@ -97,10 +103,12 @@ Chart of Accounts
                         <?php foreach ($charts as $report): ?>
                             <?php if($report['account_type'] == 3 ) : ?>
                                     <?php if($report['glcode'] != 3) : ?>
-                                        <tr role="row" class="odd">
+                                        <tr role="row" class="odd <?= $report['type'] == 0 ? 'bg-secondary text-white' : '' ?>">
                                             <td class="text-left"><?= $c++ ?></td>
                                             <td class="sorting_1 text-left"><?= $report['glcode'] ?? '' ?></td>
                                             <td class="text-left"><?= $report['account_name'] ?? '' ?></td>
+                                             <td class="text-left"><?= $report['parent_account'] ?? '' ?></td>
+                                            <td class="text-left"><?= $report['type'] == 0 ? 'General' : 'Detail' ?></td>
                                         </tr>
                                     <?php endif ?>
                             <?php endif; ?>
@@ -114,10 +122,12 @@ Chart of Accounts
                         <?php foreach ($charts as $report): ?>
                             <?php if($report['account_type'] == 4 ) : ?>
                                     <?php if($report['glcode'] != 4) : ?>
-                                        <tr role="row" class="odd">
+                                        <tr role="row" class="odd <?= $report['type'] == 0 ? 'bg-secondary text-white' : '' ?>">
                                             <td class="text-left"><?= $d++ ?></td>
                                             <td class="sorting_1 text-left"><?= $report['glcode'] ?? '' ?></td>
                                             <td class="text-left"><?= $report['account_name'] ?? '' ?></td>
+                                             <td class="text-left"><?= $report['parent_account'] ?? '' ?></td>
+                                            <td class="text-left"><?= $report['type'] == 0 ? 'General' : 'Detail' ?></td>
                                         </tr>
                                     <?php endif ?>
                             <?php endif; ?>
@@ -132,10 +142,12 @@ Chart of Accounts
                         <?php foreach ($charts as $report): ?>
                             <?php if($report['account_type'] == 5 ) : ?>
                                     <?php if($report['glcode'] != 5) : ?>
-                                        <tr role="row" class="odd">
+                                        <tr role="row" class="odd <?= $report['type'] == 0 ? 'bg-secondary text-white' : '' ?>">
                                             <td class="text-left"><?= $e++ ?></td>
                                             <td class="sorting_1 text-left"><?= $report['glcode'] ?? '' ?></td>
                                             <td class="text-left"><?= $report['account_name'] ?? '' ?></td>
+                                             <td class="text-left"><?= $report['parent_account'] ?? '' ?></td>
+                                            <td class="text-left"><?= $report['type'] == 0 ? 'General' : 'Detail' ?></td>
                                         </tr>
                                     <?php endif ?>
                             <?php endif; ?>

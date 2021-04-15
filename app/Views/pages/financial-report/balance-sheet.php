@@ -1,14 +1,14 @@
 <?= $this->extend('layouts/master') ?>
 
 <?= $this->section('title') ?>
-Profit/Loss 
+Balance Sheet 
 <?= $this->endSection() ?>
 
 <?= $this->section('current_page') ?>
-Profit/Loss 
+Balance Sheet 
 <?= $this->endSection() ?>
 <?= $this->section('page_crumb') ?>
-Profit/Loss
+Balance Sheet
 <?= $this->endSection() ?>
 
 <?= $this->section('extra-styles') ?>
@@ -30,11 +30,11 @@ Profit/Loss
     <div class="col-lg-12">
         <div class="card">
             <div class="header">
-                <h2>Profit/Loss</h2>
+                <h2>Balance Sheet</h2>
             </div>
             <div class="row">
                 <div class="col-md-12 col-sm-12">
-                    <form action="<?= site_url('/profit-loss') ?>" method="post">
+                    <form action="<?= site_url('/balance-sheet') ?>" method="post">
                         <?= csrf_field() ?>
                         <div class="row">
                             <div class="col-sm-12 col-md-8 col-lg-8">
