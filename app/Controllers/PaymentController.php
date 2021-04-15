@@ -217,11 +217,23 @@ class PaymentController extends BaseController
                      }
 
                 $amount = 0;
-                if(!is_null($this->request->getVar('coop_id')) ){
-                        for($i = 0; $i<count($this->request->getVar('coop_id')); $i++ ){
-                            $amount += $this->request->getVar('amount')[$i];
-                        }
-                    }
+                if(!is_null($this->request->getVar('coop_id')) ) {
+					$w_amount = 0;
+					$l_amount = 0;
+	                if (!empty($this->request->getVar('amount'))) {
+		                for ($i = 0; $i < count($this->request->getVar('amount')); $i++) {
+			                $l_amount += $this->request->getVar('amount')[$i];
+		                }
+	                }
+	
+	                if (!empty($this->request->getVar('w_amount'))) {
+		                for ($i = 0; $i < count($this->request->getVar('w_amount')); $i++) {
+			                $w_amount += $this->request->getVar('w_amount')[$i];
+		                }
+	                }
+	                
+	                $amount = $w_amount + $l_amount;
+                }
                 
 					$data = [
                         'payable_date'=>$this->request->getVar('payable_date'),
@@ -235,38 +247,45 @@ class PaymentController extends BaseController
                     #Schedule detail
                     if(!is_null($this->request->getVar('loan_id'))){
                         for($i = 0; $i<count($this->request->getVar('loan_id')); $i++ ){
-                            $detail = [
-                                'loan_type'=>$this->request->getVar('loan_type')[$i], 
-                                'coop_id'=>$this->request->getVar('coop_id')[$i],
-                                'amount'=>$this->request->getVar('amount')[$i],
-                                'loan_id'=>$this->request->getVar('loan_id')[$i],
-                                'schedule_master_id'=>$masterId,
-                                'transaction_type'=>1
-                            ];
-                            $this->schedulemasterdetail->save($detail);
-                            $this->loan->update($this->request->getVar('loan_id')[$i], ['scheduled'=>1]);
+                            if($this->request->getVar('amount')[$i] != 0) {
+	                            $detail = [
+		                            'loan_type' => $this->request->getVar('loan_type')[$i],
+		                            'coop_id' => $this->request->getVar('coop_id')[$i],
+		                            'amount' => $this->request->getVar('amount')[$i],
+		                            'loan_id' => $this->request->getVar('loan_id')[$i],
+		                            'schedule_master_id' => $masterId,
+		                            'transaction_type' => 1
+	                            ];
+	
+	                            $this->schedulemasterdetail->save($detail);
+	                            $this->loan->update($this->request->getVar('loan_id')[$i], ['scheduled' => 1]);
+                            }
                         }
                     }
                     #withdraw detail
                      if(!is_null($this->request->getVar('withdraw_id'))){
                         for($w = 0; $w<count($this->request->getVar('withdraw_id')); $w++ ){
-                            $detail = [
-                                //'loan_type'=>$this->request->getVar('loan_type')[$i], 
-                                'coop_id'=>$this->request->getVar('coop_id')[$w],
-                                'amount'=>$this->request->getVar('w_amount')[$w],
-                                'schedule_master_id'=>$masterId,
-                                'transaction_type'=>2,//withdraw,
-                                'loan_id'=>$this->request->getVar('withdraw_id')[$w]
-                            ];
-                            $this->schedulemasterdetail->save($detail);
-                            $withdraw_id = $this->request->getVar('withdraw_id')[$w];
-                            //$val = $this->withdraw->where('withdraw_id', )->first();
-                            $data = array(
-                                'withdraw_id' => $withdraw_id,
-                                'scheduled' => 1
-                            );
-
-                            $this->withdraw->save($data);
+	                       
+	                        if($this->request->getVar('w_amount')[$w] != 0) {
+		                        $detail = [
+			                        //'loan_type'=>$this->request->getVar('loan_type')[$i],
+			                        'coop_id' => $this->request->getVar('coop_id')[$w],
+			                        'amount' => $this->request->getVar('w_amount')[$w],
+			                        'schedule_master_id' => $masterId,
+			                        'transaction_type' => 2,//withdraw,
+			                        'loan_id' => $this->request->getVar('withdraw_id')[$w]
+		                        ];
+		
+		                        $this->schedulemasterdetail->save($detail);
+		                        $withdraw_id = $this->request->getVar('withdraw_id')[$w];
+		                        //$val = $this->withdraw->where('withdraw_id', )->first();
+		                        $data = array(
+			                        'withdraw_id' => $withdraw_id,
+			                        'scheduled' => 1
+		                        );
+		
+		                        $this->withdraw->save($data);
+	                        }
                         }
                     }
             
@@ -517,7 +536,7 @@ class PaymentController extends BaseController
 
 	                //  debit loan
 
-	                $account = $this->coa->where('glcode', $loan->loan_gl_account_no)->first();
+	                $account = $this->coa->where('glcode', $loan['loan_gl_account_no'])->first();
 	                $bankGl = array(
 		                'glcode' => $loan['loan_gl_account_no'],
 		                'posted_by' => $this->session->user_username,
@@ -538,9 +557,9 @@ class PaymentController extends BaseController
 	                // check for upfront interest
 
 	                if($interest_amount > 0):
-		                $account = $this->coa->where('glcode', $loan->loan_unearned_int_gl_account)->first();
+		                $account = $this->coa->where('glcode', $loan['loan_unearned_int_gl_account_no'])->first();
 		                $bankGl = array(
-			                'glcode' => $loan['loan_unearned_int_gl_account'],
+			                'glcode' => $loan['loan_unearned_int_gl_account_no'],
 			                'posted_by' => $this->session->user_username,
 			                'narration' => $loan['loan_description'].' disbursement',
 			                'dr_amount' => 0,
