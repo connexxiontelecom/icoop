@@ -625,6 +625,8 @@ class PaymentController extends BaseController
 
 
 	#########################################################-----------##########################
+	                $wt = $this->ct->where('contribution_type_id', $withdraw['withdraw_ct_id'])->first();
+	               
 	                $payment_details_array = array(
 		                'pd_staff_id' => $withdraw['withdraw_staff_id'],
 		                'pd_transaction_date' =>$payable_date,
@@ -640,14 +642,14 @@ class PaymentController extends BaseController
 	                $v =  $this->paymentdetail->save($payment_details_array);
 
 
-	                $wt = $this->ct->where('contribution_type_id', $withdraw['withdraw_ct_id'])->first();
+	               
 
 	                //dr contribution type gl charges
 	                $account = $this->coa->where('glcode', $wt['contribution_type_glcode'])->first();
 	                $bankGl = array(
 		                'glcode' => $wt['contribution_type_glcode'],
 		                'posted_by' => $this->session->user_username,
-		                'narration' => 'Charges on withdrawal',
+		                'narration' => 'Charges on withdrawal from '.$wt['contribution_type_name'],
 		                'dr_amount' => $withdraw['withdraw_charges'],
 		                'cr_amount' => 0,
 		                'ref_no' =>$ref_code,
@@ -684,7 +686,7 @@ class PaymentController extends BaseController
 	                $bankGl = array(
 		                'glcode' => $b_gl,
 		                'posted_by' => $this->session->user_username,
-		                'narration' => 'Charges on withdrawal',
+		                'narration' => 'Charges on withdrawal from '.$wt['contribution_type_name'],
 		                'dr_amount' => 0,
 		                'cr_amount' => $withdraw['withdraw_charges'],
 		                'ref_no' =>$ref_code,
