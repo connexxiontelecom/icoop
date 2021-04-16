@@ -403,6 +403,7 @@
 					$ref_code = time();
 					$rds = $this->rd->where(['rd_rm_id' => $rm_id])->findAll();
 					$cooperator = $this->cooperator->get_cooperator_staff_id($staff_id);
+					$staff_name = $cooperator['cooperator_first_name'].' '.$cooperator['cooperator_last_name'];
 					
 					$coop_bank = $this->cb->where('coop_bank_id', $r_m['rm_coop_bank'])->first();
 					$account = $this->coa->where('glcode', $coop_bank['glcode'])->first();
@@ -416,7 +417,10 @@
 						'bank' => $account['bank'],
 						'ob' => 0,
 						'posted' => 1,
+						'gl_transaction_date' =>$r_m['rm_date'],
 						'created_at' => date('Y-m-d'),
+						'gl_description' => 'Staff id:'.$staff_id.', Staff Name:'.$staff_name,
+					
 					);
 					$this->gl->save($bankGl);
 					
@@ -586,7 +590,10 @@
 								'bank' => $account['bank'],
 								'ob' => 0,
 								'posted' => 1,
+								'gl_transaction_date' =>$r_m['rm_date'],
 								'created_at' => date('Y-m-d'),
+								'gl_description' => 'Staff id:'.$staff_id.', Staff Name:'.$staff_name.' Loan id:'.$loan_id,
+							
 							);
 							$this->gl->save($bankGl);
 							
@@ -633,7 +640,9 @@
 								'bank' => $account['bank'],
 								'ob' => 0,
 								'posted' => 1,
-								'created_at' =>  date('Y-m-d'),
+								'gl_transaction_date' =>$r_m['rm_date'],
+								'created_at' => date('Y-m-d'),
+								'gl_description' => 'Staff id:'.$staff_id.', Staff Name:'.$staff_name.' Contribution:'.$wt['contribution_type_name'],
 							);
 							$this->gl->save($bankGl);
 							
@@ -1073,20 +1082,24 @@
 					$ref_code = time();
 					$jtds = $this->jtd->where(['jtd_jtm_id' => $jtm_id])->findAll();
 					$cooperator = $this->cooperator->get_cooperator_staff_id($staff_id);
+					$staff_name = $cooperator->cooperator_first_name." ".$cooperator->cooperator_last_name;
 					
 					$cts= $this->contribution_type->where('contribution_type_id', $jt_m['jtm_ct_id'])->first();
 					$account = $this->coa->where('glcode', $cts['contribution_type_glcode'])->first();
 					$bankGl = array(
 						'glcode' => $cts['contribution_type_glcode'],
 						'posted_by' => $this->session->user_username,
-						'narration' => 'Journal Transfer',
+						'narration' => 'Journal Transfer from '.$cts['contribution_type_name'],
 						'dr_amount' => $jt_m['jtm_amount'],
 						'cr_amount' => 0,
 						'ref_no' =>$ref_code,
 						'bank' => $account['bank'],
 						'ob' => 0,
 						'posted' => 1,
+						'gl_transaction_date' =>$jt_m['jtm_date'],
 						'created_at' => date('Y-m-d'),
+						'gl_description' => 'Staff id:'.$staff_id.', Staff Name:'.$staff_name.' Contribution Type:'.$cts['contribution_type_id'],
+					
 					);
 					$this->gl->save($bankGl);
 					
@@ -1107,6 +1120,9 @@
 					
 					
 					$v =   $this->pd->save($payment_details_array);
+					
+				
+					
 					
 					foreach ($jtds as $jtd):
 						
@@ -1202,14 +1218,17 @@
 							$bankGl = array(
 								'glcode' => $loan_s['loan_gl_account_no'],
 								'posted_by' => $this->session->user_username,
-								'narration' => 'Loan repayment from journal transfer',
+								'narration' => 'Loan repayment via journal transfer from: '.$cts['contribution_type_name'],
 								'dr_amount' => 0,
 								'cr_amount' => $jtd['jtd_amount'],
 								'ref_no' =>$ref_code,
 								'bank' => $account['bank'],
 								'ob' => 0,
 								'posted' => 1,
+								'gl_transaction_date' =>$jt_m['jtm_date'],
 								'created_at' => date('Y-m-d'),
+								'gl_description' => 'Staff id:'.$staff_id.', Staff Name:'.$staff_name.' Loan Id:'.$loan_id,
+							
 							);
 							$this->gl->save($bankGl);
 							
@@ -1316,14 +1335,17 @@
 							$bankGl = array(
 								'glcode' => $wt['contribution_type_glcode'],
 								'posted_by' => $this->session->user_username,
-								'narration' => 'Contribution via journal transfer',
+								'narration' => 'Contribution via journal transfer into '.$wt['contribution_type_name']. 'from '.$cts['contribution_type_name'],
 								'dr_amount' => 0,
 								'cr_amount' => $jtd['jtd_amount'],
 								'ref_no' =>$ref_code,
 								'bank' => $account['bank'],
 								'ob' => 0,
 								'posted' => 1,
-								'created_at' =>  date('Y-m-d'),
+								'gl_transaction_date' =>$jt_m['jtm_date'],
+								'created_at' => date('Y-m-d'),
+								'gl_description' => 'Staff id:'.$staff_id.', Staff Name:'.$staff_name,
+							
 							);
 							$this->gl->save($bankGl);
 							

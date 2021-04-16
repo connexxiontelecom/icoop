@@ -434,7 +434,7 @@
 					$year=date("Y",$time);
 					
 					$coop = $this->cooperator->where(['cooperator_staff_id' =>$reconciliation_detail['re_staff_id'] ])->first();
-					
+					$staff_name = $coop['cooperator_first_name'].' '.$coop['cooperator_last_name'];
 					if($reconciliation_detail['re_dctype'] == 1): //credit action
 																		
 						$payment_details_array = array(
@@ -467,7 +467,10 @@
 							'bank' => $account['bank'],
 							'ob' => 0,
 							'posted' => 1,
-							'created_at' =>  $reconciliation_detail['re_transaction_date'],
+							'gl_transaction_date' =>$reconciliation_detail['re_transaction_date'],
+							'created_at' => date('Y-m-d'),
+							'gl_description' => 'Staff id:'.$reconciliation_detail['re_staff_id'].', Staff Name:'.$staff_name.' Contribution Type:'.$wt['contribution_type_name'],
+						
 						);
 						$this->gl->save($bankGl);
 						
@@ -485,7 +488,10 @@
 							'bank' => $account['bank'],
 							'ob' => 0,
 							'posted' => 1,
-							'created_at' =>  $reconciliation_detail['re_transaction_date'],
+							'gl_transaction_date' =>$reconciliation_detail['re_transaction_date'],
+							'created_at' => date('Y-m-d'),
+							'gl_description' => 'Staff id:'.$reconciliation_detail['re_staff_id'].', Staff Name:'.$staff_name.' Contribution Type:'.$wt['contribution_type_name'],
+						
 						);
 						$this->gl->save($bankGl);
 						
@@ -524,7 +530,10 @@
 							'bank' => $account['bank'],
 							'ob' => 0,
 							'posted' => 1,
-							'created_at' => $reconciliation_detail['re_transaction_date'],
+							'gl_transaction_date' =>$reconciliation_detail['re_transaction_date'],
+							'created_at' => date('Y-m-d'),
+							'gl_description' => 'Staff id:'.$reconciliation_detail['re_staff_id'].', Staff Name:'.$staff_name.' Contribution Type:'.$wt['contribution_type_name'],
+						
 						);
 						$this->gl->save($bankGl);
 						
@@ -542,7 +551,10 @@
 							'bank' => $account['bank'],
 							'ob' => 0,
 							'posted' => 1,
-							'created_at' =>  $reconciliation_detail['re_transaction_date'],
+							'gl_transaction_date' =>$reconciliation_detail['re_transaction_date'],
+							'created_at' => date('Y-m-d'),
+							'gl_description' => 'Staff id:'.$reconciliation_detail['re_staff_id'].', Staff Name:'.$staff_name.' Contribution Type:'.$wt['contribution_type_name'],
+						
 						);
 						$this->gl->save($bankGl);
 					
@@ -1017,6 +1029,8 @@
 					$coop = $this->cooperator->where(['cooperator_staff_id' =>$reconciliation_detail['re_staff_id'] ])->first();
 					$active_loan = $this->loan->get_loan($reconciliation_detail['re_source']);
 					
+					$staff_name = $coop['cooperator_first_name'].' '.$coop['cooperator_last_name'];
+					
 					if($reconciliation_detail['re_dctype'] == 1): //credit action
 						
 				
@@ -1053,7 +1067,10 @@
 							'bank' => $account['bank'],
 							'ob' => 0,
 							'posted' => 1,
-							'created_at' => $reconciliation_detail['re_transaction_date'],
+							'gl_transaction_date' =>$reconciliation_detail['re_transaction_date'],
+							'created_at' => date('Y-m-d'),
+							'gl_description' => 'Staff id:'.$reconciliation_detail['re_staff_id'].', Staff Name:'.$staff_name.' Loan id:'.$reconciliation_detail['re_source'],
+						
 						);
 						$this->gl->save($bankGl);
 						
@@ -1071,7 +1088,10 @@
 							'bank' => $account['bank'],
 							'ob' => 0,
 							'posted' => 1,
-							'created_at' =>  $reconciliation_detail['re_transaction_date'],
+							'gl_transaction_date' =>$reconciliation_detail['re_transaction_date'],
+							'created_at' => date('Y-m-d'),
+							'gl_description' => 'Staff id:'.$reconciliation_detail['re_staff_id'].', Staff Name:'.$staff_name.' Loan id:'.$reconciliation_detail['re_source'],
+						
 						);
 						$this->gl->save($bankGl);
 						
@@ -1251,7 +1271,10 @@
 							'bank' => $account['bank'],
 							'ob' => 0,
 							'posted' => 1,
-							'created_at' =>  $reconciliation_detail['re_transaction_date'],
+							'gl_transaction_date' =>$reconciliation_detail['re_transaction_date'],
+							'created_at' => date('Y-m-d'),
+							'gl_description' => 'Staff id:'.$reconciliation_detail['re_staff_id'].', Staff Name:'.$staff_name.' Loan id:'.$reconciliation_detail['re_source'],
+						
 						);
 						$this->gl->save($bankGl);
 						
@@ -1269,7 +1292,10 @@
 							'bank' => $account['bank'],
 							'ob' => 0,
 							'posted' => 1,
-							'created_at' =>  $reconciliation_detail['re_transaction_date'],
+							'gl_transaction_date' =>$reconciliation_detail['re_transaction_date'],
+							'created_at' => date('Y-m-d'),
+							'gl_description' => 'Staff id:'.$reconciliation_detail['re_staff_id'].', Staff Name:'.$staff_name.' Loan id:'.$reconciliation_detail['re_source'],
+						
 						);
 						$this->gl->save($bankGl);
 					

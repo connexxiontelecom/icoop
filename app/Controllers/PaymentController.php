@@ -217,11 +217,23 @@ class PaymentController extends BaseController
                      }
 
                 $amount = 0;
-                if(!is_null($this->request->getVar('coop_id')) ){
-                        for($i = 0; $i<count($this->request->getVar('coop_id')); $i++ ){
-                            $amount += $this->request->getVar('amount')[$i];
-                        }
-                    }
+                if(!is_null($this->request->getVar('coop_id')) ) {
+					$w_amount = 0;
+					$l_amount = 0;
+	                if (!empty($this->request->getVar('amount'))) {
+		                for ($i = 0; $i < count($this->request->getVar('amount')); $i++) {
+			                $l_amount += $this->request->getVar('amount')[$i];
+		                }
+	                }
+	
+	                if (!empty($this->request->getVar('w_amount'))) {
+		                for ($i = 0; $i < count($this->request->getVar('w_amount')); $i++) {
+			                $w_amount += $this->request->getVar('w_amount')[$i];
+		                }
+	                }
+	                
+	                $amount = $w_amount + $l_amount;
+                }
                 
 					$data = [
                         'payable_date'=>$this->request->getVar('payable_date'),
@@ -235,38 +247,45 @@ class PaymentController extends BaseController
                     #Schedule detail
                     if(!is_null($this->request->getVar('loan_id'))){
                         for($i = 0; $i<count($this->request->getVar('loan_id')); $i++ ){
-                            $detail = [
-                                'loan_type'=>$this->request->getVar('loan_type')[$i], 
-                                'coop_id'=>$this->request->getVar('coop_id')[$i],
-                                'amount'=>$this->request->getVar('amount')[$i],
-                                'loan_id'=>$this->request->getVar('loan_id')[$i],
-                                'schedule_master_id'=>$masterId,
-                                'transaction_type'=>1
-                            ];
-                            $this->schedulemasterdetail->save($detail);
-                            $this->loan->update($this->request->getVar('loan_id')[$i], ['scheduled'=>1]);
+                            if($this->request->getVar('amount')[$i] != 0) {
+	                            $detail = [
+		                            'loan_type' => $this->request->getVar('loan_type')[$i],
+		                            'coop_id' => $this->request->getVar('coop_id')[$i],
+		                            'amount' => $this->request->getVar('amount')[$i],
+		                            'loan_id' => $this->request->getVar('loan_id')[$i],
+		                            'schedule_master_id' => $masterId,
+		                            'transaction_type' => 1
+	                            ];
+	
+	                            $this->schedulemasterdetail->save($detail);
+	                            $this->loan->update($this->request->getVar('loan_id')[$i], ['scheduled' => 1]);
+                            }
                         }
                     }
                     #withdraw detail
                      if(!is_null($this->request->getVar('withdraw_id'))){
                         for($w = 0; $w<count($this->request->getVar('withdraw_id')); $w++ ){
-                            $detail = [
-                                //'loan_type'=>$this->request->getVar('loan_type')[$i], 
-                                'coop_id'=>$this->request->getVar('coop_id')[$w],
-                                'amount'=>$this->request->getVar('w_amount')[$w],
-                                'schedule_master_id'=>$masterId,
-                                'transaction_type'=>2,//withdraw,
-                                'loan_id'=>$this->request->getVar('withdraw_id')[$w]
-                            ];
-                            $this->schedulemasterdetail->save($detail);
-                            $withdraw_id = $this->request->getVar('withdraw_id')[$w];
-                            //$val = $this->withdraw->where('withdraw_id', )->first();
-                            $data = array(
-                                'withdraw_id' => $withdraw_id,
-                                'scheduled' => 1
-                            );
-
-                            $this->withdraw->save($data);
+	                       
+	                        if($this->request->getVar('w_amount')[$w] != 0) {
+		                        $detail = [
+			                        //'loan_type'=>$this->request->getVar('loan_type')[$i],
+			                        'coop_id' => $this->request->getVar('coop_id')[$w],
+			                        'amount' => $this->request->getVar('w_amount')[$w],
+			                        'schedule_master_id' => $masterId,
+			                        'transaction_type' => 2,//withdraw,
+			                        'loan_id' => $this->request->getVar('withdraw_id')[$w]
+		                        ];
+		
+		                        $this->schedulemasterdetail->save($detail);
+		                        $withdraw_id = $this->request->getVar('withdraw_id')[$w];
+		                        //$val = $this->withdraw->where('withdraw_id', )->first();
+		                        $data = array(
+			                        'withdraw_id' => $withdraw_id,
+			                        'scheduled' => 1
+		                        );
+		
+		                        $this->withdraw->save($data);
+	                        }
                         }
                     }
             
@@ -467,6 +486,10 @@ class PaymentController extends BaseController
 			                $interest_amount =  $loan_amount * ($ls_interest_rate/100) * ($duration/12);
 
 		                }
+		                
+		                $cooperator = $this->coop->where('cooperator_staff_id', $loan['staff_id'])->first();
+		                
+		                $staff_name = $cooperator['cooperator_first_name'].' '.$cooperator['cooperator_last_name'];
 
 
 
@@ -505,13 +528,15 @@ class PaymentController extends BaseController
 		                'bank' => $account['bank'],
 		                'ob' => 0,
 		                'posted' => 1,
-		                'created_at' => $p_d,
+		                'gl_transaction_date' =>$p_d,
+		                'created_at' => date('Y-m-d'),
+		                'gl_description' => 'Staff id:'.$loan['staff_id'].', Staff Name:'.$staff_name.' Loan id:'.$loan['loan_id'],
 	                );
 	                $this->gl->save($bankGl);
 
 	                //  debit loan
 
-	                $account = $this->coa->where('glcode', $loan->loan_gl_account_no)->first();
+	                $account = $this->coa->where('glcode', $loan['loan_gl_account_no'])->first();
 	                $bankGl = array(
 		                'glcode' => $loan['loan_gl_account_no'],
 		                'posted_by' => $this->session->user_username,
@@ -522,16 +547,19 @@ class PaymentController extends BaseController
 		                'bank' => $account['bank'],
 		                'ob' => 0,
 		                'posted' => 1,
-		                'created_at' => $p_d,
+		                'gl_transaction_date' =>$p_d,
+		                'created_at' => date('Y-m-d'),
+		                'gl_description' => 'Staff id:'.$loan['staff_id'].', Staff Name:'.$staff_name.' Loan id:'.$loan['loan_id'],
+	
 	                );
 	                $this->gl->save($bankGl);
 
 	                // check for upfront interest
 
 	                if($interest_amount > 0):
-		                $account = $this->coa->where('glcode', $loan->loan_unearned_int_gl_account)->first();
+		                $account = $this->coa->where('glcode', $loan['loan_unearned_int_gl_account_no'])->first();
 		                $bankGl = array(
-			                'glcode' => $loan['loan_unearned_int_gl_account'],
+			                'glcode' => $loan['loan_unearned_int_gl_account_no'],
 			                'posted_by' => $this->session->user_username,
 			                'narration' => $loan['loan_description'].' disbursement',
 			                'dr_amount' => 0,
@@ -540,7 +568,10 @@ class PaymentController extends BaseController
 			                'bank' => $account['bank'],
 			                'ob' => 0,
 			                'posted' => 1,
-			                'created_at' => $p_d,
+			                'gl_transaction_date' =>$p_d,
+			                'created_at' => date('Y-m-d'),
+			                'gl_description' => 'Staff id:'.$loan['staff_id'].', Staff Name:'.$staff_name.' Loan id:'.$loan['loan_id'],
+		
 		                );
 		                $this->gl->save($bankGl);
 
@@ -567,6 +598,7 @@ class PaymentController extends BaseController
                     //$this->withdraw->update($withdraw, []);
                     #register withdraw
                     $cooperator = $this->coop->where('cooperator_staff_id', $withdraw['withdraw_staff_id'])->first();
+	                $staff_name = $cooperator['cooperator_first_name'].' '.$cooperator['cooperator_last_name'];
 
                     $ref_code = time();
                     $payment_type = 1;
@@ -603,12 +635,17 @@ class PaymentController extends BaseController
 		                'bank' => $account['bank'],
 		                'ob' => 0,
 		                'posted' => 1,
-		                'created_at' => $payable_date,
+		                'gl_transaction_date' =>$payable_date,
+		                'created_at' => date('Y-m-d'),
+		                'gl_description' => 'Staff id:'.$withdraw['withdraw_staff_id'].', Staff Name:'.$staff_name.' Contribution Type:'.$wt['contribution_type_name'],
+	
 	                );
 	                $this->gl->save($bankGl);
 
 
 	#########################################################-----------##########################
+	                $wt = $this->ct->where('contribution_type_id', $withdraw['withdraw_ct_id'])->first();
+	               
 	                $payment_details_array = array(
 		                'pd_staff_id' => $withdraw['withdraw_staff_id'],
 		                'pd_transaction_date' =>$payable_date,
@@ -624,21 +661,24 @@ class PaymentController extends BaseController
 	                $v =  $this->paymentdetail->save($payment_details_array);
 
 
-	                $wt = $this->ct->where('contribution_type_id', $withdraw['withdraw_ct_id'])->first();
+	               
 
-	                //dr contribution type gl chargea=s
+	                //dr contribution type gl charges
 	                $account = $this->coa->where('glcode', $wt['contribution_type_glcode'])->first();
 	                $bankGl = array(
 		                'glcode' => $wt['contribution_type_glcode'],
 		                'posted_by' => $this->session->user_username,
-		                'narration' => 'Charges on withdrawal',
+		                'narration' => 'Charges on withdrawal from '.$wt['contribution_type_name'],
 		                'dr_amount' => $withdraw['withdraw_charges'],
 		                'cr_amount' => 0,
 		                'ref_no' =>$ref_code,
 		                'bank' => $account['bank'],
 		                'ob' => 0,
 		                'posted' => 1,
-		                'created_at' => $payable_date,
+		                'gl_transaction_date' =>$payable_date,
+		                'created_at' => date('Y-m-d'),
+		                'gl_description' => 'Staff id:'.$withdraw['withdraw_staff_id'].', Staff Name:'.$staff_name.' Contribution Type:'.$wt['contribution_type_name'],
+	
 	                );
 	                $this->gl->save($bankGl);
 
@@ -655,21 +695,27 @@ class PaymentController extends BaseController
 		                'bank' => $account['bank'],
 		                'ob' => 0,
 		                'posted' => 1,
-		                'created_at' => $payable_date,
+		                'gl_transaction_date' =>$payable_date,
+		                'created_at' => date('Y-m-d'),
+		                'gl_description' => 'Staff id:'.$withdraw['withdraw_staff_id'].', Staff Name:'.$staff_name.' Contribution Type:'.$wt['contribution_type_name'],
+	
 	                );
 	                $this->gl->save($bankGl);
 
 	                $bankGl = array(
 		                'glcode' => $b_gl,
 		                'posted_by' => $this->session->user_username,
-		                'narration' => 'Charges on withdrawal',
+		                'narration' => 'Charges on withdrawal from '.$wt['contribution_type_name'],
 		                'dr_amount' => 0,
 		                'cr_amount' => $withdraw['withdraw_charges'],
 		                'ref_no' =>$ref_code,
 		                'bank' => $account['bank'],
 		                'ob' => 0,
 		                'posted' => 1,
-		                'created_at' => $payable_date,
+		                'gl_transaction_date' =>$payable_date,
+		                'created_at' => date('Y-m-d'),
+		                'gl_description' => 'Staff id:'.$withdraw['withdraw_staff_id'].', Staff Name:'.$staff_name.' Contribution Type:'.$wt['contribution_type_name'],
+	
 	                );
 	                $this->gl->save($bankGl);
                 }

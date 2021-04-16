@@ -237,7 +237,7 @@ class LoanController extends BaseController
 				                            //loan verification can go through
 				                            $this->loanapp->save($data);
 				                            $alert = array(
-				                                'msg' => 'Success! Loan application done 1.',
+				                                'msg' => 'Success! Loan application done.',
 				                                'type' => 'success',
 				                                'location' => site_url('/loan/new')
 				                    
@@ -251,17 +251,17 @@ class LoanController extends BaseController
 				                     
 				                    	$c = $this->loanapp->save($data);
 				                    	
-				                    	print_r($c);
+//				                    	print_r($c);
 				                     
 				                     
 				                     
-//				                        $alert = array(
-//				                                'msg' => 'Success! Loan application done. 2',
-//				                                'type' => 'success',
-//				                                'location' => site_url('/loan/new')
-//
-//				                            );
-//				                            return view('pages/sweet-alert', $alert);
+				                        $alert = array(
+				                                'msg' => 'Success! Loan application done.',
+				                                'type' => 'success',
+				                                'location' => site_url('/loan/new')
+
+				                            );
+				                            return view('pages/sweet-alert', $alert);
 				                    }
 				                    
 				              
