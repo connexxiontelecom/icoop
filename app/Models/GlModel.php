@@ -5,7 +5,7 @@ use CodeIgniter\Model;
 class GlModel extends Model{
     protected $table = 'gls';
     protected $primaryKey = 'gl_id';
-    protected $allowedFields = ['glcode', 'narration', 'posted_by', 'dr_amount', 'cr_amount', 'ref_no', 'bank', 'ob', 'created_at'];
+    protected $allowedFields = ['glcode', 'narration', 'posted_by', 'dr_amount', 'cr_amount', 'ref_no', 'bank', 'ob', 'created_at', 'gl_transaction_date', 'gl_description'];
 
 
 
@@ -15,14 +15,64 @@ class GlModel extends Model{
 		return $builder->get()->getRowArray();
     }
 
-    public function sjs (){
+    public function getBfDr($from, $to){
         $builder = $this->db->table('gls');
-		$builder->where('gls.pd_staff_id', $staff_id);
-		$builder->where('payment_details.pd_ct_id', $ct_id);
-		$builder->where('payment_details.pd_transaction_date <', $bf_date);
-		return $builder->get()->getResultArray();
+        $builder->where('gls.gl_transaction_date >= ', $from);
+		$builder->where('gls.gl_transaction_date <= ', $to);
+        return $builder->get()->getResultObject();
 
-        DB::table(Auth::user()->tenant_id.'_gl')->whereBetween('created_at', [$inception->created_at, $current->parse($request->from)->subDays(1)])->sum('dr_amount');
+    }
+    public function getBfCr($from, $to){
+        $builder = $this->db->table('gls');
+        $builder->where('gls.gl_transaction_date >= ', $from);
+		$builder->where('gls.gl_transaction_date <= ', $to);
+        return $builder->get()->getResultObject();
+
+    }
+
+    public function getReport($from, $to){
+        $builder = $this->db->table('gls')
+                 ->select('gls.glcode')
+                ->join('coas', 'coas.glcode = gls.glcode')
+                ->selectSum('gls.dr_amount', 'sumDebit')
+                ->selectSum('gls.cr_amount', 'sumCredit')
+                ->select('coas.account_name', 'coas.glcode', 'coas.account_type')
+                 ->where('coas.type', 1)
+                ->where('gls.gl_transaction_date >= ', $from)
+		        ->where('gls.gl_transaction_date <= ', $to)
+                ->orderBy('coas.account_type', 'ASC')
+                ->groupBy('gls.glcode');
+        return $builder->get()->getResultObject();
+        //return $builder->get()->getResultArray();
+        /* $builder = $this->db->table('gls');
+        $builder->join('coas', 'coas.glcode = gls.glcode');
+        $builder->orderBy('coas.account_type', 'ASC');
+        $builder->where('coas.type', 1);
+        $builder->where('gls.gl_transaction_date >= ', $from);
+		$builder->where('gls.gl_transaction_date <= ', $to);
+        return $builder->get()->getResultObject(); */
+    }
+    public function getRevenue($from, $to){
+        $builder = $this->db->table('gls');
+        $builder->join('coas', 'coas.glcode = gls.glcode');
+        $builder->orderBy('coas.account_type', 'ASC');
+        $builder->where('coas.type', 1);
+        $builder->where('coas.account_type', 4);
+        $builder->where('gls.gl_transaction_date >= ', $from);
+		$builder->where('gls.gl_transaction_date <= ', $to);
+        return $builder->get()->getResultObject();
+        
+    }
+    public function getExpenses($from, $to){
+        $builder = $this->db->table('gls');
+        $builder->join('coas', 'coas.glcode = gls.glcode');
+        $builder->orderBy('coas.account_type', 'ASC');
+        $builder->where('coas.type', 1);
+        $builder->where('coas.account_type', 5);
+        $builder->where('gls.gl_transaction_date >= ', $from);
+		$builder->where('gls.gl_transaction_date <= ', $to);
+        return $builder->get()->getResultObject();
+        
     }
 }
 
