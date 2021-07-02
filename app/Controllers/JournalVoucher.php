@@ -278,7 +278,8 @@ class JournalVoucher extends BaseController
 			        endif;
             //session()->flash("success", "<strong>Success!</strong> New journal entry save.");
            // return $this->response->redirect(site_url('/journal-voucher'));
-        }else{
+        }
+        else{
             //session()->flash("error", "<strong>Ooops!</strong> The value of DR must be same with CR. Try again.");
 	
 	        $data = array(
