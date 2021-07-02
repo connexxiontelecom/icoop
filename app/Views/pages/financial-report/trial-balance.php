@@ -26,37 +26,65 @@ Trial Balance
 <?= $this->section('content') ?>
 
 <div class="row clearfix">
-    
-    <div class="col-lg-12">
-        <div class="card">
-            <div class="header">
-                <h2>Trial Balance</h2>
-            </div>
-            <div class="row">
-                <div class="col-md-12 col-sm-12">
-                    <form action="<?= site_url('trial-balance') ?>" method="post">
-                        <?= csrf_field() ?>
-                        <div class="row">
-                            <div class="col-sm-12 col-md-8 col-lg-8">
-                                <div class="input-group mb-3 ml-5">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">From</span>
-                                    </div>
-                                    <input type="date" name="from" class="form-control" aria-label="From">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">To</span>
-                                    </div>
-                                    <input type="date" name="to" class="form-control" aria-label="To">
-                                    <button class="btn  btn-primary" type="submit">Submit</button>
-                                </div>
-                            </div>
-                        </div>
-
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+	
+	
+	<div class="col-lg-12">
+		<div class="card">
+			<div class="header">
+				<h2>Trial Balance</h2>
+			
+			</div>
+			
+			
+			<div class="body">
+				
+					
+					<form method="POST" action="<?= site_url('trial-balance') ?>" enctype="multipart/form-data">
+						
+						<fieldset>
+							<div class="row clearfix">
+								<div class="col-lg-6 col-md-12">
+									
+									
+									
+									
+									<div class="form-group">
+										
+										
+										<label>Range</label>
+										<div class="input-daterange input-group">
+											<input type="date" class="input-sm form-control" name="from">
+											<span class="input-group-addon range-to">to</span>
+											<input type="date" class="input-sm form-control" name="to">
+										</div>
+									
+									</div>
+									
+									<?= csrf_field() ?>
+									<div class="form-group">
+										<button type="submit" class="btn btn-info">Retrieve</button>
+									</div>
+								</div>
+							
+							
+							</div>
+						</fieldset>
+					
+					
+					</form>
+				
+			
+			</div>
+		
+		
+		
+		
+		</div>
+		
+		
+	</div>
+	
+ 
 </div>
 
 

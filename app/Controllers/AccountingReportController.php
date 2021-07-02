@@ -81,7 +81,7 @@ class AccountingReportController extends BaseController
                 'sumDebit'=>$drSum,
                 'sumCredit'=>$crSum
             ];
-           return view('pages/financial-report/trial-balance-report', $data);
+           //return view('pages/financial-report/trial-balance-report', $data);
 
         }
     }
