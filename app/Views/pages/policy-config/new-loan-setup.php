@@ -24,6 +24,17 @@ Loan Setup
 			<div class="row m-b-30">
 				<div class="col-lg-12 col-xl-12">
 					<h6 class="sub-title p-3 text-primary text-uppercase">Loan Setup</h6>
+					<?php if(session()->has('errors')):
+						$errors = session()->get('errors');
+						foreach ($errors as $error):
+							?>
+							<div class="alert alert-danger alert-dismissible fade show" role="alert">
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								<i class="mdi mdi-check-all mr-2"></i><strong><?php print_r($error); ?> !</strong>
+							</div>
+						<?php endforeach; endif; ?>
 					<form action="<?= site_url('loan-setup') ?>" autocomplete="off" method="POST" data-parsley-validate="" id="loanSetupForm">
 						<?= csrf_field() ?>
 						<div class="row">
@@ -61,13 +72,13 @@ Loan Setup
 							<div class="col-md-6 col-lg-6 col-sm-6">
 								<div class="form-group">
 									<label for="">Min. Credit Limit</label>
-									<input type="number" required step="0.01" name="min_credit_limit" placeholder="Min. Credit Limit"  class="form-control">
+									<input type="text" required step="0.01" name="min_credit_limit" placeholder="Min. Credit Limit"  class="number form-control">
 								</div>
 							</div>
 							<div class="col-md-6 col-lg-6 col-sm-6">
 								<div class="form-group">
 									<label for="">Max. Credit Limit</label>
-									<input type="number" required step="0.01" name="max_credit_limit" placeholder="Max. Credit Limit"  class="form-control">
+									<input type="text" required step="0.01" name="max_credit_limit" placeholder="Max. Credit Limit"  class="number form-control">
 								</div>
 							</div>
 						</div>
@@ -181,7 +192,7 @@ Loan Setup
 							<div class="col-md-6 col-lg-6 col-sm-6">
 								<div class="form-group">
 									<label for="">Loan Terms</label>
-									<textarea name="loan_terms" id="loan_terms" class="form-control" style="resize:none;" placeholder="Loan Terms"></textarea>
+									<textarea name="loan_terms" id="loan_terms" class="form-control" style="resize:none;" placeholder="Loan Terms" required></textarea>
 								</div>
 							</div>
 						</div>
@@ -212,6 +223,7 @@ Loan Setup
                 $('#psr_value').prop('required',true);
             }else {
                 $('#psr_value').prop("disabled", true);
+                $('#psr_value').prop("required", false);
             }
         });
         $("#edit_psr").on('change', function() {
@@ -220,6 +232,7 @@ Loan Setup
                 $('#edit_psr_value').prop('required',true);
             }else {
                 $('#edit_psr_value').prop("disabled", true);
+                $('#edit_psr_value').prop("required", false);
             }
         });
         $("#commitment").on('change', function() {
@@ -228,6 +241,7 @@ Loan Setup
                 $('#commitment_value').prop('required',true);
             }else {
                 $('#commitment_value').prop("disabled", true);
+                $('#commitment_value').prop("required", false);
             }
         });
         $('#loanSetupForm').parsley().on('field:validated', function() {

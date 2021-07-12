@@ -365,15 +365,16 @@ class Policyconfigcontroller extends BaseController
                     ]
 					],
             ];
-            if($this->validate($rules)){
+	        $this->validator->setRules( $rules);
+            if($this->validator->withRequest($this->request)->run()){
 				
 					$data = [
 						'loan_description'=>$this->request->getVar('loan_description'),
 						'age_qualification'=>$this->request->getVar('qualification_age'),
 						'psr'=>$this->request->getVar('psr') ?? 0,
 						'psr_value'=>$this->request->getVar('psr_value') ?? 0,
-						'min_credit_limit'=>$this->request->getVar('min_credit_limit'),
-						'max_credit_limit'=>$this->request->getVar('max_credit_limit'),
+						'min_credit_limit'=>str_replace(',', '', $this->request->getVar('min_credit_limit')),
+						'max_credit_limit'=>str_replace(',', '', $this->request->getVar('max_credit_limit')),
 						'max_repayment_periods'=>$this->request->getVar('max_repayment_periods'),
 						'ls_interest_rate'=>$this->request->getVar('interest_rate'),
 						'interest_method'=>$this->request->getVar('interest_method'),
@@ -391,7 +392,9 @@ class Policyconfigcontroller extends BaseController
 				
 				
             }else{
-                return $this->response->redirect(site_url('/policy-config/loan-setup'));
+	            $arr = $this->validator->getErrors();
+	            session()->setFlashData("errors",$arr);
+                return $this->response->redirect(site_url('/policy-config/new-loan-setup'));
             }
         }
 
