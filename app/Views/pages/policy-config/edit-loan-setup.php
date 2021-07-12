@@ -21,9 +21,21 @@ Edit Loan Setup
         <div class="card-block">
             <div class="container">
                 <div class="row m-b-30">
-                    <div class="col-lg-6 col-xl-6">
-                        <h5 class="sub-title p-3 text-primary">Loan Setup</h5>
-						<form action="<?= site_url('edit-loan-setup') ?>" autocomplete="off" method="POST" data-parsley-validate="" id="loanSetupForm">
+                    <div class="col-lg-12 col-xl-12">
+                        <h5 class="sub-title p-3 text-primary">Edit Loan</h5>
+	
+	                    <?php if(session()->has('errors')):
+		                    $errors = session()->get('errors');
+		                    foreach ($errors as $error):
+			                    ?>
+								<div class="alert alert-danger alert-dismissible fade show" role="alert">
+									<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+									<i class="mdi mdi-check-all mr-2"></i><strong><?php print_r($error); ?> !</strong>
+								</div>
+		                    <?php endforeach; endif; ?>
+						<form action="" autocomplete="off" method="POST" data-parsley-validate="" id="loanSetupForm">
 		                    <?= csrf_field() ?>
 							<div class="row">
 								<div class="col-md-6 col-lg-6 col-sm-6">
@@ -68,13 +80,13 @@ Edit Loan Setup
 								<div class="col-md-6 col-lg-6 col-sm-6">
 									<div class="form-group">
 										<label for="">Min. Credit Limit</label>
-										<input type="number" required step="0.01" value="<?= $setup->min_credit_limit ?? '' ?>" name="min_credit_limit" placeholder="Min. Credit Limit"  class="form-control">
+										<input type="text" required step="0.01" value="<?= number_format($setup->min_credit_limit,2) ?? '' ?>" name="min_credit_limit" placeholder="Min. Credit Limit"  class="number form-control">
 									</div>
 								</div>
 								<div class="col-md-6 col-lg-6 col-sm-6">
 									<div class="form-group">
 										<label for="">Max. Credit Limit</label>
-										<input type="number" value="<?= $setup->max_credit_limit ?? '' ?>" required step="0.01" name="max_credit_limit" placeholder="Max. Credit Limit"  class="form-control">
+										<input type="text" value="<?= number_format($setup->max_credit_limit,2) ?? '' ?>" required step="0.01" name="max_credit_limit" placeholder="Max. Credit Limit"  class="number form-control">
 									</div>
 								</div>
 							</div>
@@ -100,15 +112,31 @@ Edit Loan Setup
 							<div class="row">
 								<div class="col-md-6 col-lg-6 col-sm-6">
 									<div class="form-group">
-										<label for="">Interest Method</label>
-										<select name="interest_method" required id="interest_method" class="form-control">
+										<label for="">Interest Charge Type</label>
+										<select name="interest_charge_type" required id="interest_charge_type" class="form-control">
 											<option disabled selected>Select interest method</option>
-											<option value="1">Flat</option>
-											<option value="2">Monthly</option>
-											<option value="3">Yearly</option>
+											<option value="1" <?php if($setup->interest_charge_type == 1): echo "selected"; endif; ?> >Flat</option>
+											<option value="2"  <?php if($setup->interest_charge_type == 2): echo "selected"; endif; ?>>Monthly</option>
+											<option value="3"  <?php if($setup->interest_charge_type == 3): echo "selected"; endif; ?>>Yearly</option>
 										</select>
 									</div>
 								</div>
+								
+								<div class="col-md-6 col-lg-6 col-sm-6">
+									<div class="form-group">
+										<label for="">Interest Method</label>
+										<select name="interest_method" required id="interest_method" class="form-control">
+											<option disabled selected>Select interest method</option>
+											<option value="1" <?php if($setup->interest_method == 1): echo "selected"; endif; ?>>Upfront</option>
+											<option value="2" <?php if($setup->interest_method == 2): echo "selected"; endif; ?>>Reducing Balance</option>
+											<option value="3" <?php if($setup->interest_method == 3): echo "selected"; endif; ?>>Targetted</option>
+										</select>
+									</div>
+								</div>
+							
+							</div>
+							
+							<div class="row">
 								<div class="col-md-6 col-lg-6 col-sm-6">
 									<div class="fancy-checkbox">
 										<label><input type="checkbox" <?= $setup->commitment == 1 ? 'checked' : ''  ?>  name="commitment" id="commitment"><span>Commitment?</span></label>
@@ -123,6 +151,7 @@ Edit Loan Setup
 										</div>
 									</div>
 								</div>
+								
 							</div>
 							<div class="row">
 								<div class="col-md-6 col-lg-6 col-sm-6">
@@ -130,8 +159,8 @@ Edit Loan Setup
 										<label for="">Status</label>
 										<select name="status" id="status" class="form-control">
 											<option selected disabled>Select status</option>
-											<option value="1">Active</option>
-											<option value="2">Block</option>
+											<option value="1" <?php if($setup->status == 1): echo "selected"; endif; ?>>Active</option>
+											<option value="2" <?php if($setup->status == 2): echo "selected"; endif; ?>>Block</option>
 										</select>
 									</div>
 								</div>
@@ -140,8 +169,8 @@ Edit Loan Setup
 										<label for="">Payable</label>
 										<select name="payable" id="payable" class="form-control">
 											<option selected disabled>Select payable</option>
-											<option value="1">Cash</option>
-											<option value="2">Vendor</option>
+											<option value="1" <?php if($setup->payable == 1): echo "selected"; endif; ?>>Cash</option>
+											<option value="2" <?php if($setup->payable == 2): echo "selected"; endif; ?>>Vendor</option>
 										</select>
 									</div>
 								</div>
@@ -192,7 +221,7 @@ Edit Loan Setup
 							</div>
 							<hr>
 							<div class="form-group d-flex justify-content-center">
-								<button type="button" class="btn btn-round btn-default" data-dismiss="modal">Close</button>
+								
 								<button class="btn btn-sm btn-round btn-primary"><i class="ti-check mr-2"></i>Save changes</button>
 							</div>
 						</form>
@@ -211,18 +240,33 @@ Edit Loan Setup
     <script src="/assets/js/parsley.min.js"></script>
     <script>
         $(document).ready(function(){
+            // $('.js-example-basic-single').select2();
             $("#psr").on('change', function() {
-                if ($("#psr").is(':checked'))
+                if ($("#psr").is(':checked')){
                     $('#psr_value').prop("disabled", false);
-                else {
+                    $('#psr_value').prop('required',true);
+                }else {
                     $('#psr_value').prop("disabled", true);
+                    $('#psr_value').prop("required", false);
+                }
+            });
+            $("#edit_psr").on('change', function() {
+                if ($("#edit_psr").is(':checked')){
+                    $('#edit_psr_value').prop("disabled", false);
+                    $('#edit_psr_value').prop('required',true);
+                }else {
+                    $('#edit_psr_value').prop("disabled", true);
+                    $('#edit_psr_value').prop("required", false);
                 }
             });
             $("#commitment").on('change', function() {
-                if ($("#commitment").is(':checked'))
+                if ($("#commitment").is(':checked')){
+                    console.log('i am working fa');
                     $('#commitment_value').prop("disabled", false);
-                else {
+                    $('#commitment_value').prop('required',true);
+                }else {
                     $('#commitment_value').prop("disabled", true);
+                    $('#commitment_value').prop("required", false);
                 }
             });
             $('#loanSetupForm').parsley().on('field:validated', function() {
@@ -230,9 +274,9 @@ Edit Loan Setup
                 $('.bs-callout-info').toggleClass('hidden', !ok);
                 $('.bs-callout-warning').toggleClass('hidden', ok);
             })
-            .on('form:submit', function() {
-                return true; // Don't submit form for this demo
-            });
+                .on('form:submit', function() {
+                    return true; // Don't submit form for this demo
+                });
         });
     </script>
 <?= $this->endSection() ?>

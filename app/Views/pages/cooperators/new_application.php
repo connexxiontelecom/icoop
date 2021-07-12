@@ -31,6 +31,17 @@
                 <h2>Cooperators - New Application</h2>
 
             </div>
+	        <?php if(session()->has('errors')):
+		        $errors = session()->get('errors');
+		        foreach ($errors as $error):
+			        ?>
+					<div class="alert alert-danger alert-dismissible fade show" role="alert">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<i class="mdi mdi-check-all mr-2"></i><strong><?php print_r($error); ?> !</strong>
+					</div>
+		        <?php endforeach; endif; ?>
             <div class="body wizard_validation">
                 <form id="wizard_with_validation" method="POST" data-persist="garlic">
                     <h3>Personal Information</h3>
@@ -184,7 +195,7 @@
                             <div class="col-lg-6 col-md-12">
                                 <div class="form-group">
                                     <label for="application_kin_fullname"><b>Email:</b></label>
-                                    <input type="text" name="application_kin_fullname" id="application_kin_fullname" placeholder="City *" onautocomplete="preview_form('application_kin_fullname')" onkeyup="preview_form('application_kin_fullname')" class="form-control">
+                                    <input type="email" name="application_kin_fullname" id="application_kin_fullname" placeholder="email *" onautocomplete="preview_form('application_kin_fullname')" onkeyup="preview_form('application_kin_fullname')" class="form-control">
                                 </div>
 
                                 <div class="form-group">
@@ -260,7 +271,7 @@
                                 <div class="form-group">
                                     <label  for="application_bank_branch"><b>Minimum Savings*:</b></label>
 
-                                    <input type="text" disabled readonly  class="form-control" value="10000">
+                                    <input type="text" disabled readonly  class="form-control" value="<?=number_format($profile['minimum_saving'], 2) ?>">
                                 </div>
                             </div>
 

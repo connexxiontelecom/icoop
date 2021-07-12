@@ -16,7 +16,14 @@ class LoanSetupModel extends Model{
         $builder = $this->db->table('loan_setups');
         $builder->join('coas', 'coas.glcode = loan_setups.loan_gl_account_no');
         return $builder->get()->getResultObject();
-    } 
+    }
+    
+    public function getLoanSetup($loan_id){
+        $builder = $this->db->table('loan_setups');
+          $builder->where('loan_setups.loan_setup_id', $loan_id);
+        $builder->join('coas', 'coas.glcode = loan_setups.loan_gl_account_no');
+        return $builder->get()->getRowObject();
+    }
 
 }
 

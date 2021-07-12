@@ -79,8 +79,9 @@ $routes->post('/savings-gl-config', 'Policyconfigcontroller::savingGlConfig');
 $routes->get('/policy-config/loan-setup', 'Policyconfigcontroller::showLoanSetupForm');
 $routes->get('/policy-config/new-loan-setup', 'Policyconfigcontroller::new_loan_setup');
 $routes->post('/loan-setup', 'Policyconfigcontroller::loanSetup');
-$routes->post('/edit-loan-setup', 'Policyconfigcontroller::editLoanSetup');
-
+//$routes->post('/edit-loan-setup', 'Policyconfigcontroller::editLoanSetup');
+//$routes->get('/policy-config/loan-setup', 'Policyconfigcontroller::editLoanSetup');
+$routes->match(['get', 'post'], '/policy-config/edit-loan-setup/(:num)', 'Policyconfigcontroller::editLoanSetup/$1');
 #control panel
 $routes->get('contribution_type', 'ContributionType::contribution_type');
 $routes->post('contribution_type', 'ContributionType::contribution_type');

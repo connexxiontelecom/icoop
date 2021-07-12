@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\Applications;
 use App\Models\Banks;
 use App\Models\PayrollGroups;
+use App\Models\PolicyConfigModel;
 use App\Models\StateModel;
 use App\Models\DepartmentModel;
 use App\Models\PaymentDetailsModel;
@@ -39,6 +40,7 @@ class Cooperators extends BaseController
              $this->coa = new CoaModel();
              $this->gl = new GlModel();
              $this->wd = new WithdrawModel();
+	         $this->policy = new PolicyConfigModel();
 
         }
 
@@ -193,6 +195,7 @@ class Cooperators extends BaseController
                             else:
 
 //                                print_r($_POST);
+                                    $_POST['application_date'] = date('Y-m-d');
 //
                                 $v = $this->application->save($_POST);
 
@@ -214,16 +217,20 @@ class Cooperators extends BaseController
                              endif;
 
                         else:
-                            $arr = $this->validator->getErrors();
+	                        $arr = $this->validator->getErrors();
+	                        session()->setFlashData("errors",$arr);
+	                        $url = site_url('new_application');
+	                        return $this->response->redirect($url);
+//                            $arr = $this->validator->getErrors();
 
-                            $data = array(
-                                'msg' => implode(", ", $arr),
-                                'type' => 'error',
-                                'location' => base_url('new_application')
-
-                            );
-
-                            echo view('pages/sweet-alert', $data);
+//                            $data = array(
+//                                'msg' => implode(", ", $arr),
+//                                'type' => 'error',
+//                                'location' => base_url('new_application')
+//
+//                            );
+//
+//                            echo view('pages/sweet-alert', $data);
 
                         //print_r($this->validator->getErrors());
 
@@ -237,6 +244,7 @@ class Cooperators extends BaseController
                         $data['departments'] = $this->department->findAll();
                         $data['banks'] = $this->bank->findAll();
                         $data['pgs'] = $this->pg->findAll();
+                        $data['profile'] = $this->policy->first();
                         $username = $this->session->user_username;
                         $this->authenticate_user($username, 'pages/cooperators/new_application', $data);
 
