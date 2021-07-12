@@ -246,7 +246,7 @@ class Routine extends BaseController
             else:
 
                 $data = array(
-                    'msg' => 'Only .xlsx, .xls, .csv extensions are allowed',
+                    'msg' => 'Only .xlsx, .xls, extensions are allowed',
                     'type' => 'error',
                     'location' => base_url('contribution_upload')
 

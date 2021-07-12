@@ -195,7 +195,7 @@
                             <div class="col-lg-6 col-md-12">
                                 <div class="form-group">
                                     <label for="application_kin_fullname"><b>Email:</b></label>
-                                    <input type="email" name="application_kin_fullname" id="application_kin_fullname" placeholder="email *" onautocomplete="preview_form('application_kin_fullname')" onkeyup="preview_form('application_kin_fullname')" class="form-control">
+                                    <input type="email" name="application_kin_fullname" id="application_kin_email" placeholder="email *" onautocomplete="preview_form('application_kin_fullname')" onkeyup="preview_form('application_kin_fullname')" class="form-control">
                                 </div>
 
                                 <div class="form-group">
@@ -248,7 +248,7 @@
                                 <div class="form-group">
                                     <label  for="application_bank_branch"><b>Savings*:</b></label>
 
-                                    <input type="text" required name="application_savings" id="application_savings" onautocomplete="preview_form('application_savings')" onkeyup="preview_form('application_savings')" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                    <input type="text" required name="application_savings"  id="application_savings" onautocomplete="preview_form('application_savings')" onkeyup="preview_form('application_savings')" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                                 </div>
 
 
