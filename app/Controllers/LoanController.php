@@ -1,6 +1,7 @@
 <?php namespace App\Controllers;
 use App\Models\LoanApplicationModel; 
 use \App\Models\Cooperators;
+use App\Models\PolicyConfigModel;
 use \App\Models\UserModel;
 use \App\Models\LoanModel;
 use \App\Models\LoanSetupModel;
@@ -32,6 +33,7 @@ class LoanController extends BaseController
         $this->ct = new ContributionTypeModel();
         $this->ac = new AccountClosureModel();
         $this->session = session();
+	    $this->policy = new PolicyConfigModel();
     }
 
 	public function showLoanApplicationForm()
@@ -54,13 +56,82 @@ class LoanController extends BaseController
         ];
         return json_encode($data);
     } */
-    public function getSavings(){ 
-        $staff_id = $_POST['staff_id'];
-        $savings = $this->loan->getCooperatorSavings($staff_id);
-        $data = [
-            'savings'=>$savings
-        ];
-        echo json_encode($data);
+    public function getSavings(){
+	    $policy_configs = $this->policy->first();
+	    $staff_id = $_POST['staff_id'];
+	   
+	
+	    $cooperator = $this->coop->where(['cooperator_staff_id' => $staff_id])->first();
+	
+	    if($cooperator['cooperator_status'] == 2):
+		    $ct = $this->ct->where('contribution_type_regular', 1)->first();
+		
+		    $ledgers =  $this->paymentdetail->where(['pd_staff_id' => $staff_id, 'pd_ct_id' => $ct['contribution_type_id']])
+//                        ->orderBy('pd_transaction_date', 'DESC')
+			    ->findAll();
+		    
+		
+		    $encumbered_amount = 0;
+		    if($ct['contribution_type_regular'] == 1):
+			    $loan_s = $this->loan->where(['staff_id' => $staff_id, 'paid_back'=> 0, 'disburse' => 1])->findAll();
+			    foreach ($loan_s as $loan):
+				
+				    $encumbered_amount = (float)$loan['encumbrance_amount'] + $encumbered_amount;
+			    endforeach;
+		    endif;
+		
+		    $bf = 0;
+		
+		    if(!empty($ledgers)):
+			
+			    foreach ($ledgers as $ledger):
+				    if($ledger['pd_drcrtype'] == 2):
+					    $dr = $ledger['pd_amount'];
+					    $cr = 0;
+				
+				    endif;
+				    if($ledger['pd_drcrtype'] == 1):
+					    $cr = $ledger['pd_amount'];
+					    $dr = 0;
+				    endif;
+				
+				    $bf = ($bf + $cr) - $dr;
+			    endforeach;
+			   
+			
+			    $data['note'] = 'Savings Balance: NGN'.number_format($bf);
+			    $data['savings'] = $bf - $encumbered_amount;
+			    $data['encumbered_amount'] =  $encumbered_amount;
+			    $data['ledgers'] = $ledgers;
+			    echo json_encode($data);
+			   
+		
+		
+		    else:
+			    $data['note'] = "Balance for Selected Contribution Type is: NGN".number_format($bf);
+			    $data['balance'] = $bf;
+			    echo json_encode($data);
+		    endif;
+	
+	    endif;
+	
+//	    if($cooperator['cooperator_status'] == 0):
+//		    $data['note'] = "Account Frozen";
+//		    $data['balance'] = 'fr';
+//		    echo json_encode($data);
+//	    endif;
+//
+      
+      
+      
+      
+//
+//        $staff_id = $_POST['staff_id'];
+//        $savings = $this->loan->getCooperatorSavings($staff_id);
+//        $data = [
+//            'savings'=>$savings
+//        ];
+//        echo json_encode($data);
         
     }
     public function searchCooperator()
@@ -439,7 +510,7 @@ class LoanController extends BaseController
         ];
         
         $username = $this->session->user_username;
-        $this->authenticate_user($username, 'pages/loan/new-payment-schedule', $data); 
+        $this->authenticate_user($username, 'pages/loan/new-payment-schedule', $data);
     }
 
     

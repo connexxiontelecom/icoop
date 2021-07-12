@@ -58,7 +58,8 @@ class PaymentController extends BaseController
          $cart = $this->loan->getItemsInCart();
          $withdraw_cart = $this->withdraw->getWithdrawItemsInCart();
         #withdraw request
-        $withdraws = $this->withdraw->getScheduledWithdrawal(); 
+       
+        $withdraws = $this->withdraw->getScheduledWithdrawal();
         $coopbank = $this->coopbank->getCoopBanks();
         $data = [
             'coopbank'=>$coopbank,
@@ -69,8 +70,9 @@ class PaymentController extends BaseController
 	        //'approved_withdraw'=>$approved_withdraw
         ];
         
+        //print_r($approved_loans);
         $username = $this->session->user_username;
-        $this->authenticate_user($username, 'pages/payment/new-payment-schedule', $data); 
+        $this->authenticate_user($username, 'pages/payment/new-payment-schedule', $data);
     }
 
 
@@ -79,25 +81,48 @@ class PaymentController extends BaseController
          helper(['form']);
         $data = [];
         if($_POST){     
-            if(!is_null($this->request->getVar('approved_loans')) || !empty($this->request->getVar('withdraws'))){
-                if(!is_null($this->request->getVar('approved_loans'))){
-                    foreach($this->request->getVar('approved_loans') as $loan){
-                        
-                        if(isset($loan)){
-                            $detail = [
-                                'bank_id'=>$this->request->getVar('bank'),
-                                'payable_date'=>$this->request->getVar('payable_date'),
-                                'transaction_type'=>1,
-                                'creation_date'=>date('Y-m-d H:i:s'),
-                                //'created_by'=>1,
-                                'loan_id'=>$loan,
-                            ];
-                            //$id = $this->schedulemaster->insert($detail);
-                            $loan = $this->loan->where('loan_id', $loan)->first();
-                            $this->loan->update($loan, ['cart'=>1]);
-                        }
-                    }
-                }
+            if(!empty($this->request->getVar('approved_loans')) || !empty($this->request->getVar('withdraws')) ){
+	            if(!empty($this->request->getVar('approved_loans'))) {
+		            for ($i = 0; $i < count($this->request->getVar('approved_loans')); $i++) {
+			
+			            $loan_id = $_POST['loan_id'][$i];
+			            $loan_array = array(
+				            'loan_id' => $loan_id,
+				            'cart' => 1
+			            );
+			
+			            $this->loan->save($loan_array);
+
+//            		if (!is_null($this->request->getVar('approved_loans'))) {
+//
+//
+//			            foreach ($this->request->getVar('approved_loans') as $loan) {
+//
+//				            if (isset($loan)) {
+//					            $detail = [
+//						            'bank_id' => $this->request->getVar('bank'),
+//						            'payable_date' => $this->request->getVar('payable_date'),
+//						            'transaction_type' => 1,
+//						            'creation_date' => date('Y-m-d H:i:s'),
+//						            //'created_by'=>1,
+//						            'loan_id' => $loan,
+//					            ];
+//					            //$id = $this->schedulemaster->insert($detail);
+//					            $loan = $this->loan->where('loan_id', $loan)->first();
+//
+//
+////	                        $loan_array = array(
+////		                        'loan_id' => $loan,
+////		                        'cart' => 1
+////	                        );
+////
+////	                        $this->loan->save($loan_array);
+////                            $this->loan->update($loan, ['cart'=>1]);
+//				            }
+//			            }
+//		            }
+		            }
+	            }
                 
                 if(!empty($this->request->getVar('withdraws'))){
                     for($i = 0; $i<count($this->request->getVar('withdraws')); $i++){
@@ -105,7 +130,14 @@ class PaymentController extends BaseController
                             //$this->withdraw->update($this->request->getVar('withdraw_id')[$i], ['cart'=>1]);
                             $down = $this->withdraw->where('withdraw_id', $this->request->getVar('withdraw_id')[$i])->first();
                             //return dd($down);
-                            $this->withdraw->update($down, ['cart'=>1]);
+	
+	                        $withdraw_array = array(
+		                        'withdraw_id' => $this->request->getVar('withdraw_id')[$i],
+		                        'cart' => 1
+	                        );
+	
+	                        $this->withdraw->save($withdraw_array);
+//	                        $this->withdraw->update($down, ['cart'=>1]);
                         }
 
                     }
@@ -114,7 +146,7 @@ class PaymentController extends BaseController
                         'msg' => 'Success! Selection was added to cart.',
                         'type' => 'success',
                         'location' => site_url('/loan/new-payment-schedule')
-    
+
                     );
                     return view('pages/sweet-alert', $alert);
             }else{
@@ -135,7 +167,12 @@ class PaymentController extends BaseController
         
         $loan = $this->loan->where('loan_id', $id)->first();
         if(!empty($loan)){
-            $this->loan->update($loan, ['cart'=>0]);
+	        $loan_array = array(
+		        'loan_id' => $id,
+		        'cart' => 0
+	        );
+	      
+            $this->loan->save($loan_array);
             $alert = array(
                 'msg' => 'Success! Selection removed from cart',
                 'type' => 'success',
@@ -158,7 +195,13 @@ class PaymentController extends BaseController
         
         $withdraw = $this->withdraw->where('withdraw_id', $id)->first();
         if(!empty($withdraw)){
-            $this->withdraw->update($withdraw, ['cart'=>0]);
+        	
+        	$withdraw_array = array(
+        		'withdraw_id' => $id,
+		        'cart' => 0
+	        );
+        	
+            $this->withdraw->save($withdraw_array);
             $alert = array(
                 'msg' => 'Success! Selection removed from cart',
                 'type' => 'success',
