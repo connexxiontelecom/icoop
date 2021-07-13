@@ -83,8 +83,10 @@ class JournalVoucher extends BaseController
 		                'cr_amount' => $journal['cr_amount'],
 		                'ref_no' => $journal['ref_no'] ?? '',
 		                'bank' => $account['bank'],
+		                'gl_description' => 'journal voucher',
 		                'ob' => 0,
 		                'posted' => 1,
+		                'gl_transaction_date' =>$journal['jv_date'],
 		                'created_at' => $journal['jv_date'],
 	                );
 	               $i =  $this->gl->save($bankGl);
