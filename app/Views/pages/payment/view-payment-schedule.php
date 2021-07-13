@@ -71,8 +71,8 @@ Payment Schedule
                         <div class="header">
                             <h2>Schedule Detail</h2>
                         </div>
-                        <form action="<?= site_url('/loan/return-bulk-schedule') ?>" method="post" autocomplete="off">
-                        <?= csrf_field() ?>
+<!--                        <form action="--><?//= site_url('/loan/return-bulk-schedule') ?><!--" method="post" autocomplete="off">-->
+	                        <?= csrf_field() ?>
                             <div class="table-responsive">
                                 <table class="table table-bordered">
                                     <tbody>
@@ -85,30 +85,73 @@ Payment Schedule
                                             <td>Amount</td>
                                             <td>Action</td>
                                         </tr>
-                                        <?php $serial = 1; $sum = 0; foreach($detail as $d) : ?>
+										
+										
+										
+										
+                                        <?php $serial = 1; $sum = 0; if(!empty($withdraw_details)): foreach($withdraw_details as $withdraw) : ?>
                                             <tr>
                                                 <td><?= $serial++ ?></td>
-                                                <td><?= $d->cooperator_first_name ?? '' ?> <?= $d->cooperator_last_name ?? '' ?></td>
-                                                <input type="hidden" name="schedule_detail[]" value="<?= $d->schedule_master_detail_id ?>">
+                                                <td><?= $withdraw['cooperator_first_name'] ?? '' ?> <?= $withdraw['cooperator_last_name'] ?? '' ?></td>
+                                            
                                                 <td>
-                                                    <?= $d->transaction_type == 1 ? 'Loan Payment' : 'Savings withdrawal' ?>
+                                                    <?='Savings withdrawal from '.$withdraw['contribution_type_name'].' '.$withdraw['withdraw_narration'] ?>
                                                 </td>
-                                                <td><?= $d->bank_name ?? '' ?> </td>
-                                                <td><?= $d->cooperator_account_number ?? '' ?> </td>
-                                                <td class="text-right"><?= number_format($d->smd_amount,2) ?? '' ?> </td>
-                                                <input type="hidden" value="<?= $sum += $d->smd_amount ?? 0?>">
-                                                <td><a href="<?= site_url('/loan/return-schedule-payment/'.$d->loan_id) ?>">Return</a></td>
+                                                <td><?= $withdraw['bank_name'] ?? '' ?> </td>
+                                                <td><?= $withdraw['cooperator_account_number'] ?? '' ?> </td>
+                                                <td class="text-right"><?= number_format($withdraw['withdraw_amount'],2) ?? '' ?> </td>
+                                               
+                                                <td>
+													<form method="post" action="<?=site_url('/loan/return-schedule-payment') ?>">
+														<?= csrf_field() ?>
+														<input type="hidden" name="detail_id" value="<?=$withdraw['detail_id']; ?>">
+														<input type="hidden" name="master_id" value="<?=$withdraw['master_id']; ?>">
+														<button class="btn btn-danger btn-sm" type="submit" >Return Schedule</button>
+													</form>
+													
+												
+												</td>
                                             </tr>
-                                        <?php endforeach; ?>
+                                        <?php $sum = $sum + $withdraw['withdraw_amount'];  endforeach; endif;?>
+
+
+                                        <?php  if(!empty($loan_details)): foreach($loan_details as $loan) : ?>
+											<tr>
+												<td><?= $serial++ ?></td>
+												<td><?= $loan['cooperator_first_name'] ?? '' ?> <?= $loan['cooperator_last_name'] ?? '' ?></td>
+												<td>
+			                                        <?=$loan['loan_description'].' disbursement' ?>
+												</td>
+												<td><?= $loan['bank_name'] ?? '' ?> </td>
+												<td><?= $loan['cooperator_account_number'] ?? '' ?> </td>
+												<td class="text-right"><?= number_format($loan['amount'],2) ?? '' ?> </td>
+												
+												<td>
+													<form method="post" action="<?=site_url('/loan/return-schedule-payment') ?>">
+														<?= csrf_field() ?>
+														<input type="hidden" name="detail_id" value="<?=$loan['detail_id']; ?>">
+														<input type="hidden" name="master_id" value="<?=$loan['master_id']; ?>">
+														<button class="btn btn-danger btn-sm" type="submit" >Return Schedule</button>
+													</form>
+												
+												
+												</td>
+											</tr>
+	                                        <?php $sum = $sum + $loan['amount'];  endforeach; endif;?>
+                                      
+                                      
+                                      
                                         <tr>
                                             <td colspan="6" class="text-right">
                                                 <strong>Total:</strong>
                                             </td>
                                             <td><?= '₦'.number_format($sum,2) ?></td>
                                         </tr>
-                                        <?php if(count($detail) > 0) : ?>
-                                        <tr>
-                                            <td colspan="7" class="text-right">
+                                     
+                                        
+											
+											<tr>
+                                            <td colspan="7">
                                                 <?php if($master->verified == 0) : ?>
                                                     <div class="btn-group">
                                                         <button class="btn btn-danger btn-sm" type="submit" >Return Schedule</button>
@@ -123,12 +166,12 @@ Payment Schedule
                                                 <?php endif; ?>
                                             </td>
                                         </tr>
-                                        <?php endif; ?>
+                                   
                                     </tbody>
                                 </table>
 
                             </div>
-                        </form>
+<!--                        </form>-->
                     </div>
                 </div>
                 

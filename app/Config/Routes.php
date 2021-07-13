@@ -199,7 +199,8 @@ $routes->post('/loan/new-payment-schedule', 'PaymentController::postNewPaymentSc
 $routes->get('/loan/payment-schedules', 'PaymentController::showScheduledPayments');
 $routes->get('/loan/verified-payment-schedules', 'PaymentController::showVerifiedScheduledPayments');
 $routes->get('/loan/payment-schedule/(:num)', 'PaymentController::showPaymentScheduleDetail/$1');
-$routes->get('/loan/return-schedule-payment/(:num)', 'PaymentController::returnSchedulePayment/$1');
+$routes->post('/loan/return-schedule-payment', 'PaymentController::returnSchedulePayment');
+
 //$routes->get('/withdraw/return-schedule-payment/(:num)', 'PaymentController::returnWithdrawSchedulePayment/$1');
 $routes->post('/loan/return-bulk-schedule', 'PaymentController::returnBulkSchedule');
 $routes->post('/loan/verify-schedule', 'PaymentController::verifySchedule');
