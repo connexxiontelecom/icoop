@@ -154,13 +154,15 @@ Payment Schedule
                                             <td colspan="7">
                                                 <?php if($master->verified == 0) : ?>
                                                     <div class="btn-group">
-                                                        <button class="btn btn-danger btn-sm" type="submit" >Return Schedule</button>
+														<button class="btn btn-danger btn-sm" data-target="#returnScheduleModal" data-toggle="modal" type="button">Return  Schedule</button>
                                                         <button class="btn btn-primary btn-sm text-right" data-target="#verifyScheduleModal" data-toggle="modal" type="button">Verify Schedule</button>
                                                     </div>
 
                                                 <?php else : ?>
                                                     <div class="btn-group">
-                                                        <button class="btn btn-danger btn-sm" type="submit" >Return Schedule</button>
+													
+	
+														<button class="btn btn-danger btn-sm" data-target="#returnScheduleModal" data-toggle="modal" type="button">Return  Schedule</button>
                                                         <button class="btn btn-primary btn-sm text-right" data-target="#approveScheduleModal" data-toggle="modal" type="button">Approve Schedule</button>
                                                     </div>
                                                 <?php endif; ?>
@@ -236,6 +238,32 @@ Payment Schedule
             </div>
         </div>
     </div>
+</div>
+<div class="modal fade" id="returnScheduleModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title h4" id="myLargeModalLabel">Return Schedule</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<p>Are you sure you want to return entire schedule</p>
+				<form method="post" action="<?=site_url('/loan/return-bulk-schedule') ?>">
+					<?= csrf_field() ?>
+					
+					<div class="form-group text-right">
+						<div class="btn-group">
+							<input type="hidden" name="master_id" value="<?=$master->schedule_master_id; ?>">
+							<button class="btn-sm btn btn-danger" data-dismiss="modal">No, cancel.</button>
+							<button class="btn-sm btn btn-primary" type="submit">Yes, Return.</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 </div>
 <?= $this->endSection() ?>
 
