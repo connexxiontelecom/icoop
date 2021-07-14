@@ -79,8 +79,9 @@ $routes->post('/savings-gl-config', 'Policyconfigcontroller::savingGlConfig');
 $routes->get('/policy-config/loan-setup', 'Policyconfigcontroller::showLoanSetupForm');
 $routes->get('/policy-config/new-loan-setup', 'Policyconfigcontroller::new_loan_setup');
 $routes->post('/loan-setup', 'Policyconfigcontroller::loanSetup');
-$routes->post('/edit-loan-setup', 'Policyconfigcontroller::editLoanSetup');
-
+//$routes->post('/edit-loan-setup', 'Policyconfigcontroller::editLoanSetup');
+//$routes->get('/policy-config/loan-setup', 'Policyconfigcontroller::editLoanSetup');
+$routes->match(['get', 'post'], '/policy-config/edit-loan-setup/(:num)', 'Policyconfigcontroller::editLoanSetup/$1');
 #control panel
 $routes->get('contribution_type', 'ContributionType::contribution_type');
 $routes->post('contribution_type', 'ContributionType::contribution_type');
@@ -198,7 +199,8 @@ $routes->post('/loan/new-payment-schedule', 'PaymentController::postNewPaymentSc
 $routes->get('/loan/payment-schedules', 'PaymentController::showScheduledPayments');
 $routes->get('/loan/verified-payment-schedules', 'PaymentController::showVerifiedScheduledPayments');
 $routes->get('/loan/payment-schedule/(:num)', 'PaymentController::showPaymentScheduleDetail/$1');
-$routes->get('/loan/return-schedule-payment/(:num)', 'PaymentController::returnSchedulePayment/$1');
+$routes->post('/loan/return-schedule-payment', 'PaymentController::returnSchedulePayment');
+
 //$routes->get('/withdraw/return-schedule-payment/(:num)', 'PaymentController::returnWithdrawSchedulePayment/$1');
 $routes->post('/loan/return-bulk-schedule', 'PaymentController::returnBulkSchedule');
 $routes->post('/loan/verify-schedule', 'PaymentController::verifySchedule');

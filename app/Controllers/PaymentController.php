@@ -58,7 +58,8 @@ class PaymentController extends BaseController
          $cart = $this->loan->getItemsInCart();
          $withdraw_cart = $this->withdraw->getWithdrawItemsInCart();
         #withdraw request
-        $withdraws = $this->withdraw->getScheduledWithdrawal(); 
+       
+        $withdraws = $this->withdraw->getScheduledWithdrawal();
         $coopbank = $this->coopbank->getCoopBanks();
         $data = [
             'coopbank'=>$coopbank,
@@ -69,8 +70,9 @@ class PaymentController extends BaseController
 	        //'approved_withdraw'=>$approved_withdraw
         ];
         
+        //print_r($approved_loans);
         $username = $this->session->user_username;
-        $this->authenticate_user($username, 'pages/payment/new-payment-schedule', $data); 
+        $this->authenticate_user($username, 'pages/payment/new-payment-schedule', $data);
     }
 
 
@@ -79,25 +81,48 @@ class PaymentController extends BaseController
          helper(['form']);
         $data = [];
         if($_POST){     
-            if(!is_null($this->request->getVar('approved_loans')) || !empty($this->request->getVar('withdraws'))){
-                if(!is_null($this->request->getVar('approved_loans'))){
-                    foreach($this->request->getVar('approved_loans') as $loan){
-                        
-                        if(isset($loan)){
-                            $detail = [
-                                'bank_id'=>$this->request->getVar('bank'),
-                                'payable_date'=>$this->request->getVar('payable_date'),
-                                'transaction_type'=>1,
-                                'creation_date'=>date('Y-m-d H:i:s'),
-                                //'created_by'=>1,
-                                'loan_id'=>$loan,
-                            ];
-                            //$id = $this->schedulemaster->insert($detail);
-                            $loan = $this->loan->where('loan_id', $loan)->first();
-                            $this->loan->update($loan, ['cart'=>1]);
-                        }
-                    }
-                }
+            if(!empty($this->request->getVar('approved_loans')) || !empty($this->request->getVar('withdraws')) ){
+	            if(!empty($this->request->getVar('approved_loans'))) {
+		            for ($i = 0; $i < count($this->request->getVar('approved_loans')); $i++) {
+			
+			            $loan_id = $_POST['loan_id'][$i];
+			            $loan_array = array(
+				            'loan_id' => $loan_id,
+				            'cart' => 1
+			            );
+			
+			            $this->loan->save($loan_array);
+
+//            		if (!is_null($this->request->getVar('approved_loans'))) {
+//
+//
+//			            foreach ($this->request->getVar('approved_loans') as $loan) {
+//
+//				            if (isset($loan)) {
+//					            $detail = [
+//						            'bank_id' => $this->request->getVar('bank'),
+//						            'payable_date' => $this->request->getVar('payable_date'),
+//						            'transaction_type' => 1,
+//						            'creation_date' => date('Y-m-d H:i:s'),
+//						            //'created_by'=>1,
+//						            'loan_id' => $loan,
+//					            ];
+//					            //$id = $this->schedulemaster->insert($detail);
+//					            $loan = $this->loan->where('loan_id', $loan)->first();
+//
+//
+////	                        $loan_array = array(
+////		                        'loan_id' => $loan,
+////		                        'cart' => 1
+////	                        );
+////
+////	                        $this->loan->save($loan_array);
+////                            $this->loan->update($loan, ['cart'=>1]);
+//				            }
+//			            }
+//		            }
+		            }
+	            }
                 
                 if(!empty($this->request->getVar('withdraws'))){
                     for($i = 0; $i<count($this->request->getVar('withdraws')); $i++){
@@ -105,7 +130,14 @@ class PaymentController extends BaseController
                             //$this->withdraw->update($this->request->getVar('withdraw_id')[$i], ['cart'=>1]);
                             $down = $this->withdraw->where('withdraw_id', $this->request->getVar('withdraw_id')[$i])->first();
                             //return dd($down);
-                            $this->withdraw->update($down, ['cart'=>1]);
+	
+	                        $withdraw_array = array(
+		                        'withdraw_id' => $this->request->getVar('withdraw_id')[$i],
+		                        'cart' => 1
+	                        );
+	
+	                        $this->withdraw->save($withdraw_array);
+//	                        $this->withdraw->update($down, ['cart'=>1]);
                         }
 
                     }
@@ -114,7 +146,7 @@ class PaymentController extends BaseController
                         'msg' => 'Success! Selection was added to cart.',
                         'type' => 'success',
                         'location' => site_url('/loan/new-payment-schedule')
-    
+
                     );
                     return view('pages/sweet-alert', $alert);
             }else{
@@ -135,7 +167,12 @@ class PaymentController extends BaseController
         
         $loan = $this->loan->where('loan_id', $id)->first();
         if(!empty($loan)){
-            $this->loan->update($loan, ['cart'=>0]);
+	        $loan_array = array(
+		        'loan_id' => $id,
+		        'cart' => 0
+	        );
+	      
+            $this->loan->save($loan_array);
             $alert = array(
                 'msg' => 'Success! Selection removed from cart',
                 'type' => 'success',
@@ -158,7 +195,13 @@ class PaymentController extends BaseController
         
         $withdraw = $this->withdraw->where('withdraw_id', $id)->first();
         if(!empty($withdraw)){
-            $this->withdraw->update($withdraw, ['cart'=>0]);
+        	
+        	$withdraw_array = array(
+        		'withdraw_id' => $id,
+		        'cart' => 0
+	        );
+        	
+            $this->withdraw->save($withdraw_array);
             $alert = array(
                 'msg' => 'Success! Selection removed from cart',
                 'type' => 'success',
@@ -258,7 +301,13 @@ class PaymentController extends BaseController
 	                            ];
 	
 	                            $this->schedulemasterdetail->save($detail);
-	                            $this->loan->update($this->request->getVar('loan_id')[$i], ['scheduled' => 1]);
+	                            
+	                            $data = array(
+	                            	'loan_id' =>$this->request->getVar('loan_id')[$i],
+		                            'scheduled' => 1
+	                            );
+	                            
+	                            $this->loan->save($data);
                             }
                         }
                     }
@@ -330,12 +379,70 @@ class PaymentController extends BaseController
 
     public function showPaymentScheduleDetail($id){
         $master = $this->schedulemaster->getScheduleMasterItem($id);
-        $detail = $this->schedulemasterdetail->getScheduleMasterDetail($id);
+        
+        
+        
+        
+        //$detail = $this->schedulemasterdetail->getScheduleMasterDetail($id);
+	
+	    $details = $this->schedulemasterdetail->where('schedule_master_id', $id)->findAll();
+	    $i = 0;
+	    $j = 0;
+	
+	    $withdraw_array = array();
+	    $loan_array = array();
+	    
+	    foreach ($details as $detail):
+		   if($detail['transaction_type'] == 1):
+			 $loan_id = $detail['loan_id'];
+		    $loan_details = $this->loan->where('loan_id', $loan_id)
+			                            ->join('cooperators', 'loans.staff_id = cooperators.cooperator_staff_id')
+			                            ->join('loan_setups', 'loans.loan_type = loan_setups.loan_setup_id')
+			                             ->join('banks', 'banks.bank_id = cooperators.cooperator_bank_id')
+			                            ->first();
+			   
+		    $loan_details['detail_id'] = $detail['schedule_master_detail_id'];
+			$loan_details['master_id'] = $detail['schedule_master_id'];
+			$loan_array[$j] = $loan_details;
+			
+//			print_r($loan_details);
+			
+			
+		     $j++;
+		   endif;
+		   
+		   
+		   if($detail['transaction_type'] == 2):
+				  $withdraw_id = $detail['loan_id'];
+			        $withdraw_details = $this->withdraw->where('withdraw_id', $withdraw_id)
+				   ->join('cooperators', 'withdraws.withdraw_staff_id = cooperators.cooperator_staff_id')
+				   ->join('contribution_type', 'withdraws.withdraw_ct_id = contribution_type.contribution_type_id')
+				    ->join('banks', 'banks.bank_id = cooperators.cooperator_bank_id')
+				   ->first();
+			    $withdraw_details['detail_id'] = $detail['schedule_master_detail_id'];
+			   $withdraw_details['master_id'] = $detail['schedule_master_id'];
+			   $withdraw_array[$i] = $withdraw_details;
+			   $i++;
+		   endif;
+		   
+		endforeach;
+	
+	   
+        
+        
+        
+        
+        
         if(!empty($master)){
             $data = [
-                'detail'=>$detail,
+                'loan_details'=>$loan_array,
+	             'withdraw_details' => $withdraw_array,
                 'master'=>$master
             ];
+            
+            
+            
+           // print_r($withdraw_details);
             
             $username = $this->session->user_username;
             $this->authenticate_user($username, 'pages/payment/view-payment-schedule', $data);
@@ -346,44 +453,105 @@ class PaymentController extends BaseController
     }
 
 
-    public function returnSchedulePayment($id){
-        $loan = $this->loan->where('loan_id', $id)->first();
-            if(!empty($loan)){
-                $this->loan->update($loan, ['scheduled'=>0]);
-                $this->schedulemasterdetail->where('loan_id', $id)->delete();
-                /* $scheduledetail = $this->schedulemasterdetail->where('loan_id', $id)->first();
-                $masterId = $schedule->schedule_master_id; */
+    public function returnSchedulePayment(){
+       
+       $detail_id = $_POST['detail_id'];
+       $master_id = $_POST['master_id'];
+		
+       $master = $this->schedulemaster->where('schedule_master_id', $master_id)->first();
+       $detail = $this->schedulemasterdetail->where('schedule_master_detail_id', $detail_id)->first();
+	
+	    if($detail['transaction_type'] == 1):
+		    $loan_id = $detail['loan_id'];
+	        $amount = $detail['amount'];
+	        
+	        $loan_array = array(
+	        	'loan_id' => $loan_id,
+		        'scheduled' => 0
+	        );
+	        $this->loan->save($loan_array);
+	     endif;
+	
+	
+	    if($detail['transaction_type'] == 2):
+		    $withdraw_id = $detail['loan_id'];
+		    $amount = $detail['amount'];
+		    
+		    $withdraw_array = array(
+		    	'withdraw_id' => $withdraw_id,
+			    'scheduled' => 0
+		    );
+		    $this->withdraw->save($withdraw_array);
+	    endif;
+	
+	    $this->schedulemasterdetail->where('schedule_master_detail_id', $detail_id)->delete();
+	    
+	    $new_amount = $master['amount'] - $amount;
+	    
+	    $master_array = array(
+	    	'schedule_master_id' => $master_id,
+		    'amount' => $new_amount
+	    );
+	
+	    
+	    
+	   if( $this->schedulemaster->save($master_array)):
+		   $alert = array(
+			   'msg' => 'Success! Entry removed from schedule.',
+			   'type' => 'success',
+			   'location' => site_url('/loan/payment-schedule/'.$master_id)
 
-                $alert = array(
-                    'msg' => 'Success! Entry removed from schedule.',
-                    'type' => 'success',
-                    'location' => site_url('/loan/new-payment-schedule')
+		   );
+		   return view('pages/sweet-alert', $alert);
 
-                    );
-                    return view('pages/sweet-alert', $alert);
-            }else{
-                $alert = array(
-                    'msg' => 'Ooops! Something went wrong. Could not remove selection.',
-                    'type' => 'error',
-                    'location' => site_url('/loan/new-payment-schedule')
+		else:
 
-                );
-                return view('pages/sweet-alert', $alert);
-            }
+			$alert = array(
+				'msg' => 'Ooops! Something went wrong. Could not remove selection.',
+				'type' => 'error',
+				'location' => site_url('/loan/payment-schedule/'.$master_id)
+
+			);
+			return view('pages/sweet-alert', $alert);
+
+		endif;
+	    
+	 
     }
    
     public function returnBulkSchedule(){
-        //return dd($_POST);
-        if(!is_null($this->request->getVar('schedule_detail'))){
-            foreach($this->request->getVar('schedule_detail') as $schedule){
-               // $this->loan->update($loan, ['scheduled'=>0]);
-                $this->schedulemasterdetail->where('schedule_master_detail_id', $schedule)->delete();
-            }
-        }
-        
-            $alert = array(
-                'msg' => 'Ooops! Something went wrong. Could not remove selection.',
-                'type' => 'error',
+     
+	    $master_id = $_POST['master_id'];
+	
+	    $details = $this->schedulemasterdetail->where('schedule_master_id', $master_id)->findAll();
+	   
+	
+	    foreach ($details as $detail):
+		    if($detail['transaction_type'] == 1):
+			    $loan_id = $detail['loan_id'];
+			    $loan_array = array(
+				    'loan_id' => $loan_id,
+				    'scheduled' => 0
+			    );
+			    $this->loan->save($loan_array);
+		    endif;
+		
+		
+		    if($detail['transaction_type'] == 2):
+			    $withdraw_id = $detail['loan_id'];
+			    $withdraw_array = array(
+				    'withdraw_id' => $withdraw_id,
+				    'scheduled' => 0
+			    );
+			    $this->withdraw->save($withdraw_array);
+		    endif;
+	
+	    endforeach;
+	    $this->schedulemasterdetail->where('schedule_master_id', $master_id)->delete();
+	    $this->schedulemaster->where('schedule_master_id', $master_id)->delete();
+	         $alert = array(
+                'msg' => 'Schedule Removed',
+                'type' => 'success',
                 'location' => site_url('/loan/new-payment-schedule')
 
             );
@@ -491,7 +659,7 @@ class PaymentController extends BaseController
 		                
 		                $staff_name = $cooperator['cooperator_first_name'].' '.$cooperator['cooperator_last_name'];
 
-
+							
 
 		                $loan_repayment = [
 			                'lr_staff_id' => $loan['staff_id'],
@@ -507,7 +675,8 @@ class PaymentController extends BaseController
 			                'lr_interest' => 1,
 			                'lr_date' => date('Y-m-d H:i:s'),
 		                ];
-		                $this->loanrepayment->save($loan_repayment);
+		                
+		               $this->loanrepayment->save($loan_repayment);
 
 
 
@@ -532,7 +701,7 @@ class PaymentController extends BaseController
 		                'created_at' => date('Y-m-d'),
 		                'gl_description' => 'Staff id:'.$loan['staff_id'].', Staff Name:'.$staff_name.' Loan id:'.$loan['loan_id'],
 	                );
-	                $this->gl->save($bankGl);
+	              $this->gl->save($bankGl);
 
 	                //  debit loan
 
@@ -552,7 +721,7 @@ class PaymentController extends BaseController
 		                'gl_description' => 'Staff id:'.$loan['staff_id'].', Staff Name:'.$staff_name.' Loan id:'.$loan['loan_id'],
 	
 	                );
-	                $this->gl->save($bankGl);
+	               $this->gl->save($bankGl);
 
 	                // check for upfront interest
 
@@ -573,7 +742,7 @@ class PaymentController extends BaseController
 			                'gl_description' => 'Staff id:'.$loan['staff_id'].', Staff Name:'.$staff_name.' Loan id:'.$loan['loan_id'],
 		
 		                );
-		                $this->gl->save($bankGl);
+		               $this->gl->save($bankGl);
 
 		                endif;
 
@@ -592,9 +761,11 @@ class PaymentController extends BaseController
                                 'disburse_date'=>date('Y-m-d H:i:s')
                             );
 
-                            //$this->withdraw->save($data);
+                           $this->withdraw->save($data);
 
-                   $withdraw = $this->withdraw->where('withdraw_id', $withdraw_id)->first();
+                   $withdraw = $this->withdraw->where('withdraw_id', $withdraw_id)
+							                   ->join('contribution_type', 'withdraws.withdraw_ct_id = contribution_type.contribution_type_id')
+							                   ->first();
                     //$this->withdraw->update($withdraw, []);
                     #register withdraw
                     $cooperator = $this->coop->where('cooperator_staff_id', $withdraw['withdraw_staff_id'])->first();
@@ -602,9 +773,14 @@ class PaymentController extends BaseController
 
                     $ref_code = time();
                     $payment_type = 1;
+                    if(empty($withdraw['withdraw_narration']) || is_null($withdraw['withdraw_narration']) || ($withdraw['withdraw_narration'] == '')):
+	                    $withdraw['withdraw_narration'] = 'Withdrawal from '.$withdraw['contribution_type_name'];
+	                    endif;
+                    
                     if($withdraw['withdraw_narration'] == 'Account Closure'):
 	                    $payment_type = 7;
-	                    endif;
+	                endif;
+	                
 
                      $payment_details_array = array(
                         'pd_staff_id' => $withdraw['withdraw_staff_id'],
@@ -616,6 +792,8 @@ class PaymentController extends BaseController
                         'pd_ct_id' => $withdraw['withdraw_ct_id'],
                         'pd_pg_id' => $cooperator['cooperator_payroll_group_id'],//$cooperator_payroll_group_id,
                         'pd_ref_code' => $ref_code,
+	                     'pd_year'=> date('Y', strtotime($payable_date)),
+	                     'pd_month' => date('m', strtotime($payable_date)),
                     );
 
                     $v =  $this->paymentdetail->save($payment_details_array);
@@ -656,6 +834,8 @@ class PaymentController extends BaseController
 		                'pd_ct_id' => $withdraw['withdraw_ct_id'],
 		                'pd_pg_id' => $cooperator['cooperator_payroll_group_id'],//$cooperator_payroll_group_id,
 		                'pd_ref_code' => $ref_code,
+		                'pd_year'=> date('Y', strtotime($payable_date)),
+		                'pd_month' => date('m', strtotime($payable_date)),
 	                );
 
 	                $v =  $this->paymentdetail->save($payment_details_array);
@@ -700,10 +880,10 @@ class PaymentController extends BaseController
 		                'gl_description' => 'Staff id:'.$withdraw['withdraw_staff_id'].', Staff Name:'.$staff_name.' Contribution Type:'.$wt['contribution_type_name'],
 	
 	                );
-	                $this->gl->save($bankGl);
-
+	               $this->gl->save($bankGl);
+	                $account = $this->coa->where('glcode', '41304')->first();
 	                $bankGl = array(
-		                'glcode' => $b_gl,
+		                'glcode' => '41304',
 		                'posted_by' => $this->session->user_username,
 		                'narration' => 'Charges on withdrawal from '.$wt['contribution_type_name'],
 		                'dr_amount' => 0,
@@ -717,7 +897,7 @@ class PaymentController extends BaseController
 		                'gl_description' => 'Staff id:'.$withdraw['withdraw_staff_id'].', Staff Name:'.$staff_name.' Contribution Type:'.$wt['contribution_type_name'],
 	
 	                );
-	                $this->gl->save($bankGl);
+	               $this->gl->save($bankGl);
                 }
 
             }

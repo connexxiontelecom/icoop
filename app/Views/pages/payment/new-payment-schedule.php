@@ -106,7 +106,7 @@ Payment Schedule (Member)
                                                         <input type="hidden" name="loan_type[]" value="<?= $car->loan_type ?? '' ?>">
                                                     </td>
                                                     <td> 
-                                                        <a href="<?= site_url('/loan/remove-from-cart/'.$car->loan_id) ?>"  title="Remove from cart" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                                                        <a href="<?= site_url('/loan/remove-from-cart/'.$car->loan_id) ?>"  title="Remove from cart" class="text-danger"><i class="fa fa-trash"></i></a>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>
@@ -124,6 +124,7 @@ Payment Schedule (Member)
                                                         <input type="hidden" name="coop_id[]" value="<?= $wcar->cooperator_staff_id ?? '' ?>">
                                                     </td>
                                                     <td><?= $wcar->bank_name ?? '' ?> - <?= $wcar->cooperator_account_number ?? '' ?></td>
+                                                   
                                                     <td> Savings Withdrawal </td>
                                                     <td class="text-right"> <?=number_format($wcar->withdraw_amount,2) ?>
                                                         <input type="hidden" name="w_amount[]" <?= $sum += $wcar->withdraw_amount ?? 0 ?> value="<?= $wcar->withdraw_amount ?? 0 ?>">
@@ -192,7 +193,7 @@ Payment Schedule (Member)
                                             <tr>
                                                 <th scope="row"> 
                                                     <div class="form-group form-check">
-                                                        <input type="checkbox" name="approved_loans[]" value="<?= $loan->loan_app_id ?>" class="form-check-input ml-2">
+                                                        <input type="checkbox" name="approved_loans[]"  class="form-check-input ml-2">
                                                     </div>
                                                 </th>
                                                 <td><?= $loan->staff_id ?>

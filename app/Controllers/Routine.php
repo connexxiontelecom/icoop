@@ -246,7 +246,7 @@ class Routine extends BaseController
             else:
 
                 $data = array(
-                    'msg' => 'Only .xlsx, .xls, .csv extensions are allowed',
+                    'msg' => 'Only .xlsx, .xls, extensions are allowed',
                     'type' => 'error',
                     'location' => base_url('contribution_upload')
 
@@ -565,277 +565,277 @@ class Routine extends BaseController
 			
 			if ($this->validator->withRequest($this->request)->run()):
 			
-			$month = $_POST['ir_month'];
-			$year = $_POST['ir_year'];
-			$date = $_POST['ir_date'];
-				
-				$check_ir = $this->ir->where(['ir_month' => $month, 'ir_year' => $year])->findAll();
-				
-				if(!empty($check_ir)):
-					
-					$data = array(
-						'msg' => 'Interest Routine already ran for selected Month and Year',
-						'type' => 'error',
-						'location' => site_url('interest_routine')
-					
-					);
-					
-					return view('pages/sweet-alert', $data);
-			
-				else:
-					
-					
-					$active_loans = $this->loan->get_interestable_loans($date);
-					$ref_code = 'interest_'.time();
-					$interest_amount =0;
-					//print_r($active_loans);
-					
-					if(!empty($active_loans)):
-						foreach ($active_loans as $active_loan):
-							$cooperator = $this->cooperator->where('cooperator_staff_id', $active_loan->staff_id)->first();
+						$month = $_POST['ir_month'];
+						$year = $_POST['ir_year'];
+						$date = $_POST['ir_date'];
 							
-							$staff_name = $cooperator['cooperator_first_name'].' '.$cooperator['cooperator_last_name'];
+							$check_ir = $this->ir->where(['ir_month' => $month, 'ir_year' => $year])->findAll();
+							
+							if(!empty($check_ir)):
+								
+								$data = array(
+									'msg' => 'Interest Routine already ran for selected Month and Year',
+									'type' => 'error',
+									'location' => site_url('interest_routine')
+								
+								);
+								
+								return view('pages/sweet-alert', $data);
 						
-						
-							if($active_loan->interest_method == 2):
+							else:
 								
 								
+								$active_loans = $this->loan->get_interestable_loans($date);
+								$ref_code = 'interest_'.time();
+								$interest_amount =0;
+								//print_r($active_loans);
 								
-								$loan_repayments = $this->lr->where(['lr_loan_id' => $active_loan->loan_id])->findAll();
-							
-								if(!empty($loan_repayment)):
-							
-										$total_cr = 0;
-										$total_dr = 0;
-										$cr = 0;
-										$dr = 0;
+								if(!empty($active_loans)):
+									foreach ($active_loans as $active_loan):
+										$cooperator = $this->cooperator->where('cooperator_staff_id', $active_loan->staff_id)->first();
 										
-										foreach ($loan_repayments as $loan_repayment):
-											
-											if($loan_repayment['lr_dctype'] == 1):
-												$cr = $loan_repayment['lr_amount'];
-												$total_cr = $total_cr + $cr;
-											endif;
-											
-											if($loan_repayment['lr_dctype']  == 2):
-												$dr = $loan_repayment['lr_amount'];
-												$total_dr = $total_dr + $dr;
-											endif;
-										
-										endforeach;
-										
-										$interest_rate = $active_loan->ls_interest_rate/100;
-										$amount = $active_loan->amount + ($total_dr - $total_cr);
-										$interest_amount = $interest_rate * $amount;
-								else:
+										$staff_name = $cooperator['cooperator_first_name'].' '.$cooperator['cooperator_last_name'];
 									
-									$interest_rate = $active_loan->ls_interest_rate/100;
-									$amount = $active_loan->amount;
-									$interest_amount = $interest_rate * $amount;
-								endif;
-								$dateObj   = DateTime::createFromFormat('!m', $month);
-								$monthName = $dateObj->format('F');
-								
-								
-								$lr_array = array(
-									'lr_loan_id' => $active_loan->loan_id,
-									'lr_month' => $month,
-									'lr_year' => $year,
-									'lr_amount' => $interest_amount,
-									'lr_narration' => 'Interest Due for '.$monthName.', '.$year. 'for '.$active_loan->loan_description,
-									'lr_dctype' => 2,
-									'lr_ref' => $ref_code,
-									'lr_mi' => 0,
-									'lr_mpr' => 0,
-									'lr_interest' => 1,
-									'lr_interest_rate' => $active_loan->ls_interest_rate,
-									'lr_date' => $date
-								
-								
-								);
-								$j = $this->lr->save($lr_array);
-								
-								//debit loan account
-								$account = $this->coa->where('glcode', $active_loan->loan_gl_account_no)->first();
-								$bankGl = array(
-									'glcode' => $active_loan->loan_gl_account_no,
-									'posted_by' => $this->session->user_username,
-									'narration' => 'Interest Due for '.$monthName.', '.$year. 'for '.$active_loan->loan_description,
-									'dr_amount' => $interest_amount,
-									'cr_amount' => 0,
-									'ref_no' => $ref_code,
-									'bank' => $account['bank'],
-									'ob' => 0,
-									'posted' => 1,
-									'gl_transaction_date' =>$date,
-									'created_at' => date('Y-m-d'),
-									'gl_description' => 'Staff id:'.$active_loan->staff_id.', Staff Name:'.$staff_name.' Loan id:'.$active_loan->loan_id,
-									);
-								  $this->gl->save($bankGl);
-								
-								//credit interest account
-								$account = $this->coa->where('glcode', $active_loan->loan_int_income_gl_account_no)->first();
-								$bankGl = array(
-									'glcode' => $active_loan->loan_int_income_gl_account_no,
-									'posted_by' => $this->session->user_username,
-									'narration' => 'Interest Due for '.$monthName.', '.$year. 'for '.$active_loan->loan_description,
-									'dr_amount' => 0,
-									'cr_amount' => $interest_amount,
-									'ref_no' => $ref_code,
-									'bank' => $account['bank'],
-									'ob' => 0,
-									'posted' => 1,
-									'gl_transaction_date' =>$date,
-									'created_at' => date('Y-m-d'),
-									'gl_description' => 'Staff id:'.$active_loan->staff_id.', Staff Name:'.$staff_name.' Loan id:'.$active_loan->loan_id,
-								);
-								 $this->gl->save($bankGl);
-								
-								
-								
-								$loan_details = $this->loan->where(['loan_id' => $active_loan->loan_id])->first();
-								$loan_interest_amount = $loan_details['interest'] + $interest_amount;
-								
-								$loan_array = array('loan_id' => $active_loan->loan_id,
-									'interest' => $loan_interest_amount,
-								);
-								$i = $this->loan->save($loan_array);
-						
-							
-							endif;
-							
-							if($active_loan->interest_method == 3):
-							
-								$interest_rate = $active_loan->ls_interest_rate/100;
-								$amount = $active_loan->amount;
-								
-								$interest_amount = $interest_rate * $amount;
-								
-								$dateObj   = DateTime::createFromFormat('!m', $month);
-								$monthName = $dateObj->format('F');
-								
-								
-								$lr_array = array(
-									'lr_loan_id' => $active_loan->loan_id,
-									'lr_month' => $month,
-									'lr_year' => $year,
-									'lr_amount' => $interest_amount,
-									'lr_narration' => 'Interest Due for '.$monthName.', '.$year. 'for '.$active_loan->loan_description,
-									'lr_dctype' => 2,
-									'lr_ref' => $ref_code,
-									'lr_mi' => 0,
-									'lr_mpr' => 0,
-									'lr_interest' => 1,
-									'lr_interest_rate' => $active_loan->ls_interest_rate,
-									'lr_date' => $date
-								
-								
-								);
-								
-								$j = $this->lr->save($lr_array);
-								//debit loan
-								$account = $this->coa->where('glcode', $active_loan->loan_gl_account_no)->first();
-								$bankGl = array(
-									'glcode' => $active_loan->loan_gl_account_no,
-									'posted_by' => $this->session->user_username,
-									'narration' => 'Interest Due for '.$monthName.', '.$year. 'for '.$active_loan->loan_description,
-									'dr_amount' => $interest_amount,
-									'cr_amount' => 0,
-									'ref_no' => $ref_code,
-									'bank' => $account['bank'],
-									'ob' => 0,
-									'posted' => 1,
-									'gl_transaction_date' =>$date,
-									'created_at' => date('Y-m-d'),
-									'gl_description' => 'Staff id:'.$active_loan->staff_id.', Staff Name:'.$staff_name.' Loan id:'.$active_loan->loan_id,
-								);
-								$this->gl->save($bankGl);
-								
-								//credit interest account
-								$account = $this->coa->where('glcode', $active_loan->loan_int_income_gl_account_no)->first();
-								$bankGl = array(
-									'glcode' => $active_loan->loan_int_income_gl_account_no,
-									'posted_by' => $this->session->user_username,
-									'narration' => 'Interest Due for '.$monthName.', '.$year. 'for '.$active_loan->loan_description,
-									'dr_amount' => 0,
-									'cr_amount' => $interest_amount,
-									'ref_no' => $ref_code,
-									'bank' => $account['bank'],
-									'ob' => 0,
-									'posted' => 1,
-									'gl_transaction_date' =>$date,
-									'created_at' => date('Y-m-d'),
-									'gl_description' => 'Staff id:'.$active_loan->staff_id.', Staff Name:'.$staff_name.' Loan id:'.$active_loan->loan_id,
-								);
-								$this->gl->save($bankGl);
-								
-								$loan_details = $this->loan->where(['loan_id' => $active_loan->loan_id])->first();
-								$loan_interest_amount = $loan_details['interest'] + $interest_amount;
-								
-								$loan_array = array('loan_id' => $active_loan->loan_id,
-									'interest' => $loan_interest_amount,
-								);
-								$i = $this->loan->save($loan_array);
-								
-							endif;
-							
-							
-							
-
-							$ir_array = array(
-								'ir_month' => $month,
-								'ir_year' => $year,
-								'ir_date' => $date
-							);
-
-		
-							$k = $this->ir->save($ir_array);
-
-						
-								
-						endforeach;
-						
-						if($k):
-//						if(1):
-							
-							$data = array(
-								'msg' => 'Action Successful',
-								'type' => 'success',
-								'location' => site_url('interest_routine')
-							
-							);
-							
-							return view('pages/sweet-alert', $data);
-						
-						
-						else:
-							
-							$data = array(
-								'msg' => 'An Error Occured',
-								'type' => 'error',
-								'location' => site_url('interest_routine')
-							
-							);
-							
-							return view('pages/sweet-alert', $data);
-						
-						endif;
-						
-						
-						else:
-							
-							
-							$data = array(
-								'msg' => 'No loans available for routine',
-								'type' => 'error',
-								'location' => site_url('interest_routine')
-							
-							);
-							
-							return view('pages/sweet-alert', $data);
-						endif;
+									
+										if($active_loan->interest_method == 2):
+											
+											
+											
+											$loan_repayments = $this->lr->where(['lr_loan_id' => $active_loan->loan_id])->findAll();
+										
+											if(!empty($loan_repayment)):
+										
+													$total_cr = 0;
+													$total_dr = 0;
+													$cr = 0;
+													$dr = 0;
+													
+													foreach ($loan_repayments as $loan_repayment):
+														
+														if($loan_repayment['lr_dctype'] == 1):
+															$cr = $loan_repayment['lr_amount'];
+															$total_cr = $total_cr + $cr;
+														endif;
+														
+														if($loan_repayment['lr_dctype']  == 2):
+															$dr = $loan_repayment['lr_amount'];
+															$total_dr = $total_dr + $dr;
+														endif;
+													
+													endforeach;
+													
+													$interest_rate = $active_loan->ls_interest_rate/100;
+													$amount = $active_loan->amount + ($total_dr - $total_cr);
+													$interest_amount = $interest_rate * $amount;
+											else:
+												
+												$interest_rate = $active_loan->ls_interest_rate/100;
+												$amount = $active_loan->amount;
+												$interest_amount = $interest_rate * $amount;
+											endif;
+											$dateObj   = DateTime::createFromFormat('!m', $month);
+											$monthName = $dateObj->format('F');
+											
+											
+											$lr_array = array(
+												'lr_loan_id' => $active_loan->loan_id,
+												'lr_month' => $month,
+												'lr_year' => $year,
+												'lr_amount' => $interest_amount,
+												'lr_narration' => 'Interest Due for '.$monthName.', '.$year. 'for '.$active_loan->loan_description,
+												'lr_dctype' => 2,
+												'lr_ref' => $ref_code,
+												'lr_mi' => 0,
+												'lr_mpr' => 0,
+												'lr_interest' => 1,
+												'lr_interest_rate' => $active_loan->ls_interest_rate,
+												'lr_date' => $date
+											
+											
+											);
+											$j = $this->lr->save($lr_array);
+											
+											//debit loan account
+											$account = $this->coa->where('glcode', $active_loan->loan_gl_account_no)->first();
+											$bankGl = array(
+												'glcode' => $active_loan->loan_gl_account_no,
+												'posted_by' => $this->session->user_username,
+												'narration' => 'Interest Due for '.$monthName.', '.$year. 'for '.$active_loan->loan_description,
+												'dr_amount' => $interest_amount,
+												'cr_amount' => 0,
+												'ref_no' => $ref_code,
+												'bank' => $account['bank'],
+												'ob' => 0,
+												'posted' => 1,
+												'gl_transaction_date' =>$date,
+												'created_at' => date('Y-m-d'),
+												'gl_description' => 'Staff id:'.$active_loan->staff_id.', Staff Name:'.$staff_name.' Loan id:'.$active_loan->loan_id,
+												);
+											  $this->gl->save($bankGl);
+											
+											//credit interest account
+											$account = $this->coa->where('glcode', $active_loan->loan_int_income_gl_account_no)->first();
+											$bankGl = array(
+												'glcode' => $active_loan->loan_int_income_gl_account_no,
+												'posted_by' => $this->session->user_username,
+												'narration' => 'Interest Due for '.$monthName.', '.$year. 'for '.$active_loan->loan_description,
+												'dr_amount' => 0,
+												'cr_amount' => $interest_amount,
+												'ref_no' => $ref_code,
+												'bank' => $account['bank'],
+												'ob' => 0,
+												'posted' => 1,
+												'gl_transaction_date' =>$date,
+												'created_at' => date('Y-m-d'),
+												'gl_description' => 'Staff id:'.$active_loan->staff_id.', Staff Name:'.$staff_name.' Loan id:'.$active_loan->loan_id,
+											);
+											 $this->gl->save($bankGl);
+											
+											
+											
+											$loan_details = $this->loan->where(['loan_id' => $active_loan->loan_id])->first();
+											$loan_interest_amount = $loan_details['interest'] + $interest_amount;
+											
+											$loan_array = array('loan_id' => $active_loan->loan_id,
+												'interest' => $loan_interest_amount,
+											);
+											$i = $this->loan->save($loan_array);
+									
+										
+										endif;
+										
+										if($active_loan->interest_method == 3):
+										
+											$interest_rate = $active_loan->ls_interest_rate/100;
+											$amount = $active_loan->amount;
+											
+											$interest_amount = $interest_rate * $amount;
+											
+											$dateObj   = DateTime::createFromFormat('!m', $month);
+											$monthName = $dateObj->format('F');
+											
+											
+											$lr_array = array(
+												'lr_loan_id' => $active_loan->loan_id,
+												'lr_month' => $month,
+												'lr_year' => $year,
+												'lr_amount' => $interest_amount,
+												'lr_narration' => 'Interest Due for '.$monthName.', '.$year. 'for '.$active_loan->loan_description,
+												'lr_dctype' => 2,
+												'lr_ref' => $ref_code,
+												'lr_mi' => 0,
+												'lr_mpr' => 0,
+												'lr_interest' => 1,
+												'lr_interest_rate' => $active_loan->ls_interest_rate,
+												'lr_date' => $date
+											
+											
+											);
+											
+											$j = $this->lr->save($lr_array);
+											//debit loan
+											$account = $this->coa->where('glcode', $active_loan->loan_gl_account_no)->first();
+											$bankGl = array(
+												'glcode' => $active_loan->loan_gl_account_no,
+												'posted_by' => $this->session->user_username,
+												'narration' => 'Interest Due for '.$monthName.', '.$year. 'for '.$active_loan->loan_description,
+												'dr_amount' => $interest_amount,
+												'cr_amount' => 0,
+												'ref_no' => $ref_code,
+												'bank' => $account['bank'],
+												'ob' => 0,
+												'posted' => 1,
+												'gl_transaction_date' =>$date,
+												'created_at' => date('Y-m-d'),
+												'gl_description' => 'Staff id:'.$active_loan->staff_id.', Staff Name:'.$staff_name.' Loan id:'.$active_loan->loan_id,
+											);
+											$this->gl->save($bankGl);
+											
+											//credit interest account
+											$account = $this->coa->where('glcode', $active_loan->loan_int_income_gl_account_no)->first();
+											$bankGl = array(
+												'glcode' => $active_loan->loan_int_income_gl_account_no,
+												'posted_by' => $this->session->user_username,
+												'narration' => 'Interest Due for '.$monthName.', '.$year. 'for '.$active_loan->loan_description,
+												'dr_amount' => 0,
+												'cr_amount' => $interest_amount,
+												'ref_no' => $ref_code,
+												'bank' => $account['bank'],
+												'ob' => 0,
+												'posted' => 1,
+												'gl_transaction_date' =>$date,
+												'created_at' => date('Y-m-d'),
+												'gl_description' => 'Staff id:'.$active_loan->staff_id.', Staff Name:'.$staff_name.' Loan id:'.$active_loan->loan_id,
+											);
+											$this->gl->save($bankGl);
+											
+											$loan_details = $this->loan->where(['loan_id' => $active_loan->loan_id])->first();
+											$loan_interest_amount = $loan_details['interest'] + $interest_amount;
+											
+											$loan_array = array('loan_id' => $active_loan->loan_id,
+												'interest' => $loan_interest_amount,
+											);
+											$i = $this->loan->save($loan_array);
+											
+										endif;
+										
+										
+										
+			
+										$ir_array = array(
+											'ir_month' => $month,
+											'ir_year' => $year,
+											'ir_date' => $date
+										);
+			
 					
-					endif;
+										$k = $this->ir->save($ir_array);
+			
+									
+										
+									endforeach;
+									
+									if($k):
+			//						if(1):
+										
+										$data = array(
+											'msg' => 'Action Successful',
+											'type' => 'success',
+											'location' => site_url('interest_routine')
+										
+										);
+										
+										return view('pages/sweet-alert', $data);
+									
+									
+									else:
+										
+										$data = array(
+											'msg' => 'An Error Occured',
+											'type' => 'error',
+											'location' => site_url('interest_routine')
+										
+										);
+										
+										return view('pages/sweet-alert', $data);
+									
+									endif;
+								else:
+										
+										
+										$data = array(
+											'msg' => 'No loans available for routine',
+											'type' => 'error',
+											'location' => site_url('interest_routine')
+										
+										);
+										
+										return view('pages/sweet-alert', $data);
+									endif;
+								
+								
+									
+							endif;
 			
 			else:
 				$arr = $this->validator->getErrors();

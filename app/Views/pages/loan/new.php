@@ -256,47 +256,73 @@
            });
            $(document).on('blur', '#amount', function(e){
                e.preventDefault();
+            
                var money = $(this).val();
                 psr_value = psr == 1 ? (psr_rate/100)*parseInt(money.replace(/,/g, '')) : 0;
                 $('#encumbrance_amount').val(parseInt(psr_value).toLocaleString() );
                 $('#encumbrance').val(parseInt(psr_value) );
                 $('#psr').val(psr );
                 $('#psr_rate').val(psr_rate );
-               if(parseInt(money.replace(/,/g, '')) < min_limit ){
+               
+               if(parseFloat(money.replace(/,/g, '')) < parseFloat(min_limit) ){
                 Toastify({
                     text: `Ooop! This amount is less than min amount. Enter higher amount.`,
                     duration: 3000,
                     newWindow: true,
                     close: true,
-                    gravity: "top", 
-                    position: "right", 
+                    gravity: "top",
+                    position: "right",
                     backgroundColor: "linear-gradient(to right, #FF0000, #FFE8AC)",
-                    stopOnFocus: true, 
-                    onClick: function(){} 
+                    stopOnFocus: true,
+                    onClick: function(){}
                     }).showToast();
                     $('#submitLoanBtn').prop('disabled',true);
                }else {
                 $('#submitLoanBtn').prop('disabled',false);
                }
-               
-               
-               if(parseInt(money.replace(/,/g, '') > savings)){
-                Toastify({
-                    text: `Ooop! Your current savings amount is not up to this amount.`,
-                    duration: 3000,
-                    newWindow: true,
-                    close: true,
-                    gravity: "top", 
-                    position: "right", 
-                    backgroundColor: "linear-gradient(to right, #FF0000, #FFE8AC)",
-                    stopOnFocus: true, 
-                    onClick: function(){} 
-                    }).showToast();
-                    $('#submitLoanBtn').prop('disabled',true);
-               }else{
-                $('#submitLoanBtn').prop('disabled',false);
+
+               if(parseFloat(money.replace(/,/g, '')) > parseFloat(max_limit) ){
+                   Toastify({
+                       text: `Ooop! This amount is greater than max amount. Enter a lesser amount.`,
+                       duration: 3000,
+                       newWindow: true,
+                       close: true,
+                       gravity: "top",
+                       position: "right",
+                       backgroundColor: "linear-gradient(to right, #FF0000, #FFE8AC)",
+                       stopOnFocus: true,
+                       onClick: function(){}
+                   }).showToast();
+                   $('#submitLoanBtn').prop('disabled',true);
+               }else {
+                   $('#submitLoanBtn').prop('disabled',false);
                }
+               
+              if(psr == 1){
+                  let reqired_encum = (psr_rate/100)*parseFloat(money.replace(/,/g, ''));
+                  if(reqired_encum > parseFloat(savings)){
+                      Toastify({
+                          text: `Ooop! Your current savings cannot handle this loan.`,
+                          duration: 3000,
+                          newWindow: true,
+                          close: true,
+                          gravity: "top",
+                          position: "right",
+                          backgroundColor: "linear-gradient(to right, #FF0000, #FFE8AC)",
+                          stopOnFocus: true,
+                          onClick: function(){}
+                      }).showToast();
+                      $('#submitLoanBtn').prop('disabled',true);
+                  }else{
+                      $('#submitLoanBtn').prop('disabled',false);
+                  }
+			  }
+           
+
+
+           
            });
+        
            $(document).on('change', '#loan_type', function(e){
                e.preventDefault();
                if($(this).val() != ''){
@@ -312,8 +338,11 @@
                         interest_method = handler.interest_method;
                         psr = handler.psr;
                         psr_rate = handler.psr_value;
+                        let mi_limit = formatNumbers(handler.min_credit_limit);
+                        let mx_limit = formatNumbers(handler.max_credit_limit);
                         $('#interest_method').val(interest_method);
-                        $('#loan_terms').text(handler.loan_terms);
+                        let text = handler.loan_terms +"<br> Maximum Credit: "+ mx_limit+" <br> Minimum Credit: "+ mi_limit + " <br> PSR: "+ psr_rate+"%"
+                        $('#loan_terms').html(text);
                         $('#duration').val('');
                         $('#amount').val('');
                     }
@@ -360,6 +389,7 @@
                    });
                 }
             });
+          
             $("#guarantor_1").autocomplete({
                 source: "<?php echo base_url('/loan/search-cooperator'); ?>",
             });
@@ -372,16 +402,22 @@
             var staff = $('#search_account').val();
             let staff_id = staff.split(',')[0];
             $.ajax({
-            url: '<?php echo site_url('get-savings') ?>',
+            url: '<?php echo site_url('/get-savings') ?>',
             type: 'post',
             data: {
                 'staff_id': staff_id,
             },
             dataType: 'json',
             success:function(response){
-                savings = response.savings.pd_amount;
+                savings = response.savings;
+               $('#savings_amount').val(savings.toLocaleString());
+               
             }
         });
         }
+        function formatNumbers(x) {
+            return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+        }
+        
     </script>
 <?= $this->endSection() ?>
