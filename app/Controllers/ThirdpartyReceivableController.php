@@ -147,44 +147,76 @@ class ThirdpartyReceivableController extends BaseController
         helper(['form']);
         $data = [];
         $username = $this->session->user_username;
+	    $user = $this->user->where('username', $username)->first();
+	    
         if($_POST){
             if($this->request->getVar('receivable_status') == 'verified'){
                 $data = [
                     'customer_receivable_id'=>$this->request->getVar('customer_receivable'),
                     'cr_verify'=>1,
                     'cr_date_verified'=>date('Y-m-d H:i:s'),
-                    'cr_verified_by'=>$this->user->where('email', $username)->first()['user_id']
+                    'cr_verified_by'=>$user['user_id']
                 ];
 
             }else{
+            	$receivable_id = $this->request->getVar('customer_receivable');
+
                 $data = [
                     'customer_receivable_id'=>$this->request->getVar('customer_receivable'),
                     'cr_approve'=>1,
                     'cr_date_approved'=>date('Y-m-d H:i:s'),
-                    'cr_approved_by'=>$this->user->where('email', $username)->first()['user_id']
+                    'cr_approved_by'=>$user['user_id']
                 ];
-                
+
                 #customer
-                $customer = $this->customerreceivable->getCustomer($this->request->getVar('customer_setup'));
+                $receivables = $this->customerreceivable->where('customer_receivable_id', $receivable_id)->first();
+
                 $customerGl = $this->customersetup->getCustomerDetails($this->request->getVar('customer_setup'));
-                $bank = $this->coopbank->getBank($customer->cr_coop_bank_id);
+
+                $bank = $this->coopbank->getBank($receivables['cr_coop_bank_id']);
                 $ref = time();
-                $glcr = [
-                    'glcode'=>$customerGl->gl_account_code,
-                    'cr_amount'=>$customer->cr_amount,
-                    'dr_amount'=>0,
-                    'ref_no'=>$ref,
-                    'narration'=>'receipt approved',
-                ];
-                $this->gl->save($glcr);
-                $gldr = [
-                    'glcode'=>$bank->glcode,
-                    'dr_amount'=>$customer->cr_amount,
-                    'cr_amount'=>0,
-                    'ref_no'=>$ref,
-                    'narration'=>'receipt approved',
-                ];
-                $this->gl->save($gldr);
+
+
+	            $d_account = $this->coa->where('glcode', $bank->glcode)->first();
+
+	            $c_account = $this->coa->where('glcode', $customerGl->gl_account_code)->first();
+
+	            $bankGl = array(
+		            'glcode' => $d_account['glcode'],
+		            'posted_by' => $this->session->user_username,
+		            'narration' => 'Third Party Receipt from '.$customerGl->customer_name,
+		            'dr_amount' => $receivables['cr_amount'],
+		            'cr_amount' => 0,
+		            'ref_no' =>$ref,
+		            'bank' => $d_account['bank'],
+		            'ob' => 0,
+		            'posted' => 1,
+		            'gl_transaction_date' =>$receivables['cr_transaction_date'],
+		            'created_at' => date('Y-m-d'),
+		            'gl_description' => 'Third Party Receipt from '.$customerGl->customer_name,
+
+	            );
+	            $this->gl->save($bankGl);
+
+
+
+	            $bankGl = array(
+		            'glcode' => $c_account['glcode'],
+		            'posted_by' => $this->session->user_username,
+		            'narration' => 'Third Party Receipt from '.$customerGl->customer_name,
+		            'dr_amount' => 0,
+		            'cr_amount' => $receivables['cr_amount'],
+		            'ref_no' =>$ref,
+		            'bank' => $c_account['bank'],
+		            'ob' => 0,
+		            'posted' => 1,
+		            'gl_transaction_date' =>$receivables['cr_transaction_date'],
+		            'created_at' => date('Y-m-d'),
+		            'gl_description' => 'Third Party Receipt from '.$customerGl->customer_name,
+
+	            );
+	            $this->gl->save($bankGl);
+
             }
 					$this->customerreceivable->save($data);
 					$alert = array(
