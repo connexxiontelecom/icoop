@@ -881,9 +881,9 @@ class PaymentController extends BaseController
 	
 	                );
 	               $this->gl->save($bankGl);
-
+	                $account = $this->coa->where('glcode', '41304')->first();
 	                $bankGl = array(
-		                'glcode' => $b_gl,
+		                'glcode' => '41304',
 		                'posted_by' => $this->session->user_username,
 		                'narration' => 'Charges on withdrawal from '.$wt['contribution_type_name'],
 		                'dr_amount' => 0,
