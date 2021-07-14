@@ -487,34 +487,50 @@ class PaymentController extends BaseController
 	    $this->schedulemasterdetail->where('schedule_master_detail_id', $detail_id)->delete();
 	    
 	    $new_amount = $master['amount'] - $amount;
-	    
-	    $master_array = array(
-	    	'schedule_master_id' => $master_id,
-		    'amount' => $new_amount
-	    );
+	   
+	    if($new_amount > 0):
+		    $master_array = array(
+		        'schedule_master_id' => $master_id,
+			    'amount' => $new_amount
+		    );
+		
+		    
+		    
+		   if( $this->schedulemaster->save($master_array)):
+			   $alert = array(
+				   'msg' => 'Success! Entry removed from schedule.',
+				   'type' => 'success',
+				   'location' => site_url('/loan/payment-schedule/'.$master_id)
 	
-	    
-	    
-	   if( $this->schedulemaster->save($master_array)):
-		   $alert = array(
-			   'msg' => 'Success! Entry removed from schedule.',
-			   'type' => 'success',
-			   'location' => site_url('/loan/payment-schedule/'.$master_id)
-
-		   );
-		   return view('pages/sweet-alert', $alert);
-
-		else:
-
-			$alert = array(
-				'msg' => 'Ooops! Something went wrong. Could not remove selection.',
-				'type' => 'error',
-				'location' => site_url('/loan/payment-schedule/'.$master_id)
-
-			);
-			return view('pages/sweet-alert', $alert);
-
-		endif;
+			   );
+			   return view('pages/sweet-alert', $alert);
+	
+			else:
+	
+				$alert = array(
+					'msg' => 'Ooops! Something went wrong. Could not remove selection.',
+					'type' => 'error',
+					'location' => site_url('/loan/payment-schedule/'.$master_id)
+	
+				);
+				return view('pages/sweet-alert', $alert);
+	
+			endif;
+	   endif;
+	   
+	   
+	    if($new_amount == 0):
+		    @$this->schedulemasterdetail->where('schedule_master_id', $master_id)->delete();
+		    $this->schedulemaster->where('schedule_master_id', $master_id)->delete();
+		    $alert = array(
+			    'msg' => 'Schedule Removed',
+			    'type' => 'success',
+			    'location' => site_url('/loan/new-payment-schedule')
+		
+		    );
+		    return view('pages/sweet-alert', $alert);
+		    
+		  endif;
 	    
 	 
     }
