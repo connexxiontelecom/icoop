@@ -961,7 +961,7 @@ class PaymentController extends BaseController
             $data = [
             'entry_payment_date' => $this->request->getVar('payable_date'),
             'entry_bank_id'=>$this->request->getVar('payee_bank'), 
-            'entry_amount'=>$this->request->getVar('amount'), 
+            'entry_amount'=>(float)str_replace(',', '', $this->request->getVar('amount')),
             'entry_gl_account_no'=>$this->request->getVar('gl_account'),
             'entry_reference_no'=>$this->request->getVar('reference_no'), 
             'entry_narration'=>$this->request->getVar('narration'), 
@@ -969,7 +969,9 @@ class PaymentController extends BaseController
             'entry_payee_bank'=>$this->request->getVar('payee_bank'),
             'entry_bank_account_no'=>$this->request->getVar('bank_account_no'),
             'entry_sort_code'=>$this->request->getVar('sort_code'),
-            'entry_attachment'=>$filename
+            'entry_attachment'=>$filename,
+	         'cart' => 0
+	           
             ];
             $this->thirpartypaymententry->save($data);
             
@@ -993,7 +995,8 @@ class PaymentController extends BaseController
             'entries'=>$entries
         ];
         $username = $this->session->user_username;
-        $this->authenticate_user($username, 'pages/payment/new-payment', $data); 
+        //print_r($entries);
+        $this->authenticate_user($username, 'pages/payment/new-payment', $data);
     }
 
     public function postNewPayment(){
@@ -1234,7 +1237,7 @@ class PaymentController extends BaseController
             'third_party_payment_entry_id'=>$id,
             'entry_verified'=>0
             ];
-            $this->thirpartypaymententry->save($data);
+            $this->thirpartypaymententry->where('third_party_payment_entry_id', $id)->delete();;
 
         $alert = array(
                 'msg' => 'Success! Payment entry returned.',

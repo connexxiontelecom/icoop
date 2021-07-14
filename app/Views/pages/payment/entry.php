@@ -57,7 +57,7 @@ Payment Entry Voucher
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="">Amount</label>
-                                    <input type="number" required step="0.01" name="amount" id="amount" placeholder="Amount" class=" form-control">
+                                    <input type="text" required  name="amount" id="amount" placeholder="Amount" class="number form-control">
                                 </div>
                             </div>
                         <div class="col-md-4">
