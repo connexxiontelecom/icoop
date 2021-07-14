@@ -74,7 +74,7 @@ Loan Setup
                                         <td scope="col"><?= $setup->loan_int_income_gl_account_no ?> - <?= $setup->account_name ?? '' ?></td>
                                         <td scope="col"><?= $setup->loan_terms ?></td>
                                         <td>
-                                            <a href="javascript:void(0);" data-toggle="modal" data-target="#loanSetup<?= $setup->loan_setup_id ?>" class="btn btn-sm btn-primary text-white"><i class="fa fa-pencil-square-o"></i></a>
+                                            <a href="<?=site_url('policy-config/edit-loan-setup')."/".$setup->loan_setup_id; ?>"  class="btn btn-sm btn-primary text-white"><i class="fa fa-pencil-square-o"></i></a>
                                             <div class="modal fade" id="loanSetup<?= $setup->loan_setup_id ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                                     <div class="modal-content">

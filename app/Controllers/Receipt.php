@@ -403,7 +403,7 @@
 					$ref_code = time();
 					$rds = $this->rd->where(['rd_rm_id' => $rm_id])->findAll();
 					$cooperator = $this->cooperator->get_cooperator_staff_id($staff_id);
-					$staff_name = $cooperator['cooperator_first_name'].' '.$cooperator['cooperator_last_name'];
+					$staff_name = $cooperator->cooperator_first_name.' '.$cooperator->cooperator_last_name;
 					
 					$coop_bank = $this->cb->where('coop_bank_id', $r_m['rm_coop_bank'])->first();
 					$account = $this->coa->where('glcode', $coop_bank['glcode'])->first();

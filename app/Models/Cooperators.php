@@ -10,7 +10,7 @@ class Cooperators extends \CodeIgniter\Model
     protected $primaryKey = 'cooperator_id';
 
     protected $allowedFields = [
-        'cooperator_id', 'cooperator_cooperator_id',  'cooperator_staff_id', 'cooperator_username', 'cooperator_password', 'cooperator_first_name', 'cooperator_last_name', 'cooperator_other_name', 'cooperator_gender',
+        'cooperator_id', 'cooperator_application_id',  'cooperator_staff_id', 'cooperator_username', 'cooperator_password', 'cooperator_first_name', 'cooperator_last_name', 'cooperator_other_name', 'cooperator_gender',
 
         'cooperator_department_id', 'cooperator_location_id', 'cooperator_payroll_group_id', 'cooperator_dob', 'cooperator_email',
 
