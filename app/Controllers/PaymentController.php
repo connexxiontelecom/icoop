@@ -1094,17 +1094,33 @@ class PaymentController extends BaseController
             } */
         }
     }
+    
     public function returnAllUnverifiedPaymentEntry($masterId){
-                $master = $this->entrypaymentmaster->getEntryMasterById($masterId);
-                if(!empty($master)){
-                    $this->entrypaymentmaster->delete($masterId);
-                    $details = $this->entrypaymentdetail->getPaymentDetailsByMasterId($masterId);
-                   
-                    if(!empty($details)){
-                        foreach($details as $detail){
-                            $this->entrypaymentdetail->delete($detail->entry_payment_d_detail_id);
-                        }
-                    }
+	    $master = $this->entrypaymentmaster->getEntryMasterById($masterId);
+             if(!empty($master)){
+	
+	            $details = $this->entrypaymentdetail->where('entry_payment_d_master_id', $masterId)->findAll();
+	
+	             foreach($details as $detail):
+		
+		             $original_id = $detail['third_party_payment_entry_id'];
+		             $detail_id = $detail['entry_payment_d_detail_id'];
+		
+		
+		             $this->entrypaymentdetail->where('entry_payment_d_detail_id', $detail_id)->delete();
+		
+		             $third_payment_array = array(
+			             'third_party_payment_entry_id' => $original_id,
+			             'cart' => 0
+		             );
+		
+		             $this->thirpartypaymententry->save($third_payment_array);
+	
+	
+	             endforeach;
+	
+	             $this->entrypaymentmaster->where('entry_payment_master_id', $masterId)->delete();
+                	
                     $alert = array(
                         'msg' => 'Success! Payment entry declined.',
                         'type' => 'success',
@@ -1123,6 +1139,7 @@ class PaymentController extends BaseController
                     
         
     }
+    
     public function returnOneUnverifiedPaymentEntry($detailId){
         
         $details = $this->entrypaymentdetail->getPaymentDetailsByDetailId($detailId);               
