@@ -27,7 +27,7 @@ class EntryPaymentDetailModel extends Model{
     }
     public function getPaymentDetailsByDetailId($id){
         $builder = $this->db->table('entry_payment_details');
-        $builder->where('entry_payment_details.entry_payment_d_detail_id = '.$id);
+        $builder->where('entry_payment_details.entry_payment_d_detail_id', $id);
         return $builder->get()->getResultObject();
     }
     /* public function getScheduleMaster(){

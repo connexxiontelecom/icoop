@@ -1127,20 +1127,60 @@ class PaymentController extends BaseController
         
         $details = $this->entrypaymentdetail->getPaymentDetailsByDetailId($detailId);               
                     if(!empty($details)){
-                        #Last record
-                        /* if(count($details) == 1){
-                            return dd($details[0]);
-                            $master = $this->entrypaymentmaster->getEntryMasterById($masterId);
-                        } */
-                            foreach($details as $detail){
-                                $this->entrypaymentdetail->delete($detail->entry_payment_d_detail_id);
-                            }
-                            $alert = array(
-                                'msg' => 'Success! Payment entry declined.',
-                                'type' => 'success',
-                                'location' => site_url('/third-party/verify-payment-entry')
-                            );
-                            return view('pages/sweet-alert', $alert);
+                    
+                        $detail = $details[0];
+                        
+                        $master_id = $detail->entry_payment_d_master_id;
+                        
+                        $amount = $detail->entry_payment_d_amount;
+                        
+                        $original_id = $detail->third_party_payment_entry_id;
+                        
+                        $master = $this->entrypaymentmaster->where('entry_payment_master_id', $master_id)->first();
+                        
+                        $master_amount = $master['entry_payment_amount'] - $amount;
+	
+	                    $this->entrypaymentdetail->where('entry_payment_d_detail_id', $detailId)->delete();
+	
+	                    $third_payment_array = array(
+		                    'third_party_payment_entry_id' => $original_id,
+		                    'cart' => 0
+	                    );
+	
+	                    $this->thirpartypaymententry->save($third_payment_array);
+                        
+                        
+                        if($master_amount > 0):
+	                        
+	                        $master_array = array(
+	                        	'entry_payment_master_id' => $master_id,
+		                        'entry_payment_amount' => $master_amount
+	                        );
+                        
+                        $this->entrypaymentmaster->save($master_array);
+	
+	                        $alert = array(
+		                        'msg' => 'Success! Payment entry declined.',
+		                        'type' => 'success',
+		                        'location' => site_url('/third-party/view-verify-payment-entry/'.$master_id)
+	                        );
+	                        return view('pages/sweet-alert', $alert);
+	                        
+	                    endif;
+	                    
+	                    if($master_amount == 0):
+		                   
+		                    $this->entrypaymentmaster->where('entry_payment_master_id', $master_id)->delete();
+		
+		                    $alert = array(
+			                    'msg' => 'Success! Payment entry declined.',
+			                    'type' => 'success',
+			                    'location' => site_url('/third-party/verify-payment-entry')
+		                    );
+		                    return view('pages/sweet-alert', $alert);
+		                 
+		                  endif;
+                        
                         }else{
 
                             $alert = array(
