@@ -1077,7 +1077,7 @@ class PaymentController extends BaseController
                         'entry_payment_master_id'=>$this->request->getVar('entry_master'),
                         'entry_payment_verified'=>1,
                         'entry_payment_date_verified'=>$this->request->getVar('date_verified'),
-                        'entry_payment_verified_by'=> $this->user->where('email', $username)->first()['user_id'],
+                        'entry_payment_verified_by'=> $this->user->where('username', $username)->first()['user_id'],
                         ];
                         
                     $this->entrypaymentmaster->save($data);
@@ -1231,37 +1231,61 @@ class PaymentController extends BaseController
                             'entry_payment_master_id'=>$this->request->getVar('entry_master'),
                             'entry_payment_approved'=>1,
                             'entry_payment_approved_date'=>date('Y-m-d H:i:s'),
-                            'entry_payment_approved_by'=> $this->user->where('email', $username)->first()['user_id'],
+                            'entry_payment_approved_by'=> $username,
                             ];
                         $this->entrypaymentmaster->save($data);
                         #Get payment details
                         $details = $this->entrypaymentdetail->getPaymentDetailsByMasterId($this->request->getVar('entry_master'));
+	                    $ref = time();
                        if(!empty($details)){
+                       
+                       	
+                       	    $i = 0;
+                       	    $third_party_array = array();
                            foreach($details as $detail){
-                               
+	                           $original_id = $detail->third_party_payment_entry_id;
+	
+	                           $third_party = $this->thirpartypaymententry->where('third_party_payment_entry_id', $original_id)->first();
+	                           
+	                           $name = $third_party['entry_payee_name'];
+	                           
+	                           $third_party_array[$i] = $name;
+	
+	                          
+	                           $account = $this->coa->where('glcode', $detail->entry_payment_d_gl_account_no)->first();
                                 #gl details
                                  $dr = [
                                     'glcode'=>$detail->entry_payment_d_gl_account_no,
-                                    'posted_by'=> $this->user->where('email', $username)->first()['user_id'],
-                                    'dr_amount'=>0,
-                                    'bank'=>0,
+                                    'posted_by'=> $username,
+                                    'dr_amount'=>$detail->entry_payment_d_amount,
+                                    'bank'=>$account['bank'],
                                     'ob'=>0,
-                                    'cr_amount'=>$detail->entry_payment_d_amount,
-                                    'ref_no'=>time(),
+                                    'cr_amount'=>0,
+                                    'ref_no'=>$ref,
+	                                 'narration' => 'Third party payment to: '.$name,
+	                                 'gl_description' => 'Third party payment to: '.$name,
+	                                 'gl_transaction_date' => $entry_payment['entry_payment_payable_date'],
                                     'created_at'=>date('Y-m-d H:i:s')
                                 ];
                                 $this->gl->save($dr); 
-                           }
+                          $i++; }
                        }
-                       $getbank = $this->coopbank->getBank($entry_payment['entry_payment_bank_id']);
+                       $all_names = implode(",", $third_party_array);
+                     
+	                    $cb = $this->coopbank->where('coop_bank_id', $entry_payment['entry_payment_bank_id'])->first();
+	                    $b_gl = $cb['glcode'];
+	                    $account = $this->coa->where('glcode', $b_gl)->first();
                         $cr = [
-                            'glcode'=> $getbank->glcode,
-                            'posted_by'=> $this->user->where('email', $username)->first()['user_id'],
-                            'cr_amount'=>0,
-                            'bank'=>0,
+                            'glcode'=> $b_gl,
+                            'posted_by'=> $username,
+                            'bank'=>$account['bank'],
                             'ob'=>0,
-                            'dr_amount'=>$entry_payment['entry_payment_amount'],
-                            'ref_no'=>time(),
+                            'dr_amount'=>0,
+	                        'cr_amount'=> $entry_payment['entry_payment_amount'],
+                            'ref_no'=>$ref,
+	                        'narration' => 'Third party payment to: '.$all_names,
+	                        'gl_description' => 'Third party payment to: '.$all_names,
+	                        'gl_transaction_date' => $entry_payment['entry_payment_payable_date'],
                             'created_at'=>date('Y-m-d H:i:s')
                         ];
                         $this->gl->save($cr); 
