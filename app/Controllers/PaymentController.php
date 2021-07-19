@@ -1345,4 +1345,42 @@ class PaymentController extends BaseController
         $username = $this->session->user_username;
         $this->authenticate_user($username, 'pages/payment/view-payment-entry-details', $data); 
     }
+    
+    public function strip(){
+	
+	    $phonenumbers = ["19090945451", '090000101'];
+	    $new_phonenumbers = array();
+	    $i = 0;
+	    foreach($phonenumbers as $phonenumber):
+		    $split = str_split($phonenumber);
+		     if(($split[0] == "0") || ($split[0] == "+") ):
+			     if($split[0] == "+"):
+				     unset($split[0]);
+				     $split =  array_values($split);
+				     $new_p = (implode($split));
+				     $new_phonenumbers[$i] = $new_p;
+			     endif;
+		
+			     if($split[0] == "0"):
+				     unset($split[0]);
+			        $split = array_values($split);
+				     while(count($split) > 10):
+					     unset($split[0]);
+				        $split = array_values($split);
+				
+				    endwhile;
+				   $new_p = (implode($split));
+				   $new_phonenumbers[$i] = '234'.$new_p;
+			     endif;
+		    
+		   else:
+			   $new_p = (implode($split));
+			   $new_phonenumbers[$i] = $new_p;
+		 endif;
+		   $i++;
+	    endforeach;
+		   
+	   print_r($new_phonenumbers);
+    	
+    }
 }
