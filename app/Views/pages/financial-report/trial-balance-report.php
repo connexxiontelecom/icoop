@@ -175,9 +175,276 @@ Trial Balance
 						
 						<tr>
 							<td colspan="9">
-								<h3> ASSETS</h3>
+								<h3> LIABILITY</h3>
 							</td>
 						</tr>
+						
+						<?php
+							foreach ($liabilities as $liability):
+								$opcr = 0;
+								$opdr = 0;
+								$_opcr = 0;
+								$_opdr = 0;
+								
+								
+								
+								$check = $liability['opening']['obdr'] - $liability['opening']['obcr'];
+								
+								
+								if($check > 0):
+									$opdr =$check;
+//$_opdr = $opdr + $liability['period']['pbdr'];
+								endif;
+								
+								if($check < 0):
+									
+									$opcr =abs($check);
+//$_opcr = $opcr + $liability['period']['pbcr'];
+								endif;
+								
+								$OPCR = $opcr + $liability['period']['pbcr'];
+								$OPDR = $opdr + $liability['period']['pbdr'];
+								
+								
+								
+								
+								$cb = $OPDR - $OPCR;
+								
+								
+								
+								if($cb == 0):
+									$_opcr =  0;
+									$_opdr =  0;
+								endif;
+								
+								
+								
+								if($cb > 0):
+									$_opdr = $cb;
+									$_opcr = 0;
+								endif;
+								
+								if($cb < 0):
+									$_opcr = abs($cb);
+									$_opdr = 0;
+								endif;
+								
+								?>
+								
+								<tr>
+									<td><?=$i++; ?></td>
+									<td> <?=$liability['opening']['acc_code']; ?></td>
+									<td> <?=$liability['opening']['account_name']; ?></td>
+									<td style="text-align: right"> <?=number_format($opdr, 2); ?> </td>
+									<td style="text-align: right"> <?=number_format($opcr, 2); ?> </td>
+									<td style="text-align: right"> <?=number_format($liability['period']['pbdr'], 2); ?> </td>
+									<td style="text-align: right"> <?=number_format($liability['period']['pbcr'], 2); ?> </td>
+									<td style="text-align: right"> <?=number_format($_opdr, 2); ?> </td>
+									<td style="text-align: right"> <?=number_format($_opcr, 2); ?> </td>
+								</tr>
+								
+								<?php  $total_opdr = $total_opdr + $opdr;
+								$total_opcr = $total_opcr + $opcr;
+								$total_pbdr = $total_pbdr + $liability['period']['pbdr'];
+								$total_pbcr = $total_pbcr + $liability['period']['pbcr'];
+								$_total_opdr = $_total_opdr + $_opdr;
+								$_total_opcr = $_total_opcr + $_opcr;
+							endforeach;
+						
+						?>
+						
+						<tr>
+							<td colspan="9">
+								<h3> EQUITY</h3>
+							</td>
+						</tr>
+						
+						<?php
+							foreach ($equities as $equity):
+								$opcr = 0;
+								$opdr = 0;
+								$_opcr = 0;
+								$_opdr = 0;
+								
+								
+								
+								$check = $equity['opening']['obdr'] - $equity['opening']['obcr'];
+								
+								
+								if($check > 0):
+									$opdr =$check;
+//$_opdr = $opdr + $equity['period']['pbdr'];
+								endif;
+								
+								if($check < 0):
+									
+									$opcr =abs($check);
+//$_opcr = $opcr + $equity['period']['pbcr'];
+								endif;
+								
+								$OPCR = $opcr + $equity['period']['pbcr'];
+								$OPDR = $opdr + $equity['period']['pbdr'];
+								
+								
+								
+								
+								$cb = $OPDR - $OPCR;
+								
+								
+								
+								if($cb == 0):
+									$_opcr =  0;
+									$_opdr =  0;
+								endif;
+								
+								
+								
+								if($cb > 0):
+									$_opdr = $cb;
+									$_opcr = 0;
+								endif;
+								
+								if($cb < 0):
+									$_opcr = abs($cb);
+									$_opdr = 0;
+								endif;
+								
+								?>
+								
+								<tr>
+									<td><?=$i++; ?></td>
+									<td> <?=$equity['opening']['acc_code']; ?></td>
+									<td> <?=$equity['opening']['account_name']; ?></td>
+									<td style="text-align: right"> <?=number_format($opdr, 2); ?> </td>
+									<td style="text-align: right"> <?=number_format($opcr, 2); ?> </td>
+									<td style="text-align: right"> <?=number_format($equity['period']['pbdr'], 2); ?> </td>
+									<td style="text-align: right"> <?=number_format($equity['period']['pbcr'], 2); ?> </td>
+									<td style="text-align: right"> <?=number_format($_opdr, 2); ?> </td>
+									<td style="text-align: right"> <?=number_format($_opcr, 2); ?> </td>
+								</tr>
+								
+								<?php  $total_opdr = $total_opdr + $opdr;
+								$total_opcr = $total_opcr + $opcr;
+								$total_pbdr = $total_pbdr + $equity['period']['pbdr'];
+								$total_pbcr = $total_pbcr + $equity['period']['pbcr'];
+								$_total_opdr = $_total_opdr + $_opdr;
+								$_total_opcr = $_total_opcr + $_opcr;
+							endforeach;
+						
+						?>
+						
+						<tr>
+						
+						
+						<tr>
+							<td colspan="9">
+								<h3> REVENUE</h3>
+							</td>
+						</tr>
+						
+						<?php
+							foreach ($revenues as $revenue):
+								$opcr = 0;
+								$opdr = 0;
+								$_opcr = 0;
+								$_opdr = 0;
+								
+								$cb = $revenue['period']['pbdr'] - $revenue['period']['pbcr'];
+								if($cb > 0):
+									$_opdr = $cb;
+								endif;
+								
+								if($cb < 0 ):
+									$_opcr = abs($cb);
+								endif;
+								
+								
+								
+								?>
+								
+								<tr>
+									<td><?=$i++; ?></td>
+									<td> <?=$revenue['period']['acc_code']; ?></td>
+									<td> <?=$revenue['period']['account_name']; ?></td>
+									<td style="text-align: right"> <?=number_format(0, 2); ?> </td>
+									<td style="text-align: right"> <?=number_format(0, 2); ?> </td>
+									<td style="text-align: right"> <?=number_format($revenue['period']['pbdr'], 2); ?> </td>
+									<td style="text-align: right"> <?=number_format($revenue['period']['pbcr'], 2); ?> </td>
+									<td style="text-align: right"> <?=number_format($_opdr, 2); ?> </td>
+									<td style="text-align: right"> <?=number_format($_opcr, 2); ?> </td>
+								</tr>
+								
+								<?php  $total_opdr = $total_opdr + $opdr;
+								$total_opcr = $total_opcr + $opcr;
+								$total_pbdr = $total_pbdr + $revenue['period']['pbdr'];
+								$total_pbcr = $total_pbcr + $revenue['period']['pbcr'];
+								$_total_opdr = $_total_opdr + $_opdr;
+								$_total_opcr = $_total_opcr + $_opcr;
+							endforeach;
+						
+						?>
+						
+						<tr>
+							<td colspan="9">
+								<h3> EXPENSES</h3>
+							</td>
+						</tr>
+						
+						<?php
+							foreach ($expenses as $expense):
+								$opcr = 0;
+								$opdr = 0;
+								$_opcr = 0;
+								$_opdr = 0;
+								
+								$cb = $expense['period']['pbdr'] - $expense['period']['pbcr'];
+								if($cb > 0):
+									$_opdr = $cb;
+								endif;
+								
+								if($cb < 0 ):
+									$_opcr = abs($cb);
+								endif;
+								
+								
+								
+								?>
+								
+								<tr>
+									<td><?=$i++; ?></td>
+									<td> <?=$expense['period']['acc_code']; ?></td>
+									<td> <?=$expense['period']['account_name']; ?></td>
+									<td style="text-align: right"> <?=number_format(0, 2); ?> </td>
+									<td style="text-align: right"> <?=number_format(0, 2); ?> </td>
+									<td style="text-align: right"> <?=number_format($expense['period']['pbdr'], 2); ?> </td>
+									<td style="text-align: right"> <?=number_format($expense['period']['pbcr'], 2); ?> </td>
+									<td style="text-align: right"> <?=number_format($_opdr, 2); ?> </td>
+									<td style="text-align: right"> <?=number_format($_opcr, 2); ?> </td>
+								</tr>
+								
+								<?php  $total_opdr = $total_opdr + $opdr;
+								$total_opcr = $total_opcr + $opcr;
+								$total_pbdr = $total_pbdr + $expense['period']['pbdr'];
+								$total_pbcr = $total_pbcr + $expense['period']['pbcr'];
+								$_total_opdr = $_total_opdr + $_opdr;
+								$_total_opcr = $_total_opcr + $_opcr;
+							endforeach;
+						
+						?>
+						
+						
+						<tr>
+						
+							<td colspan="3"> <?='TOTAL'; ?></td>
+							
+							<td style="text-align: right"> <?=number_format($total_opdr, 2); ?> </td>
+							<td style="text-align: right"> <?=number_format($total_opcr, 2); ?> </td>
+							<td style="text-align: right"> <?=number_format($total_pbdr, 2); ?> </td>
+							<td style="text-align: right"> <?=number_format($total_pbcr, 2); ?> </td>
+							<td style="text-align: right"> <?=number_format($_total_opdr, 2); ?> </td>
+							<td style="text-align: right"> <?=number_format($_total_opcr, 2); ?> </td>
+						</tr>
+
 						</tbody>
                     </table>
             </div>
