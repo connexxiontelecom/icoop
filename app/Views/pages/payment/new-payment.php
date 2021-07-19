@@ -109,8 +109,8 @@ New Payment
                                                 <td><?= $entry->bank_name ?? '' ?>
                                                     <input type="hidden" name="bank_name[]" value="<?= $entry->bank_name ?? '' ?>" >
                                                 </td>
-                                                <td><?= $entry->account_no ?? '' ?>
-                                                    <input type="hidden" name="account_no[]" value="<?= $entry->account_no ?? '' ?>" >
+                                                <td><?= $entry->entry_bank_account_no ?? '' ?>
+                                                    <input type="hidden" name="account_no[]" value="<?= $entry->entry_bank_account_no ?? '' ?>" >
                                                 </td>
                                                 <td><?= $entry->entry_reference_no ?? '' ?>
                                                     <input type="hidden" name="reference_no[]" value="<?= $entry->entry_reference_no ?? '' ?>" >

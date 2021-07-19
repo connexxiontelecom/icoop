@@ -961,7 +961,7 @@ class PaymentController extends BaseController
             $data = [
             'entry_payment_date' => $this->request->getVar('payable_date'),
             'entry_bank_id'=>$this->request->getVar('payee_bank'), 
-            'entry_amount'=>$this->request->getVar('amount'), 
+            'entry_amount'=>(float)str_replace(',', '', $this->request->getVar('amount')),
             'entry_gl_account_no'=>$this->request->getVar('gl_account'),
             'entry_reference_no'=>$this->request->getVar('reference_no'), 
             'entry_narration'=>$this->request->getVar('narration'), 
@@ -969,7 +969,9 @@ class PaymentController extends BaseController
             'entry_payee_bank'=>$this->request->getVar('payee_bank'),
             'entry_bank_account_no'=>$this->request->getVar('bank_account_no'),
             'entry_sort_code'=>$this->request->getVar('sort_code'),
-            'entry_attachment'=>$filename
+            'entry_attachment'=>$filename,
+	         'cart' => 0
+	           
             ];
             $this->thirpartypaymententry->save($data);
             
@@ -993,7 +995,8 @@ class PaymentController extends BaseController
             'entries'=>$entries
         ];
         $username = $this->session->user_username;
-        $this->authenticate_user($username, 'pages/payment/new-payment', $data); 
+        //print_r($entries);
+        $this->authenticate_user($username, 'pages/payment/new-payment', $data);
     }
 
     public function postNewPayment(){
@@ -1074,7 +1077,7 @@ class PaymentController extends BaseController
                         'entry_payment_master_id'=>$this->request->getVar('entry_master'),
                         'entry_payment_verified'=>1,
                         'entry_payment_date_verified'=>$this->request->getVar('date_verified'),
-                        'entry_payment_verified_by'=> $this->user->where('email', $username)->first()['user_id'],
+                        'entry_payment_verified_by'=> $this->user->where('username', $username)->first()['user_id'],
                         ];
                         
                     $this->entrypaymentmaster->save($data);
@@ -1091,17 +1094,33 @@ class PaymentController extends BaseController
             } */
         }
     }
+    
     public function returnAllUnverifiedPaymentEntry($masterId){
-                $master = $this->entrypaymentmaster->getEntryMasterById($masterId);
-                if(!empty($master)){
-                    $this->entrypaymentmaster->delete($masterId);
-                    $details = $this->entrypaymentdetail->getPaymentDetailsByMasterId($masterId);
-                   
-                    if(!empty($details)){
-                        foreach($details as $detail){
-                            $this->entrypaymentdetail->delete($detail->entry_payment_d_detail_id);
-                        }
-                    }
+	    $master = $this->entrypaymentmaster->getEntryMasterById($masterId);
+             if(!empty($master)){
+	
+	            $details = $this->entrypaymentdetail->where('entry_payment_d_master_id', $masterId)->findAll();
+	
+	             foreach($details as $detail):
+		
+		             $original_id = $detail['third_party_payment_entry_id'];
+		             $detail_id = $detail['entry_payment_d_detail_id'];
+		
+		
+		             $this->entrypaymentdetail->where('entry_payment_d_detail_id', $detail_id)->delete();
+		
+		             $third_payment_array = array(
+			             'third_party_payment_entry_id' => $original_id,
+			             'cart' => 0
+		             );
+		
+		             $this->thirpartypaymententry->save($third_payment_array);
+	
+	
+	             endforeach;
+	
+	             $this->entrypaymentmaster->where('entry_payment_master_id', $masterId)->delete();
+                	
                     $alert = array(
                         'msg' => 'Success! Payment entry declined.',
                         'type' => 'success',
@@ -1120,24 +1139,65 @@ class PaymentController extends BaseController
                     
         
     }
+    
     public function returnOneUnverifiedPaymentEntry($detailId){
         
         $details = $this->entrypaymentdetail->getPaymentDetailsByDetailId($detailId);               
                     if(!empty($details)){
-                        #Last record
-                        /* if(count($details) == 1){
-                            return dd($details[0]);
-                            $master = $this->entrypaymentmaster->getEntryMasterById($masterId);
-                        } */
-                            foreach($details as $detail){
-                                $this->entrypaymentdetail->delete($detail->entry_payment_d_detail_id);
-                            }
-                            $alert = array(
-                                'msg' => 'Success! Payment entry declined.',
-                                'type' => 'success',
-                                'location' => site_url('/third-party/verify-payment-entry')
-                            );
-                            return view('pages/sweet-alert', $alert);
+                    
+                        $detail = $details[0];
+                        
+                        $master_id = $detail->entry_payment_d_master_id;
+                        
+                        $amount = $detail->entry_payment_d_amount;
+                        
+                        $original_id = $detail->third_party_payment_entry_id;
+                        
+                        $master = $this->entrypaymentmaster->where('entry_payment_master_id', $master_id)->first();
+                        
+                        $master_amount = $master['entry_payment_amount'] - $amount;
+	
+	                    $this->entrypaymentdetail->where('entry_payment_d_detail_id', $detailId)->delete();
+	
+	                    $third_payment_array = array(
+		                    'third_party_payment_entry_id' => $original_id,
+		                    'cart' => 0
+	                    );
+	
+	                    $this->thirpartypaymententry->save($third_payment_array);
+                        
+                        
+                        if($master_amount > 0):
+	                        
+	                        $master_array = array(
+	                        	'entry_payment_master_id' => $master_id,
+		                        'entry_payment_amount' => $master_amount
+	                        );
+                        
+                        $this->entrypaymentmaster->save($master_array);
+	
+	                        $alert = array(
+		                        'msg' => 'Success! Payment entry declined.',
+		                        'type' => 'success',
+		                        'location' => site_url('/third-party/view-verify-payment-entry/'.$master_id)
+	                        );
+	                        return view('pages/sweet-alert', $alert);
+	                        
+	                    endif;
+	                    
+	                    if($master_amount == 0):
+		                   
+		                    $this->entrypaymentmaster->where('entry_payment_master_id', $master_id)->delete();
+		
+		                    $alert = array(
+			                    'msg' => 'Success! Payment entry declined.',
+			                    'type' => 'success',
+			                    'location' => site_url('/third-party/verify-payment-entry')
+		                    );
+		                    return view('pages/sweet-alert', $alert);
+		                 
+		                  endif;
+                        
                         }else{
 
                             $alert = array(
@@ -1171,37 +1231,61 @@ class PaymentController extends BaseController
                             'entry_payment_master_id'=>$this->request->getVar('entry_master'),
                             'entry_payment_approved'=>1,
                             'entry_payment_approved_date'=>date('Y-m-d H:i:s'),
-                            'entry_payment_approved_by'=> $this->user->where('email', $username)->first()['user_id'],
+                            'entry_payment_approved_by'=> $username,
                             ];
                         $this->entrypaymentmaster->save($data);
                         #Get payment details
                         $details = $this->entrypaymentdetail->getPaymentDetailsByMasterId($this->request->getVar('entry_master'));
+	                    $ref = time();
                        if(!empty($details)){
+                       
+                       	
+                       	    $i = 0;
+                       	    $third_party_array = array();
                            foreach($details as $detail){
-                               
+	                           $original_id = $detail->third_party_payment_entry_id;
+	
+	                           $third_party = $this->thirpartypaymententry->where('third_party_payment_entry_id', $original_id)->first();
+	                           
+	                           $name = $third_party['entry_payee_name'];
+	                           
+	                           $third_party_array[$i] = $name;
+	
+	                          
+	                           $account = $this->coa->where('glcode', $detail->entry_payment_d_gl_account_no)->first();
                                 #gl details
                                  $dr = [
                                     'glcode'=>$detail->entry_payment_d_gl_account_no,
-                                    'posted_by'=> $this->user->where('email', $username)->first()['user_id'],
-                                    'dr_amount'=>0,
-                                    'bank'=>0,
+                                    'posted_by'=> $username,
+                                    'dr_amount'=>$detail->entry_payment_d_amount,
+                                    'bank'=>$account['bank'],
                                     'ob'=>0,
-                                    'cr_amount'=>$detail->entry_payment_d_amount,
-                                    'ref_no'=>time(),
+                                    'cr_amount'=>0,
+                                    'ref_no'=>$ref,
+	                                 'narration' => 'Third party payment to: '.$name,
+	                                 'gl_description' => 'Third party payment to: '.$name,
+	                                 'gl_transaction_date' => $entry_payment['entry_payment_payable_date'],
                                     'created_at'=>date('Y-m-d H:i:s')
                                 ];
                                 $this->gl->save($dr); 
-                           }
+                          $i++; }
                        }
-                       $getbank = $this->coopbank->getBank($entry_payment['entry_payment_bank_id']);
+                       $all_names = implode(",", $third_party_array);
+                     
+	                    $cb = $this->coopbank->where('coop_bank_id', $entry_payment['entry_payment_bank_id'])->first();
+	                    $b_gl = $cb['glcode'];
+	                    $account = $this->coa->where('glcode', $b_gl)->first();
                         $cr = [
-                            'glcode'=> $getbank->glcode,
-                            'posted_by'=> $this->user->where('email', $username)->first()['user_id'],
-                            'cr_amount'=>0,
-                            'bank'=>0,
+                            'glcode'=> $b_gl,
+                            'posted_by'=> $username,
+                            'bank'=>$account['bank'],
                             'ob'=>0,
-                            'dr_amount'=>$entry_payment['entry_payment_amount'],
-                            'ref_no'=>time(),
+                            'dr_amount'=>0,
+	                        'cr_amount'=> $entry_payment['entry_payment_amount'],
+                            'ref_no'=>$ref,
+	                        'narration' => 'Third party payment to: '.$all_names,
+	                        'gl_description' => 'Third party payment to: '.$all_names,
+	                        'gl_transaction_date' => $entry_payment['entry_payment_payable_date'],
                             'created_at'=>date('Y-m-d H:i:s')
                         ];
                         $this->gl->save($cr); 
@@ -1234,7 +1318,7 @@ class PaymentController extends BaseController
             'third_party_payment_entry_id'=>$id,
             'entry_verified'=>0
             ];
-            $this->thirpartypaymententry->save($data);
+            $this->thirpartypaymententry->where('third_party_payment_entry_id', $id)->delete();;
 
         $alert = array(
                 'msg' => 'Success! Payment entry returned.',
@@ -1260,5 +1344,43 @@ class PaymentController extends BaseController
         ];
         $username = $this->session->user_username;
         $this->authenticate_user($username, 'pages/payment/view-payment-entry-details', $data); 
+    }
+    
+    public function strip(){
+	
+	    $phonenumbers = ["19090945451", '090000101'];
+	    $new_phonenumbers = array();
+	    $i = 0;
+	    foreach($phonenumbers as $phonenumber):
+		    $split = str_split($phonenumber);
+		     if(($split[0] == "0") || ($split[0] == "+") ):
+			     if($split[0] == "+"):
+				     unset($split[0]);
+				     $split =  array_values($split);
+				     $new_p = (implode($split));
+				     $new_phonenumbers[$i] = $new_p;
+			     endif;
+		
+			     if($split[0] == "0"):
+				     unset($split[0]);
+			        $split = array_values($split);
+				     while(count($split) > 10):
+					     unset($split[0]);
+				        $split = array_values($split);
+				
+				    endwhile;
+				   $new_p = (implode($split));
+				   $new_phonenumbers[$i] = '234'.$new_p;
+			     endif;
+		    
+		   else:
+			   $new_p = (implode($split));
+			   $new_phonenumbers[$i] = $new_p;
+		 endif;
+		   $i++;
+	    endforeach;
+		   
+	   print_r($new_phonenumbers);
+    	
     }
 }
