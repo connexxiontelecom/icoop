@@ -63,8 +63,18 @@ Trial Balance
     <div class="col-md-12 col-lg-12 col-sm-12">
         <div class="body">
             <div class="table-responsive">
+				<?php
+					$from = date("M j, Y", strtotime($from));
+					$to = date("M j, Y", strtotime($to));
+				?>
+				
+				
                 <table class="table table-hover js-basic-example dataTable simpletable table-custom spacing5">
+					
                      <thead>
+					 <tr role="row">
+						<th colspan="9" style="text-align: center;" ><h3> Trial Balance for <?=$from." - ".$to; ?></h3></th>
+					 </tr>
                         <tr role="row">
                             <th rowspan="2" style="width: 50px;"  >S/No.</th>
                             <th rowspan="2" style="width: 150px;" >ACCOUNT CODE</th>
@@ -258,7 +268,44 @@ Trial Balance
 								<h3> EQUITY</h3>
 							</td>
 						</tr>
+						<?php
+							$opdr = 0;
+							$opcr = 0;
+							$profit = 0;
+							$Rcb = $total_revenue_cr - $total_revenue_dr;
+							$Ecb = $total_expense_dr - $total_expense_cr;
+							
+							$profit = $Rcb - $Ecb;
+							if($profit > 0 ):
+								$opcr = $profit;
+								$_opcr = $profit;
+							endif;
+							
+							if($profit < 0):
+							$opdr = $profit;
+							$_opdr = $profit;
+							endif;
+							
+							
+						?>
 						
+						<tr>
+							<td><?=$i++; ?></td>
+							<td> Profit/loss - (<?=$from." - ".$to.")"; ?></td>
+							<td> </td>
+							<td style="text-align: right"> <?=number_format($opdr, 2); ?> </td>
+							<td style="text-align: right"> <?=number_format($opcr, 2); ?> </td>
+							<td style="text-align: right">0.00  </td>
+							<td style="text-align: right">0.00 </td>
+							<td style="text-align: right"> <?=number_format($_opdr, 2); ?> </td>
+							<td style="text-align: right"><?=number_format($_opcr, 2); ?> </td>
+						</tr>
+						<?php
+							$total_opdr = $total_opdr + $opdr;
+							$total_opcr = $total_opcr + $opcr;
+							$_total_opdr = $_total_opdr + $_opdr;
+							$_total_opcr = $_total_opcr + $_opcr;
+						?>
 						<?php
 							foreach ($equities as $equity):
 								$opcr = 0;
