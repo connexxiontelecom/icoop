@@ -155,8 +155,8 @@ View Payment Entry
                                                         <?php endif; ?>
                                                         <?php if($entry_master->entry_payment_verified == 1 && $entry_master->entry_payment_approved == 0) : ?>
                                                             <div class="btn-group">
-                                                                <button class="btn btn-danger btn-sm" type="submit" >Return Entry</button>
-                                                                <button class="btn btn-primary btn-sm text-right"  type="submit">Approve Entry</button>
+																<a class="btn btn-danger btn-sm" href="<?= site_url('/third-party/return-all/unverified/'.$entry_master->entry_payment_master_id) ?>" >Return Entry</a>
+																<button class="btn btn-primary btn-sm text-right"  type="submit">Approve Entry</button>
                                                             </div>
                                                         <?php endif; ?>
                                                    </div>

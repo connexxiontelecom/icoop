@@ -15,11 +15,11 @@ class ThirdPartyPaymentEntryModel extends Model{
     
      public function getEntries(){
         $builder = $this->db->table('third_party_payment_entries');
-        $builder->join('banks', 'banks.bank_id = third_party_payment_entries.entry_bank_id');
+        $builder->join('banks', 'banks.bank_id = third_party_payment_entries.entry_payee_bank');
        // $builder->join('schedule_master_details', 'schedule_master_details.schedule_master_id = schedule_masters.schedule_master_id');
-        $builder->join('coop_banks', 'coop_banks.bank_id = banks.bank_id');
+//        $builder->join('coop_banks', 'coop_banks.bank_id = banks.bank_id');
         $builder->join('coas', 'coas.glcode = third_party_payment_entries.entry_gl_account_no');
-        $builder->groupBy('coop_banks.bank_id');
+        //$builder->groupBy('coop_banks.bank_id');
         $builder->where('third_party_payment_entries.cart =  0');
         return $builder->get()->getResultObject();
     } 
