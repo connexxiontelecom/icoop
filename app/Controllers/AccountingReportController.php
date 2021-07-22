@@ -270,8 +270,15 @@ class AccountingReportController extends BaseController
 				return view('pages/financial-report/trial-balance-report', $data);
 			
 			else:
-			
-			
+				
+				$data = array(
+					'msg' => 'Select Date Within Same Year',
+					'type' => 'error',
+					'location' => site_url('/trial-balance')
+				
+				);
+				
+				return view('pages/sweet-alert', $data);
 			
 			endif;
 		}
@@ -512,125 +519,7 @@ class AccountingReportController extends BaseController
 		
 		
 		    if($y_to == $y_from):
-			
-			    $assets = $this->coa->where('account_type', 1)
-				    ->where('type', 1)
-				    ->findAll();
-			
-			
-			    $asset_array = array();
-			    $i = 0;
-			    foreach ($assets as $asset):
-				
-				    $check_activity = $this->glmodel->where('glcode', $asset['glcode'])->first();
-				
-				    if(!empty($check_activity)):
-					    $ob = $this->glmodel->selectSum('cr_amount', 'obcr')
-						    ->selectSum('dr_amount', 'obdr')
-						    ->where('year(gl_transaction_date)', $y_from)
-						
-						    ->where('gl_transaction_date <', $from)
-						    ->where('glcode', $asset['glcode'])
-						
-						    ->findAll();
-					    $ob[0]['account_name'] = $asset['account_name'];
-					    $ob[0]['acc_code'] = $asset['glcode'];
 					
-					
-					    $pb =  $this->glmodel->selectSum('cr_amount', 'pbcr')
-						    ->selectSum('dr_amount', 'pbdr')
-						    ->where('year(gl_transaction_date)', $y_from)
-						
-						    ->where('gl_transaction_date >=', $from)
-						    ->where('gl_transaction_date <=', $to)
-						
-						    ->where('glcode', $asset['glcode'])
-						    ->findAll();
-					
-					
-					
-					    $asset_array[$i]['opening'] = $ob[0] ;
-					    $asset_array[$i]['period'] =$pb[0];
-					    $i++;
-				    endif;
-			    endforeach;
-			
-			    $liabilities = $this->coa->where('account_type', 2)
-				    ->where('type', 1)
-				    ->findAll();
-			
-			
-			    $liability_array = array();
-			    $i = 0;
-			    foreach ($liabilities as $liability):
-				
-				    $check_activity = $this->glmodel->where('glcode', $liability['glcode'])->first();
-				
-				    if(!empty($check_activity)):
-					    $ob = $this->glmodel->selectSum('cr_amount', 'obcr')
-						    ->selectSum('dr_amount', 'obdr')
-						    ->where('year(gl_transaction_date)', $y_from)
-						    ->where('gl_transaction_date <', $from)
-						    ->where('glcode', $liability['glcode'])
-						    ->findAll();
-					    $ob[0]['account_name'] = $liability['account_name'];
-					    $ob[0]['acc_code'] = $liability['glcode'];
-					
-					
-					    $pb =  $this->glmodel->selectSum('cr_amount', 'pbcr')
-						    ->selectSum('dr_amount', 'pbdr')
-						    ->where('year(gl_transaction_date)', $y_from)
-						    ->where('gl_transaction_date >=', $from)
-						    ->where('gl_transaction_date <=', $to)
-						    ->where('glcode', $liability['glcode'])
-						    ->findAll();
-					
-					
-					
-					    $liability_array[$i]['opening'] = $ob[0] ;
-					    $liability_array[$i]['period'] =$pb[0];
-					    $i++;
-				    endif;
-			    endforeach;
-			
-			
-			
-			    $equities = $this->coa->where('account_type', 3)
-				    ->where('type', 1)
-				    ->findAll();
-			
-			
-			    $equity_array = array();
-			    $i = 0;
-			    foreach ($equities as $equity):
-				
-				    $check_activity = $this->glmodel->where('glcode', $equity['glcode'])->first();
-				
-				    if(!empty($check_activity)):
-					    $ob = $this->glmodel->selectSum('cr_amount', 'obcr')
-						    ->selectSum('dr_amount', 'obdr')
-						    ->where('year(gl_transaction_date)', $y_from)
-						    ->where('gl_transaction_date <', $from)
-						    ->where('glcode', $equity['glcode'])
-						    ->findAll();
-					    $ob[0]['account_name'] = $equity['account_name'];
-					    $ob[0]['acc_code'] = $equity['glcode'];
-					
-					
-					    $pb =  $this->glmodel->selectSum('cr_amount', 'pbcr')
-						    ->selectSum('dr_amount', 'pbdr')
-						    ->where('year(gl_transaction_date)', $y_from)
-						    ->where('gl_transaction_date >=', $from)
-						    ->where('gl_transaction_date <=', $to)
-						    ->where('glcode', $equity['glcode'])
-						    ->findAll();
-					
-					    $equity_array[$i]['opening'] = $ob[0] ;
-					    $equity_array[$i]['period'] =$pb[0];
-					    $i++;
-				    endif;
-			    endforeach;
-			
 			    $revenues = $this->coa->where('account_type', 4)
 				    ->where('type', 1)
 				    ->findAll();
