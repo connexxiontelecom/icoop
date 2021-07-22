@@ -40,13 +40,11 @@ Balance Sheet
                             <div class="col-sm-12 col-md-8 col-lg-8">
                                 <div class="input-group mb-3 ml-5">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text">From</span>
+                                        <span class="input-group-text">Date</span>
                                     </div>
-                                    <input type="date" name="from" class="form-control" aria-label="From">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">To</span>
-                                    </div>
-                                    <input type="date" name="to" class="form-control" aria-label="To">
+	
+									<input type="date" name="from" class="form-control" aria-label="From">
+                                    
                                     <button class="btn  btn-primary" type="submit">Submit</button>
                                 </div>
                             </div>
