@@ -272,6 +272,8 @@ Trial Balance
 							$opdr = 0;
 							$opcr = 0;
 							$profit = 0;
+							$_opdr =0;
+							$_opcr =0;
 							$Rcb = $total_revenue_cr - $total_revenue_dr;
 							$Ecb = $total_expense_dr - $total_expense_cr;
 							
