@@ -124,11 +124,11 @@ GL Extract
 				?>
 				
 				
-				<table class="table js-basic-example dataTable simpletable table-custom spacing5">
+				<table class="table table-bordered js-basic-example dataTable simpletable table-custom spacing5 ">
 					
 					<thead>
 					<tr role="row">
-						<th colspan="9" style="text-align: center;" ><h3> Extract Between <?=$_from." - ".$_to; ?></h3> </th>
+						<th colspan="9" style="text-align: center;" ><h3> Extract Between <?=$_from." - ".$_to; ?></h3> <h4><?=$account_details['glcode'] ?> - <?=$account_details['account_name']; ?></h4>  </th>
 					</tr>
 					<tr role="row">
 						<th rowspan="2" style="width: 50px;"  >S/No.</th>
@@ -154,8 +154,93 @@ GL Extract
 					<?php
 						
 						$i =1;
-					
-					
+						$opcr = 0;
+						$opdr = 0;
+						
+					if($account_details['account_type'] == 1): //assets
+						$check = $ob['obdr'] - $ob['obcr'];
+						
+						
+						if($check > 0):
+							$opdr =$check;
+							
+						endif;
+						
+						if($check < 0):
+							
+							$opcr =abs($check);
+							
+						endif;
+					endif;
+						
+						
+						if($account_details['account_type'] == 2): //liability
+							$check = $ob['obdr'] - $ob['obcr'];
+							
+							
+							if($check > 0):
+								$opdr =$check;
+							
+							endif;
+							
+							if($check < 0):
+								
+								$opcr =abs($check);
+							
+							endif;
+						endif;
+						
+						if($account_details['account_type'] == 3): //equity
+							$check = $ob['obdr'] - $ob['obcr'];
+							
+							
+							if($check > 0):
+								$opdr =$check;
+							
+							endif;
+							
+							if($check < 0):
+								
+								$opcr =abs($check);
+							
+							endif;
+						endif;
+						
+						if($account_details['account_type'] == 4): // revenue
+							$check = $ob['obdr'] - $ob['obcr'];
+							
+							$opdr =$ob['obdr'];
+							$opcr =$ob['obcr'];
+
+//							if($check > 0):
+//								$opdr =$check;
+//
+//							endif;
+//
+//							if($check < 0):
+//
+//								$opcr =abs($check);
+//
+//							endif;
+						endif;
+						
+						if($account_details['account_type'] == 5): // expenses
+							$check = $ob['obdr'] - $ob['obcr'];
+							
+							$opdr =$ob['obdr'];
+							$opcr =$ob['obcr'];
+							
+//							if($check > 0):
+//								$opdr =$check;
+//
+//							endif;
+//
+//							if($check < 0):
+//
+//								$opcr =abs($check);
+//
+//							endif;
+						endif;
 					
 					?>
 					
@@ -163,8 +248,8 @@ GL Extract
 								<td><?=$i++; ?></td>
 								<td> <?=$account_details['glcode']; ?></td>
 								<td> <?=$account_details['account_name']; ?></td>
-								<td style="text-align: right"> <?=number_format($ob['obdr'], 2); ?> </td>
-								<td style="text-align: right"> <?=number_format($ob['obcr'], 2); ?> </td>
+								<td style="text-align: right"> <?=number_format($opdr, 2); ?> </td>
+								<td style="text-align: right"> <?=number_format($opcr, 2); ?> </td>
 								<td style="text-align: right"> <?=number_format($pb['pbdr'], 2); ?> </td>
 								<td style="text-align: right"> <?=number_format($pb['pbcr'], 2); ?> </td>
 								<td style="text-align: right"> <?=number_format(0, 2); ?> </td>

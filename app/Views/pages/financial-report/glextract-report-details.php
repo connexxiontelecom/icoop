@@ -13,7 +13,10 @@ GL Extract Details
 
 <?= $this->section('extra-styles') ?>
 <style>
-    td.details-control {
+	<link rel="stylesheet" href="assets/vendor/jquery-datatable/fixedeader/dataTables.fixedcolumns.bootstrap4.min.css">
+    <link rel="stylesheet" href="assets/vendor/jquery-datatable/fixedeader/dataTables.fixedheader.bootstrap4.min.css">
+	
+																																																									   td.details-control {
         background: url('assets/images/details_open.png') no-repeat center center;
         cursor: pointer;
     }
@@ -46,13 +49,15 @@ GL Extract Details
 					$_to = date("M j, Y", strtotime($to));
 				?>
 				
+				<button id="btnExport" onclick="fnExcelReport();"> EXPORT </button>
 				
-				<table class="table js-basic-example dataTable simpletable table-custom spacing5">
+				<table id="glextract" class="table table-bordered js-basic-example dataTable simpletable table-custom spacing5">
 					
 					<thead>
 					<tr role="row">
-						<th colspan="9" style="text-align: center;" ><h3> Extract Between <?=$_from." - ".$_to; ?></h3> </th>
+						<th colspan="9" style="text-align: center;" ><h3> Extract Between <?=$_from." - ".$_to; ?></h3> <h4><?=$account_details['glcode'] ?> - <?=$account_details['account_name']; ?></h4>  </th>
 					</tr>
+					
 					<tr role="row">
 						<th>S/No.</th>
 						<th>Date</th>
@@ -102,7 +107,8 @@ GL Extract Details
 					</tbody>
 				</table>
 				
-	
+				<iframe id="txtArea1" style="display:none"></iframe>
+			
 			</div>
 		</div>
 	</div>
@@ -112,5 +118,56 @@ GL Extract Details
 <?= $this->endSection() ?>
 
 <?= $this->section('extra-scripts') ?>
+<script src="assets/bundles/vendorscripts.bundle.js"></script>
+<script src="assets/vendor/jquery-validation/jquery.validate.js"></script><!-- Jquery Validation Plugin Css -->
+<script src="assets/vendor/jquery-steps/jquery.steps.js"></script><!-- JQuery Steps Plugin Js -->
+<script src="assets/js/common.js"></script>
+<script src="assets/js/pages/forms/form-wizard.js"></script>
+<script src="assets/vendor/dropify/js/dropify.js"></script>
+<script src="assets/js/common.js"></script>
 
+<script src="assets/bundles/datatablescripts.bundle.js"></script>
+<script src="assets/vendor/jquery-datatable/buttons/dataTables.buttons.min.js"></script>
+<script src="assets/vendor/jquery-datatable/buttons/buttons.bootstrap4.min.js"></script>
+<script src="assets/vendor/jquery-datatable/buttons/buttons.colVis.min.js"></script>
+<script src="assets/vendor/jquery-datatable/buttons/buttons.html5.min.js"></script>
+<script src="assets/vendor/jquery-datatable/buttons/buttons.print.min.js"></script>
+<script>
+	function fnExcelReport()
+	{
+		var tab_text="<table border='2px'><tr bgcolor='#87AFC6'>";
+		var textRange; var j=0;
+		tab = document.getElementById('glextract'); // id of table
+		
+		for(j = 0 ; j < tab.rows.length ; j++)
+		{
+			tab_text=tab_text+tab.rows[j].innerHTML+"</tr>";
+			//tab_text=tab_text+"</tr>";
+		}
+		
+		tab_text=tab_text+"</table>";
+		tab_text= tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
+		tab_text= tab_text.replace(/<img[^>]*>/gi,""); // remove if u want images in your table
+		tab_text= tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+		
+		var ua = window.navigator.userAgent;
+		var msie = ua.indexOf("MSIE ");
+		
+		if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+		{
+			txtArea1.document.open("txt/html","replace");
+			txtArea1.document.write(tab_text);
+			txtArea1.document.close();
+			txtArea1.focus();
+			sa=txtArea1.document.execCommand("SaveAs",true,"Say Thanks to Sumit.xls");
+		}
+		else                 //other browser not tested on IE 11
+			sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+		
+		return (sa);
+	}
+	$(document).ready(function(){
+		$('.simpletable').DataTable();
+	});
+</script>
 <?= $this->endSection() ?>
