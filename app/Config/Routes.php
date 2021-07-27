@@ -31,7 +31,7 @@ $routes->setAutoRoute(true);
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Usercontroller::index');
-
+$routes->get('/test', 'Home::index');
 #Error
 $routes->get('error_404', 'Usercontroller::error_404');
 
@@ -116,6 +116,7 @@ $routes->get('/trial-balance', 'AccountingReportController::showTrialBalanceForm
 $routes->post('/trial-balance', 'AccountingReportController::trialBalance');
 $routes->get('/balance-sheet', 'AccountingReportController::showBalanceSheet');
 $routes->post('/balance-sheet', 'AccountingReportController::balanceSheet');
+$routes->match(['get', 'post'], 'gl-extract', 'AccountingReportController::glextract');
 #Journal voucher
 $routes->get('/journal-voucher', 'JournalVoucher::index');
 $routes->get('/new-journal-voucher', 'JournalVoucher::create');
