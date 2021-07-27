@@ -95,22 +95,103 @@ GL Extract
 											<button type="submit" class="btn btn-info">Retrieve</button>
 										</div>
 									</div>
-									
-									
+								
+								
 								
 								
 								</div>
 							</fieldset>
-							
-							
-							
+						
+						
+						
 						
 						</form>
 					</div>
 				</div>
-				
-			</div>
 			
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12 col-lg-12 col-sm-12">
+		<div class="body">
+			<div class="table-responsive">
+				<?php
+					$_from = date("M j, Y", strtotime($from));
+					$_to = date("M j, Y", strtotime($to));
+				?>
+				
+				
+				<table class="table js-basic-example dataTable simpletable table-custom spacing5">
+					
+					<thead>
+					<tr role="row">
+						<th colspan="9" style="text-align: center;" ><h3> Extract Between <?=$_from." - ".$_to; ?></h3> </th>
+					</tr>
+					<tr role="row">
+						<th rowspan="2" style="width: 50px;"  >S/No.</th>
+						<th rowspan="2" style="width: 150px;" >ACCOUNT CODE</th>
+						<th rowspan="2" style="width: 150px;" >ACCOUNT NAME</th>
+						<th colspan="2" rowspan="1"  style="text-align: center;" >PREVIOUS </th>
+						<th colspan="2" rowspan="1" style="text-align: center;">PERIOD </th>
+						<th colspan="2" rowspan="1" style="text-align: center;">CLOSING</th>
+					</tr>
+					<tr role="row">
+						<th rowspan="1" colspan="1" style="text-align: right ; width: 200px;" >DR</th>
+						<th rowspan="1" colspan="1" style="text-align: right; width: 200px;" >CR</th>
+						<th rowspan="2" colspan="1" style="text-align: right; width: 200px;" >DR</th>
+						<th rowspan="2" colspan="1" style="text-align: right; width: 200px;" >CR</th>
+						<th rowspan="1" colspan="1" style="text-align: right; width: 200px;" >DR</th>
+						<th rowspan="1" colspan="1" style="text-align: right; width: 200px;" >CR.</th>
+					</tr>
+					</thead>
+					<tbody>
+					
+					
+					
+					<?php
+						
+						$i =1;
+					
+					
+					
+					?>
+					
+					<tr>
+								<td><?=$i++; ?></td>
+								<td> <?=$account_details['glcode']; ?></td>
+								<td> <?=$account_details['account_name']; ?></td>
+								<td style="text-align: right"> <?=number_format($ob['obdr'], 2); ?> </td>
+								<td style="text-align: right"> <?=number_format($ob['obcr'], 2); ?> </td>
+								<td style="text-align: right"> <?=number_format($pb['pbdr'], 2); ?> </td>
+								<td style="text-align: right"> <?=number_format($pb['pbcr'], 2); ?> </td>
+								<td style="text-align: right"> <?=number_format(0, 2); ?> </td>
+								<td style="text-align: right"> <?=number_format(0, 2); ?> </td>
+							</tr>
+					
+					<tr>
+						<td colspan="9" style="text-align: right">
+						<form action="<?=site_url('/gl-extract-details') ?>" method="post">
+							<?= csrf_field() ?>
+							<input type="hidden" name="account" value="<?=$account_details['glcode'] ?>">
+							<input type="hidden" name="from" value="<?=$from; ?>">
+							<input type="hidden" name="to" value="<?=$to; ?>">
+							<div class="form-group">
+								<button type="submit" class="btn btn-info">Retrieve Details</button>
+							</div>
+						</form>
+						</td>
+					</tr>
+							
+					
+					
+					</tbody>
+				</table>
+				
+	
+			</div>
 		</div>
 	</div>
 </div>

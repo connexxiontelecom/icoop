@@ -653,6 +653,14 @@ class AccountingReportController extends BaseController
 						'required'=>'End date'
 					]
 				],
+				
+				'account'=>[
+					'rules'=>'required',
+					'label'=>'Account',
+					'errors'=>[
+						'required'=>'Select an Account'
+					]
+				],
 			]);
 			
 			if ($this->validator->withRequest($this->request)->run()):
@@ -661,6 +669,7 @@ class AccountingReportController extends BaseController
 			
 				$to = $_POST['to'];
 				$from = $_POST['from'];
+				$account = $_POST['account'];
 				
 				$y_to =  date('Y', strtotime($to));
 				
@@ -669,104 +678,42 @@ class AccountingReportController extends BaseController
 				
 				if($y_to == $y_from):
 					
-					$revenues = $this->coa->where('account_type', 4)
-						->where('type', 1)
+					$account_details = $this->coa->where('glcode', $account)->first();
+					
+					
+					$ob = $this->glmodel->selectSum('cr_amount', 'obcr')
+						->selectSum('dr_amount', 'obdr')
+						->where('year(gl_transaction_date)', $y_from)
+						->where('gl_transaction_date <', $from)
+						->where('glcode', $account)
 						->findAll();
 					
-					
-					$revenue_array = array();
-					$i = 0;
-					$total_revenue_dr = 0;
-					$total_revenue_cr = 0;
-					
-					foreach ($revenues as $revenue):
 						
-						$check_activity = $this->glmodel->where('glcode', $revenue['glcode'])->first();
-						
-						if(!empty($check_activity)):
-							
-							$ob = $this->glmodel->selectSum('cr_amount', 'obcr')
-								->selectSum('dr_amount', 'obdr')
-								->where('year(gl_transaction_date)', $y_from)
-								->where('gl_transaction_date <', $from)
-								->where('glcode', $revenue['glcode'])
-								->findAll();
-							
-							$total_revenue_cr = $ob[0]['obcr'] + $total_revenue_cr;
-							$total_revenue_dr = $ob[0]['obdr'] + $total_revenue_dr;
-							
-							
-							
-							
-							$pb =  $this->glmodel->selectSum('cr_amount', 'pbcr')
-								->selectSum('dr_amount', 'pbdr')
-								->where('year(gl_transaction_date)', $y_from)
-								->where('gl_transaction_date >=', $from)
-								->where('gl_transaction_date <=', $to)
-								->where('glcode', $revenue['glcode'])
-								->findAll();
-							
-							$pb[0]['account_name'] = $revenue['account_name'];
-							$pb[0]['acc_code'] = $revenue['glcode'];
-							$revenue_array[$i]['period'] =$pb[0];
-							$i++;
-						endif;
-					endforeach;
-					
-					
-					$expenses = $this->coa->where('account_type', 5)
-						->where('type', 1)
+					$pb =  $this->glmodel->selectSum('cr_amount', 'pbcr')
+						->selectSum('dr_amount', 'pbdr')
+						->where('year(gl_transaction_date)', $y_from)
+						->where('gl_transaction_date >=', $from)
+						->where('gl_transaction_date <=', $to)
+						->where('glcode', $account)
 						->findAll();
 					
+					$pb_details = $this->glmodel->where('year(gl_transaction_date)', $y_from)
+						->where('gl_transaction_date >=', $from)
+						->where('gl_transaction_date <=', $to)
+						->where('glcode', $account)
+						->findAll();
 					
-					$expense_array = array();
-					$i = 0;
-					$total_expense_dr = 0;
-					$total_expense_cr = 0;
-					foreach ($expenses as $expense):
-						
-						$check_activity = $this->glmodel->where('glcode', $expense['glcode'])->first();
-						
-						if(!empty($check_activity)):
-							$ob = $this->glmodel->selectSum('cr_amount', 'obcr')
-								->selectSum('dr_amount', 'obdr')
-								->where('year(gl_transaction_date)', $y_from)
-								->where('gl_transaction_date <', $from)
-								->where('glcode', $revenue['glcode'])
-								->findAll();
-							
-							$total_expense_cr = $ob[0]['obcr'] + $total_expense_cr;
-							$total_expense_dr = $ob[0]['obdr'] + $total_expense_dr;
-							
-							
-							$pb =  $this->glmodel->selectSum('cr_amount', 'pbcr')
-								->selectSum('dr_amount', 'pbdr')
-								->where('year(gl_transaction_date)', $y_from)
-								->where('gl_transaction_date >=', $from)
-								->where('gl_transaction_date <=', $to)
-								->where('glcode', $expense['glcode'])
-								->findAll();
-							
-							$pb[0]['account_name'] = $expense['account_name'];
-							$pb[0]['acc_code'] = $expense['glcode'];
-							$expense_array[$i]['period'] =$pb[0];
-							$i++;
-						endif;
-					endforeach;
-					
-					$data['total_expense_cr'] = $total_expense_cr;
-					$data['total_expense_dr'] = $total_expense_dr;
-					$data['total_revenue_cr'] = $total_revenue_cr;
-					$data['total_revenue_dr'] = $total_revenue_dr;
+					$data['account_details'] = $account_details;
+					$data['ob'] = $ob[0];
+					$data['pb'] = $pb[0];
+					$data['pb_details'] = $pb_details;
 					$data['from'] = $from;
 					$data['to'] = $to;
-					$data['expenses'] = $expense_array;
-					$data['revenues'] = $revenue_array;
-	//			    $data['assets'] = $asset_array;
-	//			    $data['liabilities'] = $liability_array;
-	//			    $data['equities'] = $equity_array;
-					
-					return view('pages/financial-report/profit-loss-report', $data);
+					$data['accounts'] = $this->coa->where('type', 1)->findAll();
+					$username = $this->session->user_username;
+					$this->authenticate_user($username, 'pages/financial-report/glextract-report', $data);
+		
+					//return view('pages/financial-report/glextract-report', $data);
 				else:
 					$arr = $this->validator->getErrors();
 					session()->setFlashData("errors",$arr);
@@ -796,6 +743,54 @@ class AccountingReportController extends BaseController
 		endif;
 		
 		
+	}
+	
+	public function glextract_details(){
+		$to = $_POST['to'];
+		$from = $_POST['from'];
+		$account = $_POST['account'];
+		
+		$y_to =  date('Y', strtotime($to));
+		
+		$y_from =  date('Y', strtotime($from));
+		
+		
+	
+			
+			$account_details = $this->coa->where('glcode', $account)->first();
+			
+			
+			$ob = $this->glmodel->selectSum('cr_amount', 'obcr')
+				->selectSum('dr_amount', 'obdr')
+				->where('year(gl_transaction_date)', $y_from)
+				->where('gl_transaction_date <', $from)
+				->where('glcode', $account)
+				->findAll();
+			
+			
+			$pb =  $this->glmodel->selectSum('cr_amount', 'pbcr')
+				->selectSum('dr_amount', 'pbdr')
+				->where('year(gl_transaction_date)', $y_from)
+				->where('gl_transaction_date >=', $from)
+				->where('gl_transaction_date <=', $to)
+				->where('glcode', $account)
+				->findAll();
+			
+			$pb_details = $this->glmodel->where('year(gl_transaction_date)', $y_from)
+				->where('gl_transaction_date >=', $from)
+				->where('gl_transaction_date <=', $to)
+				->where('glcode', $account)
+				->findAll();
+			
+			$data['account_details'] = $account_details;
+			$data['ob'] = $ob[0];
+			$data['pb'] = $pb[0];
+			$data['pb_details'] = $pb_details;
+			$data['from'] = $from;
+			$data['to'] = $to;
+			$data['accounts'] = $this->coa->where('type', 1)->findAll();
+			$username = $this->session->user_username;
+			$this->authenticate_user($username, 'pages/financial-report/glextract-report-details', $data);
 	}
 
     
