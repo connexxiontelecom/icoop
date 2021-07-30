@@ -1,5 +1,6 @@
 <?php namespace App\Controllers;
 use App\Models\CoaModel;
+use App\Models\CoopBankModel;
 use App\Models\GlModel;
 
 class AccountingReportController extends BaseController
@@ -8,6 +9,7 @@ class AccountingReportController extends BaseController
         $this->coa = new CoaModel();
         $this->glmodel = new GlModel();
         $this->session = session();
+        $this->coopBank = new CoopBankModel();
     }
 	
 	
@@ -792,8 +794,105 @@ class AccountingReportController extends BaseController
 			$username = $this->session->user_username;
 			$this->authenticate_user($username, 'pages/financial-report/glextract-report-details', $data);
 	}
-
-    
+	
+	public function cash_book(){
+		$method = strtolower($this->request->getMethod());
+		
+		if($method == 'post'):
+			
+			$this->validator->setRules( [
+				'from'=>[
+					'rules'=>'required',
+					'label'=>'From',
+					'errors'=>[
+						'required'=>'Start date'
+					]
+				],
+				'to'=>[
+					'rules'=>'required',
+					'label'=>'To',
+					'errors'=>[
+						'required'=>'End date'
+					]
+				],
+				
+				'bank'=>[
+					'rules'=>'required',
+					'label'=>'Bank',
+					'errors'=>[
+						'required'=>'Select a Bank'
+					]
+				],
+			]);
+			
+			if ($this->validator->withRequest($this->request)->run()):
+				
+				
+				
+				$to = $_POST['to'];
+				$from = $_POST['from'];
+				$bank_id = $_POST['bank'];
+				
+				$bank_details = $this->coopBank->getCoopBank($bank_id);
+				
+				$bank = $bank_details->glcode;
+				
+				
+				
+					
+					$account_details = $this->coa->where('glcode', $bank)->first();
+					
+					
+					$ob = $this->glmodel->selectSum('cr_amount', 'obcr')
+						->selectSum('dr_amount', 'obdr')
+						->where('gl_transaction_date <', $from)
+						->where('glcode', $bank)
+						->findAll();
+					
+					
+//					$pb =  $this->glmodel->selectSum('cr_amount', 'pbcr')
+//						->selectSum('dr_amount', 'pbdr')
+//						->where('gl_transaction_date >=', $from)
+//						->where('gl_transaction_date <=', $to)
+//						->where('glcode', $bank)
+//						->findAll();
+					
+					$pb = $this->glmodel->where('gl_transaction_date >=', $from)
+						->where('gl_transaction_date <=', $to)
+						->where('glcode', $bank)
+						->findAll();
+					
+					$data['account_details'] = $bank_details;
+					$data['ob'] = $ob[0];
+					$data['pbs'] = $pb;
+					
+					$data['from'] = $from;
+					$data['to'] = $to;
+				
+					$data['banks'] = $this->coopBank->getCoopBanks();
+					$username = $this->session->user_username;
+					$this->authenticate_user($username, 'pages/financial-report/cashbook-report', $data);
+				
+				//return view('pages/financial-report/glextract-report', $data);
+				else:
+					$arr = $this->validator->getErrors();
+					session()->setFlashData("errors",$arr);
+					$url = site_url('cash-book');
+					return $this->response->redirect($url);
+				endif;
+			
+			
+		
+		else:
+			
+			
+			$data['banks'] = $this->coopBank->getCoopBanks();
+			$username = $this->session->user_username;
+			$this->authenticate_user($username, 'pages/financial-report/cashbook', $data);
+		endif;
+		
+		
+	}
   
  
 

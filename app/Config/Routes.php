@@ -117,6 +117,7 @@ $routes->post('/trial-balance', 'AccountingReportController::trialBalance');
 $routes->get('/balance-sheet', 'AccountingReportController::showBalanceSheet');
 $routes->post('/balance-sheet', 'AccountingReportController::balanceSheet');
 $routes->match(['get', 'post'], 'gl-extract', 'AccountingReportController::glextract');
+$routes->match(['get', 'post'], 'cash-book', 'AccountingReportController::cash_book');
 $routes->match(['post'], 'gl-extract-details', 'AccountingReportController::glextract_details');
 #Journal voucher
 $routes->get('/journal-voucher', 'JournalVoucher::index');

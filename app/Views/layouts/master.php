@@ -344,6 +344,7 @@
                                         <li><a href="<?=base_url('journal-voucher') ?>">Posting</a></li>
                                         <li><a href="<?=base_url('state') ?>">Location</a></li>
                                         <li class="header"><b>Report</b></li>
+										<li><a href="<?=base_url('cash-book') ?>">Cash Book</a></li>
                                         <li><a href="<?=base_url('trial-balance') ?>">Trial Balance</a></li>
                                         <li><a href="<?=base_url('profit-loss') ?>">Profit/Loss</a></li>
                                         <li><a href="<?=base_url('balance-sheet') ?>">Balance Sheet</a></li>
