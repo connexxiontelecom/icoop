@@ -1,5 +1,6 @@
 <?php namespace App\Controllers;
 use App\Models\CoaModel;
+use App\Models\CoopBankModel;
 use App\Models\GlModel;
 
 class AccountingReportController extends BaseController
@@ -8,6 +9,7 @@ class AccountingReportController extends BaseController
         $this->coa = new CoaModel();
         $this->glmodel = new GlModel();
         $this->session = session();
+        $this->coopBank = new CoopBankModel();
     }
 	
 	
@@ -487,9 +489,7 @@ class AccountingReportController extends BaseController
 	}
 
     public function profitOrLoss(){
-        helper(['form']);
-        $data = [];
-	
+	   
 	    if($_POST){
 		    $rules = [
 			    'from'=>[
@@ -633,8 +633,266 @@ class AccountingReportController extends BaseController
 		    endif;
 	    }
     }
-
-    
+	
+	
+	public function glextract(){
+		$method = strtolower($this->request->getMethod());
+		
+		if($method == 'post'):
+			
+			$this->validator->setRules( [
+				'from'=>[
+					'rules'=>'required',
+					'label'=>'From',
+					'errors'=>[
+						'required'=>'Start date'
+					]
+				],
+				'to'=>[
+					'rules'=>'required',
+					'label'=>'To',
+					'errors'=>[
+						'required'=>'End date'
+					]
+				],
+				
+				'account'=>[
+					'rules'=>'required',
+					'label'=>'Account',
+					'errors'=>[
+						'required'=>'Select an Account'
+					]
+				],
+			]);
+			
+			if ($this->validator->withRequest($this->request)->run()):
+			
+			
+			
+				$to = $_POST['to'];
+				$from = $_POST['from'];
+				$account = $_POST['account'];
+				
+				$y_to =  date('Y', strtotime($to));
+				
+				$y_from =  date('Y', strtotime($from));
+				
+				
+				if($y_to == $y_from):
+					
+					$account_details = $this->coa->where('glcode', $account)->first();
+					
+					
+					$ob = $this->glmodel->selectSum('cr_amount', 'obcr')
+						->selectSum('dr_amount', 'obdr')
+						->where('year(gl_transaction_date)', $y_from)
+						->where('gl_transaction_date <', $from)
+						->where('glcode', $account)
+						->findAll();
+					
+						
+					$pb =  $this->glmodel->selectSum('cr_amount', 'pbcr')
+						->selectSum('dr_amount', 'pbdr')
+						->where('year(gl_transaction_date)', $y_from)
+						->where('gl_transaction_date >=', $from)
+						->where('gl_transaction_date <=', $to)
+						->where('glcode', $account)
+						->findAll();
+					
+					$pb_details = $this->glmodel->where('year(gl_transaction_date)', $y_from)
+						->where('gl_transaction_date >=', $from)
+						->where('gl_transaction_date <=', $to)
+						->where('glcode', $account)
+						->findAll();
+					
+					$data['account_details'] = $account_details;
+					$data['ob'] = $ob[0];
+					$data['pb'] = $pb[0];
+					$data['pb_details'] = $pb_details;
+					$data['from'] = $from;
+					$data['to'] = $to;
+					$data['accounts'] = $this->coa->where('type', 1)->findAll();
+					$username = $this->session->user_username;
+					$this->authenticate_user($username, 'pages/financial-report/glextract-report', $data);
+		
+					//return view('pages/financial-report/glextract-report', $data);
+				else:
+					$arr = $this->validator->getErrors();
+					session()->setFlashData("errors",$arr);
+					$url = site_url('glextract');
+					return $this->response->redirect($url);
+				endif;
+			
+			else:
+				
+				$data = array(
+					'msg' => 'Select Date Within Same Year',
+					'type' => 'error',
+					'location' => site_url('/profit-loss')
+				
+				);
+				
+				return view('pages/sweet-alert', $data);
+			
+			endif;
+		
+		else:
+			
+		
+			$data['accounts'] = $this->coa->where('type', 1)->findAll();
+			$username = $this->session->user_username;
+			$this->authenticate_user($username, 'pages/financial-report/glextract', $data);
+		endif;
+		
+		
+	}
+	
+	public function glextract_details(){
+		$to = $_POST['to'];
+		$from = $_POST['from'];
+		$account = $_POST['account'];
+		
+		$y_to =  date('Y', strtotime($to));
+		
+		$y_from =  date('Y', strtotime($from));
+		
+		
+	
+			
+			$account_details = $this->coa->where('glcode', $account)->first();
+			
+			
+			$ob = $this->glmodel->selectSum('cr_amount', 'obcr')
+				->selectSum('dr_amount', 'obdr')
+				->where('year(gl_transaction_date)', $y_from)
+				->where('gl_transaction_date <', $from)
+				->where('glcode', $account)
+				->findAll();
+			
+			
+			$pb =  $this->glmodel->selectSum('cr_amount', 'pbcr')
+				->selectSum('dr_amount', 'pbdr')
+				->where('year(gl_transaction_date)', $y_from)
+				->where('gl_transaction_date >=', $from)
+				->where('gl_transaction_date <=', $to)
+				->where('glcode', $account)
+				->findAll();
+			
+			$pb_details = $this->glmodel->where('year(gl_transaction_date)', $y_from)
+				->where('gl_transaction_date >=', $from)
+				->where('gl_transaction_date <=', $to)
+				->where('glcode', $account)
+				->findAll();
+			
+			$data['account_details'] = $account_details;
+			$data['ob'] = $ob[0];
+			$data['pb'] = $pb[0];
+			$data['pb_details'] = $pb_details;
+			$data['from'] = $from;
+			$data['to'] = $to;
+			$data['accounts'] = $this->coa->where('type', 1)->findAll();
+			$username = $this->session->user_username;
+			$this->authenticate_user($username, 'pages/financial-report/glextract-report-details', $data);
+	}
+	
+	public function cash_book(){
+		$method = strtolower($this->request->getMethod());
+		
+		if($method == 'post'):
+			
+			$this->validator->setRules( [
+				'from'=>[
+					'rules'=>'required',
+					'label'=>'From',
+					'errors'=>[
+						'required'=>'Start date'
+					]
+				],
+				'to'=>[
+					'rules'=>'required',
+					'label'=>'To',
+					'errors'=>[
+						'required'=>'End date'
+					]
+				],
+				
+				'bank'=>[
+					'rules'=>'required',
+					'label'=>'Bank',
+					'errors'=>[
+						'required'=>'Select a Bank'
+					]
+				],
+			]);
+			
+			if ($this->validator->withRequest($this->request)->run()):
+				
+				
+				
+				$to = $_POST['to'];
+				$from = $_POST['from'];
+				$bank_id = $_POST['bank'];
+				
+				$bank_details = $this->coopBank->getCoopBank($bank_id);
+				
+				$bank = $bank_details->glcode;
+				
+				
+				
+					
+					$account_details = $this->coa->where('glcode', $bank)->first();
+					
+					
+					$ob = $this->glmodel->selectSum('cr_amount', 'obcr')
+						->selectSum('dr_amount', 'obdr')
+						->where('gl_transaction_date <', $from)
+						->where('glcode', $bank)
+						->findAll();
+					
+					
+//					$pb =  $this->glmodel->selectSum('cr_amount', 'pbcr')
+//						->selectSum('dr_amount', 'pbdr')
+//						->where('gl_transaction_date >=', $from)
+//						->where('gl_transaction_date <=', $to)
+//						->where('glcode', $bank)
+//						->findAll();
+					
+					$pb = $this->glmodel->where('gl_transaction_date >=', $from)
+						->where('gl_transaction_date <=', $to)
+						->where('glcode', $bank)
+						->findAll();
+					
+					$data['account_details'] = $bank_details;
+					$data['ob'] = $ob[0];
+					$data['pbs'] = $pb;
+					
+					$data['from'] = $from;
+					$data['to'] = $to;
+				
+					$data['banks'] = $this->coopBank->getCoopBanks();
+					$username = $this->session->user_username;
+					$this->authenticate_user($username, 'pages/financial-report/cashbook-report', $data);
+				
+				//return view('pages/financial-report/glextract-report', $data);
+				else:
+					$arr = $this->validator->getErrors();
+					session()->setFlashData("errors",$arr);
+					$url = site_url('cash-book');
+					return $this->response->redirect($url);
+				endif;
+			
+			
+		
+		else:
+			
+			
+			$data['banks'] = $this->coopBank->getCoopBanks();
+			$username = $this->session->user_username;
+			$this->authenticate_user($username, 'pages/financial-report/cashbook', $data);
+		endif;
+		
+		
+	}
   
  
 

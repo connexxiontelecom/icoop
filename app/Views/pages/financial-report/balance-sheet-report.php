@@ -66,7 +66,7 @@ Balance Sheet
 				?>
 				
 				
-				<table class="table table-hover js-basic-example dataTable simpletable table-custom spacing5">
+				<table class="table table-bordered table-hover js-basic-example dataTable simpletable table-custom spacing5">
 					
 					<thead>
 					<tr role="row">
