@@ -1,14 +1,14 @@
 <?= $this->extend('layouts/master') ?>
 
 <?= $this->section('title') ?>
-GL Extract
+Cash Book
 <?= $this->endSection() ?>
 
 <?= $this->section('current_page') ?>
-GL Extract
+Cash Book
 <?= $this->endSection() ?>
 <?= $this->section('page_crumb') ?>
-GL Extract
+Cash Book
 <?= $this->endSection() ?>
 
 <?= $this->section('extra-styles') ?>
@@ -30,7 +30,7 @@ GL Extract
 	<div class="col-lg-12">
 		<div class="card">
 			<div class="header">
-				<h2>GL Extract</h2>
+				<h2>Cash Book</h2>
 			</div>
 			<div class="body">
 				<div class="row">
@@ -114,6 +114,7 @@ GL Extract
 						<th>Date</th>
 						<th style="width: 200px;">Narration</th>
 						<th style="width: 200px;">Description</th>
+						<th style="width: 200px;">Ref No</th>
 						<th style="width: 200px; text-align: right">DR </th>
 						<th style="width: 200px; text-align: right">CR</th>
 						<th style="width: 200px; text-align: right">Bal</th>
@@ -130,6 +131,7 @@ GL Extract
 						<td><?=$i++; ?></td>
 						<td> </td>
 						<td> </td>
+						<td></td>
 						<td><h5> B/F</h5>  </td>
 						
 						<?php $balance = $ob['obdr'] - $ob['obcr']  ?>
@@ -149,14 +151,18 @@ GL Extract
 					
 					
 					<?php
-						
+						$total_dr =0;
+						$total_cr = 0;
 						foreach ($pbs as $pb):
+							$total_dr = $total_dr + $pb['dr_amount'];
+							$total_cr = $total_cr + $pb['cr_amount']
 							?>
 							<tr>
 								<td><?=$i++; ?></td>
 								<td><?=$pb['gl_transaction_date'] ?> </td>
 								<td><?=$pb['narration'] ?> </td>
 								<td><?=$pb['gl_description'] ?>  </td>
+								<td><?=$pb['ref_no'] ?>  </td>
 								
 								<td style="text-align: right"> <?=number_format($pb['dr_amount'], 2); ?> </td>
 								<td style="text-align: right"> <?=number_format($pb['cr_amount'], 2); ?> </td>
@@ -171,9 +177,21 @@ GL Extract
 							
 							</tr>
 						
+						
 						<?php endforeach; ?>
 					
+					<tr>
+						<td><?=$i++; ?></td>
+						<td> </td>
+						<td> </td>
+						<td></td>
+						<td><h3> TOTAL </h3>  </td>
+						
+						<td style="text-align: right"> <?=number_format($total_dr, 2); ?> </td>
+						<td style="text-align: right"> <?=number_format($total_cr, 2); ?> </td>
+						<td></td>
 					
+					</tr>
 					
 					
 							
