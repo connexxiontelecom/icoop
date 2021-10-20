@@ -1,0 +1,6 @@
+---
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/connexxtel/icoop.connexxiontelecom.com/
+    - /bin/cp -R * $DEPLOYPATH
